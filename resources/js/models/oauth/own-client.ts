@@ -36,11 +36,17 @@ export class OwnClient extends Client {
       url: route('oauth.clients.destroy', { client: this.id }),
     }) as JQuery.jqXHR<void>;
 
-    xhr.done(action(() => {
-      this.revoked = true;
-    })).always(action(() => {
-      this.isRevoking = false;
-    }));
+    xhr
+      .done(
+        action(() => {
+          this.revoked = true;
+        }),
+      )
+      .always(
+        action(() => {
+          this.isRevoking = false;
+        }),
+      );
 
     return xhr;
   }
@@ -54,11 +60,15 @@ export class OwnClient extends Client {
       url: route('oauth.clients.reset-secret', { client: this.id }),
     }) as JQuery.jqXHR<OwnClientJson>;
 
-    xhr.done((data) => {
-      this.updateFromJson(data);
-    }).always(action(() => {
-      this.isResetting = false;
-    }));
+    xhr
+      .done((data) => {
+        this.updateFromJson(data);
+      })
+      .always(
+        action(() => {
+          this.isResetting = false;
+        }),
+      );
 
     return xhr;
   }
@@ -85,11 +95,15 @@ export class OwnClient extends Client {
       url: route('oauth.clients.update', { client: this.id }),
     }) as JQuery.jqXHR<OwnClientJson>;
 
-    xhr.done((data) => {
-      this.updateFromJson(data);
-    }).always(action(() => {
-      this.isUpdating = false;
-    }));
+    xhr
+      .done((data) => {
+        this.updateFromJson(data);
+      })
+      .always(
+        action(() => {
+          this.isUpdating = false;
+        }),
+      );
 
     return xhr;
   }

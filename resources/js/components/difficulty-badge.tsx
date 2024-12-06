@@ -12,9 +12,11 @@ export default function DifficultyBadge(props: { rating: number }) {
       className={classWithModifiers('difficulty-badge', {
         'expert-plus': props.rating >= 6.5,
       })}
-      style={{
-        '--bg': getDiffColour(props.rating),
-      } as React.CSSProperties}
+      style={
+        {
+          '--bg': getDiffColour(props.rating),
+        } as React.CSSProperties
+      }
     >
       <span className='difficulty-badge__icon'>
         <span className='fas fa-star' />

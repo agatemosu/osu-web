@@ -23,16 +23,22 @@ export default class Posts extends React.Component<Props> {
   render() {
     return (
       <div className='page-extra'>
-        <h2 className='title title--page-extra'>{trans('users.show.extra.posts.title_longer')}</h2>
+        <h2 className='title title--page-extra'>
+          {trans('users.show.extra.posts.title_longer')}
+        </h2>
         <div className='modding-profile-list'>
           {this.props.posts.length === 0 ? (
-            <div className='modding-profile-list__empty'>{trans('users.show.extra.none')}</div>
+            <div className='modding-profile-list__empty'>
+              {trans('users.show.extra.none')}
+            </div>
           ) : (
             <>
               {this.props.posts.map(this.renderPost)}
               <a
                 className='modding-profile-list__show-more'
-                href={route('users.modding.posts', { user: this.props.user.id })}
+                href={route('users.modding.posts', {
+                  user: this.props.user.id,
+                })}
               >
                 {trans('users.show.extra.posts.show_more')}
               </a>
@@ -55,16 +61,19 @@ export default class Posts extends React.Component<Props> {
 
     return (
       <div key={post.id} className='modding-profile-list__row'>
-        <a className='modding-profile-list__thumbnail' href={makeUrl({ discussion })}>
-          <BeatmapsetCover
-            beatmapset={discussion.beatmapset}
-            size='list'
-          />
+        <a
+          className='modding-profile-list__thumbnail'
+          href={makeUrl({ discussion })}
+        >
+          <BeatmapsetCover beatmapset={discussion.beatmapset} size='list' />
         </a>
         <div className='modding-profile-list__timestamp hidden-xs'>
           <div className='beatmap-discussion-timestamp'>
             <div className='beatmap-discussion-timestamp__icons-container'>
-              <span className='fas fa-reply' title={trans('common.buttons.reply')} />
+              <span
+                className='fas fa-reply'
+                title={trans('common.buttons.reply')}
+              />
             </div>
           </div>
         </div>

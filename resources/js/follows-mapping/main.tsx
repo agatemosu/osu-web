@@ -31,14 +31,13 @@ export default class Main extends React.PureComponent<Props> {
         <div className='osu-page osu-page--generic osu-page--full'>
           <FollowsSubtypes currentSubtype='mapping' />
 
-          {this.props.follows.length === 0
-            ? trans('follows.mapping.empty')
-            : (
-              <div className='follows-table follows-table--mapping'>
-                {this.props.follows.map(this.renderItem)}
-              </div>
-            )
-          }
+          {this.props.follows.length === 0 ? (
+            trans('follows.mapping.empty')
+          ) : (
+            <div className='follows-table follows-table--mapping'>
+              {this.props.follows.map(this.renderItem)}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -65,9 +64,7 @@ export default class Main extends React.PureComponent<Props> {
               />
             </span>
 
-            <span className='u-ellipsis-overflow'>
-              {follow.user.username}
-            </span>
+            <span className='u-ellipsis-overflow'>{follow.user.username}</span>
           </a>
         </div>
 

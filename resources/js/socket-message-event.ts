@@ -4,9 +4,7 @@
 import DispatcherAction from 'actions/dispatcher-action';
 
 export function isSocketEventData(arg: unknown): arg is SocketEventData {
-  return typeof arg === 'object'
-    && arg != null
-    && 'event' in arg;
+  return typeof arg === 'object' && arg != null && 'event' in arg;
 }
 
 export interface SocketEventData {

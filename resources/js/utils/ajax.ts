@@ -16,10 +16,15 @@ interface UnknownErrorJson {
 const jqXHRProperties = ['status', 'statusText', 'readyState'];
 
 export function emitError(element: HTMLElement = document.body) {
-  return (xhr: JQuery.jqXHR, status: string, errorThrown: unknown) => $(element).trigger('ajax:error', [xhr, status, errorThrown]);
+  return (xhr: JQuery.jqXHR, status: string, errorThrown: unknown) =>
+    $(element).trigger('ajax:error', [xhr, status, errorThrown]);
 }
 
-export const error = (xhr: JQuery.jqXHR, status: string, callback?: () => void) => {
+export const error = (
+  xhr: JQuery.jqXHR,
+  status: string,
+  callback?: () => void,
+) => {
   if (status === 'abort') return;
   if (core.userLogin.showOnError(xhr, callback)) return;
   if (core.userVerification.showOnError(xhr, callback)) return;
@@ -27,25 +32,32 @@ export const error = (xhr: JQuery.jqXHR, status: string, callback?: () => void) 
   popup(xhrErrorMessage(xhr), 'danger');
 };
 
-export const fileuploadFailCallback = (event: unknown, data: JQueryFileUploadDone) => {
+export const fileuploadFailCallback = (
+  event: unknown,
+  data: JQueryFileUploadDone,
+) => {
   error(data.jqXHR, data.textStatus, () => {
     data.submit?.();
   });
 };
 
 export function isJqXHR(obj: unknown): obj is JQuery.jqXHR {
-  return typeof obj === 'object'
-    && obj != null
-    && jqXHRProperties.every((value) => value in obj);
+  return (
+    typeof obj === 'object' &&
+    obj != null &&
+    jqXHRProperties.every((value) => value in obj)
+  );
 }
 
 export const onError = (xhr: JQuery.jqXHR) => error(xhr, xhr.statusText);
 
-export const onErrorWithCallback = (callback?: () => void) => (xhr: JQuery.jqXHR, status: string) => {
-  error(xhr, status, callback);
-};
+export const onErrorWithCallback =
+  (callback?: () => void) => (xhr: JQuery.jqXHR, status: string) => {
+    error(xhr, status, callback);
+  };
 
-export const onErrorWithClick = (target: unknown) => onErrorWithCallback(createClickCallback(target));
+export const onErrorWithClick = (target: unknown) =>
+  onErrorWithCallback(createClickCallback(target));
 
 export function xhrErrorMessage(xhr?: JQuery.jqXHR) {
   if (xhr == null || xhr.responseJSON == null) {

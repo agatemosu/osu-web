@@ -4,5 +4,7 @@
 import DispatcherAction from './dispatcher-action';
 
 export default class FriendUpdated implements DispatcherAction {
-  constructor(readonly userId: number) { /* do nothing */ }
+  constructor(readonly userId: number) {
+    /* do nothing */
+  }
 }

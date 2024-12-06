@@ -4,13 +4,15 @@
 import Ruleset from './ruleset';
 
 interface UserGroupEventBase {
-  actor?: {
-    id: number;
-    name: string;
-  } | {
-    id: null;
-    name: null;
-  };
+  actor?:
+    | {
+        id: number;
+        name: string;
+      }
+    | {
+        id: null;
+        name: null;
+      };
   created_at: string;
   group_id: number;
   group_name: string;

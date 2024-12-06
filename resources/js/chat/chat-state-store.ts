@@ -10,7 +10,15 @@ import { dispatch, dispatchListener } from 'app-dispatcher';
 import DispatchListener from 'dispatch-listener';
 import { supportedChannelTypes } from 'interfaces/chat/channel-json';
 import { clamp, maxBy } from 'lodash';
-import { action, autorun, computed, makeObservable, observable, observe, runInAction } from 'mobx';
+import {
+  action,
+  autorun,
+  computed,
+  makeObservable,
+  observable,
+  observe,
+  runInAction,
+} from 'mobx';
 import Channel from 'models/chat/channel';
 import CreateAnnouncement from 'models/chat/create-announcement';
 import core from 'osu-core-singleton';
@@ -60,11 +68,17 @@ export default class ChatStateStore implements DispatchListener {
 
   @computed
   get joinedPublicChannelIds() {
-    return new Set(this.channelStore.groupedChannels.PUBLIC.map((channel) => channel.channelId));
+    return new Set(
+      this.channelStore.groupedChannels.PUBLIC.map(
+        (channel) => channel.channelId,
+      ),
+    );
   }
 
   get selectedChannel() {
-    return typeof this.selected === 'number' ? this.channelStore.get(this.selected) : null;
+    return typeof this.selected === 'number'
+      ? this.channelStore.get(this.selected)
+      : null;
   }
 
   // In most cases we want the Channel or create/add channel type, not the channel id itself.
@@ -76,7 +90,9 @@ export default class ChatStateStore implements DispatchListener {
 
   @computed
   private get channelList(): Channel[] {
-    return supportedChannelTypes.flatMap((type) => this.channelStore.groupedChannels[type]);
+    return supportedChannelTypes.flatMap(
+      (type) => this.channelStore.groupedChannels[type],
+    );
   }
 
   constructor(protected channelStore: ChannelStore) {
@@ -120,7 +136,11 @@ export default class ChatStateStore implements DispatchListener {
     });
 
     autorun(() => {
-      if (this.selected === 'join' && this.publicChannels.channels == null && !this.publicChannels.error) {
+      if (
+        this.selected === 'join' &&
+        this.publicChannels.channels == null &&
+        !this.publicChannels.error
+      ) {
         this.publicChannels.load();
       }
     });
@@ -174,7 +194,10 @@ export default class ChatStateStore implements DispatchListener {
   }
 
   @action
-  selectChannel(channelId: ChannelId, mode: 'push' | 'replace' | null = 'push') {
+  selectChannel(
+    channelId: ChannelId,
+    mode: 'push' | 'replace' | null = 'push',
+  ) {
     this.waitAddChannelId = null; // reset any waiting for channel.
     // Mark the channel being switched away from as read.
     // Marking as read is done here to avoid constantly sending mark-as-read requests
@@ -205,10 +228,13 @@ export default class ChatStateStore implements DispatchListener {
 
     this.selectChannel(this.channelList[0].channelId, null);
     // Remove channel_id from location on selectFirst();
-    updateHistory(updateQueryString(null, {
-      channel_id: null,
-      sendto: null,
-    }), 'replace');
+    updateHistory(
+      updateQueryString(null, {
+        channel_id: null,
+        sendto: null,
+      }),
+      'replace',
+    );
   }
 
   @action
@@ -236,8 +262,11 @@ export default class ChatStateStore implements DispatchListener {
     const json = event.json;
     this.channelStore.update(json);
 
-    if (typeof this.waitAddChannelId === 'string' && this.waitAddChannelId === json.uuid
-      || typeof this.waitAddChannelId === 'number' && this.waitAddChannelId === json.channel_id
+    if (
+      (typeof this.waitAddChannelId === 'string' &&
+        this.waitAddChannelId === json.uuid) ||
+      (typeof this.waitAddChannelId === 'number' &&
+        this.waitAddChannelId === json.channel_id)
     ) {
       // hide overlay before changing channel if we're waiting for a change to remove it from history navigation.
       hideLoadingOverlay();
@@ -266,7 +295,9 @@ export default class ChatStateStore implements DispatchListener {
     if (!this.isChatMounted) return;
 
     // FIXME: friend list update isn't propagated to other tabs without a full refresh, yet.
-    const channel = this.channelStore.groupedChannels.PM.find((value) => value.pmTarget === event.userId);
+    const channel = this.channelStore.groupedChannels.PM.find(
+      (value) => value.pmTarget === event.userId,
+    );
     channel?.loadMetadata();
   }
 
@@ -274,7 +305,9 @@ export default class ChatStateStore implements DispatchListener {
   private handleSocketStateChanged(event: SocketStateChangedAction) {
     this.isConnected = event.connected;
     if (!event.connected) {
-      this.channelStore.channels.forEach((channel) => channel.needsRefresh = true);
+      this.channelStore.channels.forEach(
+        (channel) => (channel.needsRefresh = true),
+      );
       this.isReady = false;
     }
   }
@@ -295,7 +328,10 @@ export default class ChatStateStore implements DispatchListener {
 
   @action
   private async updateChannelList() {
-    const json = await getUpdates(this.channelStore.lastReceivedMessageId, this.lastHistoryId);
+    const json = await getUpdates(
+      this.channelStore.lastReceivedMessageId,
+      this.lastHistoryId,
+    );
 
     runInAction(() => {
       const newHistoryId = maxBy(json.silences, 'id')?.id;
@@ -308,11 +344,17 @@ export default class ChatStateStore implements DispatchListener {
     });
   }
 
-  private updateUrl(channel: Channel | AddChannelType, mode: 'push' | 'replace' | null) {
+  private updateUrl(
+    channel: Channel | AddChannelType,
+    mode: 'push' | 'replace' | null,
+  ) {
     if (mode == null) return;
 
     let hash = '';
-    const params: Record<'channel_id' | 'sendto', string | null | undefined> = { channel_id: null, sendto: null };
+    const params: Record<'channel_id' | 'sendto', string | null | undefined> = {
+      channel_id: null,
+      sendto: null,
+    };
 
     if (typeof channel === 'string') {
       hash = channel;

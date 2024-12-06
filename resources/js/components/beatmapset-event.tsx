@@ -20,9 +20,7 @@ import StringWithComponent from './string-with-component';
 import UserLink from './user-link';
 
 function simpleKebab(str: string | number | undefined) {
-  return typeof str === 'string'
-    ? str.toLowerCase().replace(/ /g, '-')
-    : '';
+  return typeof str === 'string' ? str.toLowerCase().replace(/ /g, '-') : '';
 }
 
 export type EventViewMode = 'discussions' | 'profile' | 'list';
@@ -42,14 +40,21 @@ export default class BeatmapsetEvent extends React.PureComponent<Props> {
 
   private get discussionId(): number | undefined {
     const comment = this.props.event.comment;
-    if (comment != null && typeof comment === 'object' && 'beatmap_discussion_id' in comment) {
+    if (
+      comment != null &&
+      typeof comment === 'object' &&
+      'beatmap_discussion_id' in comment
+    ) {
       return comment.beatmap_discussion_id;
     }
   }
 
   // discussion page doesn't include the discussion as part of the event.
   private get discussion() {
-    return this.props.event.discussion ?? this.props.discussions?.get(this.discussionId);
+    return (
+      this.props.event.discussion ??
+      this.props.discussions?.get(this.discussionId)
+    );
   }
 
   private get firstPost() {
@@ -72,9 +77,7 @@ export default class BeatmapsetEvent extends React.PureComponent<Props> {
         <div className='beatmapset-event__time'>
           <TimeWithTooltip dateTime={eventTime} format='LT' />
         </div>
-        <div className='beatmapset-event__content'>
-          {this.content()}
-        </div>
+        <div className='beatmapset-event__content'>{this.content()}</div>
       </div>
     );
   }
@@ -82,7 +85,9 @@ export default class BeatmapsetEvent extends React.PureComponent<Props> {
   renderProfileVersion() {
     let discussionLink: string | undefined;
     if (this.beatmapsetId != null) {
-      discussionLink = route('beatmapsets.discussion', { beatmapset: this.beatmapsetId });
+      discussionLink = route('beatmapsets.discussion', {
+        beatmapset: this.beatmapsetId,
+      });
       if (this.discussionId != null) {
         discussionLink = `${discussionLink}#/${this.discussionId}`;
       }
@@ -92,20 +97,23 @@ export default class BeatmapsetEvent extends React.PureComponent<Props> {
       <div className='beatmapset-event'>
         {discussionLink != null ? (
           <a href={discussionLink}>
-            <BeatmapsetCover beatmapset={this.props.event.beatmapset} size='list' />
+            <BeatmapsetCover
+              beatmapset={this.props.event.beatmapset}
+              size='list'
+            />
           </a>
         ) : (
           <BeatmapsetCover isDeleted />
         )}
         <div
-          className={classWithModifiers('beatmapset-event__icon', ['beatmapset-activities'])}
+          className={classWithModifiers('beatmapset-event__icon', [
+            'beatmapset-activities',
+          ])}
           style={this.iconStyle()}
         />
 
         <div>
-          <div className='beatmapset-event__content'>
-            {this.content()}
-          </div>
+          <div className='beatmapset-event__content'>{this.content()}</div>
           <div className='beatmap-discussion-post__info'>
             <TimeWithTooltip dateTime={this.props.event.created_at} relative />
           </div>
@@ -123,33 +131,50 @@ export default class BeatmapsetEvent extends React.PureComponent<Props> {
 
     if (this.discussionId != null) {
       if (this.discussion == null) {
-        url = route('beatmapsets.discussions.show', { discussion: this.discussionId });
+        url = route('beatmapsets.discussions.show', {
+          discussion: this.discussionId,
+        });
         text = trans('beatmapset_events.item.discussion_deleted');
       } else {
         const firstPostMessage = this.firstPost?.message;
         url = makeUrl({ discussion: this.discussion });
-        text = firstPostMessage != null ? <PlainTextPreview markdown={firstPostMessage} /> : '[no preview]';
+        text =
+          firstPostMessage != null ? (
+            <PlainTextPreview markdown={firstPostMessage} />
+          ) : (
+            '[no preview]'
+          );
 
-        const discussionUser = this.props.users.get(this.discussion.user_id) ?? deletedUserJson;
+        const discussionUser =
+          this.props.users.get(this.discussion.user_id) ?? deletedUserJson;
 
         // TODO: remove link for deleted user?
         discussionUserLink = <UserLink user={discussionUser} />;
       }
 
-      discussionLink = <a className='js-beatmap-discussion--jump' href={url}>{`#${this.discussionId}`}</a>;
+      discussionLink = (
+        <a
+          className='js-beatmap-discussion--jump'
+          href={url}
+        >{`#${this.discussionId}`}</a>
+      );
     } else {
       if (typeof this.props.event.comment === 'string') {
         text = this.props.event.comment;
       }
     }
 
-    if (this.props.event.type === 'discussion_lock' || this.props.event.type === 'remove_from_loved') {
+    if (
+      this.props.event.type === 'discussion_lock' ||
+      this.props.event.type === 'remove_from_loved'
+    ) {
       text = this.props.event.comment.reason;
     }
 
     if (this.props.event.user_id != null) {
       const userData = this.props.users.get(this.props.event.user_id);
-      user = userData != null ? <UserLink user={userData} /> : deletedUser.username;
+      user =
+        userData != null ? <UserLink user={userData} /> : deletedUser.username;
     }
 
     const params: Partial<Record<string, React.ReactNode>> = {
@@ -159,9 +184,17 @@ export default class BeatmapsetEvent extends React.PureComponent<Props> {
       user,
     };
 
-    if (this.props.event.comment != null && typeof this.props.event.comment === 'object') {
-      for (const [commentKey, commentValue] of Object.entries(this.props.event.comment)) {
-        if (typeof commentValue === 'number' || typeof commentValue === 'string') {
+    if (
+      this.props.event.comment != null &&
+      typeof this.props.event.comment === 'object'
+    ) {
+      for (const [commentKey, commentValue] of Object.entries(
+        this.props.event.comment,
+      )) {
+        if (
+          typeof commentValue === 'number' ||
+          typeof commentValue === 'string'
+        ) {
           params[commentKey] = commentValue;
         }
       }
@@ -176,18 +209,28 @@ export default class BeatmapsetEvent extends React.PureComponent<Props> {
         }
         break;
       case 'genre_edit':
-        params.new = trans(`beatmaps.genre.${simpleKebab(this.props.event.comment.new)}`);
-        params.old = trans(`beatmaps.genre.${simpleKebab(this.props.event.comment.old)}`);
+        params.new = trans(
+          `beatmaps.genre.${simpleKebab(this.props.event.comment.new)}`,
+        );
+        params.old = trans(
+          `beatmaps.genre.${simpleKebab(this.props.event.comment.old)}`,
+        );
         break;
       case 'language_edit':
-        params.new = trans(`beatmaps.language.${simpleKebab(this.props.event.comment.new)}`);
-        params.old = trans(`beatmaps.language.${simpleKebab(this.props.event.comment.old)}`);
+        params.new = trans(
+          `beatmaps.language.${simpleKebab(this.props.event.comment.new)}`,
+        );
+        params.old = trans(
+          `beatmaps.language.${simpleKebab(this.props.event.comment.old)}`,
+        );
         break;
       case 'nominate': {
         const modes = this.props.event.comment?.modes;
         if (modes != null && modes.length > 0) {
           eventType = 'nominate_modes';
-          const nominationModes = modes.map((mode) => trans(`beatmaps.mode.${mode}`));
+          const nominationModes = modes.map((mode) =>
+            trans(`beatmaps.mode.${mode}`),
+          );
           params.modes = transArray(nominationModes);
         }
         break;
@@ -199,9 +242,15 @@ export default class BeatmapsetEvent extends React.PureComponent<Props> {
       }
       case 'beatmap_owner_change': {
         const data = this.props.event.comment;
-        const users = data.new_users ?? [{ id: data.new_user_id, username: data.new_user_username }];
+        const users = data.new_users ?? [
+          { id: data.new_user_id, username: data.new_user_username },
+        ];
 
-        params.beatmap = <a href={route('beatmaps.show', { beatmap: data.beatmap_id })}>{data.beatmap_version}</a>;
+        params.beatmap = (
+          <a href={route('beatmaps.show', { beatmap: data.beatmap_id })}>
+            {data.beatmap_version}
+          </a>
+        );
         params.new_user = <UserLinkList users={users} />;
         break;
       }
@@ -209,9 +258,17 @@ export default class BeatmapsetEvent extends React.PureComponent<Props> {
         const data = this.props.event.comment;
         if (this.props.mode === 'profile') {
           eventType += '_profile';
-          params.user = <a href={route('users.show', { user: data.source_user_id })}>{data.source_user_username}</a>;
+          params.user = (
+            <a href={route('users.show', { user: data.source_user_id })}>
+              {data.source_user_username}
+            </a>
+          );
         } else {
-          params.source_user = <a href={route('users.show', { user: data.source_user_id })}>{data.source_user_username}</a>;
+          params.source_user = (
+            <a href={route('users.show', { user: data.source_user_id })}>
+              {data.source_user_username}
+            </a>
+          );
         }
         break;
       }

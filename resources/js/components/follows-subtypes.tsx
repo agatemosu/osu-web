@@ -16,7 +16,9 @@ export default function FollowsSubtypes(props: Props) {
       {['comment', 'forum_topic', 'mapping', 'modding'].map((t) => (
         <a
           key={t}
-          className={classWithModifiers('page-tabs__tab', { active: t === props.currentSubtype })}
+          className={classWithModifiers('page-tabs__tab', {
+            active: t === props.currentSubtype,
+          })}
           href={route('follows.index', { subtype: t })}
         >
           {trans(`follows.${t}.title`)}

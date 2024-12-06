@@ -3,19 +3,21 @@
 
 import UserJson from 'interfaces/user-json';
 
-export type CommentableMetaJson = {
-  current_user_attributes: {
-    can_new_comment_reason: string | null;
-  };
-  id: number;
-  owner_id: number | null;
-  owner_title: string | null;
-  title: string;
-  type: string;
-  url: string;
-} | {
-  title: string;
-};
+export type CommentableMetaJson =
+  | {
+      current_user_attributes: {
+        can_new_comment_reason: string | null;
+      };
+      id: number;
+      owner_id: number | null;
+      owner_title: string | null;
+      title: string;
+      type: string;
+      url: string;
+    }
+  | {
+      title: string;
+    };
 
 export default interface CommentJson {
   commentable_id: number;

@@ -64,11 +64,13 @@ declare global {
 }
 
 window.LangMessages ??= {};
-window.Lang = patchPluralHandler(new Lang({
-  fallback: window.fallbackLocale,
-  locale: window.currentLocale,
-  messages: window.LangMessages,
-}));
+window.Lang = patchPluralHandler(
+  new Lang({
+    fallback: window.fallbackLocale,
+    locale: window.currentLocale,
+    messages: window.LangMessages,
+  }),
+);
 window.moment = moment;
 window.popup = popup;
 window.reloadPage = reloadPage;

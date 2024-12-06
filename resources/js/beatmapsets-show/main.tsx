@@ -6,7 +6,14 @@ import HeaderV4 from 'components/header-v4';
 import NotificationBanner from 'components/notification-banner';
 import PlaymodeTabs from 'components/playmode-tabs';
 import Ruleset, { rulesets } from 'interfaces/ruleset';
-import { action, autorun, computed, IReactionDisposer, makeObservable, observable } from 'mobx';
+import {
+  action,
+  autorun,
+  computed,
+  IReactionDisposer,
+  makeObservable,
+  observable,
+} from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { generate, setHash } from 'utils/beatmapset-page-hash';
@@ -77,10 +84,11 @@ export default class Main extends React.Component<Props> {
       <div className='osu-layout osu-layout--full'>
         {this.renderDeletedNotification()}
         {this.renderPageHeader()}
-        {this.controller.state.showingNsfwWarning
-          ? <NsfwWarning onClose={this.onCloseNsfwWarning} />
-          : this.renderPage()
-        }
+        {this.controller.state.showingNsfwWarning ? (
+          <NsfwWarning onClose={this.onCloseNsfwWarning} />
+        ) : (
+          this.renderPage()
+        )}
       </div>
     );
   }
@@ -119,20 +127,20 @@ export default class Main extends React.Component<Props> {
           <Info controller={this.controller} />
 
           <div className='user-profile-pages user-profile-pages--no-tabs'>
-            {this.controller.beatmapset.can_be_hyped &&
+            {this.controller.beatmapset.can_be_hyped && (
               <div className='page-extra page-extra--compact'>
                 <Hype beatmapset={this.controller.beatmapset} />
               </div>
-            }
+            )}
 
-            {this.controller.currentBeatmap.is_scoreable &&
+            {this.controller.currentBeatmap.is_scoreable && (
               <div className='page-extra'>
                 <ScoreboardMain
                   beatmap={this.controller.currentBeatmap}
                   container={this.props.container}
                 />
               </div>
-            }
+            )}
 
             <div className='page-extra page-extra--compact'>
               <Comments

@@ -37,13 +37,16 @@ export class Sort extends React.PureComponent<Props> {
           onClick={this.props.onChange}
         >
           {/* FIXME: add icon support */}
-          {value === 'rank'
-            ? (
-              <span>
-                <i className={`fas fa-extra-mode-${core.currentUser?.playmode ?? 'osu'}`} /> {trans('sort.rank')}
-              </span>
-            ) : trans(`${this.props.transPrefix}${value}`)
-          }
+          {value === 'rank' ? (
+            <span>
+              <i
+                className={`fas fa-extra-mode-${core.currentUser?.playmode ?? 'osu'}`}
+              />{' '}
+              {trans('sort.rank')}
+            </span>
+          ) : (
+            trans(`${this.props.transPrefix}${value}`)
+          )}
         </button>
       );
     });
@@ -52,7 +55,9 @@ export class Sort extends React.PureComponent<Props> {
       <div className={classWithModifiers('sort', this.props.modifiers)}>
         <div className='sort__items'>
           {this.props.showTitle && (
-            <span className='sort__item sort__item--title'>{this.props.title ?? trans('sort._')}</span>
+            <span className='sort__item sort__item--title'>
+              {this.props.title ?? trans('sort._')}
+            </span>
           )}
           {items}
         </div>

@@ -22,7 +22,19 @@ export const charToKey: Record<string, FilterKey> = {
 };
 
 export const keyToChar = invert(charToKey);
-export const keyNames = ['extra', 'general', 'genre', 'language', 'mode', 'nsfw', 'played', 'query', 'rank', 'sort', 'status'] as const;
+export const keyNames = [
+  'extra',
+  'general',
+  'genre',
+  'language',
+  'mode',
+  'nsfw',
+  'played',
+  'query',
+  'rank',
+  'sort',
+  'status',
+] as const;
 export type FilterKey = (typeof keyNames)[number];
 type FilterValueType = string | null;
 
@@ -71,7 +83,8 @@ export class BeatmapsetSearchFilters {
     for (const key of keyNames) {
       const value = this[key];
 
-      charParams[keyToChar[key]] = value === this.getDefault(key) ? null : value;
+      charParams[keyToChar[key]] =
+        value === this.getDefault(key) ? null : value;
     }
 
     return charParams;
@@ -85,7 +98,9 @@ export class BeatmapsetSearchFilters {
 
   @computed
   get supporterRequired() {
-    return keyNames.filter((key) => this[key] != null && filtersRequireSupporter.includes(key));
+    return keyNames.filter(
+      (key) => this[key] != null && filtersRequireSupporter.includes(key),
+    );
   }
 
   constructor(url: string) {
@@ -115,7 +130,9 @@ export class BeatmapsetSearchFilters {
       case 'sort':
         if (present(this.query)) {
           return 'relevance_desc';
-        } else if (['pending', 'wip', 'graveyard', 'mine'].includes(this.status ?? '')) {
+        } else if (
+          ['pending', 'wip', 'graveyard', 'mine'].includes(this.status ?? '')
+        ) {
           return 'updated_desc';
         } else {
           return 'ranked_desc';
@@ -127,7 +144,10 @@ export class BeatmapsetSearchFilters {
 
   href(key: FilterKey, value: string | null) {
     const actualValue = value === this.getDefault(key) ? null : value;
-    return updateQueryString(null, { ...this.queryParams, [keyToChar[key]]: actualValue });
+    return updateQueryString(null, {
+      ...this.queryParams,
+      [keyToChar[key]]: actualValue,
+    });
   }
 
   selectedValue(key: FilterKey) {

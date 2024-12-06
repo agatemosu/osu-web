@@ -48,16 +48,16 @@ export default class Header extends React.PureComponent<Props> {
           <ValueDisplay
             label={trans('contest.judge_results.creator')}
             modifiers={'judge-results'}
-            value={
-              <UserLink user={this.props.entry.user} />
-            }
+            value={<UserLink user={this.props.entry.user} />}
           />
         </div>
       </div>
     );
   }
 
-  private entryToSelectOption(entry: ContestEntryJsonForResults): SelectOptionJson {
+  private entryToSelectOption(
+    entry: ContestEntryJsonForResults,
+  ): SelectOptionJson {
     return {
       id: entry.id,
       text: entry.title,

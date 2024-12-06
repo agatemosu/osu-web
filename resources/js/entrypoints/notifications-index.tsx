@@ -9,7 +9,11 @@ import * as React from 'react';
 import { parseJson } from 'utils/json';
 
 core.reactTurbolinks.register('notifications-index', () => {
-  dispatch(new NotificationEventMoreLoaded(parseJson('json-notifications'), { isWidget: false }));
+  dispatch(
+    new NotificationEventMoreLoaded(parseJson('json-notifications'), {
+      isWidget: false,
+    }),
+  );
 
   return <Main />;
 });

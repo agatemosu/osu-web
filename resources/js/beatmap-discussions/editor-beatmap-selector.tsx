@@ -30,7 +30,9 @@ export default class EditorBeatmapSelector extends React.Component<Props> {
       icon: <i className='fas fa-fw fa-star-of-life' />,
       id: 'all',
       label: (
-        <div className={classWithModifiers('beatmap-list-item', listItemModifier)}>
+        <div
+          className={classWithModifiers('beatmap-list-item', listItemModifier)}
+        >
           <div className='beatmap-list-item__col beatmap-list-item__col--icon'>
             <i className='fas fa-xs fa-star-of-life' />
           </div>
@@ -50,7 +52,13 @@ export default class EditorBeatmapSelector extends React.Component<Props> {
       menuOptions.push({
         icon: <BeatmapIcon beatmap={beatmap} />,
         id: beatmap.id.toString(),
-        label: <BeatmapListItem beatmap={beatmap} modifiers={listItemModifier} showOwners={false} />,
+        label: (
+          <BeatmapListItem
+            beatmap={beatmap}
+            modifiers={listItemModifier}
+            showOwners={false}
+          />
+        ),
         renderIcon: false,
       });
     });

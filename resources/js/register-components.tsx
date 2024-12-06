@@ -1,9 +1,13 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetPanel, { Props as BeatmapsetPanelProps } from 'beatmapset-panel';
+import BeatmapsetPanel, {
+  Props as BeatmapsetPanelProps,
+} from 'beatmapset-panel';
 import BasicSelectOptions from 'components/basic-select-options';
-import BeatmapsetEvents, { Props as BeatmapsetEventsProps } from 'components/beatmapset-events';
+import BeatmapsetEvents, {
+  Props as BeatmapsetEventsProps,
+} from 'components/beatmapset-events';
 import BlockButton from 'components/block-button';
 import ChatIcon from 'components/chat-icon';
 import CountdownTimer from 'components/countdown-timer';
@@ -30,12 +34,12 @@ import { parseJson } from 'utils/json';
 import { mapBy } from 'utils/map';
 import { getInt } from 'utils/math';
 
-function reqJson<T>(input: string|undefined): T {
+function reqJson<T>(input: string | undefined): T {
   // This will throw when input is missing and thus parsing empty string.
   return JSON.parse(input ?? '') as T;
 }
 
-function reqStr(input: string|undefined) {
+function reqStr(input: string | undefined) {
   if (input == null) {
     throw new Error('unexpected undefined value');
   }
@@ -62,7 +66,9 @@ core.reactTurbolinks.register('beatmap-discussion-events', () => {
 });
 
 core.reactTurbolinks.register('beatmapset-panel', (container) => {
-  const props: BeatmapsetPanelProps = reqJson(container.dataset.beatmapsetPanel);
+  const props: BeatmapsetPanelProps = reqJson(
+    container.dataset.beatmapsetPanel,
+  );
 
   return <BeatmapsetPanel {...observable(props)} />;
 });
@@ -124,7 +130,11 @@ core.reactTurbolinks.register('store-supporter-tag', (container) => {
 core.reactTurbolinks.register('user-card', (container) => (
   <UserCard
     modifiers={reqJson(container.dataset.modifiers ?? 'null')}
-    user={container.dataset.isCurrentUser === '1' ? core.currentUser : reqJson(container.dataset.user ?? 'null')}
+    user={
+      container.dataset.isCurrentUser === '1'
+        ? core.currentUser
+        : reqJson(container.dataset.user ?? 'null')
+    }
   />
 ));
 

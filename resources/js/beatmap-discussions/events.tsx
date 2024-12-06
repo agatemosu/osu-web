@@ -17,7 +17,9 @@ interface Props {
 
 export class Events extends React.PureComponent<Props> {
   render() {
-    const events = this.props.events.filter((event) => event.type !== 'nomination_reset_received');
+    const events = this.props.events.filter(
+      (event) => event.type !== 'nomination_reset_received',
+    );
 
     return (
       <div className='osu-page osu-page--small osu-page--generic'>
@@ -26,7 +28,9 @@ export class Events extends React.PureComponent<Props> {
             <div className='beatmapset-events__empty'>
               {trans('beatmap_discussions.events.empty')}
             </div>
-          ) : this.renderEvents(events)}
+          ) : (
+            this.renderEvents(events)
+          )}
         </div>
       </div>
     );
@@ -42,7 +46,14 @@ export class Events extends React.PureComponent<Props> {
       const createdAtString = moment(event.created_at).format('LL');
       if (lastCreatedAtString !== createdAtString) {
         lastCreatedAtString = createdAtString;
-        nodes.push(<div key={`date-${lastCreatedAtString}`} className='beatmapset-events__title'>{lastCreatedAtString}</div>);
+        nodes.push(
+          <div
+            key={`date-${lastCreatedAtString}`}
+            className='beatmapset-events__title'
+          >
+            {lastCreatedAtString}
+          </div>,
+        );
       }
 
       nodes.push(

@@ -31,10 +31,18 @@ $.widget('toc.tocify', {
       this.focusClass = 'ui-state-default';
       this.hoverClass = 'ui-state-hover';
       // Adds the default styling to the dropdown list
-      this.element.addClass('ui-widget').find('.toc-title').addClass('ui-widget-header').end().find('li').addClass('ui-widget-content');
+      this.element
+        .addClass('ui-widget')
+        .find('.toc-title')
+        .addClass('ui-widget-header')
+        .end()
+        .find('li')
+        .addClass('ui-widget-content');
     } else if (this.options.theme === 'bootstrap') {
       // If the user wants a twitterBootstrap theme
-      this.element.find(headerClass + ',' + subheaderClass).addClass('nav nav-list');
+      this.element
+        .find(headerClass + ',' + subheaderClass)
+        .addClass('nav nav-list');
       this.focusClass = 'active';
       // If a user does not want a prebuilt theme
     } else {
@@ -61,20 +69,29 @@ $.widget('toc.tocify', {
     if (currentTagName < previousTagName) {
       // If the current header DOM element is smaller than the previous header DOM element or the first subheader
       // Selects the last unordered list HTML found within the HTML element calling the plugin
-      self.element.find(subheaderClass + '[data-tag=' + currentTagName + ']').last().append(self._nestElements($(this), index));
+      self.element
+        .find(subheaderClass + '[data-tag=' + currentTagName + ']')
+        .last()
+        .append(self._nestElements($(this), index));
     } else if (currentTagName === previousTagName) {
       // If the current header DOM element is the same type of header(eg. h4) as the previous header DOM element
-      ul.find(itemClass).last().after(self._nestElements($(this), index));
+      ul.find(itemClass)
+        .last()
+        .after(self._nestElements($(this), index));
     } else {
       // Selects the last unordered list HTML found within the HTML element calling the plugin
-      ul.find(itemClass).last().
+      ul.find(itemClass)
+        .last()
         // Appends an unorderedList HTML element to the dynamic `unorderedList` variable and sets a common class name
-        after($('<ul/>', {
-          class: subheaderClassName,
-          'data-tag': currentTagName,
-        })).next(subheaderClass).
+        .after(
+          $('<ul/>', {
+            class: subheaderClassName,
+            'data-tag': currentTagName,
+          }),
+        )
+        .next(subheaderClass)
         // Appends a list item HTML element to the last unordered list HTML element found within the HTML element calling the plugin
-        append(self._nestElements($(this), index));
+        .append(self._nestElements($(this), index));
     }
   },
 
@@ -90,7 +107,7 @@ $.widget('toc.tocify', {
     self._generateToc();
     // Adds CSS classes to the newly generated table of contents HTML
     self._addCSSClasses();
-    self.webkit = (function() {
+    self.webkit = (function () {
       for (var prop in window) {
         if (prop) {
           if (prop.toLowerCase().indexOf('webkit') !== -1) {
@@ -100,21 +117,23 @@ $.widget('toc.tocify', {
       }
 
       return false;
-    }());
+    })();
 
     // Adds jQuery event handlers to the newly generated table of contents
     self._setEventHandlers();
 
     // Binding to the Window load event to make sure the correct scrollTop is calculated
-    $(window).on('load', function() {
+    $(window).on('load', function () {
       // Sets the active TOC item
       self._setActiveElement(true);
       // Once all animations on the page are complete, this callback function will be called
-      $('html, body').promise().done(function() {
-        setTimeout(function() {
-          self.extendPageScroll = false;
-        }, 0);
-      });
+      $('html, body')
+        .promise()
+        .done(function () {
+          setTimeout(function () {
+            self.extendPageScroll = false;
+          }, 0);
+        });
     });
   },
 
@@ -167,11 +186,17 @@ $.widget('toc.tocify', {
     // If the selectors option has a comma within the string
     if (this.options.selectors.indexOf(',') !== -1) {
       // Grabs the first selector from the string
-      $firstElems = $(this.options.context).find(this.options.selectors.replace(/ /g, '').substr(0, this.options.selectors.indexOf(',')));
+      $firstElems = $(this.options.context).find(
+        this.options.selectors
+          .replace(/ /g, '')
+          .substr(0, this.options.selectors.indexOf(',')),
+      );
     } else {
       // If the selectors option does not have a comma within the string
       // Grabs the first selector from the string and makes sure there are no spaces
-      $firstElems = $(this.options.context).find(this.options.selectors.replace(/ /g, ''));
+      $firstElems = $(this.options.context).find(
+        this.options.selectors.replace(/ /g, ''),
+      );
     }
 
     if (!$firstElems.length) {
@@ -182,7 +207,7 @@ $.widget('toc.tocify', {
     self.element.addClass(tocClassName);
 
     // Loops through each top level selector
-    $firstElems.each(function(index, firstElem) {
+    $firstElems.each(function (index, firstElem) {
       const $firstElem = $(firstElem);
 
       // If the element matches the ignoreSelector then we skip it
@@ -194,40 +219,44 @@ $.widget('toc.tocify', {
       ul = $('<ul/>', {
         class: headerClassName,
         id: headerClassName + index,
-      }).
+      })
         // Appends a top level list item HTML element to the previously created HTML header
-        append(self._nestElements($firstElem, index));
+        .append(self._nestElements($firstElem, index));
 
       // Add the created unordered list element to the HTML element calling the plugin
       self.element.append(ul);
 
       // Finds all of the HTML tags between the header and subheader elements
-      $firstElem.nextUntil(firstElem.nodeName.toLowerCase()).each(function(_idx, el) {
-        const $el = $(el);
-        // If there are no nested subheader elemements
-        if ($el.find(self.options.selectors).length === 0) {
-          // Loops through all of the subheader elements
-          $el.filter(self.options.selectors).each(function(__idx, subheader) {
-            // If the element matches the ignoreSelector then we skip it
-            if ($(subheader).is(ignoreSelector)) {
-              return;
-            }
+      $firstElem
+        .nextUntil(firstElem.nodeName.toLowerCase())
+        .each(function (_idx, el) {
+          const $el = $(el);
+          // If there are no nested subheader elemements
+          if ($el.find(self.options.selectors).length === 0) {
+            // Loops through all of the subheader elements
+            $el
+              .filter(self.options.selectors)
+              .each(function (__idx, subheader) {
+                // If the element matches the ignoreSelector then we skip it
+                if ($(subheader).is(ignoreSelector)) {
+                  return;
+                }
 
-            self._appendSubheaders.call(subheader, self, ul);
-          });
-        } else {
-          // If there are nested subheader elements
-          // Loops through all of the subheader elements
-          $el.find(self.options.selectors).each(function(__idx, subheader) {
-            // If the element matches the ignoreSelector then we skip it
-            if ($(subheader).is(ignoreSelector)) {
-              return;
-            }
+                self._appendSubheaders.call(subheader, self, ul);
+              });
+          } else {
+            // If there are nested subheader elements
+            // Loops through all of the subheader elements
+            $el.find(self.options.selectors).each(function (__idx, subheader) {
+              // If the element matches the ignoreSelector then we skip it
+              if ($(subheader).is(ignoreSelector)) {
+                return;
+              }
 
-            self._appendSubheaders.call(subheader, self, ul);
-          });
-        }
-      });
+              self._appendSubheaders.call(subheader, self, ul);
+            });
+          }
+        });
     });
   },
 
@@ -235,9 +264,11 @@ $.widget('toc.tocify', {
   // -------------
   //      Helps create the table of contents list by appending nested list items
   _nestElements(self, index) {
-    var arr; var item; var hashValue;
+    var arr;
+    var item;
+    var hashValue;
 
-    arr = $.grep(this.items, function(i) {
+    arr = $.grep(this.items, function (i) {
       return i === self.text();
     });
 
@@ -258,16 +289,20 @@ $.widget('toc.tocify', {
       // Sets a common class name to the list item
       class: itemClassName,
       'data-unique': hashValue,
-    }).append($('<a/>', {
-      text: self.text(),
-    }));
+    }).append(
+      $('<a/>', {
+        text: self.text(),
+      }),
+    );
 
     // Adds an HTML anchor tag before the currently traversed HTML element
-    self.before($('<div/>', {
-      'data-unique': hashValue,
-      // Sets a name attribute on the anchor tag to the text of the currently traversed HTML element (also making sure that all whitespace is replaced with an underscore)
-      name: hashValue,
-    }));
+    self.before(
+      $('<div/>', {
+        'data-unique': hashValue,
+        // Sets a name attribute on the anchor tag to the text of the currently traversed HTML element (also making sure that all whitespace is replaced with an underscore)
+        name: hashValue,
+      }),
+    );
 
     return item;
   },
@@ -286,16 +321,24 @@ $.widget('toc.tocify', {
     }
 
     // Once all animations on the page are complete, this callback function will be called
-    $('html, body').promise().done(function() {
-      // Animates the html and body element scrolltops
-      $('html, body').animate({
-        // Sets the jQuery `scrollTop` to the top offset of the HTML div tag that matches the current list item's `data-unique` tag
-        scrollTop: currentDiv.offset().top - ($.isFunction(scrollTo) ? scrollTo.call() : scrollTo) + 'px',
-      }, {
-        // Sets the smoothScroll animation time duration to the smoothScrollSpeed option
-        duration,
+    $('html, body')
+      .promise()
+      .done(function () {
+        // Animates the html and body element scrolltops
+        $('html, body').animate(
+          {
+            // Sets the jQuery `scrollTop` to the top offset of the HTML div tag that matches the current list item's `data-unique` tag
+            scrollTop:
+              currentDiv.offset().top -
+              ($.isFunction(scrollTo) ? scrollTo.call() : scrollTo) +
+              'px',
+          },
+          {
+            // Sets the smoothScroll animation time duration to the smoothScrollSpeed option
+            duration,
+          },
+        );
       });
-    });
 
     // Maintains chainability
     return self;
@@ -338,7 +381,7 @@ $.widget('toc.tocify', {
     var self = this;
 
     // Event delegation that looks for any clicks on list item elements inside of the HTML element calling the plugin
-    this.element.on('click.tocify', 'li', function(event) {
+    this.element.on('click.tocify', 'li', function (event) {
       const $target = $(event.currentTarget);
 
       if (self.options.history) {
@@ -380,99 +423,136 @@ $.widget('toc.tocify', {
     });
 
     // only attach handler if needed (expensive in IE)
-    if (self.options.extendPage || self.options.highlightOnScroll || self.options.scrollHistory || self.options.showAndHideOnScroll) {
+    if (
+      self.options.extendPage ||
+      self.options.highlightOnScroll ||
+      self.options.scrollHistory ||
+      self.options.showAndHideOnScroll
+    ) {
       // Window scroll event handler
-      $(window).on('scroll.tocify', function() {
+      $(window).on('scroll.tocify', function () {
         // Once all animations on the page are complete, this callback function will be called
-        $('html, body').promise().done(function() {
-          // Stores how far the user has scrolled
-          var winScrollTop = $(window).scrollTop();
-          // Stores the height of the window
-          var winHeight = $(window).height();
-          // Stores the height of the document
-          var docHeight = $(document).height();
-          var scrollHeight = $('body')[0].scrollHeight;
-          // Instantiates a variable that will be used to hold a selected HTML element
-          var elem;
-          var lastElem;
-          var lastElemOffset;
-          var currentElem;
+        $('html, body')
+          .promise()
+          .done(function () {
+            // Stores how far the user has scrolled
+            var winScrollTop = $(window).scrollTop();
+            // Stores the height of the window
+            var winHeight = $(window).height();
+            // Stores the height of the document
+            var docHeight = $(document).height();
+            var scrollHeight = $('body')[0].scrollHeight;
+            // Instantiates a variable that will be used to hold a selected HTML element
+            var elem;
+            var lastElem;
+            var lastElemOffset;
+            var currentElem;
 
-          if (self.options.extendPage) {
+            if (self.options.extendPage) {
+              // If the user has scrolled to the bottom of the page and the last toc item is not focused
+              if (
+                (self.webkit &&
+                  winScrollTop >=
+                    scrollHeight - winHeight - self.options.extendPageOffset) ||
+                (!self.webkit &&
+                  winHeight + winScrollTop >
+                    docHeight - self.options.extendPageOffset)
+              ) {
+                if (!$(extendPageClass).length) {
+                  lastElem = $(
+                    'div[data-unique="' +
+                      $(itemClass).last().attr('data-unique') +
+                      '"]',
+                  );
 
-            // If the user has scrolled to the bottom of the page and the last toc item is not focused
-            if ((self.webkit && winScrollTop >= scrollHeight - winHeight - self.options.extendPageOffset) || (!self.webkit && winHeight + winScrollTop > docHeight - self.options.extendPageOffset)) {
-              if (!$(extendPageClass).length) {
-                lastElem = $('div[data-unique="' + $(itemClass).last().attr('data-unique') + '"]');
+                  if (!lastElem.length) return;
 
-                if (!lastElem.length) return;
+                  // Gets the top offset of the page header that is linked to the last toc item
+                  lastElemOffset = lastElem.offset().top;
 
-                // Gets the top offset of the page header that is linked to the last toc item
-                lastElemOffset = lastElem.offset().top;
+                  // Appends a div to the bottom of the page and sets the height to the difference of the window scrollTop and the last element's position top offset
+                  $(self.options.context).append(
+                    $('<div />', {
+                      class: extendPageClassName,
+                      'data-unique': extendPageClassName,
+                      height: Math.abs(lastElemOffset - winScrollTop) + 'px',
+                    }),
+                  );
 
-                // Appends a div to the bottom of the page and sets the height to the difference of the window scrollTop and the last element's position top offset
-                $(self.options.context).append($('<div />', {
-                  class: extendPageClassName,
-                  'data-unique': extendPageClassName,
-                  height: Math.abs(lastElemOffset - winScrollTop) + 'px',
-                }));
-
-                if (self.extendPageScroll) {
-                  currentElem = self.element.find('li.active');
-                  self._scrollTo($('div[data-unique="' + currentElem.attr('data-unique') + '"]'));
+                  if (self.extendPageScroll) {
+                    currentElem = self.element.find('li.active');
+                    self._scrollTo(
+                      $(
+                        'div[data-unique="' +
+                          currentElem.attr('data-unique') +
+                          '"]',
+                      ),
+                    );
+                  }
                 }
               }
             }
-          }
 
-          // The zero timeout ensures the following code is run after the scroll events
-          setTimeout(function() {
-            // Stores the distance to the closest anchor
-            var closestAnchorDistance = null;
-            // Stores the index of the closest anchor
-            var closestAnchorIdx = null;
-            // Keeps a reference to all anchors
-            var anchors = $(self.options.context).find('div[data-unique]');
-            var anchorText;
+            // The zero timeout ensures the following code is run after the scroll events
+            setTimeout(function () {
+              // Stores the distance to the closest anchor
+              var closestAnchorDistance = null;
+              // Stores the index of the closest anchor
+              var closestAnchorIdx = null;
+              // Keeps a reference to all anchors
+              var anchors = $(self.options.context).find('div[data-unique]');
+              var anchorText;
 
-            // Determines the index of the closest anchor
-            anchors.each(function(idx, el) {
-              const $el = $(el);
-              var distance = Math.abs(($el.next().length ? $el.next() : $el).offset().top - winScrollTop - self.options.highlightOffset);
-              if (closestAnchorDistance == null || distance < closestAnchorDistance) {
-                closestAnchorDistance = distance;
-                closestAnchorIdx = idx;
-              } else {
-                return false;
+              // Determines the index of the closest anchor
+              anchors.each(function (idx, el) {
+                const $el = $(el);
+                var distance = Math.abs(
+                  ($el.next().length ? $el.next() : $el).offset().top -
+                    winScrollTop -
+                    self.options.highlightOffset,
+                );
+                if (
+                  closestAnchorDistance == null ||
+                  distance < closestAnchorDistance
+                ) {
+                  closestAnchorDistance = distance;
+                  closestAnchorIdx = idx;
+                } else {
+                  return false;
+                }
+              });
+
+              anchorText = $(anchors[closestAnchorIdx]).attr('data-unique');
+
+              // Stores the list item HTML element that corresponds to the currently traversed anchor tag
+              elem = $('li[data-unique="' + anchorText + '"]');
+
+              // If the `highlightOnScroll` option is true and a next element is found
+              if (self.options.highlightOnScroll && elem.length) {
+                // Removes highlighting from all of the list item's
+                self.element
+                  .find('.' + self.focusClass)
+                  .removeClass(self.focusClass);
+
+                // Highlights the corresponding list item
+                elem.addClass(self.focusClass);
               }
-            });
 
-            anchorText = $(anchors[closestAnchorIdx]).attr('data-unique');
-
-            // Stores the list item HTML element that corresponds to the currently traversed anchor tag
-            elem = $('li[data-unique="' + anchorText + '"]');
-
-            // If the `highlightOnScroll` option is true and a next element is found
-            if (self.options.highlightOnScroll && elem.length) {
-              // Removes highlighting from all of the list item's
-              self.element.find('.' + self.focusClass).removeClass(self.focusClass);
-
-              // Highlights the corresponding list item
-              elem.addClass(self.focusClass);
-            }
-
-            if (self.options.scrollHistory) {
-              if (window.location.hash !== '#' + anchorText) {
-                window.history.replaceState(null, '', '#' + anchorText);
+              if (self.options.scrollHistory) {
+                if (window.location.hash !== '#' + anchorText) {
+                  window.history.replaceState(null, '', '#' + anchorText);
+                }
               }
-            }
 
-            // If the `showAndHideOnScroll` option is true
-            if (self.options.showAndHideOnScroll && self.options.showAndHide) {
-              self._triggerShow(elem, true);
-            }
-          }, 0);
-        });
+              // If the `showAndHideOnScroll` option is true
+              if (
+                self.options.showAndHideOnScroll &&
+                self.options.showAndHide
+              ) {
+                self._triggerShow(elem, true);
+              }
+            }, 0);
+          });
       });
     }
   },
@@ -534,7 +614,6 @@ $.widget('toc.tocify', {
 
   // These options will be used as defaults
   options: {
-
     // **context**: Accepts String: Any jQuery selector
     // The container element that holds all of the elements used to generate the table of contents
     context: 'body',
@@ -650,12 +729,18 @@ $.widget('toc.tocify', {
 
     // If the sub-header is not already visible
     if (!elem.is(':visible')) {
-
-      if (!elem.find(subheaderClass).length && !elem.parent().is(headerClass) && !elem.parent().is(':visible')) {
+      if (
+        !elem.find(subheaderClass).length &&
+        !elem.parent().is(headerClass) &&
+        !elem.parent().is(':visible')
+      ) {
         // If the current element does not have any nested subheaders, is not a header, and its parent is not visible
         // Sets the current element to all of the subheaders within the current header
         elem = elem.parents(subheaderClass).add(elem);
-      } else if (!elem.children(subheaderClass).length && !elem.parent().is(headerClass)) {
+      } else if (
+        !elem.children(subheaderClass).length &&
+        !elem.parent().is(headerClass)
+      ) {
         // If the current element does not have any nested subheaders and is not a header
         // Sets the current element to the closest subheader
         elem = elem.closest(subheaderClass);
@@ -684,7 +769,6 @@ $.widget('toc.tocify', {
           elem.show();
           break;
       }
-
     }
 
     if (elem.parent().is(headerClass)) {
@@ -694,7 +778,11 @@ $.widget('toc.tocify', {
     } else {
       // If the current subheader parent element is not a header
       // Hides all non-active sub-headers
-      self.hide($(subheaderClass).not(elem.closest(headerClass).find(subheaderClass).not(elem.siblings())));
+      self.hide(
+        $(subheaderClass).not(
+          elem.closest(headerClass).find(subheaderClass).not(elem.siblings()),
+        ),
+      );
     }
 
     // Maintains chainablity

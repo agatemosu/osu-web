@@ -12,7 +12,9 @@ interface Params {
 
 type Callback = (slider: Slider) => void;
 
-const getX = (e: JQuery.MouseMoveEvent | JQuery.TouchMoveEvent | JQuery.TouchStartEvent) => e.clientX ?? e.touches[0].clientX;
+const getX = (
+  e: JQuery.MouseMoveEvent | JQuery.TouchMoveEvent | JQuery.TouchStartEvent,
+) => e.clientX ?? e.touches[0].clientX;
 
 let current: Slider | null = null;
 
@@ -88,7 +90,9 @@ export default class Slider {
     this.bar.style.setProperty('--bar', this.percentage.toString());
   };
 
-  private readonly onMove = (e: JQuery.MouseMoveEvent | JQuery.TouchMoveEvent) => {
+  private readonly onMove = (
+    e: JQuery.MouseMoveEvent | JQuery.TouchMoveEvent,
+  ) => {
     const x = getX(e);
 
     requestAnimationFrame(() => {

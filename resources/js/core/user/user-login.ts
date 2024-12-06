@@ -26,10 +26,10 @@ interface LoginSuccessJson {
   user: UserJson;
 }
 
-function isCaptchaTriggeredResponse(arg: unknown): arg is CaptchaTriggeredResponse {
-  return typeof arg === 'object'
-    && arg != null
-    && 'captcha_triggered' in arg;
+function isCaptchaTriggeredResponse(
+  arg: unknown,
+): arg is CaptchaTriggeredResponse {
+  return typeof arg === 'object' && arg != null && 'captcha_triggered' in arg;
 }
 
 export default class UserLogin {
@@ -44,7 +44,11 @@ export default class UserLogin {
       .on('input', '.js-login-form-input', this.clearError)
       .on('click', '.js-user-link', this.showOnClick)
       .on('click', '.js-login-required--click', this.showToContinue)
-      .on('ajax:before', '.js-login-required--click', () => core.currentUser != null)
+      .on(
+        'ajax:before',
+        '.js-login-required--click',
+        () => core.currentUser != null,
+      )
       .on('ajax:error', this.onError)
       .on('turbo:load', this.showOnLoad);
     $.subscribe('nav:popup:hidden', this.reset);
@@ -88,7 +92,10 @@ export default class UserLogin {
     $('.js-login-form--error').text('');
   };
 
-  private readonly loginError = (e: JQuery.TriggeredEvent, xhr: JQuery.jqXHR<unknown>) => {
+  private readonly loginError = (
+    e: JQuery.TriggeredEvent,
+    xhr: JQuery.jqXHR<unknown>,
+  ) => {
     e.preventDefault();
     e.stopPropagation();
     $('.js-login-form--error').text(xhrErrorMessage(xhr));
@@ -107,7 +114,12 @@ export default class UserLogin {
     }
   };
 
-  private readonly loginSuccess = (event: unknown, data: LoginSuccessJson, status: string, xhr: JQuery.jqXHR<unknown>) => {
+  private readonly loginSuccess = (
+    event: unknown,
+    data: LoginSuccessJson,
+    status: string,
+    xhr: JQuery.jqXHR<unknown>,
+  ) => {
     // check if it's a js callback response and should be run instead
     if (xhr.getResponseHeader('content-type') === 'application/javascript') {
       return;

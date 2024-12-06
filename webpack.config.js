@@ -22,7 +22,6 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const generateLocalizations = require('./resources/js/cli/generate-localizations');
 const modNamesGenerator = require('./resources/js/cli/mod-names-generator');
 
-
 // #region env
 const env = process.env.NODE_ENV || 'development';
 dotenv.config({ path: `.env.${env}` });
@@ -30,9 +29,11 @@ dotenv.config();
 
 const inProduction = env === 'production' || process.argv.includes('-p');
 
-const writeManifest = !(process.env.SKIP_MANIFEST === '1'
-                        || process.env.SKIP_MANIFEST === 'true'
-                        || process.env.SKIP_MANIFEST);
+const writeManifest = !(
+  process.env.SKIP_MANIFEST === '1' ||
+  process.env.SKIP_MANIFEST === 'true' ||
+  process.env.SKIP_MANIFEST
+);
 // #endregion
 
 // #region helpers
@@ -56,21 +57,23 @@ const entrypointDirs = [
 ];
 const supportedExts = new Set(['.coffee', '.less', '.ts', '.tsx']);
 for (const entrypointsPath of entrypointDirs) {
-  fs.readdirSync(resolvePath(entrypointsPath), { withFileTypes: true }).forEach((item) => {
-    if (item.isFile()) {
-      const filename = item.name;
-      const ext = path.extname(filename);
+  fs.readdirSync(resolvePath(entrypointsPath), { withFileTypes: true }).forEach(
+    (item) => {
+      if (item.isFile()) {
+        const filename = item.name;
+        const ext = path.extname(filename);
 
-      if (supportedExts.has(ext)) {
-        const entryName = path.basename(filename, ext);
+        if (supportedExts.has(ext)) {
+          const entryName = path.basename(filename, ext);
 
-        if (entry[entryName] == null) {
-          entry[entryName] = [];
+          if (entry[entryName] == null) {
+            entry[entryName] = [];
+          }
+          entry[entryName].push(resolvePath(entrypointsPath, filename));
         }
-        entry[entryName].push(resolvePath(entrypointsPath, filename));
       }
-    }
-  });
+    },
+  );
 }
 
 const output = {
@@ -94,7 +97,9 @@ const plugins = [
     ReactDOM: 'react-dom',
   }),
   new webpack.DefinePlugin({
-    'process.env.DOCS_URL': JSON.stringify(process.env.DOCS_URL || 'https://docs.ppy.sh'),
+    'process.env.DOCS_URL': JSON.stringify(
+      process.env.DOCS_URL || 'https://docs.ppy.sh',
+    ),
   }),
   new webpack.IgnorePlugin({
     // don't add moment locales to bundle.
@@ -106,25 +111,37 @@ const plugins = [
   }),
   new CopyPlugin({
     patterns: [
-      { from: 'resources/builds/locales', to: outputFilename('js/locales/[name]') },
-      { from: 'node_modules/moment/locale', to: outputFilename('js/moment-locales/[name]') },
-      { from: 'node_modules/@discordapp/twemoji/dist/svg/1f1??-1f1??.svg', to: 'images/flags/[name][ext]' },
+      {
+        from: 'resources/builds/locales',
+        to: outputFilename('js/locales/[name]'),
+      },
+      {
+        from: 'node_modules/moment/locale',
+        to: outputFilename('js/moment-locales/[name]'),
+      },
+      {
+        from: 'node_modules/@discordapp/twemoji/dist/svg/1f1??-1f1??.svg',
+        to: 'images/flags/[name][ext]',
+      },
     ],
   }),
 ];
 
 if (writeManifest) {
-  plugins.push(new WebpackManifestPlugin({
-    filter: (file) => file.path.match(/^\/assets\/(?:css|js)\/.*\.(?:css|js)$/) !== null,
-    map: (file) => {
-      const baseDir = file.path.match(/^\/assets\/(css|js)\//)?.[1];
-      if (baseDir !== null && !file.name.startsWith(`${baseDir}/`)) {
-        file.name = `${baseDir}/${file.name}`;
-      }
+  plugins.push(
+    new WebpackManifestPlugin({
+      filter: (file) =>
+        file.path.match(/^\/assets\/(?:css|js)\/.*\.(?:css|js)$/) !== null,
+      map: (file) => {
+        const baseDir = file.path.match(/^\/assets\/(css|js)\//)?.[1];
+        if (baseDir !== null && !file.name.startsWith(`${baseDir}/`)) {
+          file.name = `${baseDir}/${file.name}`;
+        }
 
-      return file;
-    },
-  }));
+        return file;
+      },
+    }),
+  );
 }
 
 // TODO: should have a different flag for this
@@ -235,10 +252,10 @@ const cacheGroups = {
     priority: -10,
     reuseExistingChunk: true,
     // Doing it this way doesn't split the css imported via app.less from the main css bundle.
-    test: (module) => module.resource && (
-      partialPathCheck(module.resource, ['node_modules'])
-      && docsOnlyLibraries.every((p) => !partialPathCheck(module.resource, p))
-    ),
+    test: (module) =>
+      module.resource &&
+      partialPathCheck(module.resource, ['node_modules']) &&
+      docsOnlyLibraries.every((p) => !partialPathCheck(module.resource, p)),
   },
 };
 
@@ -273,11 +290,12 @@ const watches = [
     type: 'file',
   },
   {
-    callback: () => spawnSync(
-      'php',
-      ['artisan', 'ziggy:generate', 'resources/builds/ziggy.js', '--types'],
-      { stdio: 'inherit' },
-    ),
+    callback: () =>
+      spawnSync(
+        'php',
+        ['artisan', 'ziggy:generate', 'resources/builds/ziggy.js', '--types'],
+        { stdio: 'inherit' },
+      ),
     path: resolvePath('routes/web.php'),
     type: 'file',
   },

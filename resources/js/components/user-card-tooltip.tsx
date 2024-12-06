@@ -9,7 +9,12 @@ import core from 'osu-core-singleton';
 import * as React from 'react';
 import { unmountComponentAtNode } from 'react-dom';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { activeKeyDidChange as contextActiveKeyDidChange, ContainerContext, KeyContext, State as ActiveKeyState } from 'stateful-activation-context';
+import {
+  activeKeyDidChange as contextActiveKeyDidChange,
+  ContainerContext,
+  KeyContext,
+  State as ActiveKeyState,
+} from 'stateful-activation-context';
 import { TooltipContext } from 'tooltip-context';
 import { presence } from 'utils/string';
 import { apiLookupUsers } from 'utils/user';
@@ -70,7 +75,9 @@ function blankCard() {
     container.innerHTML = renderToStaticMarkup(<UserCard />);
     const card = container.children[0];
     if (!(card instanceof HTMLElement)) {
-      throw new Error('expected render of UserCard to be HTMLElement but got something else');
+      throw new Error(
+        'expected render of UserCard to be HTMLElement but got something else',
+      );
     }
     blankCardCache = card;
   }
@@ -123,7 +130,9 @@ function onMouseLeave() {
   inCard = false;
 }
 
-function onMouseOver(event: JQuery.TriggeredEvent<Document, unknown, HTMLElement, HTMLElement>) {
+function onMouseOver(
+  event: JQuery.TriggeredEvent<Document, unknown, HTMLElement, HTMLElement>,
+) {
   if (tooltipWithActiveMenu != null) return;
   if (core.windowSize.isMobile) return;
 
@@ -131,7 +140,10 @@ function onMouseOver(event: JQuery.TriggeredEvent<Document, unknown, HTMLElement
   const userId = presence(el.dataset.userId);
   if (userId == null) return;
   // don't show cards for blocked users
-  if (_.find(core.currentUser?.blocks ?? [], { target_id: parseInt(userId, 10) })) return;
+  if (
+    _.find(core.currentUser?.blocks ?? [], { target_id: parseInt(userId, 10) })
+  )
+    return;
 
   if (el._tooltip == null) {
     return createTooltip(el);
@@ -143,7 +155,9 @@ function onMouseOver(event: JQuery.TriggeredEvent<Document, unknown, HTMLElement
     if (qtip != null) {
       const tooltipElement = qtip.tooltip;
       if (tooltipElement != null) {
-        const container = tooltipElement.find('.js-react--user-card-tooltip')[0];
+        const container = tooltipElement.find(
+          '.js-react--user-card-tooltip',
+        )[0];
         if (container != null) {
           unmountComponentAtNode(container);
         }
@@ -174,7 +188,9 @@ function onRemoveUserCard(_event: unknown, element: HTMLElement | null) {
 
   const qtip = $(tooltipElement).qtip('api');
   if (qtip != null) {
-    const container = tooltipElement.querySelector('.js-react--user-card-tooltip');
+    const container = tooltipElement.querySelector(
+      '.js-react--user-card-tooltip',
+    );
     if (container != null) {
       unmountComponentAtNode(container);
     }
@@ -214,19 +230,23 @@ export function startListening() {
  */
 export class UserCardTooltip extends React.PureComponent<Props, State> {
   state: Readonly<State> = {};
-  private readonly contextActiveKeyDidChange = contextActiveKeyDidChange.bind(this);
+  private readonly contextActiveKeyDidChange =
+    contextActiveKeyDidChange.bind(this);
 
   private get reportable() {
     const dataString = this.props.container.dataset.reportable;
 
     return dataString == null
       ? undefined
-      : JSON.parse(dataString) as Reportable;
+      : (JSON.parse(dataString) as Reportable);
   }
 
   componentDidMount() {
     const currentUser = core.currentUser;
-    if (currentUser != null && this.props.lookup === currentUser.id.toString()) {
+    if (
+      currentUser != null &&
+      this.props.lookup === currentUser.id.toString()
+    ) {
       this.setState({ user: currentUser });
     } else {
       apiLookupUsers([this.props.lookup]).done((response) => {
@@ -240,7 +260,9 @@ export class UserCardTooltip extends React.PureComponent<Props, State> {
 
     return (
       <TooltipContext.Provider value={this.props.container}>
-        <ContainerContext.Provider value={{ activeKeyDidChange: this.activeKeyDidChange }}>
+        <ContainerContext.Provider
+          value={{ activeKeyDidChange: this.activeKeyDidChange }}
+        >
           <KeyContext.Provider value={this.props.lookup}>
             <UserCard
               activated={activated}

@@ -13,10 +13,7 @@ interface Props {
 
 export default function MenuImage({ image, index }: Props) {
   return (
-    <div
-      className={bn}
-      style={{ '--index': index } as React.CSSProperties}
-    >
+    <div className={bn} style={{ '--index': index } as React.CSSProperties}>
       <a className='u-contents' href={image.url}>
         <img className={`${bn}__image`} src={image.image_url} />
       </a>

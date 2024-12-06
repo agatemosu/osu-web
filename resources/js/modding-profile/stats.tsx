@@ -13,7 +13,7 @@ const entries = [
   'pending_beatmapset_count',
   'graveyard_beatmapset_count',
 ] as const;
-type UserBeatmapsetCount = typeof entries[number];
+type UserBeatmapsetCount = (typeof entries)[number];
 
 interface Props {
   // TODO: add actual typing for modding profile user json
@@ -32,7 +32,9 @@ export default class Stats extends React.PureComponent<Props> {
   private readonly renderEntry = (key: UserBeatmapsetCount) => (
     <dl key={key} className='profile-stats__entry'>
       <dt className='profile-stats__key'>{trans(`users.show.stats.${key}`)}</dt>
-      <dd className='profile-stats__value'>{formatNumber(this.props.user[key])}</dd>
+      <dd className='profile-stats__value'>
+        {formatNumber(this.props.user[key])}
+      </dd>
     </dl>
   );
 }

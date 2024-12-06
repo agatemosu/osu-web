@@ -9,7 +9,6 @@ export interface Props {
   scrolling: boolean;
 }
 
-
 export interface Snapshot {
   bounds: DOMRect;
   scrollY: number;

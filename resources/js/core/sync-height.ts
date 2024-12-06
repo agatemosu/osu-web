@@ -3,8 +3,12 @@
 
 export default class SyncHeight {
   private readonly observer;
-  private readonly references = document.getElementsByClassName('js-sync-height--reference');
-  private readonly targets = document.getElementsByClassName('js-sync-height--target');
+  private readonly references = document.getElementsByClassName(
+    'js-sync-height--reference',
+  );
+  private readonly targets = document.getElementsByClassName(
+    'js-sync-height--target',
+  );
 
   constructor() {
     $(document).on('turbo:load', this.sync);

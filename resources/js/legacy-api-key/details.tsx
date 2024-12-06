@@ -39,17 +39,13 @@ export default class Details extends React.Component<Props> {
             <div className='legacy-api-details__label'>
               {trans('model_validation.legacy_api_key.attributes.app_name')}
             </div>
-            <div className='legacy-api-details__value'>
-              {key.app_name}
-            </div>
+            <div className='legacy-api-details__value'>{key.app_name}</div>
           </div>
           <div className='legacy-api-details__entry'>
             <div className='legacy-api-details__label'>
               {trans('model_validation.legacy_api_key.attributes.app_url')}
             </div>
-            <div className='legacy-api-details__value'>
-              {key.app_url}
-            </div>
+            <div className='legacy-api-details__value'>{key.app_url}</div>
           </div>
           <div className='legacy-api-details__entry'>
             <div className='legacy-api-details__label'>
@@ -62,8 +58,10 @@ export default class Details extends React.Component<Props> {
           <div className='legacy-api-details__entry'>
             <div className='legacy-api-details__value'>
               <div>
-                {trans('legacy_api_key.warning.line1')}<br />
-                {trans('legacy_api_key.warning.line2')}<br />
+                {trans('legacy_api_key.warning.line1')}
+                <br />
+                {trans('legacy_api_key.warning.line2')}
+                <br />
                 {trans('legacy_api_key.warning.line3')}
               </div>
             </div>
@@ -71,11 +69,11 @@ export default class Details extends React.Component<Props> {
           <div className='legacy-api-details__entry'>
             <div className='legacy-api-details__value'>
               <StringWithComponent
-                mappings={{ github: (
-                  <a href={docsUrl}>
-                    {trans('legacy_api_key.docs.github')}
-                  </a>
-                ) }}
+                mappings={{
+                  github: (
+                    <a href={docsUrl}>{trans('legacy_api_key.docs.github')}</a>
+                  ),
+                }}
                 pattern={trans('legacy_api_key.docs._')}
               />
             </div>
@@ -88,7 +86,9 @@ export default class Details extends React.Component<Props> {
             props={{
               onClick: this.onClickToggleKeyVisibility,
             }}
-            text={trans(`legacy_api_key.view.${this.keyVisible ? 'hide' : 'show'}`)}
+            text={trans(
+              `legacy_api_key.view.${this.keyVisible ? 'hide' : 'show'}`,
+            )}
           />
           <BigButton
             icon='fas fa-trash'

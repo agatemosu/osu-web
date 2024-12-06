@@ -56,7 +56,9 @@ export default class FollowUserMappingButton extends React.Component<Props> {
   }
 
   render() {
-    const canToggle = !(core.currentUser == null || core.currentUser.id === this.props.userId);
+    const canToggle = !(
+      core.currentUser == null || core.currentUser.id === this.props.userId
+    );
 
     if (!canToggle && !this.props.alwaysVisible) {
       return null;
@@ -66,11 +68,9 @@ export default class FollowUserMappingButton extends React.Component<Props> {
       ? trans(`follows.mapping.${this.following ? 'to_0' : 'to_1'}`)
       : trans('follows.mapping.followers');
 
-    const blockClass = classWithModifiers(
-      bn,
-      this.props.modifiers,
-      { friend: this.following },
-    );
+    const blockClass = classWithModifiers(bn, this.props.modifiers, {
+      friend: this.following,
+    });
 
     const disabled = this.loading || !canToggle;
 
@@ -112,15 +112,18 @@ export default class FollowUserMappingButton extends React.Component<Props> {
     this.xhr = $.ajax(params)
       .done(this.updateData)
       .fail(onErrorWithClick(this.buttonRef.current))
-      .always(action(() => this.xhr = undefined));
+      .always(action(() => (this.xhr = undefined)));
   };
 
   private renderCounter() {
-    if (this.props.showFollowerCounter == null || this.props.followers == null) {
+    if (
+      this.props.showFollowerCounter == null ||
+      this.props.followers == null
+    ) {
       return;
     }
 
-    return(
+    return (
       <span className={`${bn}__counter`}>
         {formatNumber(this.followerCount)}
       </span>
@@ -128,19 +131,16 @@ export default class FollowUserMappingButton extends React.Component<Props> {
   }
 
   private renderIcon() {
-    const icon = this.loading
-      ? <Spinner />
-      : <i className='fas fa-bell' />;
+    const icon = this.loading ? <Spinner /> : <i className='fas fa-bell' />;
 
-    return(
-      <span className={`${bn}__icon-container`}>
-        {icon}
-      </span>
-    );
+    return <span className={`${bn}__icon-container`}>{icon}</span>;
   }
 
   @action
   private readonly updateData = () => {
-    core.currentUserModel.updateFollowUserMapping(!this.following, this.props.userId);
+    core.currentUserModel.updateFollowUserMapping(
+      !this.following,
+      this.props.userId,
+    );
   };
 }

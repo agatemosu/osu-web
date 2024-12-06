@@ -32,9 +32,17 @@ export default class BackToTop extends React.Component<Props> {
         className='floating-toolbar-button'
         data-tooltip-float='fixed'
         onClick={this.onClick}
-        title={trans(this.lastScrollY == null ? 'common.buttons.back_to_top' : 'common.buttons.back_to_previous')}
+        title={trans(
+          this.lastScrollY == null
+            ? 'common.buttons.back_to_top'
+            : 'common.buttons.back_to_previous',
+        )}
       >
-        <span className={this.lastScrollY == null ? 'fas fa-angle-up' : 'fas fa-angle-down'} />
+        <span
+          className={
+            this.lastScrollY == null ? 'fas fa-angle-up' : 'fas fa-angle-down'
+          }
+        />
       </button>
     );
   }
@@ -64,7 +72,10 @@ export default class BackToTop extends React.Component<Props> {
   @action
   private readonly onClick = () => {
     if (this.lastScrollY == null) {
-      const scrollY = this.props.anchor?.current == null ? 0 : ($(this.props.anchor.current).offset()?.top ?? 0);
+      const scrollY =
+        this.props.anchor?.current == null
+          ? 0
+          : ($(this.props.anchor.current).offset()?.top ?? 0);
       if (window.pageYOffset > scrollY) {
         this.lastScrollY = window.pageYOffset;
 

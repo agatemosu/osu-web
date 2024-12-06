@@ -5,7 +5,13 @@ import FriendUpdated from 'actions/friend-updated';
 import { dispatch } from 'app-dispatcher';
 import UserRelationJson from 'interfaces/user-relation-json';
 import { route } from 'laroute';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
@@ -50,7 +56,10 @@ export default class FriendButton extends React.Component<Props> {
 
   @computed
   private get isFriendLimit() {
-    return core.currentUser == null || core.currentUser.friends.length >= core.currentUser.max_friends;
+    return (
+      core.currentUser == null ||
+      core.currentUser.friends.length >= core.currentUser.max_friends
+    );
   }
 
   @computed
@@ -58,10 +67,12 @@ export default class FriendButton extends React.Component<Props> {
     // - not a guest
     // - not viewing own card
     // - not blocked
-    return core.currentUser != null &&
+    return (
+      core.currentUser != null &&
       Number.isFinite(this.props.userId) &&
       this.props.userId !== core.currentUser.id &&
-      !core.currentUser.blocks.some((b) => b.target_id === this.props.userId);
+      !core.currentUser.blocks.some((b) => b.target_id === this.props.userId)
+    );
   }
 
   private get loading() {
@@ -114,19 +125,32 @@ export default class FriendButton extends React.Component<Props> {
       return null;
     }
 
-    const extraModifier = this.friend == null || this.loading
-      ? null
-      : (this.friend.mutual ? 'mutual' : 'friend');
+    const extraModifier =
+      this.friend == null || this.loading
+        ? null
+        : this.friend.mutual
+          ? 'mutual'
+          : 'friend';
 
-    const blockClass = classWithModifiers(bn, this.props.modifiers, extraModifier);
-    const disabled = !this.isVisible || this.loading || this.isFriendLimit && this.friend == null;
+    const blockClass = classWithModifiers(
+      bn,
+      this.props.modifiers,
+      extraModifier,
+    );
+    const disabled =
+      !this.isVisible ||
+      this.loading ||
+      (this.isFriendLimit && this.friend == null);
 
     return (
       <div title={this.title}>
-        <button className={blockClass} disabled={disabled} onClick={this.clicked} type='button'>
-          <span className={`${bn}__icon-container`}>
-            {this.renderIcon()}
-          </span>
+        <button
+          className={blockClass}
+          disabled={disabled}
+          onClick={this.clicked}
+          type='button'
+        >
+          <span className={`${bn}__icon-container`}>{this.renderIcon()}</span>
           {this.renderCounter()}
         </button>
       </div>
@@ -137,22 +161,29 @@ export default class FriendButton extends React.Component<Props> {
   private readonly clicked = () => {
     if (this.xhr != null) return;
 
-    this.xhr = this.friend == null
-      // friending
-      ? $.ajax(route('friends.store', { target: this.props.userId }), { type: 'POST' })
-      // un-friending
-      : $.ajax(route('friends.destroy', { friend: this.props.userId }), { type: 'DELETE' });
+    this.xhr =
+      this.friend == null
+        ? // friending
+          $.ajax(route('friends.store', { target: this.props.userId }), {
+            type: 'POST',
+          })
+        : // un-friending
+          $.ajax(route('friends.destroy', { friend: this.props.userId }), {
+            type: 'DELETE',
+          });
 
     this.xhr
       .done(this.updateFriends)
       .fail(onErrorWithCallback(this.clicked))
-      .always(action(() => this.xhr = undefined));
+      .always(action(() => (this.xhr = undefined)));
   };
 
   private renderCounter() {
     if (!this.showFollowerCounter) return;
 
-    return <span className={`${bn}__counter`}>{formatNumber(this.followers)}</span>;
+    return (
+      <span className={`${bn}__counter`}>{formatNumber(this.followers)}</span>
+    );
   }
 
   private renderIcon() {
@@ -183,12 +214,20 @@ export default class FriendButton extends React.Component<Props> {
       );
     }
 
-    return <span className={this.isFriendLimit ? 'fas fa-user' : 'fas fa-user-plus'} />;
+    return (
+      <span
+        className={this.isFriendLimit ? 'fas fa-user' : 'fas fa-user-plus'}
+      />
+    );
   }
 
   @action
   private readonly updateFriends = (data: AddFriendResponse | null) => {
-    core.currentUserModel.updateUserRelation(data?.user_relation, 'friends', this.props.userId);
+    core.currentUserModel.updateUserRelation(
+      data?.user_relation,
+      'friends',
+      this.props.userId,
+    );
     dispatch(new FriendUpdated(this.props.userId));
   };
 }

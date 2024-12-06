@@ -13,7 +13,9 @@ export function activeKeyDidChange(this: Component, key: any) {
 }
 
 export const ContainerContext = createContext({
-  activeKeyDidChange: (_key: any) => { /* do nothing */},
+  activeKeyDidChange: (_key: any) => {
+    /* do nothing */
+  },
 });
 
 export const KeyContext = createContext<any>(null);

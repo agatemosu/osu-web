@@ -23,9 +23,7 @@ export default class StickyHeader {
   get headerHeight() {
     const styles = window._styles.header;
 
-    return core.windowSize.isMobile
-      ? styles.heightMobile
-      : styles.heightSticky;
+    return core.windowSize.isMobile ? styles.heightMobile : styles.heightSticky;
   }
 
   private get header() {
@@ -44,7 +42,8 @@ export default class StickyHeader {
     // just assume scroll will always try to go to a position that causes sticky to show.
     // TODO: don't assume.
     const pinnedSticky = this.pinnedSticky;
-    const stickyHeight = pinnedSticky == null ? 0 : pinnedSticky.getBoundingClientRect().height;
+    const stickyHeight =
+      pinnedSticky == null ? 0 : pinnedSticky.getBoundingClientRect().height;
 
     return this.headerHeight + stickyHeight;
   }
@@ -56,7 +55,8 @@ export default class StickyHeader {
     if (marker == null || pinnedSticky == null) return;
 
     const markerTop = marker.getBoundingClientRect().top;
-    const headerBottom = this.headerHeight + pinnedSticky.getBoundingClientRect().height;
+    const headerBottom =
+      this.headerHeight + pinnedSticky.getBoundingClientRect().height;
 
     return markerTop < headerBottom;
   }

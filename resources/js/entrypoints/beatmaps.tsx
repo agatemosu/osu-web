@@ -12,7 +12,8 @@ core.reactTurbolinks.register('beatmaps', (container: HTMLElement) => {
   if (beatmapsets != null) {
     core.beatmapsetSearchController.initialize(beatmapsets);
   }
-  core.beatmapsetSearchController.advancedSearch = container.dataset.advancedSearch === '1';
+  core.beatmapsetSearchController.advancedSearch =
+    container.dataset.advancedSearch === '1';
 
   // includes an initial search to load the pre-initialized data properly.
   core.beatmapsetSearchController.restoreTurbolinks();

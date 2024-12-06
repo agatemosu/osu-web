@@ -7,8 +7,12 @@ import { PluggableList, Processor } from 'unified';
 
 type SupportedExtension = 'fromMarkdownExtensions' | 'micromarkExtensions';
 
-export default function add(processor: Processor, key: SupportedExtension, extensions: (MicromarkExtension | MdastExtension)[]) {
-  const data = processor.data(key) as (PluggableList | undefined) ?? [];
+export default function add(
+  processor: Processor,
+  key: SupportedExtension,
+  extensions: (MicromarkExtension | MdastExtension)[],
+) {
+  const data = (processor.data(key) as PluggableList | undefined) ?? [];
 
   processor.data(key, [...data, ...extensions]);
 }

@@ -7,7 +7,12 @@ import { route } from 'laroute';
 import { debounce } from 'lodash';
 import { action, computed, makeObservable, observable } from 'mobx';
 
-export type Section = 'user' | 'user_others' | 'beatmapset' | 'beatmapset_others' | 'others';
+export type Section =
+  | 'user'
+  | 'user_others'
+  | 'beatmapset'
+  | 'beatmapset_others'
+  | 'others';
 const SECTIONS: Section[] = [
   'user',
   'user_others',
@@ -64,14 +69,20 @@ export default class Worker {
       } else {
         const sectionIdx = SECTIONS.length - 1;
         const section: Section = SECTIONS[sectionIdx];
-        newSelected = { index: this.sectionLength(section) - 1, section: sectionIdx };
+        newSelected = {
+          index: this.sectionLength(section) - 1,
+          section: sectionIdx,
+        };
       }
     } else {
       newSelected = { ...this.selected };
       newSelected.index += direction;
     }
 
-    if (newSelected.index < 0 || newSelected.index >= this.sectionLength(SECTIONS[newSelected.section])) {
+    if (
+      newSelected.index < 0 ||
+      newSelected.index >= this.sectionLength(SECTIONS[newSelected.section])
+    ) {
       let newSection = newSelected.section;
       do {
         newSection = (newSection + direction) % SECTIONS.length;
@@ -119,7 +130,9 @@ export default class Worker {
       case 'beatmapset_others':
         return route('search', { mode: 'beatmapset', query: this.query });
       case 'others': {
-        const others = otherModes.filter((mode) => searchResult[mode].total > 0);
+        const others = otherModes.filter(
+          (mode) => searchResult[mode].total > 0,
+        );
         const selectedMode = others[this.selected.index];
 
         return route('search', { mode: selectedMode, query: this.query });
@@ -138,12 +151,17 @@ export default class Worker {
     this.searching = true;
 
     this.xhr = $.get(route('quick-search'), { query })
-      .done(action((searchResult: SearchResult) => {
-        this.searchResult = searchResult;
-        this.selected = null;
-      })).always(action(() => {
-        this.searching = false;
-      }));
+      .done(
+        action((searchResult: SearchResult) => {
+          this.searchResult = searchResult;
+          this.selected = null;
+        }),
+      )
+      .always(
+        action(() => {
+          this.searching = false;
+        }),
+      );
   }
 
   @action selectNone() {

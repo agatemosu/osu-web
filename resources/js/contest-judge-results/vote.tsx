@@ -19,11 +19,17 @@ export default function Vote(props: Props) {
     <div>
       {props.vote.user != null && (
         <div className='contest-judge-results-vote__user'>
-          <UserLink className='contest-judge-results-vote__avatar' user={props.vote.user}>
+          <UserLink
+            className='contest-judge-results-vote__avatar'
+            user={props.vote.user}
+          >
             <UserAvatar modifiers='full-circle' user={props.vote.user} />
           </UserLink>
 
-          <UserLink className='contest-judge-results-vote__username' user={props.vote.user} />
+          <UserLink
+            className='contest-judge-results-vote__username'
+            user={props.vote.user}
+          />
         </div>
       )}
 
@@ -37,12 +43,17 @@ export default function Vote(props: Props) {
 
       <div className='contest-judge-results-scores'>
         {props.vote.scores.map((score) => {
-          const category = props.contest.scoring_categories.find((x) => x.id === score.contest_scoring_category_id);
+          const category = props.contest.scoring_categories.find(
+            (x) => x.id === score.contest_scoring_category_id,
+          );
 
           return (
             <div key={score.id} className='contest-judge-results-scores__row'>
               <div className='contest-judge-results-scores__col'>
-                <div className='contest-judge-entry__description-icon' title={category?.description}>
+                <div
+                  className='contest-judge-entry__description-icon'
+                  title={category?.description}
+                >
                   <i className='fas fa-question-circle' />
                 </div>
 
@@ -56,7 +67,11 @@ export default function Vote(props: Props) {
         })}
       </div>
 
-      {props.vote.comment != null && <div className='contest-judge-results-vote__comment'>{props.vote.comment}</div>}
+      {props.vote.comment != null && (
+        <div className='contest-judge-results-vote__comment'>
+          {props.vote.comment}
+        </div>
+      )}
     </div>
   );
 }

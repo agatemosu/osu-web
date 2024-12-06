@@ -3,9 +3,7 @@
 
 import { dispatch, dispatcher } from 'app-dispatcher';
 import { NotificationBundleJson } from 'interfaces/notification-json';
-import {
-  NotificationEventRead,
-} from 'notifications/notification-events';
+import { NotificationEventRead } from 'notifications/notification-events';
 import { toJson } from 'notifications/notification-identity';
 import NotificationStore from 'stores/notification-store';
 import { makeNotificationJson, makeStackJson } from './helpers';
@@ -56,7 +54,9 @@ describe('Notification Event Read (NotificationType only)', () => {
     bundleWithNotification.notifications = notificationsJson;
     bundleWithNotification.unread_count = baseUnreadCount;
 
-    const bundleWithoutNotification = { ...bundleBase } as NotificationBundleJson;
+    const bundleWithoutNotification = {
+      ...bundleBase,
+    } as NotificationBundleJson;
     bundleWithoutNotification.unread_count = baseUnreadCount;
 
     let store!: NotificationStore;
@@ -69,7 +69,10 @@ describe('Notification Event Read (NotificationType only)', () => {
         store.stacks.updateWithBundle(bundleWithNotification);
         store.unreadStacks.updateWithBundle(bundleWithNotification);
 
-        const event = new NotificationEventRead([{ objectType: 'beatmapset' }], 4);
+        const event = new NotificationEventRead(
+          [{ objectType: 'beatmapset' }],
+          4,
+        );
         dispatch(event);
       });
 

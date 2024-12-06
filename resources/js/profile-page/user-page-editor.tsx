@@ -57,10 +57,14 @@ export default class UserPageEditor extends React.Component<Props> {
 
     showLoadingOverlay();
 
-    this.props.controller.apiSetUserPage(value ?? '')
-      .done(action(() => {
-        this.props.controller.state.editingUserPage = false;
-      })).fail(onErrorWithCallback(() => this.save({ value })))
+    this.props.controller
+      .apiSetUserPage(value ?? '')
+      .done(
+        action(() => {
+          this.props.controller.state.editingUserPage = false;
+        }),
+      )
+      .fail(onErrorWithCallback(() => this.save({ value })))
       .always(hideLoadingOverlay);
   };
 }

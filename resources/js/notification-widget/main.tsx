@@ -45,11 +45,16 @@ export default class Main extends React.Component<Props, State> {
     { excludes: this.props.excludes, isWidget: true },
     this.props.only ?? null,
   );
-  private readonly typeNames = typeNames.filter((name) => !this.props.excludes.includes(name));
+  private readonly typeNames = typeNames.filter(
+    (name) => !this.props.excludes.includes(name),
+  );
 
   @computed
   get links() {
-    return this.typeNames.map((type) => ({ title: trans(`notifications.filters.${type ?? '_'}`), type }));
+    return this.typeNames.map((type) => ({
+      title: trans(`notifications.filters.${type ?? '_'}`),
+      type,
+    }));
   }
 
   constructor(props: Props) {
@@ -67,7 +72,9 @@ export default class Main extends React.Component<Props, State> {
     const blockClass = `notification-popup u-fancy-scrollbar ${this.props.extraClasses ?? ''}`;
 
     return (
-      <NotificationContext.Provider value={{ excludes: this.props.excludes, isWidget: true }}>
+      <NotificationContext.Provider
+        value={{ excludes: this.props.excludes, isWidget: true }}
+      >
         <div className={blockClass}>
           <div className='notification-popup__scroll-container'>
             {this.renderFilters()}
@@ -87,8 +94,11 @@ export default class Main extends React.Component<Props, State> {
     );
   }
 
-  private readonly handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const type = ((event.currentTarget as HTMLButtonElement).dataset.type ?? null) as Name;
+  private readonly handleFilterClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    const type = ((event.currentTarget as HTMLButtonElement).dataset.type ??
+      null) as Name;
     this.controller.navigateTo(type);
   };
 
@@ -116,14 +126,17 @@ export default class Main extends React.Component<Props, State> {
         onClick={this.handleFilterClick}
         {...data}
       >
-        <span className='notification-popup__filter-count'>{this.controller.getTotal(type)}</span>
+        <span className='notification-popup__filter-count'>
+          {this.controller.getTotal(type)}
+        </span>
         <span>{link.title}</span>
       </button>
     );
   };
 
   private renderFilters() {
-    if (this.props.only != null || !core.notificationsWorker.hasData) return null;
+    if (this.props.only != null || !core.notificationsWorker.hasData)
+      return null;
 
     return (
       <div className='notification-popup__filters'>
@@ -133,7 +146,8 @@ export default class Main extends React.Component<Props, State> {
   }
 
   private renderHistoryLink() {
-    const linkName = this.props.only === 'channel' ? 'chat.index' : 'notifications.index';
+    const linkName =
+      this.props.only === 'channel' ? 'chat.index' : 'notifications.index';
 
     return (
       <a className='notification-popup__filter' href={route(linkName)}>
@@ -150,7 +164,9 @@ export default class Main extends React.Component<Props, State> {
       <NotificationReadButton
         isMarkingAsRead={this.controller.isMarkingCurrentTypeAsRead}
         onMarkAsRead={this.handleMarkAsRead}
-        text={trans('notifications.mark_read', { type: trans(`notifications.action_type.${type.name ?? '_'}`) })}
+        text={trans('notifications.mark_read', {
+          type: trans(`notifications.action_type.${type.name ?? '_'}`),
+        })}
       />
     );
   }
@@ -173,7 +189,9 @@ export default class Main extends React.Component<Props, State> {
       return;
     }
 
-    const nodes = this.controller.stacks.map((stack) => <Stack key={stack.id} stack={stack} />);
+    const nodes = this.controller.stacks.map((stack) => (
+      <Stack key={stack.id} stack={stack} />
+    ));
 
     if (nodes.length === 0) {
       let transKey = 'notifications.loading';

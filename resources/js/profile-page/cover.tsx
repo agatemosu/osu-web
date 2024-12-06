@@ -44,17 +44,24 @@ export default class Cover extends React.Component<Props> {
 
   render() {
     return (
-      <div className={classWithModifiers('profile-info', this.props.modifiers, { cover: this.showCover })}>
-        {this.showCover &&
-          <div className='profile-info__bg' style={{ backgroundImage: urlPresence(this.props.coverUrl) }}>
-            {this.props.isUpdatingCover &&
+      <div
+        className={classWithModifiers('profile-info', this.props.modifiers, {
+          cover: this.showCover,
+        })}
+      >
+        {this.showCover && (
+          <div
+            className='profile-info__bg'
+            style={{ backgroundImage: urlPresence(this.props.coverUrl) }}
+          >
+            {this.props.isUpdatingCover && (
               <div className='profile-info__spinner'>
                 <Spinner />
               </div>
-            }
+            )}
             {this.props.editor}
           </div>
-        }
+        )}
         <div className='profile-info__details'>
           {this.props.user.id === core.currentUser?.id ? (
             <a
@@ -70,9 +77,13 @@ export default class Cover extends React.Component<Props> {
 
           <div className='profile-info__info'>
             <h1 className='profile-info__name'>
-              <span className='u-ellipsis-pre-overflow'>{this.props.user.username}</span>
+              <span className='u-ellipsis-pre-overflow'>
+                {this.props.user.username}
+              </span>
 
-              <div className='profile-info__previous-usernames'>{this.renderPreviousUsernames()}</div>
+              <div className='profile-info__previous-usernames'>
+                {this.renderPreviousUsernames()}
+              </div>
 
               <div className='profile-info__icons profile-info__icons--name-inline'>
                 {this.renderIcons()}
@@ -82,17 +93,23 @@ export default class Cover extends React.Component<Props> {
             {this.renderTitle()}
 
             <div className='profile-info__flags'>
-              {this.props.user.country?.code != null &&
+              {this.props.user.country?.code != null && (
                 <a
                   className='profile-info__flag'
-                  href={route('rankings', { country: this.props.user.country.code, mode: this.props.currentMode, type: 'performance' })}
+                  href={route('rankings', {
+                    country: this.props.user.country.code,
+                    mode: this.props.currentMode,
+                    type: 'performance',
+                  })}
                 >
                   <span className='profile-info__flag-flag'>
                     <FlagCountry country={this.props.user.country} />
                   </span>
-                  <span className='profile-info__flag-text'>{this.props.user.country.name}</span>
+                  <span className='profile-info__flag-text'>
+                    {this.props.user.country.name}
+                  </span>
                 </a>
-              }
+              )}
               <div className='profile-info__icons profile-info__icons--flag-inline'>
                 {this.renderIcons()}
               </div>
@@ -106,7 +123,11 @@ export default class Cover extends React.Component<Props> {
               title={trans(`users.show.cover.to_${this.showCover ? '0' : '1'}`)}
               type='button'
             >
-              <span className={this.showCover ? 'fas fa-chevron-up' : 'fas fa-chevron-down'} />
+              <span
+                className={
+                  this.showCover ? 'fas fa-chevron-up' : 'fas fa-chevron-down'
+                }
+              />
             </button>
           </div>
         </div>
@@ -125,18 +146,32 @@ export default class Cover extends React.Component<Props> {
   private renderIcons() {
     return (
       <>
-        {this.props.user.is_supporter &&
-          <a className='profile-info__icon profile-info__icon--supporter' href={route('support-the-game')} title={trans('users.show.is_supporter')}>
-            {times(this.props.user.support_level ?? 0, (i) => <span key={i} className='fas fa-heart' />)}
+        {this.props.user.is_supporter && (
+          <a
+            className='profile-info__icon profile-info__icon--supporter'
+            href={route('support-the-game')}
+            title={trans('users.show.is_supporter')}
+          >
+            {times(this.props.user.support_level ?? 0, (i) => (
+              <span key={i} className='fas fa-heart' />
+            ))}
           </a>
-        }
-        <UserGroupBadges groups={this.props.user.groups} modifiers='profile-page' wrapper='profile-info__icon' />
+        )}
+        <UserGroupBadges
+          groups={this.props.user.groups}
+          modifiers='profile-page'
+          wrapper='profile-info__icon'
+        />
       </>
     );
   }
 
   private renderPreviousUsernames() {
-    if (this.props.user.previous_usernames == null || this.props.user.previous_usernames.length === 0) return null;
+    if (
+      this.props.user.previous_usernames == null ||
+      this.props.user.previous_usernames.length === 0
+    )
+      return null;
 
     const previousUsernames = this.props.user.previous_usernames.join(', ');
 
@@ -154,8 +189,12 @@ export default class Cover extends React.Component<Props> {
           <span className='fas fa-address-card' />
         </div>
         <div className='profile-previous-usernames__content'>
-          <div className='profile-previous-usernames__title'>{trans('users.show.previous_usernames')}</div>
-          <div className='profile-previous-usernames__names'>{previousUsernames}</div>
+          <div className='profile-previous-usernames__title'>
+            {trans('users.show.previous_usernames')}
+          </div>
+          <div className='profile-previous-usernames__names'>
+            {previousUsernames}
+          </div>
         </div>
       </div>
     );

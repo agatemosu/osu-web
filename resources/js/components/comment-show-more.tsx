@@ -29,8 +29,10 @@ export default class CommentShowMore extends React.Component<Props> {
   }
 
   private get hasMoreComments() {
-    return this.props.parent == null
-      || (this.props.controller.state.hasMore[this.props.parent.id] ?? true);
+    return (
+      this.props.parent == null ||
+      (this.props.controller.state.hasMore[this.props.parent.id] ?? true)
+    );
   }
 
   render() {
@@ -41,26 +43,25 @@ export default class CommentShowMore extends React.Component<Props> {
       return null;
     }
 
-    return this.props.top ?? false
-      ? (
-        <ShowMoreLink
-          callback={this.load}
-          hasMore
-          loading={this.loading}
-          modifiers='comments'
-          remaining={this.props.total - this.props.comments.length}
-        />
-      ) : (
-        <div className={classWithModifiers(bn, this.props.modifiers)}>
-          {this.loading ?
-            <Spinner />
-            :
-            <button className={`${bn}__link`} onClick={this.load}>
-              {this.props.label ?? trans('common.buttons.show_more')}
-            </button>
-          }
-        </div>
-      );
+    return (this.props.top ?? false) ? (
+      <ShowMoreLink
+        callback={this.load}
+        hasMore
+        loading={this.loading}
+        modifiers='comments'
+        remaining={this.props.total - this.props.comments.length}
+      />
+    ) : (
+      <div className={classWithModifiers(bn, this.props.modifiers)}>
+        {this.loading ? (
+          <Spinner />
+        ) : (
+          <button className={`${bn}__link`} onClick={this.load}>
+            {this.props.label ?? trans('common.buttons.show_more')}
+          </button>
+        )}
+      </div>
+    );
   }
 
   private readonly load = () => {

@@ -12,14 +12,20 @@ interface Props {
 
 export const EditorToolbarButton = (props: Props) => {
   const context = React.useContext(SlateContext);
-  const handleClick = React.useCallback((event: React.SyntheticEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleFormat(context, props.format);
-  }, [context, props.format]);
+  const handleClick = React.useCallback(
+    (event: React.SyntheticEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      toggleFormat(context, props.format);
+    },
+    [context, props.format],
+  );
 
   return (
     <button
-      className={classWithModifiers('beatmap-discussion-editor-toolbar__button', { active: isFormatActive(context, props.format) })}
+      className={classWithModifiers(
+        'beatmap-discussion-editor-toolbar__button',
+        { active: isFormatActive(context, props.format) },
+      )}
       // we use onMouseDown instead of onClick here so the popup remains visible after clicking
       onMouseDown={handleClick}
     >

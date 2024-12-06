@@ -4,7 +4,8 @@
 import ArtistAlbumJson from './artist-album-json';
 import ArtistJson from './artist-json';
 
-export type ArtistTrackWithArtistJson = ArtistTrackJson & Required<Pick<ArtistTrackJson, 'artist'>>;
+export type ArtistTrackWithArtistJson = ArtistTrackJson &
+  Required<Pick<ArtistTrackJson, 'artist'>>;
 
 export default interface ArtistTrackJson {
   album: ArtistAlbumJson;

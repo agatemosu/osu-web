@@ -16,5 +16,11 @@ export default function Img2x(props: Props) {
     return <img {...otherProps} className={`${className} u-hidden`} />;
   }
 
-  return <img className={className} srcSet={`${otherProps.src} 1x, ${src2x ?? make2x(otherProps.src)} 2x`} {...otherProps} />;
+  return (
+    <img
+      className={className}
+      srcSet={`${otherProps.src} 1x, ${src2x ?? make2x(otherProps.src)} 2x`}
+      {...otherProps}
+    />
+  );
 }

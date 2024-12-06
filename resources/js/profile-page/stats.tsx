@@ -18,7 +18,7 @@ const entryKeys = [
   'replays_watched_by_others',
 ] as const;
 
-type EntryKey = typeof entryKeys[number];
+type EntryKey = (typeof entryKeys)[number];
 
 interface Props {
   stats: UserStatisticsJson;
@@ -26,7 +26,9 @@ interface Props {
 
 export default class Stats extends React.PureComponent<Props> {
   render() {
-    return <div className='profile-stats'>{entryKeys.map(this.renderEntry)}</div>;
+    return (
+      <div className='profile-stats'>{entryKeys.map(this.renderEntry)}</div>
+    );
   }
 
   private formatValue(key: EntryKey) {
@@ -40,7 +42,10 @@ export default class Stats extends React.PureComponent<Props> {
   }
 
   private readonly renderEntry = (key: EntryKey) => (
-    <dl key={key} className={classWithModifiers('profile-stats__entry', `key-${key}`)}>
+    <dl
+      key={key}
+      className={classWithModifiers('profile-stats__entry', `key-${key}`)}
+    >
       <dt className='profile-stats__key'>{trans(`users.show.stats.${key}`)}</dt>
       <dd className='profile-stats__value'>{this.formatValue(key)}</dd>
     </dl>

@@ -6,7 +6,10 @@ export default class ReferenceLinkTooltip {
     $(document).on('mouseover', '.js-reference-link', this.showTooltip);
   }
 
-  private readonly createTooltip = (element: HTMLElement, content: HTMLElement) => {
+  private readonly createTooltip = (
+    element: HTMLElement,
+    content: HTMLElement,
+  ) => {
     $(element).qtip({
       content: {
         text: content,
@@ -44,7 +47,9 @@ export default class ReferenceLinkTooltip {
 
     if (targetId == null) return;
 
-    const tooltipContent = document.querySelector(targetId)?.firstElementChild?.cloneNode(true);
+    const tooltipContent = document
+      .querySelector(targetId)
+      ?.firstElementChild?.cloneNode(true);
 
     if (!(tooltipContent instanceof HTMLParagraphElement)) return;
 

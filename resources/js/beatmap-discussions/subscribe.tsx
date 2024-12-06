@@ -56,15 +56,19 @@ export class Subscribe extends React.Component<Props> {
   private readonly toggleWatch = () => {
     if (this.busy) return;
 
-    this.xhr = $.ajax(route('beatmapsets.watches.update', { watch: this.props.beatmapset.id }), {
-      dataType: 'json',
-      type: this.isWatching ? 'DELETE' : 'PUT',
-    });
+    this.xhr = $.ajax(
+      route('beatmapsets.watches.update', { watch: this.props.beatmapset.id }),
+      {
+        dataType: 'json',
+        type: this.isWatching ? 'DELETE' : 'PUT',
+      },
+    );
 
-    this.xhr.done(() => {
-      this.props.discussionsState.update({ watching: !this.isWatching });
-    })
+    this.xhr
+      .done(() => {
+        this.props.discussionsState.update({ watching: !this.isWatching });
+      })
       .fail(onErrorWithCallback(this.toggleWatch))
-      .always(action(() => this.xhr = null));
+      .always(action(() => (this.xhr = null)));
   };
 }

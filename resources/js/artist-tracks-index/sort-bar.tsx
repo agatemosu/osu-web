@@ -22,12 +22,17 @@ interface Props {
   params: ArtistTrackSearch;
 }
 
-const orderIcon: Record<ArtistTrackSortOrder, Record<'desktop' | 'mobile', string>> = {
+const orderIcon: Record<
+  ArtistTrackSortOrder,
+  Record<'desktop' | 'mobile', string>
+> = {
   asc: { desktop: 'fas fa-caret-up', mobile: 'fas fa-sort-amount-up' },
   desc: { desktop: 'fas fa-caret-down', mobile: 'fas fa-sort-amount-down' },
 };
 
-const defaultOrder: Partial<Record<ArtistTrackSortField, ArtistTrackSortOrder>> = {
+const defaultOrder: Partial<
+  Record<ArtistTrackSortField, ArtistTrackSortOrder>
+> = {
   relevance: 'desc',
   update: 'desc',
 };
@@ -38,7 +43,9 @@ export default class SortBar extends React.Component<Props> {
 
   @computed
   get currentField() {
-    const ret = artistTrackSortFields.find((f) => `${f}_${this.currentOrder}` === this.params.sort);
+    const ret = artistTrackSortFields.find(
+      (f) => `${f}_${this.currentOrder}` === this.params.sort,
+    );
 
     if (ret == null) {
       throw new Error(`sort parameter is not supported (${this.params.sort})`);
@@ -49,9 +56,11 @@ export default class SortBar extends React.Component<Props> {
 
   @computed
   get currentOrder() {
-    const ret = artistTrackSortOrders.find((o) => (
-      artistTrackSortFields.find((f) => `${f}_${o}` === this.params.sort) != null
-    ));
+    const ret = artistTrackSortOrders.find(
+      (o) =>
+        artistTrackSortFields.find((f) => `${f}_${o}` === this.params.sort) !=
+        null,
+    );
 
     if (ret == null) {
       throw new Error(`sort parameter is not supported (${this.params.sort})`);
@@ -92,21 +101,25 @@ export default class SortBar extends React.Component<Props> {
             </div>
             <div className='sort-mobile__item'>
               <div className='form-select'>
-                <select className='form-select__input' onChange={this.handleSortFieldChange} value={this.currentField}>
+                <select
+                  className='form-select__input'
+                  onChange={this.handleSortFieldChange}
+                  value={this.currentField}
+                >
                   {artistTrackSortFields.map(this.renderOption)}
                 </select>
               </div>
             </div>
-            <div className='sort-mobile__item'>
-              {this.renderOrderButton()}
-            </div>
+            <div className='sort-mobile__item'>{this.renderOrderButton()}</div>
           </div>
         </div>
       </div>
     );
   }
 
-  private readonly handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  private readonly handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+  ) => {
     e.preventDefault();
     const field = e.currentTarget.dataset.field as ArtistTrackSortField;
     const order = e.currentTarget.dataset.order as ArtistTrackSortOrder;
@@ -114,7 +127,9 @@ export default class SortBar extends React.Component<Props> {
     this.props.onNewSearch(e.currentTarget.href);
   };
 
-  private readonly handleSortFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  private readonly handleSortFieldChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const field = e.currentTarget.value as ArtistTrackSortField;
 
     const newSort: typeof this.params.sort = `${field}_${this.currentOrder}`;
@@ -127,7 +142,9 @@ export default class SortBar extends React.Component<Props> {
 
   private isFieldVisible(field: ArtistTrackSortField) {
     if (field === 'relevance') {
-      return artistTrackSearchRelevanceParams.some((p) => present(this.params[p]));
+      return artistTrackSearchRelevanceParams.some((p) =>
+        present(this.params[p]),
+      );
     }
 
     return true;
@@ -142,9 +159,10 @@ export default class SortBar extends React.Component<Props> {
   }
 
   private orderForField(field: ArtistTrackSortField) {
-    const ret = this.currentField === field
-      ? this.flippedOrder
-      : defaultOrder[field] ?? artistTrackSortOrders[0];
+    const ret =
+      this.currentField === field
+        ? this.flippedOrder
+        : (defaultOrder[field] ?? artistTrackSortOrders[0]);
 
     if (ret == null) {
       throw new Error('no alternative sort order');
@@ -158,12 +176,15 @@ export default class SortBar extends React.Component<Props> {
 
     const order = this.orderForField(field);
     const url = this.makeLink(field, order);
-    const orderForIcon = this.currentField === field ? this.currentOrder : order;
+    const orderForIcon =
+      this.currentField === field ? this.currentOrder : order;
 
     return (
       <a
         key={field}
-        className={classWithModifiers('sort__item', 'button', { active: this.currentField === field })}
+        className={classWithModifiers('sort__item', 'button', {
+          active: this.currentField === field,
+        })}
         data-field={field}
         data-order={order}
         href={url}

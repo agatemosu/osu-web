@@ -20,7 +20,9 @@ interface Props {
 
 @observer
 export default class BeatmapsOwnerEditor extends React.Component<Props> {
-  private readonly editorRefs: Partial<Record<number, React.RefObject<BeatmapOwnerEditor>>> = {};
+  private readonly editorRefs: Partial<
+    Record<number, React.RefObject<BeatmapOwnerEditor>>
+  > = {};
 
   constructor(props: Props) {
     super(props);
@@ -43,24 +45,24 @@ export default class BeatmapsOwnerEditor extends React.Component<Props> {
   }
 
   render() {
-    const groupedBeatmaps = [...groupBeatmaps((this.props.beatmapset.beatmaps ?? []).filter(
-      (beatmap) => beatmap.deleted_at == null,
-    ))];
+    const groupedBeatmaps = [
+      ...groupBeatmaps(
+        (this.props.beatmapset.beatmaps ?? []).filter(
+          (beatmap) => beatmap.deleted_at == null,
+        ),
+      ),
+    ];
 
     return (
       <div className='beatmaps-owner-editor u-fancy-scrollbar'>
         <div className='beatmaps-owner-editor__row beatmaps-owner-editor__row--content'>
           {/* header and its grid placeholder */}
           <div />
-          <strong>
-            {trans('beatmap_discussions.owner_editor.version')}
-          </strong>
-          <strong>
-            {trans('beatmap_discussions.owner_editor.user')}
-          </strong>
+          <strong>{trans('beatmap_discussions.owner_editor.version')}</strong>
+          <strong>{trans('beatmap_discussions.owner_editor.user')}</strong>
           <div />
 
-          {groupedBeatmaps.map(([, beatmaps]) => (
+          {groupedBeatmaps.map(([, beatmaps]) =>
             beatmaps.map((beatmap) => (
               <BeatmapOwnerEditor
                 key={beatmap.id}
@@ -69,8 +71,8 @@ export default class BeatmapsOwnerEditor extends React.Component<Props> {
                 beatmapset={this.props.beatmapset}
                 discussionsState={this.props.discussionsState}
               />
-            ))
-          ))}
+            )),
+          )}
         </div>
 
         <div className='beatmaps-owner-editor__row beatmaps-owner-editor__row--footer'>
@@ -99,7 +101,9 @@ export default class BeatmapsOwnerEditor extends React.Component<Props> {
   };
 
   private shouldCancelNavigation() {
-    return Object.values(this.editorRefs).some((ref) => ref?.current?.editing)
-      && !confirm(trans('common.confirmation_unsaved'));
+    return (
+      Object.values(this.editorRefs).some((ref) => ref?.current?.editing) &&
+      !confirm(trans('common.confirmation_unsaved'))
+    );
   }
 }

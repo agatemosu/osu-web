@@ -10,11 +10,23 @@ import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 
-export default function PostItem({ modifiers, post }: { modifiers?: string[]; post: PostJson }) {
+export default function PostItem({
+  modifiers,
+  post,
+}: {
+  modifiers?: string[];
+  post: PostJson;
+}) {
   let cover;
 
   if (post.first_image != null) {
-    cover = <Img2x className='news-card__cover' src={post.first_image} src2x={post['first_image@2x']} />;
+    cover = (
+      <Img2x
+        className='news-card__cover'
+        src={post.first_image}
+        src2x={post['first_image@2x']}
+      />
+    );
   }
 
   let preview = post.preview;
@@ -25,7 +37,10 @@ export default function PostItem({ modifiers, post }: { modifiers?: string[]; po
 
   return (
     <a
-      className={classWithModifiers('news-card', modifiers ?? ['index', 'hover'])}
+      className={classWithModifiers(
+        'news-card',
+        modifiers ?? ['index', 'hover'],
+      )}
       href={route('news.show', { news: post.slug })}
     >
       <div className='news-card__cover-container'>

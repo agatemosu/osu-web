@@ -34,7 +34,9 @@ export default class ForumPoll {
     const targetPage = target.dataset.targetPage;
 
     if (typeof targetPage === 'string') {
-      $(event.target).parents('.js-forum-poll--container').attr('data-page', targetPage);
+      $(event.target)
+        .parents('.js-forum-poll--container')
+        .attr('data-page', targetPage);
     }
   };
 }

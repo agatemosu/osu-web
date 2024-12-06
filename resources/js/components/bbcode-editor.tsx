@@ -35,7 +35,10 @@ export default class BbcodeEditor extends React.Component<Props> {
   private readonly sizeSelectRef = React.createRef<HTMLSelectElement>();
 
   readonly cancel = (event?: React.SyntheticEvent) => {
-    if (this.bodyRef.current?.value !== this.props.rawValue && !confirm(trans('common.confirmation_unsaved'))) {
+    if (
+      this.bodyRef.current?.value !== this.props.rawValue &&
+      !confirm(trans('common.confirmation_unsaved'))
+    ) {
       return;
     }
 
@@ -61,10 +64,7 @@ export default class BbcodeEditor extends React.Component<Props> {
     blockClass += ' js-bbcode-preview--form';
 
     return (
-      <form
-        className={blockClass}
-        data-state='write'
-      >
+      <form className={blockClass} data-state='write'>
         <div className='bbcode-editor__content'>
           <textarea
             ref={this.bodyRef}
@@ -96,7 +96,11 @@ export default class BbcodeEditor extends React.Component<Props> {
                 {this.renderPreviewShowButton()}
               </div>
               <div className='bbcode-editor__button'>
-                {this.actionButton(this.save, trans('common.buttons.save'), 'forum-primary')}
+                {this.actionButton(
+                  this.save,
+                  trans('common.buttons.save'),
+                  'forum-primary',
+                )}
               </div>
             </div>
           </div>
@@ -105,7 +109,11 @@ export default class BbcodeEditor extends React.Component<Props> {
     );
   }
 
-  private actionButton(onClick: (event: React.MouseEvent<HTMLButtonElement>) => void, title: string, modifiers: Modifiers = 'forum-secondary') {
+  private actionButton(
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void,
+    title: string,
+    modifiers: Modifiers = 'forum-secondary',
+  ) {
     return (
       <button
         className={classWithModifiers('btn-osu-big', modifiers)}
@@ -118,7 +126,9 @@ export default class BbcodeEditor extends React.Component<Props> {
     );
   }
 
-  private readonly onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  private readonly onKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
     if (!this.props.ignoreEsc && e.key === 'Escape') {
       this.cancel();
     }
@@ -167,7 +177,7 @@ export default class BbcodeEditor extends React.Component<Props> {
         <a
           className='post-box-toolbar__help'
           href={wikiUrl('BBCode')}
-          rel="noreferrer"
+          rel='noreferrer'
           target='_blank'
         >
           {trans('bbcode.help')}
@@ -180,7 +190,13 @@ export default class BbcodeEditor extends React.Component<Props> {
     this.sendOnChange({ event, type: 'save' });
   };
 
-  private sendOnChange({ event, type }: { event?: React.SyntheticEvent; type: ChangeType }) {
+  private sendOnChange({
+    event,
+    type,
+  }: {
+    event?: React.SyntheticEvent;
+    type: ChangeType;
+  }) {
     this.props.onChange({
       event,
       hasChanged: this.bodyRef.current?.value !== this.props.rawValue,
@@ -206,10 +222,7 @@ export default class BbcodeEditor extends React.Component<Props> {
 
   private toolbarSizeSelect() {
     return (
-      <label
-        className='bbcode-size-select'
-        title={trans('bbcode.size._')}
-      >
+      <label className='bbcode-size-select' title={trans('bbcode.size._')}>
         <span className='bbcode-size-select__label'>
           {trans('bbcode.size._')}
         </span>

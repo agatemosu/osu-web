@@ -35,13 +35,19 @@ export default class Table extends React.Component<Props> {
 
     makeObservable(this);
 
-    this.containerContextValue = { activeKeyDidChange: this.activeKeyDidChange };
+    this.containerContextValue = {
+      activeKeyDidChange: this.activeKeyDidChange,
+    };
   }
 
   render() {
     return (
       <ContainerContext.Provider value={this.containerContextValue}>
-        <div className={classWithModifiers(bn, { 'menu-active': this.activeKey != null })}>
+        <div
+          className={classWithModifiers(bn, {
+            'menu-active': this.activeKey != null,
+          })}
+        >
           <table className={`${bn}__table`}>
             <thead>
               <tr>
@@ -62,19 +68,24 @@ export default class Table extends React.Component<Props> {
                 <th className={`${bn}__header ${bn}__header--maxcombo`}>
                   {trans('beatmapsets.show.scoreboard.headers.combo')}
                 </th>
-                {modeAttributesMap[this.props.controller.beatmap.mode].map((stat) => (
-                  <th
-                    key={stat.key}
-                    className={classWithModifiers(`${bn}__header`, ['hitstat', `hitstat-${stat.key}`])}
-                  >
-                    {stat.label}
-                  </th>
-                ))}
-                {this.showPp &&
+                {modeAttributesMap[this.props.controller.beatmap.mode].map(
+                  (stat) => (
+                    <th
+                      key={stat.key}
+                      className={classWithModifiers(`${bn}__header`, [
+                        'hitstat',
+                        `hitstat-${stat.key}`,
+                      ])}
+                    >
+                      {stat.label}
+                    </th>
+                  ),
+                )}
+                {this.showPp && (
                   <th className={`${bn}__header ${bn}__header--pp`}>
                     {trans('beatmapsets.show.scoreboard.headers.pp')}
                   </th>
-                }
+                )}
                 <th className={`${bn}__header ${bn}__header--time`}>
                   {trans('beatmapsets.show.scoreboard.headers.time')}
                 </th>
@@ -90,7 +101,9 @@ export default class Table extends React.Component<Props> {
                   <TableRow
                     activated={this.activeKey === index}
                     beatmap={this.props.controller.beatmap}
-                    highlightFriends={this.props.controller.currentType !== 'friend'}
+                    highlightFriends={
+                      this.props.controller.currentType !== 'friend'
+                    }
                     index={index}
                     score={score}
                     showPp={this.showPp}

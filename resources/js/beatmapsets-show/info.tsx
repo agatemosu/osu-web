@@ -9,7 +9,13 @@ import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
 import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import { sum } from 'lodash';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { onErrorWithClick } from 'utils/ajax';
@@ -28,7 +34,8 @@ export default class Info extends React.Component<Props> {
   private readonly descriptionEditorRef = React.createRef<BbcodeEditor>();
   @observable private isEditingDescription = false;
   @observable private isEditingMetadata = false;
-  @observable private saveDescriptionXhr: JQuery.jqXHR<BeatmapsetJsonForShow> | null = null;
+  @observable
+  private saveDescriptionXhr: JQuery.jqXHR<BeatmapsetJsonForShow> | null = null;
 
   private get controller() {
     return this.props.controller;
@@ -36,14 +43,19 @@ export default class Info extends React.Component<Props> {
 
   @computed
   private get failData() {
-    if (this.controller.currentBeatmap.failtimes.exit.length !== this.controller.currentBeatmap.failtimes.fail.length) {
+    if (
+      this.controller.currentBeatmap.failtimes.exit.length !==
+      this.controller.currentBeatmap.failtimes.fail.length
+    ) {
       throw new Error('invalid failtimes data (different length)');
     }
 
-    const fails = this.controller.currentBeatmap.failtimes.exit.map((exitValue, i) => [
-      exitValue,
-      this.controller.currentBeatmap.failtimes.fail[i],
-    ]);
+    const fails = this.controller.currentBeatmap.failtimes.exit.map(
+      (exitValue, i) => [
+        exitValue,
+        this.controller.currentBeatmap.failtimes.fail[i],
+      ],
+    );
 
     return {
       fails,
@@ -84,17 +96,18 @@ export default class Info extends React.Component<Props> {
   }
 
   render() {
-    const tags = this.controller.beatmapset.tags
-      .split(' ')
-      .filter(present);
+    const tags = this.controller.beatmapset.tags.split(' ').filter(present);
 
     return (
       <div className='beatmapset-info u-fancy-scrollbar'>
-        {this.isEditingDescription &&
+        {this.isEditingDescription && (
           <Modal onClose={this.handleCloseDescriptionEditor}>
             <div className='osu-page'>
               <BbcodeEditor
-                key={this.controller.beatmapset.id /* ensure component is reset if beatmapset changes */}
+                key={
+                  this.controller.beatmapset
+                    .id /* ensure component is reset if beatmapset changes */
+                }
                 ref={this.descriptionEditorRef}
                 disabled={this.saveDescriptionXhr != null}
                 ignoreEsc
@@ -104,13 +117,16 @@ export default class Info extends React.Component<Props> {
               />
             </div>
           </Modal>
-        }
+        )}
 
-        {this.isEditingMetadata &&
+        {this.isEditingMetadata && (
           <Modal onClose={this.handleCloseMetadataEditor}>
-            <MetadataEditor controller={this.props.controller} onClose={this.handleCloseMetadataEditor} />
+            <MetadataEditor
+              controller={this.props.controller}
+              onClose={this.handleCloseMetadataEditor}
+            />
           </Modal>
-        }
+        )}
 
         <div className='beatmapset-info__box'>
           {this.withEditDescription && this.renderEditDescriptionButton()}
@@ -122,7 +138,8 @@ export default class Info extends React.Component<Props> {
 
             <div
               dangerouslySetInnerHTML={{
-                __html: this.controller.beatmapset.description.description ?? '',
+                __html:
+                  this.controller.beatmapset.description.description ?? '',
               }}
               className='beatmapset-info__value-overflow'
             />
@@ -132,7 +149,7 @@ export default class Info extends React.Component<Props> {
         <div className='beatmapset-info__box'>
           {this.withEditMetadata && this.renderEditMetadataButton()}
 
-          {this.nominators.length > 0 &&
+          {this.nominators.length > 0 && (
             <div className='beatmapset-info__row'>
               <h3 className='beatmapset-info__header'>
                 {trans('beatmapsets.show.info.nominators')}
@@ -140,30 +157,29 @@ export default class Info extends React.Component<Props> {
               <div>
                 {this.nominators.map((user, i) => (
                   <React.Fragment key={user.id}>
-                    <UserLink
-                      className='beatmapset-info__link'
-                      user={user}
-                    />
+                    <UserLink className='beatmapset-info__link' user={user} />
                     {i < this.nominators.length - 1 && ', '}
                   </React.Fragment>
                 ))}
               </div>
             </div>
-          }
+          )}
 
-          {present(this.controller.beatmapset.source) &&
+          {present(this.controller.beatmapset.source) && (
             <div className='beatmapset-info__row'>
               <h3 className='beatmapset-info__header'>
                 {trans('beatmapsets.show.info.source')}
               </h3>
               <a
                 className='beatmapset-info__link'
-                href={route('beatmapsets.index', { q: `source=""${this.controller.beatmapset.source}""` })}
+                href={route('beatmapsets.index', {
+                  q: `source=""${this.controller.beatmapset.source}""`,
+                })}
               >
                 {this.controller.beatmapset.source}
               </a>
             </div>
-          }
+          )}
 
           <div className='beatmapset-info__row beatmapset-info__row--half'>
             <div className='beatmapset-info__half-entry'>
@@ -172,7 +188,9 @@ export default class Info extends React.Component<Props> {
               </h3>
               <a
                 className='beatmapset-info__link'
-                href={route('beatmapsets.index', { g: this.controller.beatmapset.genre.id })}
+                href={route('beatmapsets.index', {
+                  g: this.controller.beatmapset.genre.id,
+                })}
               >
                 {this.controller.beatmapset.genre.name}
               </a>
@@ -184,14 +202,16 @@ export default class Info extends React.Component<Props> {
               </h3>
               <a
                 className='beatmapset-info__link'
-                href={route('beatmapsets.index', { l: this.controller.beatmapset.language.id })}
+                href={route('beatmapsets.index', {
+                  l: this.controller.beatmapset.language.id,
+                })}
               >
                 {this.controller.beatmapset.language.name}
               </a>
             </div>
           </div>
 
-          {tags.length > 0 &&
+          {tags.length > 0 && (
             <div className='beatmapset-info__row beatmapset-info__row--value-overflow'>
               <h3 className='beatmapset-info__header'>
                 {trans('beatmapsets.show.info.tags')}
@@ -204,13 +224,12 @@ export default class Info extends React.Component<Props> {
                       href={route('beatmapsets.index', { q: tag })}
                     >
                       {tag}
-                    </a>
-                    {' '}
+                    </a>{' '}
                   </React.Fragment>
                 ))}
               </div>
             </div>
-          }
+          )}
         </div>
 
         <div className='beatmapset-info__box beatmapset-info__box--success-rate'>
@@ -304,7 +323,7 @@ export default class Info extends React.Component<Props> {
                 key={j}
                 className={`stacked-bar-chart__entry stacked-bar-chart__entry--${j}`}
                 style={{
-                  height: `${100 * value / maxValue}%`,
+                  height: `${(100 * value) / maxValue}%`,
                 }}
               />
             ))}
@@ -354,18 +373,28 @@ export default class Info extends React.Component<Props> {
   private saveDescription({ event, value }: OnChangeProps) {
     if (this.saveDescriptionXhr != null) return;
 
-    this.saveDescriptionXhr = $.ajax(route('beatmapsets.update', { beatmapset: this.controller.beatmapset.id }), {
-      data: { description: value },
-      method: 'PATCH',
-    });
+    this.saveDescriptionXhr = $.ajax(
+      route('beatmapsets.update', {
+        beatmapset: this.controller.beatmapset.id,
+      }),
+      {
+        data: { description: value },
+        method: 'PATCH',
+      },
+    );
 
-    this.saveDescriptionXhr.done((beatmapset) => runInAction(() => {
-      this.isEditingDescription = false;
-      this.controller.state.beatmapset = beatmapset;
-    })).fail(
-      onErrorWithClick(event?.target),
-    ).always(action(() => {
-      this.saveDescriptionXhr = null;
-    }));
+    this.saveDescriptionXhr
+      .done((beatmapset) =>
+        runInAction(() => {
+          this.isEditingDescription = false;
+          this.controller.state.beatmapset = beatmapset;
+        }),
+      )
+      .fail(onErrorWithClick(event?.target))
+      .always(
+        action(() => {
+          this.saveDescriptionXhr = null;
+        }),
+      );
   }
 }

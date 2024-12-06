@@ -6,7 +6,9 @@ import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store'
 import { computed, makeObservable, observable } from 'mobx';
 import { mapBy, mapByWithNulls } from 'utils/map';
 
-export default class BeatmapsetDiscussionsBundleForModdingProfileStore implements BeatmapsetDiscussionsStore {
+export default class BeatmapsetDiscussionsBundleForModdingProfileStore
+  implements BeatmapsetDiscussionsStore
+{
   /** TODO: accessor; readonly */
   @observable bundle;
 

@@ -7,15 +7,19 @@ import Dispatcher from 'dispatcher';
 export const dispatcher = new Dispatcher();
 
 function isDispatchListener(target: unknown): target is DispatchListener {
-  return typeof target === 'object'
-    && target != null
-    && 'handleDispatchAction' in target;
+  return (
+    typeof target === 'object' &&
+    target != null &&
+    'handleDispatchAction' in target
+  );
 }
 
 export const dispatch = dispatcher.dispatch;
 
 // https://www.typescriptlang.org/docs/handbook/decorators.html#class-decorators
-export function dispatchListener<T extends new(...args: any[]) => DispatchListener>(ctor: T) {
+export function dispatchListener<
+  T extends new (...args: any[]) => DispatchListener,
+>(ctor: T) {
   return class extends ctor {
     constructor(...args: any[]) {
       super(...args);

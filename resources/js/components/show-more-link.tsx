@@ -49,7 +49,9 @@ export default class ShowMoreLink<T> extends React.PureComponent<Props<T>> {
   }
 
   private children() {
-    const icon = <span className={`fas fa-angle-${this.props.direction ?? 'down'}`} />;
+    const icon = (
+      <span className={`fas fa-angle-${this.props.direction ?? 'down'}`} />
+    );
 
     return (
       <>

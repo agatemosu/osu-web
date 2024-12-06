@@ -51,11 +51,16 @@ export default class UserProfileContainer extends React.Component<Props> {
           <BlockButton userId={this.props.user.id} />
         </div>
         <div>
-          <button className='textual-button' onClick={this.handleClick} type='button'>
+          <button
+            className='textual-button'
+            onClick={this.handleClick}
+            type='button'
+          >
             <span>
-              <i className='textual-button__icon fas fa-low-vision' />
-              {' '}
-              {this.forceShow ? trans('users.blocks.hide_profile') : trans('users.blocks.show_profile')}
+              <i className='textual-button__icon fas fa-low-vision' />{' '}
+              {this.forceShow
+                ? trans('users.blocks.hide_profile')
+                : trans('users.blocks.show_profile')}
             </span>
           </button>
         </div>
@@ -64,7 +69,11 @@ export default class UserProfileContainer extends React.Component<Props> {
 
     return (
       <div className='osu-page'>
-        <NotificationBanner message={message} title={trans('users.blocks.banner_text')} type='info' />
+        <NotificationBanner
+          message={message}
+          title={trans('users.blocks.banner_text')}
+          type='info'
+        />
       </div>
     );
   }

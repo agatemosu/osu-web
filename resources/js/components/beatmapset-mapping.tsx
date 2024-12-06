@@ -25,7 +25,9 @@ interface DisplayUser {
 
 export default class BeatmapsetMapping extends React.PureComponent<Props> {
   render() {
-    const displayUser: DisplayUser = { username: this.props.beatmapset.creator };
+    const displayUser: DisplayUser = {
+      username: this.props.beatmapset.creator,
+    };
 
     const user = this.props.user ?? this.props.beatmapset.user;
     if (user != null) {
@@ -43,7 +45,9 @@ export default class BeatmapsetMapping extends React.PureComponent<Props> {
           <div className={`${bn}__mapper`}>
             <StringWithComponent
               mappings={{
-                mapper: <UserLink className={`${bn}__user`} user={displayUser} />,
+                mapper: (
+                  <UserLink className={`${bn}__user`} user={displayUser} />
+                ),
               }}
               pattern={trans('beatmapsets.show.details.mapped_by')}
             />
@@ -53,17 +57,21 @@ export default class BeatmapsetMapping extends React.PureComponent<Props> {
 
           {this.props.beatmapset.ranked > 0
             ? this.renderDate(this.props.beatmapset.status, 'ranked_date')
-            : this.renderDate('updated', 'last_updated')
-          }
+            : this.renderDate('updated', 'last_updated')}
         </div>
       </div>
     );
   }
 
-  private renderDate(key: string, attribute: 'last_updated' | 'ranked_date' | 'submitted_date') {
+  private renderDate(
+    key: string,
+    attribute: 'last_updated' | 'ranked_date' | 'submitted_date',
+  ) {
     const date = this.props.beatmapset[attribute];
     if (date == null) {
-      throw new Error(`beatmapset data is missing the expected date attribute: ${attribute}`);
+      throw new Error(
+        `beatmapset data is missing the expected date attribute: ${attribute}`,
+      );
     }
 
     const relative = Math.abs(moment().diff(moment(date), 'weeks')) < 4;

@@ -14,7 +14,12 @@ import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { hasGuestOwners } from 'utils/beatmap-helper';
-import { downloadLimited, getArtist, getTitle, toggleFavourite } from 'utils/beatmapset-helper';
+import {
+  downloadLimited,
+  getArtist,
+  getTitle,
+  toggleFavourite,
+} from 'utils/beatmapset-helper';
 import { classWithModifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
@@ -88,12 +93,13 @@ export default class Header extends React.Component<Props> {
   render() {
     const favouriteButton = this.controller.beatmapset.has_favourited
       ? {
-        action: 'unfavourite',
-        icon: 'fas fa-heart',
-      } : {
-        action: 'favourite',
-        icon: 'far fa-heart',
-      };
+          action: 'unfavourite',
+          icon: 'fas fa-heart',
+        }
+      : {
+          action: 'favourite',
+          icon: 'far fa-heart',
+        };
 
     return (
       <div className='beatmapset-header'>
@@ -113,23 +119,40 @@ export default class Header extends React.Component<Props> {
             {this.renderBeatmapVersion()}
 
             <div>
-              <span className='beatmapset-header__value' title={trans('beatmapsets.show.stats.playcount')}>
-                <span className='beatmapset-header__value-icon'><span className='fas fa-play-circle' /></span>
-                <span className='beatmapset-header__value-name'>{formatNumber(this.controller.beatmapset.play_count)}</span>
+              <span
+                className='beatmapset-header__value'
+                title={trans('beatmapsets.show.stats.playcount')}
+              >
+                <span className='beatmapset-header__value-icon'>
+                  <span className='fas fa-play-circle' />
+                </span>
+                <span className='beatmapset-header__value-name'>
+                  {formatNumber(this.controller.beatmapset.play_count)}
+                </span>
               </span>
 
-              {this.controller.beatmapset.status === 'pending' &&
-                <span className='beatmapset-header__value' title={trans('beatmapsets.show.stats.nominations')}>
-                  <span className='beatmapset-header__value-icon'><span className='fas fa-thumbs-up' /></span>
+              {this.controller.beatmapset.status === 'pending' && (
+                <span
+                  className='beatmapset-header__value'
+                  title={trans('beatmapsets.show.stats.nominations')}
+                >
+                  <span className='beatmapset-header__value-icon'>
+                    <span className='fas fa-thumbs-up' />
+                  </span>
                   <span className='beatmapset-header__value-name'>
-                    {formatNumber(this.controller.beatmapset.nominations_summary.current)}
+                    {formatNumber(
+                      this.controller.beatmapset.nominations_summary.current,
+                    )}
                   </span>
                 </span>
-              }
+              )}
 
               <span
                 ref={this.favouriteIconRef}
-                className={classWithModifiers('beatmapset-header__value', { 'has-favourites': this.controller.beatmapset.favourite_count > 0 })}
+                className={classWithModifiers('beatmapset-header__value', {
+                  'has-favourites':
+                    this.controller.beatmapset.favourite_count > 0,
+                })}
                 onMouseOver={this.onEnterFavouriteIcon}
                 onTouchStart={this.onEnterFavouriteIcon}
               >
@@ -146,7 +169,9 @@ export default class Header extends React.Component<Props> {
           <span className='beatmapset-header__details-text beatmapset-header__details-text--title'>
             <a
               className='beatmapset-header__details-text-link'
-              href={route('beatmapsets.index', { q: `title=""${getTitle(this.controller.beatmapset)}""` })}
+              href={route('beatmapsets.index', {
+                q: `title=""${getTitle(this.controller.beatmapset)}""`,
+              })}
             >
               {getTitle(this.controller.beatmapset)}
             </a>
@@ -163,7 +188,9 @@ export default class Header extends React.Component<Props> {
           <span className='beatmapset-header__details-text beatmapset-header__details-text--artist'>
             <a
               className='beatmapset-header__details-text-link'
-              href={route('beatmapsets.index', { q: `artist=""${getArtist(this.controller.beatmapset)}""` })}
+              href={route('beatmapsets.index', {
+                q: `artist=""${getArtist(this.controller.beatmapset)}""`,
+              })}
             >
               {getArtist(this.controller.beatmapset)}
             </a>
@@ -178,27 +205,34 @@ export default class Header extends React.Component<Props> {
           {this.renderAvailabilityInfo()}
 
           <div className='beatmapset-header__buttons'>
-            {core.currentUser != null &&
+            {core.currentUser != null && (
               <BigButton
                 icon={favouriteButton.icon}
-                modifiers={['beatmapset-header-square', `beatmapset-header-square-${favouriteButton.action}`]}
+                modifiers={[
+                  'beatmapset-header-square',
+                  `beatmapset-header-square-${favouriteButton.action}`,
+                ]}
                 props={{
                   onClick: this.onClickFavourite,
-                  title: trans(`beatmapsets.show.details.${favouriteButton.action}`),
+                  title: trans(
+                    `beatmapsets.show.details.${favouriteButton.action}`,
+                  ),
                 }}
               />
-            }
+            )}
 
             {this.renderDownloadButtons()}
             {this.renderLoginButton()}
 
-            {!this.controller.beatmapset.is_scoreable && core.currentUser != null && core.currentUser.id !== this.controller.beatmapset.user_id &&
-              <div className='beatmapset-header__more'>
-                <div className='btn-circle btn-circle--page-toggle btn-circle--page-toggle-detail'>
-                  <BeatmapsetMenu beatmapset={this.controller.beatmapset} />
+            {!this.controller.beatmapset.is_scoreable &&
+              core.currentUser != null &&
+              core.currentUser.id !== this.controller.beatmapset.user_id && (
+                <div className='beatmapset-header__more'>
+                  <div className='btn-circle btn-circle--page-toggle btn-circle--page-toggle-detail'>
+                    <BeatmapsetMenu beatmapset={this.controller.beatmapset} />
+                  </div>
                 </div>
-              </div>
-            }
+              )}
           </div>
         </div>
 
@@ -211,14 +245,22 @@ export default class Header extends React.Component<Props> {
     );
   }
 
-  private downloadButton({ bottomTextKey, href, icon = 'fas fa-download', topTextKey = '_' }: DownloadButtonOptions) {
+  private downloadButton({
+    bottomTextKey,
+    href,
+    icon = 'fas fa-download',
+    topTextKey = '_',
+  }: DownloadButtonOptions) {
     return (
       <BigButton
         href={href}
         icon={icon}
         modifiers='beatmapset-header'
         text={{
-          bottom: bottomTextKey == null ? undefined : trans(`beatmapsets.show.details.download.${bottomTextKey}`),
+          bottom:
+            bottomTextKey == null
+              ? undefined
+              : trans(`beatmapsets.show.details.download.${bottomTextKey}`),
           top: trans(`beatmapsets.show.details.download.${topTextKey}`),
         }}
       />
@@ -259,7 +301,10 @@ export default class Header extends React.Component<Props> {
     if (this.controller.beatmapset.availability.download_disabled) {
       label = trans('beatmapsets.availability.disabled');
     } else {
-      if (this.controller.beatmapset.availability.more_information === 'rule_violation') {
+      if (
+        this.controller.beatmapset.availability.more_information ===
+        'rule_violation'
+      ) {
         label = trans('beatmapsets.availability.rule_violation');
         href = `${wikiUrl('Rules')}#beatmap-submission-rules`;
       } else {
@@ -273,19 +318,20 @@ export default class Header extends React.Component<Props> {
       <div className='beatmapset-header__availability-info'>
         {label}
 
-        {href != null &&
+        {href != null && (
           <div className='beatmapset-header__availability-link'>
-            <a href={href} rel="noreferrer" target='_blank'>
+            <a href={href} rel='noreferrer' target='_blank'>
               {trans('beatmapsets.availability.more-info')}
             </a>
           </div>
-        }
+        )}
       </div>
     );
   }
 
   private renderBeatmapVersion() {
-    const beatmap = this.controller.hoveredBeatmap ?? this.controller.currentBeatmap;
+    const beatmap =
+      this.controller.hoveredBeatmap ?? this.controller.currentBeatmap;
 
     return (
       <span className='beatmapset-header__diff-name'>
@@ -295,7 +341,9 @@ export default class Header extends React.Component<Props> {
           <span className='beatmapset-header__diff-extra'>
             <StringWithComponent
               mappings={{
-                mapper: <UserLinkList users={this.controller.owners(beatmap)} />,
+                mapper: (
+                  <UserLinkList users={this.controller.owners(beatmap)} />
+                ),
               }}
               pattern={trans('beatmapsets.show.details.mapped_by')}
             />
@@ -304,8 +352,7 @@ export default class Header extends React.Component<Props> {
 
         {this.controller.hoveredBeatmap != null && (
           <span className='beatmapset-header__diff-extra beatmapset-header__diff-extra--star-difficulty'>
-            {trans('beatmapsets.show.stats.stars')}
-            {' '}
+            {trans('beatmapsets.show.stats.stars')}{' '}
             {formatNumber(beatmap.difficulty_rating, 2)}
           </span>
         )}
@@ -314,7 +361,11 @@ export default class Header extends React.Component<Props> {
   }
 
   private renderDownloadButtons() {
-    if (core.currentUser == null || this.controller.beatmapset.availability.download_disabled) return;
+    if (
+      core.currentUser == null ||
+      this.controller.beatmapset.availability.download_disabled
+    )
+      return;
 
     return (
       <>
@@ -322,17 +373,26 @@ export default class Header extends React.Component<Props> {
           <>
             {this.downloadButton({
               bottomTextKey: 'video',
-              href: route('beatmapsets.download', { beatmapset: this.controller.beatmapset.id }),
+              href: route('beatmapsets.download', {
+                beatmapset: this.controller.beatmapset.id,
+              }),
             })}
 
             {this.downloadButton({
               bottomTextKey: 'no-video',
-              href: route('beatmapsets.download', { beatmapset: this.controller.beatmapset.id, noVideo: 1 }),
+              href: route('beatmapsets.download', {
+                beatmapset: this.controller.beatmapset.id,
+                noVideo: 1,
+              }),
             })}
           </>
-        ) : (this.downloadButton({
-          href: route('beatmapsets.download', { beatmapset: this.controller.beatmapset.id }),
-        }))}
+        ) : (
+          this.downloadButton({
+            href: route('beatmapsets.download', {
+              beatmapset: this.controller.beatmapset.id,
+            }),
+          })
+        )}
 
         {this.downloadButton({
           href: core.currentUser.is_supporter
@@ -365,8 +425,13 @@ export default class Header extends React.Component<Props> {
       <div className='beatmapset-header__status'>
         {this.controller.beatmapset.video && statusIcon('video')}
         {this.controller.beatmapset.storyboard && statusIcon('storyboard')}
-        <a className='beatmapset-status beatmapset-status--show' href={this.statusToWikiLink(this.controller.currentBeatmap.status)}>
-          {trans(`beatmapsets.show.status.${this.controller.currentBeatmap.status}`)}
+        <a
+          className='beatmapset-status beatmapset-status--show'
+          href={this.statusToWikiLink(this.controller.currentBeatmap.status)}
+        >
+          {trans(
+            `beatmapsets.show.status.${this.controller.currentBeatmap.status}`,
+          )}
         </a>
       </div>
     );

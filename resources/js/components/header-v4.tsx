@@ -29,7 +29,10 @@ interface RouteSection {
 }
 
 // sync with page_title in helpers.php
-const pageTitleMap: Record<`${'action' | 'controller' | 'namespace'}Key`, Partial<Record<string, string>>> = {
+const pageTitleMap: Record<
+  `${'action' | 'controller' | 'namespace'}Key`,
+  Partial<Record<string, string>>
+> = {
   actionKey: {
     'forum.topic_watches_controller.index': 'main.home_controller.index',
     'main.account_controller.edit': 'main.home_controller.index',
@@ -78,7 +81,9 @@ export default class HeaderV4 extends React.Component<Props> {
           <div className='header-v4__bg-container'>
             <div
               className='header-v4__bg'
-              style={{ backgroundImage: urlPresence(this.props.backgroundImage) }}
+              style={{
+                backgroundImage: urlPresence(this.props.backgroundImage),
+              }}
             />
           </div>
 
@@ -92,16 +97,14 @@ export default class HeaderV4 extends React.Component<Props> {
 
             <div className='header-v4__row header-v4__row--title'>
               <div className='header-v4__icon' />
-              <div className='header-v4__title'>
-                {this.title()}
-              </div>
+              <div className='header-v4__title'>{this.title()}</div>
             </div>
 
             {this.props.contentAppend}
           </div>
         </div>
 
-        {this.props.links.length > 0 &&
+        {this.props.links.length > 0 && (
           <div className='header-v4__container'>
             <div className='header-v4__content'>
               <div className='header-v4__row header-v4__row--bar'>
@@ -111,7 +114,7 @@ export default class HeaderV4 extends React.Component<Props> {
               </div>
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }

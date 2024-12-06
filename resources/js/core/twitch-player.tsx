@@ -15,7 +15,8 @@ declare global {
 }
 
 export default class TwitchPlayer {
-  private readonly playerDivs = document.getElementsByClassName('js-twitch-player');
+  private readonly playerDivs =
+    document.getElementsByClassName('js-twitch-player');
 
   constructor(private readonly turbolinksReload: TurbolinksReload) {
     document.addEventListener('turbo:load', this.startAll);
@@ -28,7 +29,9 @@ export default class TwitchPlayer {
   }
 
   noCookieDiv(playerDivId: string) {
-    return document.querySelector<HTMLElement>(`.js-twitch-player--no-cookie[data-player-id='${playerDivId}']`);
+    return document.querySelector<HTMLElement>(
+      `.js-twitch-player--no-cookie[data-player-id='${playerDivId}']`,
+    );
   }
 
   openPlayer(div: HTMLElement) {
@@ -39,8 +42,8 @@ export default class TwitchPlayer {
   }
 
   start(div: HTMLElement) {
-    if (window.Twitch == null
-      || div.dataset.twitchPlayerStarted === 'true') return;
+    if (window.Twitch == null || div.dataset.twitchPlayerStarted === 'true')
+      return;
 
     div.dataset.twitchPlayerStarted = 'true';
     const options = {
@@ -50,7 +53,9 @@ export default class TwitchPlayer {
     };
 
     const player = new window.Twitch.Player(div.id, options);
-    player.addEventListener(window.Twitch.Player.PLAY, () => this.openPlayer(div));
+    player.addEventListener(window.Twitch.Player.PLAY, () =>
+      this.openPlayer(div),
+    );
   }
 
   startAll = () => {

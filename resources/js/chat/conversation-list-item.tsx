@@ -20,7 +20,10 @@ export default class ConversationListItem extends React.Component<Props> {
 
   @computed
   get selected() {
-    return this.props.channel.channelId === core.dataStore.chatState.selectedChannel?.channelId;
+    return (
+      this.props.channel.channelId ===
+      core.dataStore.chatState.selectedChannel?.channelId
+    );
   }
 
   constructor(props: Props) {
@@ -28,7 +31,6 @@ export default class ConversationListItem extends React.Component<Props> {
 
     makeObservable(this);
   }
-
 
   componentDidMount() {
     // if the current channel is selected on mount, it's probably on page load, so centre it.
@@ -43,20 +45,33 @@ export default class ConversationListItem extends React.Component<Props> {
     const baseClassName = 'chat-conversation-list-item';
 
     return (
-      <div ref={this.ref} className={classWithModifiers(baseClassName, { selected: this.selected })}>
-        {this.props.channel.isUnread && !this.selected
-          ? <div className={`${baseClassName}__unread-indicator`} />
-          : null}
+      <div
+        ref={this.ref}
+        className={classWithModifiers(baseClassName, {
+          selected: this.selected,
+        })}
+      >
+        {this.props.channel.isUnread && !this.selected ? (
+          <div className={`${baseClassName}__unread-indicator`} />
+        ) : null}
 
-        <button className={`${baseClassName}__close-button`} onClick={this.part}>
+        <button
+          className={`${baseClassName}__close-button`}
+          onClick={this.part}
+        >
           <i className='fas fa-times' />
         </button>
 
         <button className={`${baseClassName}__tile`} onClick={this.switch}>
           <div className={`${baseClassName}__avatar`}>
-            <UserAvatar modifiers='full-circle' user={{ avatar_url: this.props.channel.icon }} />
+            <UserAvatar
+              modifiers='full-circle'
+              user={{ avatar_url: this.props.channel.icon }}
+            />
           </div>
-          <div className={`${baseClassName}__name u-ellipsis-overflow`}>{this.props.channel.name}</div>
+          <div className={`${baseClassName}__name u-ellipsis-overflow`}>
+            {this.props.channel.name}
+          </div>
           <div className={`${baseClassName}__chevron`}>
             <i className='fas fa-chevron-right' />
           </div>
@@ -74,7 +89,10 @@ export default class ConversationListItem extends React.Component<Props> {
   }
 
   private readonly part = () => {
-    if (this.props.channel.type === 'ANNOUNCE' && !confirm(trans('chat.channels.confirm_part'))){
+    if (
+      this.props.channel.type === 'ANNOUNCE' &&
+      !confirm(trans('chat.channels.confirm_part'))
+    ) {
       return;
     }
 

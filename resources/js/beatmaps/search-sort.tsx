@@ -11,8 +11,19 @@ import { trans } from 'utils/lang';
 type Props = Record<string, never>;
 
 // order the sorters appear in.
-const sortNames = ['title', 'artist', 'difficulty', 'updated', 'ranked', 'rating', 'plays', 'favourites', 'relevance', 'nominations'] as const;
-type Sort = typeof sortNames[number];
+const sortNames = [
+  'title',
+  'artist',
+  'difficulty',
+  'updated',
+  'ranked',
+  'rating',
+  'plays',
+  'favourites',
+  'relevance',
+  'nominations',
+] as const;
+type Sort = (typeof sortNames)[number];
 
 @observer
 export class SearchSort extends React.Component<Props> {
@@ -64,7 +75,9 @@ export class SearchSort extends React.Component<Props> {
     return (
       <div className='sort sort--beatmapsets'>
         <div className='sort__items'>
-          <span className='sort__item sort__item--title'>{trans('sort._')}</span>
+          <span className='sort__item sort__item--title'>
+            {trans('sort._')}
+          </span>
           {this.fields.map(this.renderField)}
         </div>
       </div>
@@ -73,7 +86,8 @@ export class SearchSort extends React.Component<Props> {
 
   private readonly renderField = (field: Sort) => {
     const active = this.filters.searchSort.field === field;
-    const arrow = active && this.filters.searchSort.order === 'asc' ? 'up' : 'down';
+    const arrow =
+      active && this.filters.searchSort.order === 'asc' ? 'up' : 'down';
 
     return (
       <a
@@ -94,9 +108,11 @@ export class SearchSort extends React.Component<Props> {
   private readonly select = (e: React.SyntheticEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const field = e.currentTarget.dataset.field;
-    const order = this.filters.searchSort.field === field && this.filters.searchSort.order === 'desc'
-      ? 'asc'
-      : 'desc';
+    const order =
+      this.filters.searchSort.field === field &&
+      this.filters.searchSort.order === 'desc'
+        ? 'asc'
+        : 'desc';
 
     core.beatmapsetSearchController.filters.update('sort', `${field}_${order}`);
   };

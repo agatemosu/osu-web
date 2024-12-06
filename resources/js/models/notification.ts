@@ -4,7 +4,9 @@
 import NotificationJson from 'interfaces/notification-json';
 import { camelCase, forEach } from 'lodash';
 import { computed, makeObservable, observable } from 'mobx';
-import NotificationDetails, { newEmptyNotificationDetails } from 'models/notification-details';
+import NotificationDetails, {
+  newEmptyNotificationDetails,
+} from 'models/notification-details';
 import { Name } from 'models/notification-type';
 import { categoryFromName, categoryGroupKey } from 'notification-maps/category';
 import { displayType } from 'notification-maps/type';
@@ -14,7 +16,9 @@ import NotificationReadable from 'notifications/notification-readable';
 import core from 'osu-core-singleton';
 import { presence } from 'utils/string';
 
-export default class Notification implements NotificationReadable, NotificationDeletable {
+export default class Notification
+  implements NotificationReadable, NotificationDeletable
+{
   createdAtJson?: string;
   details: NotificationDetails = newEmptyNotificationDetails();
   @observable isDeleting = false;
@@ -61,7 +65,10 @@ export default class Notification implements NotificationReadable, NotificationD
     return this.details.title;
   }
 
-  constructor(readonly id: number, readonly objectType: Name) {
+  constructor(
+    readonly id: number,
+    readonly objectType: Name,
+  ) {
     makeObservable(this);
   }
 
@@ -84,7 +91,10 @@ export default class Notification implements NotificationReadable, NotificationD
         this.details[camelCase(key)] = value;
       });
 
-      if (json.name === 'comment_new' && json.details.reply_to?.user_id === core.currentUser?.id) {
+      if (
+        json.name === 'comment_new' &&
+        json.details.reply_to?.user_id === core.currentUser?.id
+      ) {
         this.name = 'comment_reply';
       }
     }

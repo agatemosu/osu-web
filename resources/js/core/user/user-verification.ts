@@ -24,15 +24,19 @@ interface UserVerificationXhr extends JQuery.jqXHR {
 }
 
 function isUserVerificationJson(arg: unknown): arg is UserVerificationJson {
-  return typeof arg === 'object'
-    && arg != null
-    && 'authentication' in arg
-    && arg.authentication === 'verify'
-    && 'box' in arg
-    && typeof arg.box === 'string';
+  return (
+    typeof arg === 'object' &&
+    arg != null &&
+    'authentication' in arg &&
+    arg.authentication === 'verify' &&
+    'box' in arg &&
+    typeof arg.box === 'string'
+  );
 }
 
-export function isUserVerificationXhr(arg: JQuery.jqXHR<unknown>): arg is UserVerificationXhr {
+export function isUserVerificationXhr(
+  arg: JQuery.jqXHR<unknown>,
+): arg is UserVerificationXhr {
   return arg.status === 401 && isUserVerificationJson(arg.responseJSON);
 }
 
@@ -48,23 +52,33 @@ export default class UserVerification {
   private request?: JQuery.jqXHR;
 
   private get inputBox() {
-    return document.querySelector<HTMLInputElement>('.js-user-verification--input');
+    return document.querySelector<HTMLInputElement>(
+      '.js-user-verification--input',
+    );
   }
 
   private get message() {
-    return document.querySelector<HTMLElement>('.js-user-verification--message');
+    return document.querySelector<HTMLElement>(
+      '.js-user-verification--message',
+    );
   }
 
   private get messageSpinner() {
-    return document.querySelector<HTMLElement>('.js-user-verification--message-spinner');
+    return document.querySelector<HTMLElement>(
+      '.js-user-verification--message-spinner',
+    );
   }
 
   private get messageText() {
-    return document.querySelector<HTMLElement>('.js-user-verification--message-text');
+    return document.querySelector<HTMLElement>(
+      '.js-user-verification--message-text',
+    );
   }
 
   private get reference() {
-    return document.querySelector<HTMLElement>('.js-user-verification--reference');
+    return document.querySelector<HTMLElement>(
+      '.js-user-verification--reference',
+    );
   }
 
   constructor() {
@@ -110,8 +124,9 @@ export default class UserVerification {
 
     this.prepareForRequest('verifying');
 
-    this.request = $
-      .post(route('account.verify'), { verification_key: inputKey })
+    this.request = $.post(route('account.verify'), {
+      verification_key: inputKey,
+    })
       .done(this.success)
       .fail(this.error);
   };
@@ -120,7 +135,11 @@ export default class UserVerification {
     this.setMessage(xhrErrorMessage(xhr));
   };
 
-  private readonly float = (float: boolean, modal: HTMLElement, referenceBottom?: number) => {
+  private readonly float = (
+    float: boolean,
+    modal: HTMLElement,
+    referenceBottom?: number,
+  ) => {
     if (float) {
       modal.classList.add('js-user-verification--center');
       modal.style.paddingTop = '';
@@ -130,15 +149,15 @@ export default class UserVerification {
     }
   };
 
-  private readonly isActive = () => this.modal?.classList.contains('js-user-verification--active');
+  private readonly isActive = () =>
+    this.modal?.classList.contains('js-user-verification--active');
 
   private isVerificationPage() {
     return document.querySelector('.js-user-verification--on-load') != null;
   }
 
-  private readonly onError = (e: { target: unknown }, xhr: JQuery.jqXHR) => (
-    this.showOnError(xhr, createClickCallback(e.target))
-  );
+  private readonly onError = (e: { target: unknown }, xhr: JQuery.jqXHR) =>
+    this.showOnError(xhr, createClickCallback(e.target));
 
   private readonly prepareForRequest = (type: string) => {
     this.request?.abort();
@@ -150,8 +169,7 @@ export default class UserVerification {
 
     this.prepareForRequest('issuing');
 
-    this.request = $
-      .post(route('account.reissue-code'))
+    this.request = $.post(route('account.reissue-code'))
       .done((data: ReissueCodeJson) => {
         this.setMessage(data.message);
       })
@@ -164,7 +182,8 @@ export default class UserVerification {
     if (core.windowSize.isMobile) {
       this.float(true, this.modal);
     } else {
-      const referenceBottom = this.reference?.getBoundingClientRect().bottom ?? 0;
+      const referenceBottom =
+        this.reference?.getBoundingClientRect().bottom ?? 0;
 
       this.float(referenceBottom < 0, this.modal, referenceBottom);
     }

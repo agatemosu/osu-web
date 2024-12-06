@@ -18,10 +18,14 @@ export default class Events extends React.Component<Props> {
   render() {
     return (
       <div className='page-extra'>
-        <h2 className='title title--page-extra'>{trans('users.show.extra.events.title_longer')}</h2>
+        <h2 className='title title--page-extra'>
+          {trans('users.show.extra.events.title_longer')}
+        </h2>
         <div className='modding-profile-list'>
           {this.props.events.length === 0 ? (
-            <div className='modding-profile-list__empty'>{trans('users.show.extra.none')}</div>
+            <div className='modding-profile-list__empty'>
+              {trans('users.show.extra.none')}
+            </div>
           ) : (
             <>
               <BeatmapsetEvents
@@ -31,7 +35,9 @@ export default class Events extends React.Component<Props> {
               />
               <a
                 className='modding-profile-list__show-more'
-                href={route('beatmapsets.events.index', { user: this.props.user.id })}
+                href={route('beatmapsets.events.index', {
+                  user: this.props.user.id,
+                })}
               >
                 {trans('users.show.extra.events.show_more')}
               </a>

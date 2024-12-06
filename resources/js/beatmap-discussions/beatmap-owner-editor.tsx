@@ -40,7 +40,10 @@ export default class BeatmapOwnerEditor extends React.Component<Props> {
   @observable private validUsers = new Map<number, UserJson>();
 
   private get canSave() {
-    return this.validUsers.size > 0 && normaliseUsername(this.inputUsername).length === 0;
+    return (
+      this.validUsers.size > 0 &&
+      normaliseUsername(this.inputUsername).length === 0
+    );
   }
 
   private get owners() {
@@ -69,7 +72,9 @@ export default class BeatmapOwnerEditor extends React.Component<Props> {
       <div className='beatmap-owner-editor'>
         <div className='beatmap-owner-editor__col'>
           <span className='beatmap-owner-editor__mode'>
-            <span className={`fal fa-fw fa-extra-mode-${this.props.beatmap.mode}`} />
+            <span
+              className={`fal fa-fw fa-extra-mode-${this.props.beatmap.mode}`}
+            />
           </span>
         </div>
 
@@ -98,7 +103,8 @@ export default class BeatmapOwnerEditor extends React.Component<Props> {
 
   @action
   private readonly handleResetClick = () => {
-    if (!confirm(trans('beatmap_discussions.owner_editor.reset_confirm'))) return;
+    if (!confirm(trans('beatmap_discussions.owner_editor.reset_confirm')))
+      return;
 
     this.editing = false;
     this.updateOwners([this.props.beatmapset.user_id]);
@@ -151,7 +157,10 @@ export default class BeatmapOwnerEditor extends React.Component<Props> {
     if (!this.editing) {
       return (
         <>
-          <button className='beatmap-owner-editor__button' onClick={this.handleStartEditingClick}>
+          <button
+            className='beatmap-owner-editor__button'
+            onClick={this.handleStartEditingClick}
+          >
             <span className='fas fa-fw fa-pen' />
           </button>
 
@@ -162,11 +171,18 @@ export default class BeatmapOwnerEditor extends React.Component<Props> {
 
     return (
       <>
-        <button className='beatmap-owner-editor__button' disabled={!this.canSave} onClick={this.handleSaveClick}>
+        <button
+          className='beatmap-owner-editor__button'
+          disabled={!this.canSave}
+          onClick={this.handleSaveClick}
+        >
           <span className='fas fa-fw fa-check' />
         </button>
 
-        <button className='beatmap-owner-editor__button' onClick={this.handleCancelEditingClick}>
+        <button
+          className='beatmap-owner-editor__button'
+          onClick={this.handleCancelEditingClick}
+        >
           <span className='fas fa-fw fa-times' />
         </button>
 
@@ -175,8 +191,16 @@ export default class BeatmapOwnerEditor extends React.Component<Props> {
     );
   }
 
-  private readonly renderOwner = (owner: UserJson, onRemoveClick: (user: UserJson) => void) => (
-    <BeatmapOwner key={owner.id} editing={this.editing} onRemoveUser={onRemoveClick} user={owner} />
+  private readonly renderOwner = (
+    owner: UserJson,
+    onRemoveClick: (user: UserJson) => void,
+  ) => (
+    <BeatmapOwner
+      key={owner.id}
+      editing={this.editing}
+      onRemoveUser={onRemoveClick}
+      user={owner}
+    />
   );
 
   private renderUsernames() {
@@ -186,7 +210,11 @@ export default class BeatmapOwnerEditor extends React.Component<Props> {
         modifiers='beatmap-owner-editor'
         showError={this.showError}
       >
-        <div className={classWithModifiers('beatmap-owner-editor-owners', { editing: this.editing })}>
+        <div
+          className={classWithModifiers('beatmap-owner-editor-owners', {
+            editing: this.editing,
+          })}
+        >
           {this.editing ? (
             <UsernameInput
               initialUsers={this.owners}
@@ -198,7 +226,13 @@ export default class BeatmapOwnerEditor extends React.Component<Props> {
               renderUser={this.renderOwner}
             />
           ) : (
-            this.owners.map((owner) => <BeatmapOwner key={owner.id} editing={this.editing} user={owner} />)
+            this.owners.map((owner) => (
+              <BeatmapOwner
+                key={owner.id}
+                editing={this.editing}
+                user={owner}
+              />
+            ))
           )}
         </div>
       </InputContainer>
@@ -209,25 +243,37 @@ export default class BeatmapOwnerEditor extends React.Component<Props> {
   private updateOwners(userIds: number[]) {
     this.updateOwnerXhr?.abort();
 
-    if (xor([...this.validUsers.keys()], this.owners.map((owner) => owner.id)).length === 0) {
+    if (
+      xor(
+        [...this.validUsers.keys()],
+        this.owners.map((owner) => owner.id),
+      ).length === 0
+    ) {
       this.editing = false;
       return;
     }
 
     this.updatingOwner = true;
 
-    this.updateOwnerXhr = $.ajax(route('beatmaps.update-owner', { beatmap: this.props.beatmap.id }), {
-      data: { user_ids: userIds },
-      method: 'POST',
-    });
+    this.updateOwnerXhr = $.ajax(
+      route('beatmaps.update-owner', { beatmap: this.props.beatmap.id }),
+      {
+        data: { user_ids: userIds },
+        method: 'POST',
+      },
+    );
     this.updateOwnerXhr
-      .done((beatmapset) => runInAction(() => {
-        this.props.discussionsState.update({ beatmapset });
-        this.editing = false;
-      }))
+      .done((beatmapset) =>
+        runInAction(() => {
+          this.props.discussionsState.update({ beatmapset });
+          this.editing = false;
+        }),
+      )
       .fail(onError)
-      .always(action(() => {
-        this.updatingOwner = false;
-      }));
+      .always(
+        action(() => {
+          this.updatingOwner = false;
+        }),
+      );
   }
 }

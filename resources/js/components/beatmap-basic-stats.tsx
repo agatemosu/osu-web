@@ -10,8 +10,13 @@ import { trans } from 'utils/lang';
 
 const bn = 'beatmap-basic-stats';
 
-const statKeys = ['total_length', 'bpm', 'count_circles', 'count_sliders'] as const;
-type StatKey = typeof statKeys[number];
+const statKeys = [
+  'total_length',
+  'bpm',
+  'count_circles',
+  'count_sliders',
+] as const;
+type StatKey = (typeof statKeys)[number];
 
 interface Props {
   beatmap: BeatmapExtendedJson;
@@ -21,11 +26,7 @@ interface Props {
 @observer
 export default class BeatmapBasicStats extends React.Component<Props> {
   render() {
-    return (
-      <div className={bn}>
-        {statKeys.map(this.renderEntry)}
-      </div>
-    );
+    return <div className={bn}>{statKeys.map(this.renderEntry)}</div>;
   }
 
   private readonly renderEntry = (key: StatKey) => {

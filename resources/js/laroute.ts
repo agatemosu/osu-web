@@ -13,6 +13,10 @@ Ziggy.url = siteUrl.origin;
 type RouteName = keyof RouteList;
 type Params<T extends RouteName> = Parameters<typeof ziggyRoute<T>>[1];
 
-export function route<T extends RouteName>(name: T, params?: Params<T>, absolute?: boolean) {
+export function route<T extends RouteName>(
+  name: T,
+  params?: Params<T>,
+  absolute?: boolean,
+) {
   return ziggyRoute<T>(name, params, absolute, Ziggy);
 }

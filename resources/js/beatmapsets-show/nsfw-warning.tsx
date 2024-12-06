@@ -36,7 +36,7 @@ export default class NsfwWarning extends React.PureComponent<Props> {
               {trans('beatmapsets.show.nsfw_warning.buttons.show')}
             </button>
 
-            {core.currentUser != null &&
+            {core.currentUser != null && (
               <button
                 className='nsfw-warning__button nsfw-warning__button--show'
                 onClick={this.disableWarning}
@@ -44,9 +44,12 @@ export default class NsfwWarning extends React.PureComponent<Props> {
               >
                 {trans('beatmapsets.show.nsfw_warning.buttons.disable')}
               </button>
-            }
+            )}
 
-            <a className='nsfw-warning__button' href={route('beatmapsets.index')}>
+            <a
+              className='nsfw-warning__button'
+              href={route('beatmapsets.index')}
+            >
               {trans('beatmapsets.show.nsfw_warning.buttons.listing')}
             </a>
           </div>

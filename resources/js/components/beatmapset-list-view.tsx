@@ -31,16 +31,24 @@ export default class BeatmapsetListView extends React.PureComponent<Props> {
     return (
       <a
         className='beatmapset-list-view'
-        href={route('beatmapsets.show', { beatmapset: this.props.beatmapset.id })}
+        href={route('beatmapsets.show', {
+          beatmapset: this.props.beatmapset.id,
+        })}
       >
         <div className='beatmapset-list-view__cover-container'>
-          <BeatmapsetCover beatmapset={this.props.beatmapset} modifiers='full' size='card' />
+          <BeatmapsetCover
+            beatmapset={this.props.beatmapset}
+            modifiers='full'
+            size='card'
+          />
         </div>
         <div className='beatmapset-list-view__content'>
           <div className='beatmapset-list-view__title u-ellipsis-overflow'>
             {getTitle(this.props.beatmapset)}
             <span className='beatmapset-list-view__artist'>
-              {trans('users.show.extra.beatmaps.by_artist', { artist: getArtist(this.props.beatmapset) })}
+              {trans('users.show.extra.beatmaps.by_artist', {
+                artist: getArtist(this.props.beatmapset),
+              })}
             </span>
           </div>
 

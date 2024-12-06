@@ -18,20 +18,25 @@ interface BeatmapsetDiscussionPostDefaultAttributes {
   user_id: number;
 }
 
-type BeatmapsetDiscussionPostBase = BeatmapsetDiscussionPostDefaultAttributes & Partial<BeatmapsetDiscussionPostAvailableIncludes>;
+type BeatmapsetDiscussionPostBase = BeatmapsetDiscussionPostDefaultAttributes &
+  Partial<BeatmapsetDiscussionPostAvailableIncludes>;
 
-export type BeatmapsetDiscussionMessagePostJson = BeatmapsetDiscussionPostBase & {
-  message: string;
-  system: false;
-};
-
-export type BeatmapsetDiscussionSystemPostJson = BeatmapsetDiscussionPostBase & {
-  message: {
-    type: 'resolved';
-    value: boolean;
+export type BeatmapsetDiscussionMessagePostJson =
+  BeatmapsetDiscussionPostBase & {
+    message: string;
+    system: false;
   };
-  system: true;
-};
 
-type BeatmapsetDiscussionPostJson = BeatmapsetDiscussionMessagePostJson | BeatmapsetDiscussionSystemPostJson;
+export type BeatmapsetDiscussionSystemPostJson =
+  BeatmapsetDiscussionPostBase & {
+    message: {
+      type: 'resolved';
+      value: boolean;
+    };
+    system: true;
+  };
+
+type BeatmapsetDiscussionPostJson =
+  | BeatmapsetDiscussionMessagePostJson
+  | BeatmapsetDiscussionSystemPostJson;
 export default BeatmapsetDiscussionPostJson;

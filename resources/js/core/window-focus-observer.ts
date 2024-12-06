@@ -9,6 +9,9 @@ export default class WindowFocusObserver {
   constructor() {
     makeObservable(this);
 
-    $(window).on('blur focus', action(() => this.hasFocus = document.hasFocus()));
+    $(window).on(
+      'blur focus',
+      action(() => (this.hasFocus = document.hasFocus())),
+    );
   }
 }

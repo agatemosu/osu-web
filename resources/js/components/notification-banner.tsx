@@ -18,7 +18,9 @@ export default class NotificationBanner extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
 
-    const portalRoot = (window.newBody ?? document.body).querySelector('.js-notification-banners');
+    const portalRoot = (window.newBody ?? document.body).querySelector(
+      '.js-notification-banners',
+    );
     if (portalRoot == null) {
       throw new Error('Notification banner container is missing');
     }

@@ -5,10 +5,12 @@ import { codes } from 'micromark-util-symbol/codes';
 import type { Code, Effects, State } from 'micromark-util-types';
 
 function isEol(code: Code) {
-  return code === codes.carriageReturn
-    || code === codes.lineFeed
-    || code === codes.carriageReturnLineFeed
-    || code === codes.eof;
+  return (
+    code === codes.carriageReturn ||
+    code === codes.lineFeed ||
+    code === codes.carriageReturnLineFeed ||
+    code === codes.eof
+  );
 }
 
 function tokenize(effects: Effects, ok: State, nok: State) {
@@ -129,7 +131,11 @@ function tokenize(effects: Effects, ok: State, nok: State) {
   }
 
   function consumeTitleEscape(code: Code): State | void {
-    if (code === codes.backslash || code === codes.leftParenthesis || code === codes.rightParenthesis) {
+    if (
+      code === codes.backslash ||
+      code === codes.leftParenthesis ||
+      code === codes.rightParenthesis
+    ) {
       effects.consume(code);
 
       return consumeTitle;

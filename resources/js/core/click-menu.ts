@@ -10,7 +10,11 @@ export default class ClickMenu {
 
   constructor() {
     $(document).on('click', '.js-click-menu--close', this.close);
-    $(document).on('click', '.js-click-menu[data-click-menu-target]', this.toggle);
+    $(document).on(
+      'click',
+      '.js-click-menu[data-click-menu-target]',
+      this.toggle,
+    );
     $(document).on('mousedown', this.onDocumentMousedown);
     $(document).on('mouseup', this.onDocumentMouseup);
     document.addEventListener('turbo:load', this.restoreSaved);
@@ -23,16 +27,22 @@ export default class ClickMenu {
 
   closestMenuId(child: Element | null | undefined) {
     if (child != null) {
-      return $(child).parents('[data-click-menu-id]').attr('data-click-menu-id');
+      return $(child)
+        .parents('[data-click-menu-id]')
+        .attr('data-click-menu-id');
     }
   }
 
   menu(id: string | null | undefined) {
-    return document.querySelector(`.js-click-menu[data-click-menu-id${id == null ? '' : `='${id}'`}]`);
+    return document.querySelector(
+      `.js-click-menu[data-click-menu-id${id == null ? '' : `='${id}'`}]`,
+    );
   }
 
   menuLink(id: string | null | undefined) {
-    return document.querySelector(`.js-click-menu[data-click-menu-target${id == null ? '' : `='${id}'`}]`);
+    return document.querySelector(
+      `.js-click-menu[data-click-menu-target${id == null ? '' : `='${id}'`}]`,
+    );
   }
 
   restoreSaved = () => {
@@ -53,7 +63,9 @@ export default class ClickMenu {
     this.current = target;
 
     const tree = this.tree();
-    const menus = document.querySelectorAll('.js-click-menu[data-click-menu-id]');
+    const menus = document.querySelectorAll(
+      '.js-click-menu[data-click-menu-id]',
+    );
     let shownMenu: HTMLElement | null = null;
     let validCurrent = false;
 
@@ -84,7 +96,11 @@ export default class ClickMenu {
       this.current = null;
     }
 
-    $.publish('click-menu:current', { previousTree, target: this.current, tree });
+    $.publish('click-menu:current', {
+      previousTree,
+      target: this.current,
+      tree,
+    });
 
     const toFocus = shownMenu?.querySelector('.js-click-menu--autofocus');
 
@@ -93,7 +109,9 @@ export default class ClickMenu {
     }
   };
 
-  toggle = (e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>) => {
+  toggle = (
+    e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>,
+  ) => {
     const menu = e.currentTarget;
     const tree = this.tree();
 
@@ -133,11 +151,20 @@ export default class ClickMenu {
     return tree;
   };
 
-  private readonly onDocumentMousedown = (e: JQuery.MouseDownEvent<Document, unknown, Document, HTMLElement | Document>) => {
+  private readonly onDocumentMousedown = (
+    e: JQuery.MouseDownEvent<
+      Document,
+      unknown,
+      Document,
+      HTMLElement | Document
+    >,
+  ) => {
     this.documentMouseEventTarget = e.button === 0 ? e.target : null;
   };
 
-  private readonly onDocumentMouseup = (e: JQuery.MouseUpEvent<Document, unknown, Document, HTMLElement | Document>) => {
+  private readonly onDocumentMouseup = (
+    e: JQuery.MouseUpEvent<Document, unknown, Document, HTMLElement | Document>,
+  ) => {
     if (this.documentMouseEventTarget !== e.target) return;
     if (e.button !== 0) return;
     if (isModalShowing()) return;

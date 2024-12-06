@@ -33,24 +33,22 @@ export default class RoomList extends React.Component<Props> {
   }
 
   render() {
-    const emptyMessage = this.props.typeGroup != null
-      ? trans('multiplayer.empty._', {
-        type_group: trans(`multiplayer.empty.${this.props.typeGroup}`),
-      })
-      : trans('rankings.seasons.empty');
-
+    const emptyMessage =
+      this.props.typeGroup != null
+        ? trans('multiplayer.empty._', {
+            type_group: trans(`multiplayer.empty.${this.props.typeGroup}`),
+          })
+        : trans('rankings.seasons.empty');
 
     if (this.props.store.rooms.length === 0) {
-      return (
-        <div className='room-list'>
-          {emptyMessage}
-        </div>
-      );
+      return <div className='room-list'>{emptyMessage}</div>;
     }
 
     return (
       <div className='room-list'>
-        {this.props.store.rooms.map((room) => <MultiplayerRoom key={room.id} room={room} />)}
+        {this.props.store.rooms.map((room) => (
+          <MultiplayerRoom key={room.id} room={room} />
+        ))}
         <ShowMoreLink
           callback={this.handleShowMore}
           hasMore={this.hasMore}
@@ -68,10 +66,15 @@ export default class RoomList extends React.Component<Props> {
 
     const url = this.props.showMoreUrl;
     void $.getJSON(url, { cursor_string: this.props.store.cursorString })
-      .done(action((response: RoomListJson) => {
-        this.props.store.updateWithJson(response);
-      })).always(action(() => {
-        this.loading = false;
-      }));
+      .done(
+        action((response: RoomListJson) => {
+          this.props.store.updateWithJson(response);
+        }),
+      )
+      .always(
+        action(() => {
+          this.loading = false;
+        }),
+      );
   };
 }

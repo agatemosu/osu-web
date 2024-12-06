@@ -31,14 +31,22 @@ export class Client {
 
     const xhr = $.ajax({
       method: 'DELETE',
-      url: route('oauth.authorized-clients.destroy', { authorized_client: this.id }),
+      url: route('oauth.authorized-clients.destroy', {
+        authorized_client: this.id,
+      }),
     }) as JQuery.jqXHR<void>;
 
-    xhr.done(action(() => {
-      this.revoked = true;
-    })).always(action(() => {
-      this.isRevoking = false;
-    }));
+    xhr
+      .done(
+        action(() => {
+          this.revoked = true;
+        }),
+      )
+      .always(
+        action(() => {
+          this.isRevoking = false;
+        }),
+      );
 
     return xhr;
   }

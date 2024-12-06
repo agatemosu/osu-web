@@ -13,7 +13,8 @@ interface Props {
 export default function TimeWithTooltip(props: Props) {
   const { dateTime, format = 'll', relative = false, ...otherProps } = props;
 
-  const dateTimeAttr = typeof dateTime === 'string' ? dateTime : dateTime.format();
+  const dateTimeAttr =
+    typeof dateTime === 'string' ? dateTime : dateTime.format();
 
   let className: string;
   let label = dateTimeAttr;
@@ -23,12 +24,18 @@ export default function TimeWithTooltip(props: Props) {
   } else {
     className = 'js-tooltip-time';
 
-    const dateTimeMoment = typeof dateTime === 'string' ? moment(dateTime) : dateTime;
+    const dateTimeMoment =
+      typeof dateTime === 'string' ? moment(dateTime) : dateTime;
     label = dateTimeMoment.format(format);
   }
 
   return (
-    <time className={className} dateTime={dateTimeAttr} title={dateTimeAttr} {...otherProps}>
+    <time
+      className={className}
+      dateTime={dateTimeAttr}
+      title={dateTimeAttr}
+      {...otherProps}
+    >
       {label}
     </time>
   );

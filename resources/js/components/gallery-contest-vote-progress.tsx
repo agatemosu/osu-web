@@ -12,7 +12,10 @@ interface State {
   voteCount: number;
 }
 
-export default class GalleryContestVoteProgress extends React.PureComponent<Props, State> {
+export default class GalleryContestVoteProgress extends React.PureComponent<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
 
@@ -43,14 +46,17 @@ export default class GalleryContestVoteProgress extends React.PureComponent<Prop
     );
   }
 
-  private readonly getVoteState = (): State => JSON.parse(this.voteSummary().dataset.contestVoteSummary ?? '');
+  private readonly getVoteState = (): State =>
+    JSON.parse(this.voteSummary().dataset.contestVoteSummary ?? '');
 
   private readonly syncState = () => {
     this.setState(this.getVoteState());
   };
 
   private readonly voteSummary = () => {
-    const contestVoteSummary = document.querySelector('.js-contest-vote-summary');
+    const contestVoteSummary = document.querySelector(
+      '.js-contest-vote-summary',
+    );
 
     if (contestVoteSummary instanceof HTMLElement) {
       return contestVoteSummary;

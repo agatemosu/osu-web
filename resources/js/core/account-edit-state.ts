@@ -16,9 +16,15 @@ export default class AccountEditState {
   private timeout?: number;
   private xhr?: JQuery.jqXHR<CurrentUserJson | null>;
 
-  constructor(private readonly container: HTMLElement, private readonly core: OsuCore) {
+  constructor(
+    private readonly container: HTMLElement,
+    private readonly core: OsuCore,
+  ) {
     this.debouncedUpdate = debounce(this.update, 1000);
-    if (requiresName.has(this.dataset.accountEditType) && this.dataset.field == null) {
+    if (
+      requiresName.has(this.dataset.accountEditType) &&
+      this.dataset.field == null
+    ) {
       throw new Error('data-field required');
     }
   }
@@ -70,7 +76,9 @@ export default class AccountEditState {
       case 'multi': {
         const data: Partial<Record<string, boolean>> = {};
 
-        for (const checkbox of this.container.querySelectorAll<HTMLInputElement>(inputSelector)) {
+        for (const checkbox of this.container.querySelectorAll<HTMLInputElement>(
+          inputSelector,
+        )) {
           data[checkbox.name] = checkbox.checked;
         }
 
@@ -87,7 +95,9 @@ export default class AccountEditState {
         break;
 
       case 'radio':
-        for (const checkbox of this.container.querySelectorAll<HTMLInputElement>('input[type="radio"]')) {
+        for (const checkbox of this.container.querySelectorAll<HTMLInputElement>(
+          'input[type="radio"]',
+        )) {
           if (checkbox.checked) {
             value = checkbox.value;
             break;
@@ -101,7 +111,8 @@ export default class AccountEditState {
         break;
 
       default: {
-        const input = this.container.querySelector<HTMLInputElement>(inputSelector);
+        const input =
+          this.container.querySelector<HTMLInputElement>(inputSelector);
         if (input == null) {
           throw new Error('missing input');
         }
@@ -119,15 +130,17 @@ export default class AccountEditState {
       method: 'PUT',
     });
 
-    this.xhr.done((response) => {
-      if (this.dataset.userPreferencesUpdate === '1' && response != null) {
-        this.core.setCurrentUser(response);
-      }
+    this.xhr
+      .done((response) => {
+        if (this.dataset.userPreferencesUpdate === '1' && response != null) {
+          this.core.setCurrentUser(response);
+        }
 
-      this.saved();
-    }).fail((xhr) => {
-      this.clear();
-      onError(xhr);
-    });
+        this.saved();
+      })
+      .fail((xhr) => {
+        this.clear();
+        onError(xhr);
+      });
   };
 }

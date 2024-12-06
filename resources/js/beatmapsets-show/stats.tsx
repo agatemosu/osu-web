@@ -59,25 +59,27 @@ export default class Stats extends React.Component<Props> {
 
         <div className='beatmapset-stats__row beatmapset-stats__row--advanced'>
           <table className='beatmap-stats-table'>
-            <tbody>
-              {this.statKeys.map(this.renderStat)}
-            </tbody>
+            <tbody>{this.statKeys.map(this.renderStat)}</tbody>
           </table>
         </div>
 
-        {this.props.controller.beatmapset.is_scoreable &&
+        {this.props.controller.beatmapset.is_scoreable && (
           <div className='beatmapset-stats__row beatmapset-stats__row--rating'>
-            <div className='beatmapset-stats__rating-header'>{trans('beatmapsets.show.stats.user-rating')}</div>
+            <div className='beatmapset-stats__rating-header'>
+              {trans('beatmapsets.show.stats.user-rating')}
+            </div>
 
             {this.renderRatingBar()}
 
-            <div className='beatmapset-stats__rating-header'>{trans('beatmapsets.show.stats.rating-spread')}</div>
+            <div className='beatmapset-stats__rating-header'>
+              {trans('beatmapsets.show.stats.rating-spread')}
+            </div>
 
             <div className='beatmapset-stats__rating-chart'>
               {this.renderRatingChart()}
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }
@@ -124,7 +126,7 @@ export default class Stats extends React.Component<Props> {
             <div
               className='stacked-bar-chart__entry'
               style={{
-                height: `${100 * count / maxValue}%`,
+                height: `${(100 * count) / maxValue}%`,
               }}
             />
           </div>
@@ -133,7 +135,7 @@ export default class Stats extends React.Component<Props> {
     );
   }
 
-  private readonly renderStat = (key: typeof this.statKeys[number]) => {
+  private readonly renderStat = (key: (typeof this.statKeys)[number]) => {
     const rawValue = this.props.controller.currentBeatmap[key];
     let label: string = key;
     let value: string;
@@ -154,7 +156,9 @@ export default class Stats extends React.Component<Props> {
 
     return (
       <tr key={key}>
-        <th className='beatmap-stats-table__label'>{trans(`beatmapsets.show.stats.${label}`)}</th>
+        <th className='beatmap-stats-table__label'>
+          {trans(`beatmapsets.show.stats.${label}`)}
+        </th>
 
         <td className='beatmap-stats-table__bar'>
           <Bar

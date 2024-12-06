@@ -18,7 +18,9 @@ interface Props {
 }
 
 @observer
-export default class LazyLoad extends React.Component<React.PropsWithChildren<Props>> {
+export default class LazyLoad extends React.Component<
+  React.PropsWithChildren<Props>
+> {
   static readonly contextType = LazyLoadContext;
   declare context: React.ContextType<typeof LazyLoadContext>;
 
@@ -31,7 +33,11 @@ export default class LazyLoad extends React.Component<React.PropsWithChildren<Pr
 
   @computed
   private get ready() {
-    return this.hasUpdated || this.skipLazyLoad || this.loaded && !(this.context?.scrolling ?? false);
+    return (
+      this.hasUpdated ||
+      this.skipLazyLoad ||
+      (this.loaded && !(this.context?.scrolling ?? false))
+    );
   }
 
   constructor(props: React.PropsWithChildren<Props>) {
@@ -40,13 +46,16 @@ export default class LazyLoad extends React.Component<React.PropsWithChildren<Pr
     this.loaded = this.skipLazyLoad;
 
     if (!this.skipLazyLoad) {
-      this.observer = new IntersectionObserver((entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          this.load();
-        }
-      }, {
-        rootMargin: '400px 0px 400px 0px',
-      });
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            this.load();
+          }
+        },
+        {
+          rootMargin: '400px 0px 400px 0px',
+        },
+      );
     }
 
     makeObservable(this);
@@ -58,8 +67,18 @@ export default class LazyLoad extends React.Component<React.PropsWithChildren<Pr
     this.observer?.observe(this.ref.current);
   }
 
-  componentDidUpdate(_prevProps: unknown, _prevState: unknown, snapshot?: Snapshot) {
-    if (this.hasUpdated || this.skipLazyLoad || !this.loaded || snapshot == null) return;
+  componentDidUpdate(
+    _prevProps: unknown,
+    _prevState: unknown,
+    snapshot?: Snapshot,
+  ) {
+    if (
+      this.hasUpdated ||
+      this.skipLazyLoad ||
+      !this.loaded ||
+      snapshot == null
+    )
+      return;
 
     if (this.context == null) {
       throw new Error('LazyLoadContext is missing.');
@@ -80,7 +99,10 @@ export default class LazyLoad extends React.Component<React.PropsWithChildren<Pr
 
   render() {
     return (
-      <div ref={this.ref} className={classWithModifiers('lazy-load', { loading: !this.ready })}>
+      <div
+        ref={this.ref}
+        className={classWithModifiers('lazy-load', { loading: !this.ready })}
+      >
         {this.ready ? this.renderLoaded() : this.renderNotLoaded()}
       </div>
     );
@@ -90,12 +112,15 @@ export default class LazyLoad extends React.Component<React.PropsWithChildren<Pr
   private readonly load = () => {
     this.error = false;
     this.observer?.disconnect();
-    this.props.onLoad()
-      .then(action(() => {
-        this.loaded = true;
-        this.error = false;
-      }))
-      .catch(action(() => this.error = true));
+    this.props
+      .onLoad()
+      .then(
+        action(() => {
+          this.loaded = true;
+          this.error = false;
+        }),
+      )
+      .catch(action(() => (this.error = true)));
   };
 
   private renderLoaded() {
@@ -111,11 +136,17 @@ export default class LazyLoad extends React.Component<React.PropsWithChildren<Pr
       <div className='lazy-load__error'>
         <p>{trans('errors.load_failed')}</p>
         <div className='lazy-load__button'>
-          <button className='btn-osu-big btn-osu-big--rounded-thin' onClick={this.load} type='button'>
+          <button
+            className='btn-osu-big btn-osu-big--rounded-thin'
+            onClick={this.load}
+            type='button'
+          >
             {trans('common.buttons.retry')}
           </button>
         </div>
       </div>
-    ) : <Spinner />;
+    ) : (
+      <Spinner />
+    );
   }
 }

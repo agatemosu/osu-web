@@ -28,7 +28,12 @@ export default class ImageLink extends React.Component<Props> {
     const content = (
       <>
         {!this.loaded && this.renderSpinner()}
-        <img {...this.props.node.properties} loading='lazy' onLoad={this.handleOnLoad} src={src} />
+        <img
+          {...this.props.node.properties}
+          loading='lazy'
+          onLoad={this.handleOnLoad}
+          src={src}
+        />
       </>
     );
 
@@ -36,17 +41,20 @@ export default class ImageLink extends React.Component<Props> {
       // declaring the context at the class level causes the component to be undefined when used by ReactMarkdown.
       // TODO: render something else on fail?
       <LinkContext.Consumer>
-        {({ inLink }) => (
+        {({ inLink }) =>
           inLink ? (
-            <span className='beatmapset-discussion-image-link'>
-              {content}
-            </span>
+            <span className='beatmapset-discussion-image-link'>{content}</span>
           ) : (
-            <a className='beatmapset-discussion-image-link' href={src} rel='nofollow noreferrer' target='_blank'>
+            <a
+              className='beatmapset-discussion-image-link'
+              href={src}
+              rel='nofollow noreferrer'
+              target='_blank'
+            >
               {content}
             </a>
           )
-        )}
+        }
       </LinkContext.Consumer>
     );
   }
@@ -57,6 +65,10 @@ export default class ImageLink extends React.Component<Props> {
   };
 
   private renderSpinner() {
-    return <span className='beatmapset-discussion-image-link__spinner'><Spinner /></span>;
+    return (
+      <span className='beatmapset-discussion-image-link__spinner'>
+        <Spinner />
+      </span>
+    );
   }
 }

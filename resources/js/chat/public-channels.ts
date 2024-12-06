@@ -8,7 +8,7 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 export default class PublicChannels {
   @observable channels?: ChannelJson[];
   @observable error = false;
-  @observable xhr: ReturnType<typeof getPublicChannels> | null= null;
+  @observable xhr: ReturnType<typeof getPublicChannels> | null = null;
 
   constructor() {
     makeObservable(this);
@@ -19,14 +19,20 @@ export default class PublicChannels {
     if (this.xhr != null) return;
 
     this.xhr = getPublicChannels()
-      .done((channels) => runInAction(() => {
-        this.channels = channels;
-      }))
-      .fail(action(() => {
-        this.error = true;
-      }))
-      .always(action(() => {
-        this.xhr = null;
-      }));
+      .done((channels) =>
+        runInAction(() => {
+          this.channels = channels;
+        }),
+      )
+      .fail(
+        action(() => {
+          this.error = true;
+        }),
+      )
+      .always(
+        action(() => {
+          this.xhr = null;
+        }),
+      );
   }
 }

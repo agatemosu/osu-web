@@ -2,7 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ClickToCopy from 'components/click-to-copy';
-import StringWithComponent, { Props as StringWithComponentProps } from 'components/string-with-component';
+import StringWithComponent, {
+  Props as StringWithComponentProps,
+} from 'components/string-with-component';
 import TimeWithTooltip from 'components/time-with-tooltip';
 import UserExtendedJson from 'interfaces/user-extended-json';
 import { route } from 'laroute';
@@ -14,7 +16,13 @@ import { classWithModifiers } from 'utils/css';
 import { trans, transChoice } from 'utils/lang';
 
 // these are ordered in the order they appear in.
-const textKeys = ['join_date', 'last_visit', 'playstyle', 'post_count', 'comments_count'] as const;
+const textKeys = [
+  'join_date',
+  'last_visit',
+  'playstyle',
+  'post_count',
+  'comments_count',
+] as const;
 type TextKey = (typeof textKeys)[number];
 
 const bioKeys = ['location', 'interests', 'occupation'] as const;
@@ -65,13 +73,28 @@ const linkMapping: Record<LinkKey, (user: UserExtendedJson) => LinkProps> = {
   }),
 };
 
-const textMapping: Record<TextKey, (user: UserExtendedJson) => StringWithComponentProps> = {
+const textMapping: Record<
+  TextKey,
+  (user: UserExtendedJson) => StringWithComponentProps
+> = {
   comments_count: (user: UserExtendedJson) => {
-    const count = transChoice('users.show.comments_count.count', user.comments_count ?? 0);
+    const count = transChoice(
+      'users.show.comments_count.count',
+      user.comments_count ?? 0,
+    );
     const url = route('comments.index', { user_id: user.id });
 
     return {
-      mappings: { link: <a className={classWithModifiers('profile-links__value', 'link')} href={url}>{count}</a> },
+      mappings: {
+        link: (
+          <a
+            className={classWithModifiers('profile-links__value', 'link')}
+            href={url}
+          >
+            {count}
+          </a>
+        ),
+      },
       pattern: trans('users.show.comments_count._'),
     };
   },
@@ -110,19 +133,25 @@ const textMapping: Record<TextKey, (user: UserExtendedJson) => StringWithCompone
     }
 
     return {
-      mappings: { date: (
-        <span className='profile-links__value'>
-          <TimeWithTooltip dateTime={user.last_visit ?? ''} relative />
-        </span>
-      ) },
+      mappings: {
+        date: (
+          <span className='profile-links__value'>
+            <TimeWithTooltip dateTime={user.last_visit ?? ''} relative />
+          </span>
+        ),
+      },
       pattern: trans('users.show.lastvisit'),
     };
   },
   playstyle: (user: UserExtendedJson) => {
-    const playsWith = user.playstyle.map((s) => trans(`common.device.${s}`)).join(', ');
+    const playsWith = user.playstyle
+      .map((s) => trans(`common.device.${s}`))
+      .join(', ');
 
     return {
-      mappings: { devices: <span className='profile-links__value'>{playsWith}</span> },
+      mappings: {
+        devices: <span className='profile-links__value'>{playsWith}</span>,
+      },
       pattern: trans('users.show.plays_with'),
     };
   },
@@ -131,7 +160,16 @@ const textMapping: Record<TextKey, (user: UserExtendedJson) => StringWithCompone
     const url = route('users.posts', { user: user.id });
 
     return {
-      mappings: { link: <a className={classWithModifiers('profile-links__value', 'link')} href={url}>{count}</a> },
+      mappings: {
+        link: (
+          <a
+            className={classWithModifiers('profile-links__value', 'link')}
+            href={url}
+          >
+            {count}
+          </a>
+        ),
+      },
       pattern: trans('users.show.post_count._'),
     };
   },
@@ -144,13 +182,14 @@ function Link(props: LinkProps) {
         <span className={`fa-fw ${props.icon}`} />
       </span>
       {props.url != null ? (
-        <a className='profile-links__value profile-links__value--link' href={props.url}>
+        <a
+          className='profile-links__value profile-links__value--link'
+          href={props.url}
+        >
           {props.text}
         </a>
       ) : (
-        <span className='profile-links__value'>
-          {props.text}
-        </span>
+        <span className='profile-links__value'>{props.text}</span>
       )}
     </div>
   );
@@ -162,16 +201,27 @@ export default class Links extends React.PureComponent<Props> {
       textKeys.map(this.renderText),
       bioKeys.map(this.renderLink),
       mediaKeys.map(this.renderLink),
-    ].map((row) => compact(row)).filter((x) => x.length > 0);
+    ]
+      .map((row) => compact(row))
+      .filter((x) => x.length > 0);
 
     return (
       <div className='profile-links'>
         {rows.map((row, index) => (
-          <div key={index} className={`profile-links__row profile-links__row--${index}`}>{row}</div>
+          <div
+            key={index}
+            className={`profile-links__row profile-links__row--${index}`}
+          >
+            {row}
+          </div>
         ))}
         {this.props.user.id === core.currentUser?.id && (
           <div className='profile-links__edit'>
-            <a className='btn-circle btn-circle--page-toggle' href={route('account.edit')} title={trans('users.show.page.button')}>
+            <a
+              className='btn-circle btn-circle--page-toggle'
+              href={route('account.edit')}
+              title={trans('users.show.page.button')}
+            >
               <span className='fas fa-pencil-alt' />
             </a>
           </div>

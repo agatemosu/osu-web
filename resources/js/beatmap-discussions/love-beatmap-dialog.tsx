@@ -12,11 +12,15 @@ import * as React from 'react';
 import { onError } from 'utils/ajax';
 import { group as groupBeatmaps } from 'utils/beatmap-helper';
 import { trans } from 'utils/lang';
-import { hideLoadingOverlay, showImmediateLoadingOverlay } from 'utils/loading-overlay';
+import {
+  hideLoadingOverlay,
+  showImmediateLoadingOverlay,
+} from 'utils/loading-overlay';
 import DiscussionsState from './discussions-state';
 
 interface Props {
-  beatmapset: BeatmapsetExtendedJson & Required<Pick<BeatmapsetExtendedJson, 'beatmaps'>>;
+  beatmapset: BeatmapsetExtendedJson &
+    Required<Pick<BeatmapsetExtendedJson, 'beatmaps'>>;
   discussionsState: DiscussionsState;
   onClose: () => void;
 }
@@ -24,11 +28,14 @@ interface Props {
 @observer
 export default class LoveBeatmapDialog extends React.Component<Props> {
   @observable private readonly selectedBeatmapIds: Set<number>;
-  @observable private xhr: JQuery.jqXHR<BeatmapsetWithDiscussionsJson> | null = null;
+  @observable private xhr: JQuery.jqXHR<BeatmapsetWithDiscussionsJson> | null =
+    null;
 
   @computed
   private get beatmaps() {
-    return this.props.beatmapset.beatmaps.filter((beatmap) => beatmap.deleted_at == null);
+    return this.props.beatmapset.beatmaps.filter(
+      (beatmap) => beatmap.deleted_at == null,
+    );
   }
 
   @computed
@@ -39,7 +46,9 @@ export default class LoveBeatmapDialog extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
-    this.selectedBeatmapIds = new Set(this.beatmaps.map((beatmap) => beatmap.id));
+    this.selectedBeatmapIds = new Set(
+      this.beatmaps.map((beatmap) => beatmap.id),
+    );
 
     makeObservable(this);
   }
@@ -56,7 +65,9 @@ export default class LoveBeatmapDialog extends React.Component<Props> {
         </div>
 
         <div className='love-beatmap-dialog__row love-beatmap-dialog__row--content'>
-          {[...this.groupedBeatmaps].map(([mode, beatmaps]) => this.renderDiffMode(mode, beatmaps))}
+          {[...this.groupedBeatmaps].map(([mode, beatmaps]) =>
+            this.renderDiffMode(mode, beatmaps),
+          )}
         </div>
 
         <div className='love-beatmap-dialog__row love-beatmap-dialog__row--footer'>
@@ -83,8 +94,12 @@ export default class LoveBeatmapDialog extends React.Component<Props> {
 
   private readonly checkIsModeSelected = (mode: Ruleset) => {
     const modeBeatmaps = this.groupedBeatmaps.get(mode) ?? [];
-    const isAllSelected = modeBeatmaps.every((beatmap) => this.selectedBeatmapIds.has(beatmap.id));
-    const isAllUnselected = modeBeatmaps.every((beatmap) => !this.selectedBeatmapIds.has(beatmap.id));
+    const isAllSelected = modeBeatmaps.every((beatmap) =>
+      this.selectedBeatmapIds.has(beatmap.id),
+    );
+    const isAllUnselected = modeBeatmaps.every(
+      (beatmap) => !this.selectedBeatmapIds.has(beatmap.id),
+    );
 
     if (!isAllSelected && !isAllUnselected) {
       return null;
@@ -94,7 +109,9 @@ export default class LoveBeatmapDialog extends React.Component<Props> {
   };
 
   @action
-  private readonly handleCheckboxDifficulty = (e: React.ChangeEvent<HTMLInputElement>) => {
+  private readonly handleCheckboxDifficulty = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const beatmapId = parseInt(e.target.value, 10);
 
     if (this.selectedBeatmapIds.has(beatmapId)) {
@@ -104,7 +121,9 @@ export default class LoveBeatmapDialog extends React.Component<Props> {
     }
   };
 
-  private readonly handleCheckboxMode = (e: React.ChangeEvent<HTMLInputElement>) => {
+  private readonly handleCheckboxMode = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const mode = e.target.value as Ruleset;
     const modeBeatmaps = this.groupedBeatmaps.get(mode) ?? [];
 
@@ -114,29 +133,37 @@ export default class LoveBeatmapDialog extends React.Component<Props> {
 
   @action
   private readonly handleSubmit = () => {
-    if (this.xhr != null
-      || this.selectedBeatmapIds.size === 0
-      || !confirm(trans('beatmaps.nominations.love_confirm'))) {
+    if (
+      this.xhr != null ||
+      this.selectedBeatmapIds.size === 0 ||
+      !confirm(trans('beatmaps.nominations.love_confirm'))
+    ) {
       return;
     }
 
     showImmediateLoadingOverlay();
 
-    const url = route('beatmapsets.love', { beatmapset: this.props.beatmapset.id });
+    const url = route('beatmapsets.love', {
+      beatmapset: this.props.beatmapset.id,
+    });
     const params = {
       data: { beatmap_ids: [...this.selectedBeatmapIds] },
       method: 'PUT',
     };
 
     this.xhr = $.ajax(url, params);
-    this.xhr.done((beatmapset) => {
-      this.props.discussionsState.update({ beatmapset });
-      this.props.onClose();
-    }).fail(onError)
-      .always(action(() => {
-        this.xhr = null;
-        hideLoadingOverlay();
-      }));
+    this.xhr
+      .done((beatmapset) => {
+        this.props.discussionsState.update({ beatmapset });
+        this.props.onClose();
+      })
+      .fail(onError)
+      .always(
+        action(() => {
+          this.xhr = null;
+          hideLoadingOverlay();
+        }),
+      );
   };
 
   private renderDiffMode(mode: Ruleset, beatmaps: BeatmapJson[]) {

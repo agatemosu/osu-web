@@ -5,7 +5,12 @@ import type Constructs from 'micromark-core-commonmark';
 import type { Processor } from 'unified';
 import add from './add';
 
-export type DisabledType = 'chat' | 'chatPlain' | 'default' | 'editor' | 'reviews';
+export type DisabledType =
+  | 'chat'
+  | 'chatPlain'
+  | 'default'
+  | 'editor'
+  | 'reviews';
 
 interface Options {
   type?: DisabledType;
@@ -93,9 +98,7 @@ const disabled: Record<DisabledType, Construct[]> = {
 };
 
 export default function disableConstructs(this: Processor, options?: Options) {
-  add(
-    this,
-    'micromarkExtensions',
-    [{ disable: { null: disabled[options?.type ?? 'default'] } }],
-  );
+  add(this, 'micromarkExtensions', [
+    { disable: { null: disabled[options?.type ?? 'default'] } },
+  ]);
 }

@@ -14,7 +14,12 @@ import { deletedUserJson } from 'models/user';
 import core from 'osu-core-singleton';
 import BeatmapsetDiscussionsShowStore from 'stores/beatmapset-discussions-show-store';
 import { findDefault, group, sortWithMode } from 'utils/beatmap-helper';
-import { canModeratePosts, makeUrl, parseUrl, stateFromDiscussion } from 'utils/beatmapset-discussion-helper';
+import {
+  canModeratePosts,
+  makeUrl,
+  parseUrl,
+  stateFromDiscussion,
+} from 'utils/beatmapset-discussion-helper';
 import { parseJsonNullable, storeJson } from 'utils/json';
 import { Filter, filters } from './current-discussions';
 import DiscussionMode, { discussionModes } from './discussion-mode';
@@ -132,8 +137,13 @@ export default class DiscussionsState {
           groups.pending.push(discussion);
           // only reviews with unresolved discussions get added.
           if (discussion.parent_id != null) {
-            const parentDiscussion = this.store.discussions.get(discussion.parent_id);
-            if (parentDiscussion != null && parentDiscussion.message_type === 'review') {
+            const parentDiscussion = this.store.discussions.get(
+              discussion.parent_id,
+            );
+            if (
+              parentDiscussion != null &&
+              parentDiscussion.message_type === 'review'
+            ) {
               reviewsWithPending.add(parentDiscussion);
             }
           }
@@ -183,7 +193,11 @@ export default class DiscussionsState {
       ? this.discussionsArray
       : this.nonDeletedDiscussions;
 
-    return discussions.filter((discussion) => (discussion.beatmap_id == null || discussion.beatmap_id === this.currentBeatmapId));
+    return discussions.filter(
+      (discussion) =>
+        discussion.beatmap_id == null ||
+        discussion.beatmap_id === this.currentBeatmapId,
+    );
   }
 
   @computed
@@ -205,7 +219,9 @@ export default class DiscussionsState {
     };
 
     for (const mode of discussionModes) {
-      value[mode] = this.discussionsByMode[mode].filter((discussion) => discussion.user_id === this.selectedUserId);
+      value[mode] = this.discussionsByMode[mode].filter(
+        (discussion) => discussion.user_id === this.selectedUserId,
+      );
     }
 
     return value;
@@ -237,15 +253,22 @@ export default class DiscussionsState {
   @computed
   get hasCurrentUserHyped() {
     const currentUser = core.currentUser;
-    return currentUser != null
-      && this.discussionsByFilter.hype.some((discussion) => (
-        discussion.beatmap_id == null && discussion.user_id === currentUser.id
-      ));
+    return (
+      currentUser != null &&
+      this.discussionsByFilter.hype.some(
+        (discussion) =>
+          discussion.beatmap_id == null &&
+          discussion.user_id === currentUser.id,
+      )
+    );
   }
 
   @computed
   get lastUpdateDate() {
-    const maxDiscussions = maxBy(this.beatmapset.discussions, 'updated_at')?.updated_at;
+    const maxDiscussions = maxBy(
+      this.beatmapset.discussions,
+      'updated_at',
+    )?.updated_at;
     const maxEvents = maxBy(this.beatmapset.events, 'created_at')?.created_at;
 
     const lastUpdateMs = Math.max(
@@ -266,7 +289,10 @@ export default class DiscussionsState {
     // This is based on the assumption that the non-main ruleset only needs 1 nomination.
     // See NominateBeatmapset::requiredNominationsConfig
     // TODO: swith to Set.intersection in the future; it is currently too new.
-    const intersection = intersectionWith(this.selectedNominatedRulesets, this.beatmapset.eligible_main_rulesets);
+    const intersection = intersectionWith(
+      this.selectedNominatedRulesets,
+      this.beatmapset.eligible_main_rulesets,
+    );
 
     return intersection.length === 1 ? intersection[0] : null;
   }
@@ -298,7 +324,9 @@ export default class DiscussionsState {
 
   @computed
   get nonDeletedDiscussions() {
-    return this.discussionsArray.filter((discussion) => discussion.deleted_at == null);
+    return this.discussionsArray.filter(
+      (discussion) => discussion.deleted_at == null,
+    );
   }
 
   @computed
@@ -307,7 +335,9 @@ export default class DiscussionsState {
     for (let i = this.beatmapset.events.length - 1; i >= 0; i--) {
       const event = this.beatmapset.events[i];
       if (event.type === 'disqualify') {
-        return typeof event.comment === 'string' ? [] : event.comment.nominator_ids ?? [];
+        return typeof event.comment === 'string'
+          ? []
+          : (event.comment.nominator_ids ?? []);
       }
     }
 
@@ -326,23 +356,24 @@ export default class DiscussionsState {
 
   @computed
   get totalHypeCount() {
-    return this.nonDeletedDiscussions
-      .reduce((total, discussion) => +(discussion.message_type === 'hype') + total, 0);
+    return this.nonDeletedDiscussions.reduce(
+      (total, discussion) => +(discussion.message_type === 'hype') + total,
+      0,
+    );
   }
 
   @computed
   get unresolvedDiscussionTotalCount() {
-    return this.nonDeletedDiscussions
-      .reduce((total, discussion) => {
-        if (discussion.can_be_resolved && !discussion.resolved) {
-          if (discussion.beatmap_id == null) return total + 1;
+    return this.nonDeletedDiscussions.reduce((total, discussion) => {
+      if (discussion.can_be_resolved && !discussion.resolved) {
+        if (discussion.beatmap_id == null) return total + 1;
 
-          const beatmap = this.store.beatmaps.get(discussion.beatmap_id);
-          if (beatmap != null && beatmap.deleted_at == null) return total + 1;
-        }
+        const beatmap = this.store.beatmaps.get(discussion.beatmap_id);
+        if (beatmap != null && beatmap.deleted_at == null) return total + 1;
+      }
 
-        return total;
-      }, 0);
+      return total;
+    }, 0);
   }
 
   @computed
@@ -355,8 +386,13 @@ export default class DiscussionsState {
     });
 
     for (const discussion of this.nonDeletedDiscussions) {
-      if (discussion.beatmap_id != null && discussion.can_be_resolved && !discussion.resolved) {
-        byBeatmap[discussion.beatmap_id] = (byBeatmap[discussion.beatmap_id] ?? 0) + 1;
+      if (
+        discussion.beatmap_id != null &&
+        discussion.can_be_resolved &&
+        !discussion.resolved
+      ) {
+        byBeatmap[discussion.beatmap_id] =
+          (byBeatmap[discussion.beatmap_id] ?? 0) + 1;
 
         const mode = this.store.beatmaps.get(discussion.beatmap_id)?.mode;
         if (mode != null) {
@@ -399,7 +435,9 @@ export default class DiscussionsState {
       }
     }
 
-    this.currentBeatmapId = (findDefault({ group: this.groupedBeatmaps }) ?? this.firstBeatmap).id;
+    this.currentBeatmapId = (
+      findDefault({ group: this.groupedBeatmaps }) ?? this.firstBeatmap
+    ).id;
 
     // Current url takes priority over saved state.
     const query = parseUrl(
@@ -428,7 +466,9 @@ export default class DiscussionsState {
   }
 
   beatmapOwners(beatmap: WithBeatmapOwners<BeatmapJson>) {
-    return beatmap.owners.map((user) => this.store.users.get(user.id) ?? deletedUser(user.id));
+    return beatmap.owners.map(
+      (user) => this.store.users.get(user.id) ?? deletedUser(user.id),
+    );
   }
 
   @action
@@ -439,7 +479,10 @@ export default class DiscussionsState {
       // record page and filter when switching to events
       this.previousPage = this.currentPage;
       this.previousFilter = this.currentFilter;
-    } else if (this.currentPage === 'events' && this.currentFilter !== this.previousFilter) {
+    } else if (
+      this.currentPage === 'events' &&
+      this.currentFilter !== this.previousFilter
+    ) {
       // restore previous filter when switching away from events
       this.currentFilter = this.previousFilter;
     }
@@ -482,10 +525,7 @@ export default class DiscussionsState {
 
     if (discussion == null) return;
 
-    const {
-      beatmapId,
-      mode,
-    } = stateFromDiscussion(discussion);
+    const { beatmapId, mode } = stateFromDiscussion(discussion);
 
     // unset type filter if discussion would have been filtered out.
     if (!this.discussionsByMode[mode].some((d) => d.id === discussion.id)) {
@@ -493,7 +533,10 @@ export default class DiscussionsState {
     }
 
     // unset user filter if new discussion would have been filtered out.
-    if (this.selectedUserId != null && this.selectedUserId !== discussion.user_id) {
+    if (
+      this.selectedUserId != null &&
+      this.selectedUserId !== discussion.user_id
+    ) {
       this.selectedUserId = null;
     }
 
@@ -527,8 +570,11 @@ export default class DiscussionsState {
       return sum(Object.values(nominations[type]));
     }
 
-    return nominations.required_meta.main_ruleset
-      + nominations.required_meta.non_main_ruleset * (this.rulesetsWithoutDeletedBeatmaps.length - 1);
+    return (
+      nominations.required_meta.main_ruleset +
+      nominations.required_meta.non_main_ruleset *
+        (this.rulesetsWithoutDeletedBeatmaps.length - 1)
+    );
   }
 
   saveState() {

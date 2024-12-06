@@ -69,7 +69,12 @@ export function formatDuration(valueSecond: number) {
 
 const defaultNumberFormatter = new Intl.NumberFormat(window.currentLocale);
 
-export function formatNumber(num: number, precision?: number, options?: Intl.NumberFormatOptions, locale?: string) {
+export function formatNumber(
+  num: number,
+  precision?: number,
+  options?: Intl.NumberFormatOptions,
+  locale?: string,
+) {
   if (precision == null && options == null && locale == null) {
     return defaultNumberFormatter.format(num);
   }
@@ -89,12 +94,13 @@ const defaultSuffixedNumberOptions = {
   minimumFractionDigits: 0,
   notation: 'compact',
 } as const;
-const defaultSuffixedNumberFormatter = new Intl.NumberFormat(window.currentLocale, defaultSuffixedNumberOptions);
+const defaultSuffixedNumberFormatter = new Intl.NumberFormat(
+  window.currentLocale,
+  defaultSuffixedNumberOptions,
+);
 
 export function formatNumberSuffixed(num?: number) {
-  return num == null
-    ? undefined
-    : defaultSuffixedNumberFormatter.format(num);
+  return num == null ? undefined : defaultSuffixedNumberFormatter.format(num);
 }
 
 export function htmlElementOrNull(thing: unknown) {
@@ -125,10 +131,14 @@ export function isClickable(maybeEl: unknown): boolean {
 }
 
 export function isInputElement(el: HTMLElement) {
-  return ['INPUT', 'OPTION', 'SELECT', 'TEXTAREA'].includes(el.tagName) || el.isContentEditable;
+  return (
+    ['INPUT', 'OPTION', 'SELECT', 'TEXTAREA'].includes(el.tagName) ||
+    el.isContentEditable
+  );
 }
 
-export const transparentGif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+export const transparentGif =
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 export function make2x(url?: string) {
   if (url == null) return;

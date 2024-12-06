@@ -46,7 +46,9 @@ export default class MonthListing extends React.Component<Props, State> {
         this.state.expanded = props.initialExpand;
       } else {
         const currentPostDate = moment.utc(props.currentPost.published_at);
-        this.state.expanded = currentPostDate.year() === props.date.year() && currentPostDate.month() === props.date.month();
+        this.state.expanded =
+          currentPostDate.year() === props.date.year() &&
+          currentPostDate.month() === props.date.month();
       }
     }
 
@@ -61,23 +63,34 @@ export default class MonthListing extends React.Component<Props, State> {
     } else {
       this.state.expanded = this.stateRecordValue;
     }
-
   }
 
   render() {
     return (
       <div className='news-sidebar-month'>
-        <button className='news-sidebar-month__toggle' onClick={this.toggleExpand} type='button'>
-          {this.props.date.format(trans('common.datetime.year_month_short.moment'))}
+        <button
+          className='news-sidebar-month__toggle'
+          onClick={this.toggleExpand}
+          type='button'
+        >
+          {this.props.date.format(
+            trans('common.datetime.year_month_short.moment'),
+          )}
 
           <span className='news-sidebar-month__toggle-icon'>
             <i
-              className={this.state.expanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'}
+              className={
+                this.state.expanded
+                  ? 'fas fa-chevron-up'
+                  : 'fas fa-chevron-down'
+              }
             />
           </span>
         </button>
 
-        <ul className={`news-sidebar-month__items ${this.state.expanded ? '' : 'hidden'}`}>
+        <ul
+          className={`news-sidebar-month__items ${this.state.expanded ? '' : 'hidden'}`}
+        >
           {this.props.posts.map(this.renderPost)}
         </ul>
       </div>
@@ -86,23 +99,25 @@ export default class MonthListing extends React.Component<Props, State> {
 
   private readonly recordState = () => {
     if (this.stateRecord != null) {
-      this.stateRecord.dataset[this.stateRecordKey] = this.state.expanded ? '1' : '';
+      this.stateRecord.dataset[this.stateRecordKey] = this.state.expanded
+        ? '1'
+        : '';
     }
   };
 
   private readonly renderPost = (post: NewsPostJson) => {
     let linkClass = 'news-sidebar-month__item';
 
-    if (this.props.currentPost != null && this.props.currentPost.id === post.id) {
+    if (
+      this.props.currentPost != null &&
+      this.props.currentPost.id === post.id
+    ) {
       linkClass += ' news-sidebar-month__item--active';
     }
 
     return (
       <li key={post.id}>
-        <a
-          className={linkClass}
-          href={route('news.show', { news: post.slug })}
-        >
+        <a className={linkClass} href={route('news.show', { news: post.slug })}>
           {post.title}
         </a>
       </li>

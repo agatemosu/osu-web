@@ -27,7 +27,9 @@ export default class FollowToggle extends React.PureComponent<Props> {
 
   private get following() {
     return this.props.follow.subtype === 'mapping'
-      ? core.currentUserModel.followUserMapping.has(this.props.follow.notifiable_id)
+      ? core.currentUserModel.followUserMapping.has(
+          this.props.follow.notifiable_id,
+        )
       : this._following;
   }
 
@@ -42,7 +44,8 @@ export default class FollowToggle extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     makeObservable(this);
-    this._following = parseJsonNullable<SavedState>(this.jsonId, true)?.following ?? true;
+    this._following =
+      parseJsonNullable<SavedState>(this.jsonId, true)?.following ?? true;
   }
 
   render() {
@@ -53,9 +56,7 @@ export default class FollowToggle extends React.PureComponent<Props> {
         onClick={this.onClick}
         type='button'
       >
-        <span className='btn-circle__content'>
-          {this.renderToggleIcon()}
-        </span>
+        <span className='btn-circle__content'>{this.renderToggleIcon()}</span>
       </button>
     );
   }
@@ -76,16 +77,24 @@ export default class FollowToggle extends React.PureComponent<Props> {
     };
 
     this.xhr = $.ajax(route('follows.store'), settings)
-      .done(action(() => {
-        if (this.props.follow.subtype === 'mapping') {
-          core.currentUserModel.updateFollowUserMapping(!this.following, this.props.follow.notifiable_id);
-        } else {
-          this._following = !this.following;
-          storeJson<SavedState>(this.jsonId, { following: this.following });
-        }
-      })).always(action(() => {
-        this.xhr = undefined;
-      }));
+      .done(
+        action(() => {
+          if (this.props.follow.subtype === 'mapping') {
+            core.currentUserModel.updateFollowUserMapping(
+              !this.following,
+              this.props.follow.notifiable_id,
+            );
+          } else {
+            this._following = !this.following;
+            storeJson<SavedState>(this.jsonId, { following: this.following });
+          }
+        }),
+      )
+      .always(
+        action(() => {
+          this.xhr = undefined;
+        }),
+      );
   };
 
   private renderToggleIcon() {

@@ -6,18 +6,25 @@ import {
   BeatmapDiscussionReview,
   DocumentIssueEmbed,
 } from 'interfaces/beatmap-discussion-review';
-import { Editor, Element as SlateElement, Node as SlateNode, Range as SlateRange, Text, Transforms } from 'slate';
+import {
+  Editor,
+  Element as SlateElement,
+  Node as SlateNode,
+  Range as SlateRange,
+  Text,
+  Transforms,
+} from 'slate';
 import { parseTimestamp } from 'utils/beatmapset-discussion-helper';
 import { present } from 'utils/string';
 
 export const blockCount = (input: SlateElement[]) => input.length;
 
-export const slateDocumentIsEmpty = (doc: SlateElement[]) => doc.length === 0 || (
-  doc.length === 1 &&
-      doc[0].type === 'paragraph' &&
-      doc[0].children.length === 1 &&
-      doc[0].children[0].text === ''
-);
+export const slateDocumentIsEmpty = (doc: SlateElement[]) =>
+  doc.length === 0 ||
+  (doc.length === 1 &&
+    doc[0].type === 'paragraph' &&
+    doc[0].children.length === 1 &&
+    doc[0].children[0].text === '');
 
 export const insideEmbed = (editor: Editor) => {
   const node = getCurrentNode(editor);
@@ -94,26 +101,33 @@ function serializeMarkedText(text: string, format: string) {
 }
 
 function serializeParagraph(node: ParagraphElement) {
-  return node.children.map((child) => {
-    if (child.text !== '') {
-      const text = child.text.replace(/([*_\\])/g, '\\$1');
-      // simplified logic that forces nested marks to be split;
-      // removing whitespace while preserving the nested marks gets messy.
-      if (child.bold && child.italic) {
-        return serializeMarkedText(text, '***');
-      } else if (child.bold) {
-        return serializeMarkedText(text, '**');
-      } else if (child.italic) {
-        return serializeMarkedText(text, '*');
-      } else {
-        return text;
+  return node.children
+    .map((child) => {
+      if (child.text !== '') {
+        const text = child.text.replace(/([*_\\])/g, '\\$1');
+        // simplified logic that forces nested marks to be split;
+        // removing whitespace while preserving the nested marks gets messy.
+        if (child.bold && child.italic) {
+          return serializeMarkedText(text, '***');
+        } else if (child.bold) {
+          return serializeMarkedText(text, '**');
+        } else if (child.italic) {
+          return serializeMarkedText(text, '*');
+        } else {
+          return text;
+        }
       }
-    }
-  }).join('');
+    })
+    .join('');
 }
 
 export const slateDocumentContainsNewProblem = (input: SlateElement[]) =>
-  input.some((node) => node.type === 'embed' && node.discussionType === 'problem' && node.discussionId == null);
+  input.some(
+    (node) =>
+      node.type === 'embed' &&
+      node.discussionType === 'problem' &&
+      node.discussionId == null,
+  );
 
 export const serializeSlateDocument = (input: SlateElement[]) => {
   const review: BeatmapDiscussionReview = [];

@@ -6,7 +6,6 @@ import core from 'osu-core-singleton';
 import React from 'react';
 import { parseJson } from 'utils/json';
 
-
 core.reactTurbolinks.register('beatmap-discussions', () => (
   <Main reviewsConfig={parseJson('json-reviews_config')} />
 ));

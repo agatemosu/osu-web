@@ -26,7 +26,9 @@ export class FormErrors {
    * @returns List of error messages.
    */
   except(names: readonly string[]): string[] {
-    const keys = [...this.errors.keys()].filter((key) => names.every((name) => key !== name));
+    const keys = [...this.errors.keys()].filter((key) =>
+      names.every((name) => key !== name),
+    );
 
     const messages: string[] = [];
     for (const key of keys) {

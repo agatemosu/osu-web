@@ -6,7 +6,13 @@ import ShowMoreLink from 'components/show-more-link';
 import TracklistTrack from 'components/tracklist-track';
 import { ArtistTrackWithArtistJson } from 'interfaces/artist-track-json';
 import { route } from 'laroute';
-import { action, makeObservable, observable, reaction, runInAction } from 'mobx';
+import {
+  action,
+  makeObservable,
+  observable,
+  reaction,
+  runInAction,
+} from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import * as React from 'react';
 import { onError } from 'utils/ajax';
@@ -45,21 +51,27 @@ const headerLinks = [
 
 @observer
 export default class Main extends React.Component<Props> {
-  @observable private readonly data = JSON.parse(this.props.container.dataset.data ?? '') as Data;
+  @observable private readonly data = JSON.parse(
+    this.props.container.dataset.data ?? '',
+  ) as Data;
   @observable private isNavigating = false;
-  @observable private loadingXhr?: JQuery.jqXHR<ArtistTracksIndex> | null = null;
+  @observable private loadingXhr?: JQuery.jqXHR<ArtistTracksIndex> | null =
+    null;
 
   constructor(props: Props) {
     super(props);
 
     makeObservable(this);
 
-    disposeOnUnmount(this, reaction(
-      () => JSON.stringify(this.data),
-      (newDataString) => {
-        this.props.container.dataset.data = newDataString;
-      },
-    ));
+    disposeOnUnmount(
+      this,
+      reaction(
+        () => JSON.stringify(this.data),
+        (newDataString) => {
+          this.props.container.dataset.data = newDataString;
+        },
+      ),
+    );
   }
 
   componentWillUnmount() {
@@ -81,9 +93,7 @@ export default class Main extends React.Component<Props> {
 
         <div className='osu-page osu-page--artist-track-search-result'>
           {this.data.index.artist_tracks.length === 0 ? (
-            <div>
-              {trans('artist.tracks.index.form.empty')}
-            </div>
+            <div>{trans('artist.tracks.index.form.empty')}</div>
           ) : (
             <>
               <Sort
@@ -91,9 +101,18 @@ export default class Main extends React.Component<Props> {
                 params={this.data.index.search}
               />
 
-              <div className={classWithModifiers('grid-items', '2', { 'fade-out': this.isNavigating })}>
+              <div
+                className={classWithModifiers('grid-items', '2', {
+                  'fade-out': this.isNavigating,
+                })}
+              >
                 {this.data.index.artist_tracks.map((t) => (
-                  <TracklistTrack key={t.id} modifiers='large' showAlbum track={t} />
+                  <TracklistTrack
+                    key={t.id}
+                    modifiers='large'
+                    showAlbum
+                    track={t}
+                  />
                 ))}
 
                 <ShowMoreLink
@@ -112,14 +131,26 @@ export default class Main extends React.Component<Props> {
 
   @action
   private readonly handleShowMore = () => {
-    this.loadingXhr = $.getJSON(route('artists.tracks.index'), { ...this.data.index.search, cursor_string: this.data.index.cursor_string });
+    this.loadingXhr = $.getJSON(route('artists.tracks.index'), {
+      ...this.data.index.search,
+      cursor_string: this.data.index.cursor_string,
+    });
 
-    this.loadingXhr.done((newIndex) => runInAction(() => {
-      newIndex.artist_tracks = this.data.index.artist_tracks.concat(newIndex.artist_tracks);
-      this.data.index = newIndex;
-    })).fail(onError).always(action(() => {
-      this.loadingXhr = null;
-    }));
+    this.loadingXhr
+      .done((newIndex) =>
+        runInAction(() => {
+          newIndex.artist_tracks = this.data.index.artist_tracks.concat(
+            newIndex.artist_tracks,
+          );
+          this.data.index = newIndex;
+        }),
+      )
+      .fail(onError)
+      .always(
+        action(() => {
+          this.loadingXhr = null;
+        }),
+      );
   };
 
   private readonly onNewSearch = (url: string) => {

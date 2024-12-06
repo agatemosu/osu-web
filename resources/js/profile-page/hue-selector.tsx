@@ -12,7 +12,9 @@ import Controller from './controller';
 
 function getDefaultHue() {
   // always cast and hope for the best
-  return +window.getComputedStyle(window.newBody ?? document.body).getPropertyValue('--base-hue-default');
+  return +window
+    .getComputedStyle(window.newBody ?? document.body)
+    .getPropertyValue('--base-hue-default');
 }
 
 interface Props {
@@ -65,13 +67,16 @@ export default class HueSelector extends React.Component<Props> {
   componentDidMount() {
     this.initSlider();
 
-    disposeOnUnmount(this, autorun(() => {
-      this.resetHue = this.selectedHue == null;
-      this.$slider?.slider({
-        disabled: !this.canSet || this.xhr != null,
-        value: this.displayHue,
-      });
-    }));
+    disposeOnUnmount(
+      this,
+      autorun(() => {
+        this.resetHue = this.selectedHue == null;
+        this.$slider?.slider({
+          disabled: !this.canSet || this.xhr != null,
+          value: this.displayHue,
+        });
+      }),
+    );
   }
 
   componentWillUnmount() {
@@ -103,9 +108,7 @@ export default class HueSelector extends React.Component<Props> {
             {trans('common.buttons.save')}
           </button>
         </div>
-        <div className='profile-hue__info'>
-          {this.renderInfo()}
-        </div>
+        <div className='profile-hue__info'>{this.renderInfo()}</div>
       </div>
     );
   }
@@ -114,10 +117,11 @@ export default class HueSelector extends React.Component<Props> {
   private readonly apiSet = (value: number | null) => {
     if (this.xhr != null) return;
 
-    this.xhr = this.props.controller.apiSetHue(value)
-      .always(action(() => {
+    this.xhr = this.props.controller.apiSetHue(value).always(
+      action(() => {
         this.xhr = undefined;
-      }));
+      }),
+    );
   };
 
   @action
@@ -136,8 +140,10 @@ export default class HueSelector extends React.Component<Props> {
 
   @action
   private readonly onResetClick = () => {
-    if (!this.canSet && !confirm(trans('users.show.edit.hue.reset_no_supporter'))) {
-
+    if (
+      !this.canSet &&
+      !confirm(trans('users.show.edit.hue.reset_no_supporter'))
+    ) {
       return;
     }
 
@@ -148,7 +154,10 @@ export default class HueSelector extends React.Component<Props> {
     this.apiSet(this.selectedHue);
   };
 
-  private readonly onSliderValueChange = (_event: unknown, ui: SliderUIParams) => {
+  private readonly onSliderValueChange = (
+    _event: unknown,
+    ui: SliderUIParams,
+  ) => {
     if (this.resetHue) {
       this.props.controller.setSelectedHue(null);
       this.resetHue = false;

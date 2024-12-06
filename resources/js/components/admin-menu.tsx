@@ -19,7 +19,11 @@ export default class AdminMenu extends React.PureComponent<Props> {
     }
 
     const items = this.props.items.map((item) => (
-      <item.component key={`${item.icon}-${item.text}`} className='admin-menu-item' {...item.props}>
+      <item.component
+        key={`${item.icon}-${item.text}`}
+        className='admin-menu-item'
+        {...item.props}
+      >
         <span className='admin-menu-item__content'>
           <span className='admin-menu-item__label admin-menu-item__label--icon'>
             <span className={item.icon} />
@@ -34,7 +38,10 @@ export default class AdminMenu extends React.PureComponent<Props> {
 
     return (
       <div className='admin-menu'>
-        <button className='admin-menu__button js-menu' data-menu-target={`admin-menu-${this.eventId}`}>
+        <button
+          className='admin-menu__button js-menu'
+          data-menu-target={`admin-menu-${this.eventId}`}
+        >
           <span className='fas fa-angle-up' />
           <span className='admin-menu__button-icon fas fa-tools' />
         </button>

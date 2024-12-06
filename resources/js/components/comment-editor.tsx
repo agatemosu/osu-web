@@ -9,7 +9,11 @@ import Comment from 'models/comment';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers, Modifiers } from 'utils/css';
-import { InputEventType, makeTextAreaHandler, TextAreaCallback } from 'utils/input-handler';
+import {
+  InputEventType,
+  makeTextAreaHandler,
+  TextAreaCallback,
+} from 'utils/input-handler';
 import { trans } from 'utils/lang';
 import BigButton from './big-button';
 import Controller, { CommentEditMode, PostParams } from './comments-controller';
@@ -55,7 +59,8 @@ export default class CommentEditor extends React.Component<Props> {
     return this.props.commentableMeta == null
       ? null
       : 'current_user_attributes' in this.props.commentableMeta
-        ? this.props.commentableMeta.current_user_attributes.can_new_comment_reason
+        ? this.props.commentableMeta.current_user_attributes
+            .can_new_comment_reason
         : trans('authorization.comment.store.disabled');
   }
 
@@ -104,15 +109,17 @@ export default class CommentEditor extends React.Component<Props> {
   }
 
   render() {
-    const blockClass = classWithModifiers(bn, this.props.modifiers, { fancy: this.mode === 'new' });
+    const blockClass = classWithModifiers(bn, this.props.modifiers, {
+      fancy: this.mode === 'new',
+    });
 
     return (
       <div className={blockClass}>
-        {this.mode === 'new' &&
+        {this.mode === 'new' && (
           <div className={`${bn}__avatar`}>
             <UserAvatar modifiers='full-circle' user={core.currentUser} />
           </div>
-        }
+        )}
 
         <TextareaAutosize
           className={`${bn}__message`}
@@ -124,13 +131,16 @@ export default class CommentEditor extends React.Component<Props> {
           value={this.message}
         />
         <div className={`${bn}__footer`}>
-          <div className={`${bn}__footer-item ${bn}__footer-item--notice hidden-xs`}>
-            {this.canComment && trans('comments.editor.textarea_hint._', {
-              action: trans(`comments.editor.textarea_hint.${this.mode}`),
-            })}
+          <div
+            className={`${bn}__footer-item ${bn}__footer-item--notice hidden-xs`}
+          >
+            {this.canComment &&
+              trans('comments.editor.textarea_hint._', {
+                action: trans(`comments.editor.textarea_hint.${this.mode}`),
+              })}
           </div>
 
-          {this.props.close != null &&
+          {this.props.close != null && (
             <div className={`${bn}__footer-item`}>
               <BigButton
                 disabled={this.posting}
@@ -139,33 +149,33 @@ export default class CommentEditor extends React.Component<Props> {
                 text={trans('common.buttons.cancel')}
               />
             </div>
-          }
+          )}
 
-          {core.currentUser != null
-            ? (
-              <div className={`${bn}__footer-item`}>
-                <BigButton
-                  disabled={!this.isValid}
-                  isBusy={this.posting}
-                  modifiers='comment-editor'
-                  props={{ onClick: this.post }}
-                  text={{
-                    top: this.posting
-                      ? <Spinner modifiers='center-inline' />
-                      : trans(`common.buttons.${buttonTextKey[this.mode]}`),
-                  }}
-                />
-              </div>
-            ) : (
-              <div className={`${bn}__footer-item`}>
-                <BigButton
-                  extraClasses={['js-user-link']}
-                  modifiers='comment-editor'
-                  text={trans(`comments.guest_button.${this.mode}`)}
-                />
-              </div>
-            )
-          }
+          {core.currentUser != null ? (
+            <div className={`${bn}__footer-item`}>
+              <BigButton
+                disabled={!this.isValid}
+                isBusy={this.posting}
+                modifiers='comment-editor'
+                props={{ onClick: this.post }}
+                text={{
+                  top: this.posting ? (
+                    <Spinner modifiers='center-inline' />
+                  ) : (
+                    trans(`common.buttons.${buttonTextKey[this.mode]}`)
+                  ),
+                }}
+              />
+            </div>
+          ) : (
+            <div className={`${bn}__footer-item`}>
+              <BigButton
+                extraClasses={['js-user-link']}
+                modifiers='comment-editor'
+                text={trans(`comments.guest_button.${this.mode}`)}
+              />
+            </div>
+          )}
         </div>
       </div>
     );
@@ -174,7 +184,11 @@ export default class CommentEditor extends React.Component<Props> {
   private readonly close = () => {
     if (this.props.close == null) return;
 
-    if (this.initialMessage !== this.message && !confirm(trans('common.confirmation_unsaved'))) return;
+    if (
+      this.initialMessage !== this.message &&
+      !confirm(trans('common.confirmation_unsaved'))
+    )
+      return;
 
     this.props.close();
   };
@@ -210,10 +224,13 @@ export default class CommentEditor extends React.Component<Props> {
       return;
     }
 
-    this.props.controller.apiPost(postParams, action(() => {
-      this.message = '';
-      this.props.onPosted?.(this.mode);
-      this.props.close?.();
-    }));
+    this.props.controller.apiPost(
+      postParams,
+      action(() => {
+        this.message = '';
+        this.props.onPosted?.(this.mode);
+        this.props.close?.();
+      }),
+    );
   };
 }

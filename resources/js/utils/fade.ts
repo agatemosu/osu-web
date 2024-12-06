@@ -18,7 +18,7 @@ export function fadeOut(el: MaybeHTMLElement) {
 export function fadeToggle(el: MaybeHTMLElement, makeVisible?: boolean) {
   if (el == null) return;
 
-  const fn = makeVisible ?? !isVisible(el) ? fadeIn : fadeOut;
+  const fn = (makeVisible ?? !isVisible(el)) ? fadeIn : fadeOut;
 
   fn(el);
 }

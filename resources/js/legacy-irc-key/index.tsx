@@ -30,7 +30,9 @@ export default class LegacyIrcKey extends React.Component<Props> {
   }
 
   render() {
-    return this.controller.key == null ? this.renderEmpty() : this.renderDetails();
+    return this.controller.key == null
+      ? this.renderEmpty()
+      : this.renderDetails();
   }
 
   @action
@@ -47,9 +49,7 @@ export default class LegacyIrcKey extends React.Component<Props> {
   private renderEmpty() {
     return (
       <>
-        <p>
-          {trans('legacy_irc_key.none')}
-        </p>
+        <p>{trans('legacy_irc_key.none')}</p>
         <div>
           <BigButton
             icon='fas fa-plus'

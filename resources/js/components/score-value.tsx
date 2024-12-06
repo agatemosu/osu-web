@@ -11,6 +11,8 @@ interface Props {
   score: SoloScoreJson;
 }
 
-const ScoreValue = observer(({ score }: Props) => <>{formatNumber(totalScore(score))}</>);
+const ScoreValue = observer(({ score }: Props) => (
+  <>{formatNumber(totalScore(score))}</>
+));
 
 export default ScoreValue;

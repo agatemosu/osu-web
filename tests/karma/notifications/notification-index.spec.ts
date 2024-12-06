@@ -30,10 +30,17 @@ describe('Notification Index', () => {
 
   const bundle: NotificationBundleJson = {
     notifications: [identities[0]].map(toJson).map(makeNotificationJson),
-    stacks: [makeStackJson(identities[0], 5, 'beatmapset_discussion_post_new', identities[0].id )],
+    stacks: [
+      makeStackJson(
+        identities[0],
+        5,
+        'beatmapset_discussion_post_new',
+        identities[0].id,
+      ),
+    ],
     timestamp: new Date().toJSON(),
     types: [
-      { cursor: { id: identities[0].id }, name: null,  total: 20 },
+      { cursor: { id: identities[0].id }, name: null, total: 20 },
       { cursor: { id: identities[0].id }, name: 'beatmapset', total: 5 },
     ],
   };
@@ -47,7 +54,11 @@ describe('Notification Index', () => {
   describe('when starting on All', () => {
     let controller!: NotificationController;
     beforeEach(() => {
-      controller = new NotificationController(store, { excludes: [], isWidget: false }, null);
+      controller = new NotificationController(
+        store,
+        { excludes: [], isWidget: false },
+        null,
+      );
     });
 
     it('should filter by All', () => {
@@ -66,15 +77,24 @@ describe('Notification Index', () => {
       beforeEach(() => {
         const loadMoreBundle: NotificationBundleJson = {
           notifications: [identities[1]].map(toJson).map(makeNotificationJson),
-          stacks: [makeStackJson(identities[1], 5, 'beatmapset_discussion_post_new', identities[1].id )],
+          stacks: [
+            makeStackJson(
+              identities[1],
+              5,
+              'beatmapset_discussion_post_new',
+              identities[1].id,
+            ),
+          ],
           timestamp: new Date().toJSON(),
           types: [
-            { cursor: { id: identities[1].id }, name: null,  total: 20 },
+            { cursor: { id: identities[1].id }, name: null, total: 20 },
             { cursor: { id: identities[1].id }, name: 'beatmapset', total: 5 },
           ],
         };
 
-        dispatch(new NotificationEventMoreLoaded(loadMoreBundle, { isWidget: false }));
+        dispatch(
+          new NotificationEventMoreLoaded(loadMoreBundle, { isWidget: false }),
+        );
       });
 
       it('should have 2 notifications', () => {
@@ -124,7 +144,11 @@ describe('Notification Index', () => {
   describe('when starting on Beatmapsets', () => {
     let controller!: NotificationController;
     beforeEach(() => {
-      controller = new NotificationController(store, { excludes: [], isWidget: false }, 'beatmapset');
+      controller = new NotificationController(
+        store,
+        { excludes: [], isWidget: false },
+        'beatmapset',
+      );
     });
 
     it('should filter by Beatmapsets', () => {
@@ -143,14 +167,23 @@ describe('Notification Index', () => {
       beforeEach(() => {
         const loadMoreBundle: NotificationBundleJson = {
           notifications: [identities[1]].map(toJson).map(makeNotificationJson),
-          stacks: [makeStackJson(identities[1], 5, 'beatmapset_discussion_post_new', identities[1].id )],
+          stacks: [
+            makeStackJson(
+              identities[1],
+              5,
+              'beatmapset_discussion_post_new',
+              identities[1].id,
+            ),
+          ],
           timestamp: new Date().toJSON(),
           types: [
             { cursor: { id: identities[1].id }, name: 'beatmapset', total: 5 },
           ],
         };
 
-        dispatch(new NotificationEventMoreLoaded(loadMoreBundle, { isWidget: false }));
+        dispatch(
+          new NotificationEventMoreLoaded(loadMoreBundle, { isWidget: false }),
+        );
       });
 
       it('should have 2 notifications', () => {

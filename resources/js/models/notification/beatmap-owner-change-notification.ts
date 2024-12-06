@@ -18,7 +18,9 @@ const newEmptyNotificationDetails = () => ({
   version: '',
 });
 
-export function isBeatmapOwnerChangeNotification(notification: Notification): notification is BeatmapOwnerChangeNotification {
+export function isBeatmapOwnerChangeNotification(
+  notification: Notification,
+): notification is BeatmapOwnerChangeNotification {
   return notification.name === 'beatmap_owner_change';
 }
 

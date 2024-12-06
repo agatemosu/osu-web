@@ -12,10 +12,7 @@ export function blackoutToggle(element: unknown, state: boolean) {
     elements.delete(element);
   }
 
-  fadeToggle(
-    window.newBody?.querySelector('.js-blackout'),
-    blackoutVisible(),
-  );
+  fadeToggle(window.newBody?.querySelector('.js-blackout'), blackoutVisible());
 }
 
 export function blackoutVisible() {

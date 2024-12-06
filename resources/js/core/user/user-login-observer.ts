@@ -27,7 +27,9 @@ export default class UserLoginObserver {
     dispatch(new UserLoginAction());
   };
 
-  private readonly handleUserLogout = (event: JQuery.TriggeredEvent<unknown, unknown, HTMLElement, unknown>) => {
+  private readonly handleUserLogout = (
+    event: JQuery.TriggeredEvent<unknown, unknown, HTMLElement, unknown>,
+  ) => {
     const redirect = present(event.currentTarget.dataset.redirectHome);
     this.logout(redirect);
   };

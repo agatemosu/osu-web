@@ -19,10 +19,7 @@ export class Main extends React.PureComponent<Props> {
         <HeaderV4 theme='friends' />
 
         <div className='osu-page osu-page--generic-compact'>
-          <UserList
-            group={this.props.group}
-            users={this.props.users}
-          />
+          <UserList group={this.props.group} users={this.props.users} />
         </div>
       </>
     );

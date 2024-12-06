@@ -18,7 +18,8 @@ interface State {
   open: boolean;
 }
 
-@observer export default class QuickSearchButton extends React.Component<Props, State> {
+@observer
+export default class QuickSearchButton extends React.Component<Props, State> {
   formRef = React.createRef<QuickSearch>();
   searchPath = route('search', undefined, false);
   state: State = { open: false };
@@ -36,17 +37,16 @@ interface State {
   render() {
     let className = 'nav2__menu-link-main nav2__menu-link-main--search';
 
-    if (this.state.open || currentUrl().pathname === route('search', undefined, false)) {
+    if (
+      this.state.open ||
+      currentUrl().pathname === route('search', undefined, false)
+    ) {
       className += ' u-section--bg-normal';
     }
 
     return (
       <>
-        <a
-          className={className}
-          href={route('search')}
-          onClick={this.toggle}
-        >
+        <a className={className} href={route('search')} onClick={this.toggle}>
           <span className='fas fa-search' />
         </a>
         {this.renderModal()}
@@ -61,7 +61,11 @@ interface State {
 
     return (
       <Modal onClose={this.toggle}>
-        <QuickSearch ref={this.formRef} onClose={this.toggle} worker={this.props.worker} />
+        <QuickSearch
+          ref={this.formRef}
+          onClose={this.toggle}
+          worker={this.props.worker}
+        />
       </Modal>
     );
   }

@@ -9,7 +9,7 @@ export interface Props {
 }
 
 export default function StringWithComponent(props: Props) {
-  const keys = Object.keys(props.mappings).sort((a, b) => a < b ? 1 : -1);
+  const keys = Object.keys(props.mappings).sort((a, b) => (a < b ? 1 : -1));
 
   if (keys.length === 0) {
     return <>{props.pattern}</>;
@@ -22,13 +22,16 @@ export default function StringWithComponent(props: Props) {
     <>
       {parts.map((part) => {
         const key = part[0] === ':' ? part.slice(1) : null;
-        const content = key == null || props.mappings[key] == null
-          ? part
-          : props.mappings[key];
+        const content =
+          key == null || props.mappings[key] == null
+            ? part
+            : props.mappings[key];
 
-        return typeof content === 'string'
-          ? content
-          : <React.Fragment key={part}>{content}</React.Fragment>;
+        return typeof content === 'string' ? (
+          content
+        ) : (
+          <React.Fragment key={part}>{content}</React.Fragment>
+        );
       })}
     </>
   );

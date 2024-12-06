@@ -32,19 +32,25 @@ export default class Enchant {
   showMessageWindow = (e: JQuery.ClickEvent) => {
     e.preventDefault();
 
-    if (window.enchant != null && window.enchant.messenger != null && typeof window.enchant.messenger.open === 'function') {
+    if (
+      window.enchant != null &&
+      window.enchant.messenger != null &&
+      typeof window.enchant.messenger.open === 'function'
+    ) {
       window.enchant.messenger.open();
     }
   };
 
   unload = () => {
     this.turbolinksReload.forget(src);
-    $('#enchant-messenger-main, #enchant-messenger-launcher, iframe[src^="https://enchantwidgets-"]').remove();
+    $(
+      '#enchant-messenger-main, #enchant-messenger-launcher, iframe[src^="https://enchantwidgets-"]',
+    ).remove();
 
     document.querySelectorAll('style').forEach((el) => {
       const text = el.textContent;
 
-      if (text != null && (/#enchant-/.exec(text))) {
+      if (text != null && /#enchant-/.exec(text)) {
         $(el).remove();
       }
     });

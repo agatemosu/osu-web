@@ -33,9 +33,17 @@ export default function BeatmapsetBadge(props: Props) {
       break;
   }
   const label = trans(`beatmapsets.${props.type}_badge.label`);
-  const blockClass = classWithModifiers('beatmapset-badge', props.modifiers, props.type);
+  const blockClass = classWithModifiers(
+    'beatmapset-badge',
+    props.modifiers,
+    props.type,
+  );
 
-  return url == null
-    ? <span className={blockClass}>{label}</span>
-    : <a className={blockClass} href={url}>{label}</a>;
+  return url == null ? (
+    <span className={blockClass}>{label}</span>
+  ) : (
+    <a className={blockClass} href={url}>
+      {label}
+    </a>
+  );
 }

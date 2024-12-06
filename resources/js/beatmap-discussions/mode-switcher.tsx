@@ -49,7 +49,10 @@ export class ModeSwitcher extends React.Component<Props> {
         <div className='page-extra-tabs-before' />
         <div ref={this.props.innerRef} className='page-extra-tabs'>
           <div className='osu-page osu-page--small'>
-            <ul ref={this.scrollerRef} className='page-mode page-mode--page-extra-tabs'>
+            <ul
+              ref={this.scrollerRef}
+              className='page-mode page-mode--page-extra-tabs'
+            >
               {discussionPages.map(this.renderMode)}
             </ul>
           </div>
@@ -61,7 +64,9 @@ export class ModeSwitcher extends React.Component<Props> {
   private readonly renderMode = (mode: DiscussionPage) => (
     <li key={mode} className='page-mode__item'>
       <a
-        className={classWithModifiers('page-mode-link', { 'is-active': this.currentMode === mode })}
+        className={classWithModifiers('page-mode-link', {
+          'is-active': this.currentMode === mode,
+        })}
         data-mode={mode}
         href={makeUrl({
           beatmapId: this.currentBeatmap.id,
@@ -74,7 +79,11 @@ export class ModeSwitcher extends React.Component<Props> {
           {this.renderModeText(mode)}
           {mode !== 'events' && (
             <span className='page-mode-link__badge'>
-              {this.props.discussionsState.discussionsForSelectedUserByMode[mode].length}
+              {
+                this.props.discussionsState.discussionsForSelectedUserByMode[
+                  mode
+                ].length
+              }
             </span>
           )}
           <span className='page-mode-link__stripe' />
@@ -85,14 +94,17 @@ export class ModeSwitcher extends React.Component<Props> {
 
   private renderModeText(mode: DiscussionPage) {
     if (mode === 'general' || mode === 'generalAll') {
-      const text = mode === 'general'
-        ? this.currentBeatmap.version
-        : trans('beatmaps.discussions.mode.scopes.generalAll');
+      const text =
+        mode === 'general'
+          ? this.currentBeatmap.version
+          : trans('beatmaps.discussions.mode.scopes.generalAll');
 
       return (
         <StringWithComponent
           mappings={{
-            scope: <span className='page-mode-link__subtitle'>{`(${text})`}</span>,
+            scope: (
+              <span className='page-mode-link__subtitle'>{`(${text})`}</span>
+            ),
           }}
           pattern={trans('beatmaps.discussions.mode.general')}
         />
@@ -106,13 +118,17 @@ export class ModeSwitcher extends React.Component<Props> {
     if (this.scrollerRef.current == null) return;
 
     // on mobile, ModeSwitcher becomes horizontally scrollable - scrollTo ensures that the selected tab is made visible
-    $(this.scrollerRef.current).scrollTo(`.${selectedClassName}`, 0, { over: { left: -1 } });
+    $(this.scrollerRef.current).scrollTo(`.${selectedClassName}`, 0, {
+      over: { left: -1 },
+    });
   }
 
   @action
   private readonly switch = (e: React.SyntheticEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
-    this.props.discussionsState.changeDiscussionPage(e.currentTarget.dataset.mode);
+    this.props.discussionsState.changeDiscussionPage(
+      e.currentTarget.dataset.mode,
+    );
   };
 }

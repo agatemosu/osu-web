@@ -28,7 +28,9 @@ export default class CoverUploader extends React.Component<Props> {
   }
 
   private get $uploadButton() {
-    return $(this.uploadButtonContainer.current ?? {}).find('.js-profile-cover-upload');
+    return $(this.uploadButtonContainer.current ?? {}).find(
+      '.js-profile-cover-upload',
+    );
   }
 
   destroy() {
@@ -63,15 +65,21 @@ export default class CoverUploader extends React.Component<Props> {
                 mappings={{
                   link: (
                     <a
-                      href={route('store.products.show', { product: 'supporter-tag' })}
-                      rel="noreferrer"
+                      href={route('store.products.show', {
+                        product: 'supporter-tag',
+                      })}
+                      rel='noreferrer'
                       target='_blank'
                     >
-                      {trans('users.show.edit.cover.upload.restriction_info.link')}
+                      {trans(
+                        'users.show.edit.cover.upload.restriction_info.link',
+                      )}
                     </a>
                   ),
                 }}
-                pattern={trans('users.show.edit.cover.upload.restriction_info._')}
+                pattern={trans(
+                  'users.show.edit.cover.upload.restriction_info._',
+                )}
               />
             </strong>
           </p>
@@ -116,7 +124,10 @@ export default class CoverUploader extends React.Component<Props> {
       fail: fileuploadFailCallback,
       submit: action(() => {
         $.publish('dragendGlobal');
-        if (this.props.controller.holdoverCoverPreset != null && !confirm(trans('users.show.edit.cover.holdover_remove_confirm'))) {
+        if (
+          this.props.controller.holdoverCoverPreset != null &&
+          !confirm(trans('users.show.edit.cover.holdover_remove_confirm'))
+        ) {
           return false;
         }
         this.props.controller.isUpdatingCover = true;

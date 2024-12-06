@@ -16,12 +16,23 @@ declare global {
   }
 }
 
-type ClickEvent = JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>;
+type ClickEvent = JQuery.ClickEvent<
+  Document,
+  unknown,
+  HTMLElement,
+  HTMLElement
+>;
 
 export class Store {
   private constructor() {
-    $(document).on('click', '.js-store-checkout', (event: ClickEvent) => void this.beginCheckout(event));
-    $(document).on('click', '.js-store-resume-checkout', (event: ClickEvent) => this.resumeCheckout(event));
+    $(document).on(
+      'click',
+      '.js-store-checkout',
+      (event: ClickEvent) => void this.beginCheckout(event),
+    );
+    $(document).on('click', '.js-store-resume-checkout', (event: ClickEvent) =>
+      this.resumeCheckout(event),
+    );
 
     $(document).on('turbo:load', () => {
       $('.js-store-checkout').prop('disabled', false);
@@ -49,7 +60,10 @@ export class Store {
         await this.beginShopifyCheckout(orderId);
       } catch (error) {
         hideLoadingOverlay();
-        core.userVerification.showOnError(error, createClickCallback(event.target));
+        core.userVerification.showOnError(
+          error,
+          createClickCallback(event.target),
+        );
       }
 
       return;
@@ -99,7 +113,9 @@ export class Store {
         // TODO: show error.
       }
     } else {
-      Turbo.visit(route('store.invoice.show', { invoice: target.dataset.orderId }));
+      Turbo.visit(
+        route('store.invoice.show', { invoice: target.dataset.orderId }),
+      );
     }
   }
 
@@ -117,9 +133,11 @@ export class Store {
   }
 
   private collectShopifyItems() {
-    return $('.js-store-order-item').map((_, element) => ({
-      quantity: Number(element.dataset.quantity),
-      variantId: toShopifyVariantGid(element.dataset.shopifyId),
-    })).get();
+    return $('.js-store-order-item')
+      .map((_, element) => ({
+        quantity: Number(element.dataset.quantity),
+        variantId: toShopifyVariantGid(element.dataset.shopifyId),
+      }))
+      .get();
   }
 }

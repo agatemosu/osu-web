@@ -42,11 +42,7 @@ export default class Main extends React.Component<Props> {
 
         <div className='contest-judge contest-judge--items'>
           {this.filteredEntries.map((entry) => (
-            <Entry
-              key={entry.id}
-              entry={entry}
-              store={this.props.store}
-            />
+            <Entry key={entry.id} entry={entry} store={this.props.store} />
           ))}
         </div>
       </>
@@ -54,13 +50,14 @@ export default class Main extends React.Component<Props> {
   }
 
   private renderShowJudgedToggle() {
-    const iconClass = this.hideJudged
-      ? 'fas fa-check-square'
-      : 'far fa-square';
+    const iconClass = this.hideJudged ? 'fas fa-check-square' : 'far fa-square';
 
     return (
       <button
-        className={classWithModifiers('sort__item', ['button', 'contest-judge'])}
+        className={classWithModifiers('sort__item', [
+          'button',
+          'contest-judge',
+        ])}
         onClick={this.toggleShowJudged}
         type='button'
       >

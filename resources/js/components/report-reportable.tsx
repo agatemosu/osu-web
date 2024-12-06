@@ -6,8 +6,14 @@ import * as React from 'react';
 import { trans } from 'utils/lang';
 import { reportableTypeToGroupKey, showReportForm } from './report-form';
 
-type ReactButton = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
-type ReactButtonWithoutRef = Pick<ReactButton, Exclude<keyof ReactButton, 'ref'>>;
+type ReactButton = React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>;
+type ReactButtonWithoutRef = Pick<
+  ReactButton,
+  Exclude<keyof ReactButton, 'ref'>
+>;
 
 interface Props extends ReactButtonWithoutRef {
   icon: boolean;
@@ -20,30 +26,34 @@ interface Props extends ReactButtonWithoutRef {
 export class ReportReportable extends React.PureComponent<Props> {
   static defaultProps = {
     icon: false,
-    onFormOpen: () => { /** nothing */ },
+    onFormOpen: () => {
+      /** nothing */
+    },
   };
 
   render() {
-    const { icon, onFormOpen, reportableId, reportableType, user, ...attribs } = this.props;
+    const { icon, onFormOpen, reportableId, reportableType, user, ...attribs } =
+      this.props;
     const groupKey = reportableTypeToGroupKey[this.props.reportableType];
     const buttonText = trans(`report.${groupKey}.button`);
 
     return (
       <button onClick={this.onShowFormButtonClick} type='button' {...attribs}>
-        {
-          icon ? (
-            <span className='textual-button textual-button--inline'>
-              <i className='textual-button__icon fas fa-exclamation-triangle' />
-              {' '}
-              {buttonText}
-            </span>
-          ) : buttonText
-        }
+        {icon ? (
+          <span className='textual-button textual-button--inline'>
+            <i className='textual-button__icon fas fa-exclamation-triangle' />{' '}
+            {buttonText}
+          </span>
+        ) : (
+          buttonText
+        )}
       </button>
     );
   }
 
-  private readonly onShowFormButtonClick = (e: React.MouseEvent<HTMLElement>) => {
+  private readonly onShowFormButtonClick = (
+    e: React.MouseEvent<HTMLElement>,
+  ) => {
     if (e.button !== 0) return;
 
     this.props.onFormOpen();

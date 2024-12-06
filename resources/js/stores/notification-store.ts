@@ -7,8 +7,15 @@ import { dispatchListener } from 'app-dispatcher';
 import DispatchListener from 'dispatch-listener';
 import { action, makeObservable, observable } from 'mobx';
 import Notification from 'models/notification';
-import { NotificationEventDelete, NotificationEventRead } from 'notifications/notification-events';
-import { NotificationIdentity, resolveIdentityType, resolveStackId } from 'notifications/notification-identity';
+import {
+  NotificationEventDelete,
+  NotificationEventRead,
+} from 'notifications/notification-events';
+import {
+  NotificationIdentity,
+  resolveIdentityType,
+  resolveStackId,
+} from 'notifications/notification-identity';
 import NotificationStackStore from './notification-stack-store';
 import WidgetNotificationStackStore from './widget-notification-stack-store';
 
@@ -63,7 +70,10 @@ export default class NotificationStore implements DispatchListener {
     });
   }
 
-  private eachByEvent(event: NotificationEventDelete | NotificationEventRead, callback: NotificationEachCallback) {
+  private eachByEvent(
+    event: NotificationEventDelete | NotificationEventRead,
+    callback: NotificationEachCallback,
+  ) {
     for (const identity of event.data) {
       const identityType = resolveIdentityType(identity);
 
@@ -89,7 +99,10 @@ export default class NotificationStore implements DispatchListener {
     }
   }
 
-  private eachByStack(identity: NotificationIdentity, callback: NotificationEachCallback) {
+  private eachByStack(
+    identity: NotificationIdentity,
+    callback: NotificationEachCallback,
+  ) {
     const stackId = resolveStackId(identity);
 
     this.notifications.forEach((notification) => {
@@ -99,9 +112,15 @@ export default class NotificationStore implements DispatchListener {
     });
   }
 
-  private eachByType(identity: NotificationIdentity, callback: NotificationEachCallback) {
+  private eachByType(
+    identity: NotificationIdentity,
+    callback: NotificationEachCallback,
+  ) {
     this.notifications.forEach((notification) => {
-      if (identity.objectType == null || notification.objectType === identity.objectType) {
+      if (
+        identity.objectType == null ||
+        notification.objectType === identity.objectType
+      ) {
         callback(notification);
       }
     });

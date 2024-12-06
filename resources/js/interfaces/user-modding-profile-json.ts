@@ -5,13 +5,14 @@ import UserExtendedJson from './user-extended-json';
 import { ProfileHeaderIncludes } from './user-json';
 
 type ModdingProfileIncludes =
-  ProfileHeaderIncludes
+  | ProfileHeaderIncludes
   | 'graveyard_beatmapset_count'
   | 'loved_beatmapset_count'
   | 'pending_beatmapset_count'
   | 'ranked_beatmapset_count'
   | 'statistics';
 
-type UserModdingProfileJson = UserExtendedJson & Required<Pick<UserExtendedJson, ModdingProfileIncludes>>;
+type UserModdingProfileJson = UserExtendedJson &
+  Required<Pick<UserExtendedJson, ModdingProfileIncludes>>;
 
 export default UserModdingProfileJson;

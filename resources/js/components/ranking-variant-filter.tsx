@@ -34,6 +34,11 @@ export default class RankingVariantFilter extends React.PureComponent<Props> {
   }
 
   private readonly onChange = (event: React.MouseEvent<HTMLButtonElement>) => {
-    navigate(updateQueryString(null, { page: null, variant: event.currentTarget.dataset.value }));
+    navigate(
+      updateQueryString(null, {
+        page: null,
+        variant: event.currentTarget.dataset.value,
+      }),
+    );
   };
 }

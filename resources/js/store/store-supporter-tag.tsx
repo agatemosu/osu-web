@@ -4,7 +4,14 @@
 import { UserCard } from 'components/user-card';
 import UserJson from 'interfaces/user-json';
 import { debounce } from 'lodash';
-import { action, autorun, computed, makeObservable, observable, runInAction } from 'mobx';
+import {
+  action,
+  autorun,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import { userNotFoundJson } from 'models/user';
 import core from 'osu-core-singleton';
@@ -36,14 +43,22 @@ const monthPresets = [1, 2, 4, 6, 12, 18, 24] as const;
 
 function durationToPrice(duration: number) {
   switch (true) {
-    case duration >= 12: return Math.ceil(duration / 12.0 * 26);
-    case duration === 10: return 24;
-    case duration === 9: return 22;
-    case duration === 8: return 20;
-    case duration === 6: return 16;
-    case duration === 4: return 12;
-    case duration === 2: return 8;
-    case duration === 1: return 4;
+    case duration >= 12:
+      return Math.ceil((duration / 12.0) * 26);
+    case duration === 10:
+      return 24;
+    case duration === 9:
+      return 22;
+    case duration === 8:
+      return 20;
+    case duration === 6:
+      return 16;
+    case duration === 4:
+      return 12;
+    case duration === 2:
+      return 8;
+    case duration === 1:
+      return 4;
   }
 }
 
@@ -68,22 +83,31 @@ export default class StoreSupporterTag extends React.Component<Props> {
       return 46;
     }
 
-    const raw = ((1 - (this.cost / this.duration) / 4) * 100);
+    const raw = (1 - this.cost / this.duration / 4) * 100;
     return Math.max(0, Math.round(raw));
   }
 
   @computed
   get duration() {
     switch (true) {
-      case this.cost >= 26: return Math.floor(this.cost / 26.0 * 12);
-      case this.cost >= 24: return 10;
-      case this.cost >= 22: return 9;
-      case this.cost >= 20: return 8;
-      case this.cost >= 16: return 6;
-      case this.cost >= 12: return 4;
-      case this.cost >= 8: return 2;
-      case this.cost >= 4: return 1;
-      default: return 0;
+      case this.cost >= 26:
+        return Math.floor((this.cost / 26.0) * 12);
+      case this.cost >= 24:
+        return 10;
+      case this.cost >= 22:
+        return 9;
+      case this.cost >= 20:
+        return 8;
+      case this.cost >= 16:
+        return 6;
+      case this.cost >= 12:
+        return 4;
+      case this.cost >= 8:
+        return 2;
+      case this.cost >= 4:
+        return 1;
+      default:
+        return 0;
     }
   }
 
@@ -115,7 +139,9 @@ export default class StoreSupporterTag extends React.Component<Props> {
   }
 
   get isValidUser() {
-    return this.user != null && Number.isFinite(this.user.id) && this.user.id > 0;
+    return (
+      this.user != null && Number.isFinite(this.user.id) && this.user.id > 0
+    );
   }
 
   constructor(props: Props) {
@@ -163,8 +189,17 @@ export default class StoreSupporterTag extends React.Component<Props> {
   render() {
     return (
       <div className='store-supporter-tag'>
-        <input defaultValue={this.cost} id='supporter-tag-form-price' name='item[cost]' type='hidden' />
-        <input defaultValue={this.user?.id} name='item[extra_data][target_id]' type='hidden' />
+        <input
+          defaultValue={this.cost}
+          id='supporter-tag-form-price'
+          name='item[cost]'
+          type='hidden'
+        />
+        <input
+          defaultValue={this.user?.id}
+          name='item[extra_data][target_id]'
+          type='hidden'
+        />
         <div className='store-supporter-tag__user-search'>
           <UserCard user={this.user} />
           <input
@@ -176,32 +211,45 @@ export default class StoreSupporterTag extends React.Component<Props> {
             placeholder={trans('store.supporter_tag.gift')}
             value={this.username}
           />
-          <div data-visibility={!this.isValidUser || this.isGiftingSelf ? 'hidden' : 'visible'}>
+          <div
+            data-visibility={
+              !this.isValidUser || this.isGiftingSelf ? 'hidden' : 'visible'
+            }
+          >
             <textarea
               ref={this.giftMessageRef}
               className='store-supporter-tag__input store-supporter-tag__input--message'
               defaultValue={this.savedGiftMessage}
               maxLength={this.props.maxMessageLength}
               name='item[extra_data][message]'
-              placeholder={trans('store.supporter_tag.gift_message', { length: this.props.maxMessageLength })}
+              placeholder={trans('store.supporter_tag.gift_message', {
+                length: this.props.maxMessageLength,
+              })}
               rows={3}
             />
           </div>
         </div>
         <div className='store-slider'>
-          <div ref={this.sliderRef} className={`${classWithModifiers('ui-slider', { disabled: !this.isValidUser })} ui-slider-horizontal`}>
+          <div
+            ref={this.sliderRef}
+            className={`${classWithModifiers('ui-slider', { disabled: !this.isValidUser })} ui-slider-horizontal`}
+          >
             <div className='ui-slider-handle'>
               <div className='store-slider__fake-callout'>
                 <div className='store-slider__callout'>
                   <div className='store-slider__bigtext'>USD {this.cost}</div>
                   <div>{this.durationText}</div>
-                  <div className='store-slider__subtext'>{trans('store.discount', { percent: this.discount })}</div>
+                  <div className='store-slider__subtext'>
+                    {trans('store.discount', { percent: this.discount })}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div className='store-slider__presets'>
-            <span className='store-slider__presets-blurb'>{trans('supporter_tag.months')}</span>
+            <span className='store-slider__presets-blurb'>
+              {trans('supporter_tag.months')}
+            </span>
             {monthPresets.map((preset) => (
               // TODO: button
               <div
@@ -227,9 +275,11 @@ export default class StoreSupporterTag extends React.Component<Props> {
     this.xhr = apiLookupUsers([`@${username}`]);
 
     this.xhr
-      .done((response) => runInAction(() => {
-        this.user = response.users[0] ?? userNotFoundJson;
-      }))
+      .done((response) =>
+        runInAction(() => {
+          this.user = response.users[0] ?? userNotFoundJson;
+        }),
+      )
       .fail(onError)
       .always(() => {
         this.xhr = null;
@@ -244,7 +294,9 @@ export default class StoreSupporterTag extends React.Component<Props> {
     });
   };
 
-  private readonly handlePresetClick = (event: React.SyntheticEvent<HTMLElement>) => {
+  private readonly handlePresetClick = (
+    event: React.SyntheticEvent<HTMLElement>,
+  ) => {
     const price = durationToPrice(+(event.currentTarget.dataset?.months ?? 0));
     if (price != null && this.sliderRef.current != null) {
       $(this.sliderRef.current).slider('value', price);
@@ -252,13 +304,18 @@ export default class StoreSupporterTag extends React.Component<Props> {
   };
 
   @action
-  private readonly handleSliderValueChanged = (_event: JQueryEventObject, ui: SliderUIParams) => {
+  private readonly handleSliderValueChanged = (
+    _event: JQueryEventObject,
+    ui: SliderUIParams,
+  ) => {
     if (ui.value == null) return;
     this.sliderValue = ui.value;
   };
 
   @action
-  private readonly handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  private readonly handleUsernameChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     this.username = event.currentTarget.value;
 
     this.debouncedGetUser.cancel();

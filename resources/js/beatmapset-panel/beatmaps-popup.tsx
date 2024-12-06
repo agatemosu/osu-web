@@ -22,7 +22,10 @@ interface Props {
   transitionDuration: number;
 }
 
-const beatmapsPopupTransitionStyles: Record<TransitionStatus, React.CSSProperties> = {
+const beatmapsPopupTransitionStyles: Record<
+  TransitionStatus,
+  React.CSSProperties
+> = {
   entered: { opacity: 1 },
   entering: {},
   exited: {},
@@ -32,7 +35,9 @@ const beatmapsPopupTransitionStyles: Record<TransitionStatus, React.CSSPropertie
 
 const Item = observer(({ beatmaps }: { beatmaps: BeatmapJson[] }) => (
   <div className='beatmaps-popup__group'>
-    {beatmaps.map((beatmap) => <ItemRow key={beatmap.id} beatmap={beatmap} />)}
+    {beatmaps.map((beatmap) => (
+      <ItemRow key={beatmap.id} beatmap={beatmap} />
+    ))}
   </div>
 ));
 
@@ -80,15 +85,18 @@ export default class BeatmapsPopup extends React.Component<Props> {
       <Portal>
         <div
           ref={this.contentRef}
-          className={classWithModifiers('beatmaps-popup', [`size-${core.userPreferences.get('beatmapset_card_size')}`])}
+          className={classWithModifiers('beatmaps-popup', [
+            `size-${core.userPreferences.get('beatmapset_card_size')}`,
+          ])}
           onMouseEnter={this.props.onMouseEnter}
           onMouseLeave={this.props.onMouseLeave}
           style={style}
         >
           <div className='beatmaps-popup__content'>
-            {[...this.props.groupedBeatmaps].map(([mode, beatmaps]) => (
-              beatmaps.length > 0 && <Item key={mode} beatmaps={beatmaps} />
-            ))}
+            {[...this.props.groupedBeatmaps].map(
+              ([mode, beatmaps]) =>
+                beatmaps.length > 0 && <Item key={mode} beatmaps={beatmaps} />,
+            )}
           </div>
         </div>
       </Portal>

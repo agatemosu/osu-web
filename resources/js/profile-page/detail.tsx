@@ -65,7 +65,11 @@ export default class Detail extends React.Component<Props> {
           <div>
             <div className='profile-detail__chart-numbers profile-detail__chart-numbers--top'>
               <div className='profile-detail__values'>
-                <Rank highest={this.user.rank_highest} stats={this.user.statistics} type='global' />
+                <Rank
+                  highest={this.user.rank_highest}
+                  stats={this.user.statistics}
+                  type='global'
+                />
                 <Rank stats={this.user.statistics} type='country' />
               </div>
               <div className='profile-detail__values'>
@@ -75,9 +79,14 @@ export default class Detail extends React.Component<Props> {
 
             <div className='profile-detail__chart'>
               {this.user.statistics.is_ranked ? (
-                <RankChart rankHistory={this.user.rank_history} stats={this.user.statistics} />
+                <RankChart
+                  rankHistory={this.user.rank_history}
+                  stats={this.user.statistics}
+                />
               ) : (
-                <div className='profile-detail__empty-chart'>{trans('users.show.extra.unranked')}</div>
+                <div className='profile-detail__empty-chart'>
+                  {trans('users.show.extra.unranked')}
+                </div>
               )}
             </div>
             <div className='profile-detail__chart-numbers'>

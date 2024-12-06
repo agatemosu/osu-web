@@ -2,7 +2,13 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import KudosuHistoryJson from 'interfaces/kudosu-history-json';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 import { observer } from 'mobx-react';
 import ExtraHeader from 'profile-page/extra-header';
 import getPage, { PageSectionWithoutCountJson } from 'profile-page/extra-page';
@@ -10,7 +16,10 @@ import * as React from 'react';
 import { formatNumber } from 'utils/html';
 import { parseJsonNullable, storeJson } from 'utils/json';
 import { trans } from 'utils/lang';
-import { apiShowMoreRecentlyReceivedKudosu, OffsetPaginatorJson } from 'utils/offset-paginator';
+import {
+  apiShowMoreRecentlyReceivedKudosu,
+  OffsetPaginatorJson,
+} from 'utils/offset-paginator';
 import { wikiUrl } from 'utils/url';
 import LazyLoad from './lazy-load';
 import ShowMoreLink from './show-more-link';
@@ -24,15 +33,23 @@ function Entry({ kudosu }: { kudosu: KudosuHistoryJson }) {
   const textMappings = {
     amount: (
       <strong className='profile-extra-entries__kudosu-amount'>
-        {trans('users.show.extra.kudosu.entry.amount', { amount: formatNumber(Math.abs(kudosu.amount)) })}
+        {trans('users.show.extra.kudosu.entry.amount', {
+          amount: formatNumber(Math.abs(kudosu.amount)),
+        })}
       </strong>
     ),
-    giver: kudosu.giver == null
-      ? trans('users.deleted')
-      : <a href={kudosu.giver.url}>{kudosu.giver.username}</a>,
-    post: kudosu.post.url == null
-      ? kudosu.post.title
-      : <a href={kudosu.post.url}>{kudosu.post.title}</a>,
+    giver:
+      kudosu.giver == null ? (
+        trans('users.deleted')
+      ) : (
+        <a href={kudosu.giver.url}>{kudosu.giver.username}</a>
+      ),
+    post:
+      kudosu.post.url == null ? (
+        kudosu.post.title
+      ) : (
+        <a href={kudosu.post.url}>{kudosu.post.title}</a>
+      ),
   };
 
   return (
@@ -41,7 +58,9 @@ function Entry({ kudosu }: { kudosu: KudosuHistoryJson }) {
         <div className='profile-extra-entries__text'>
           <StringWithComponent
             mappings={textMappings}
-            pattern={trans(`users.show.extra.kudosu.entry.${kudosu.model}.${kudosu.action}`)}
+            pattern={trans(
+              `users.show.extra.kudosu.entry.${kudosu.model}.${kudosu.action}`,
+            )}
           />
         </div>
       </div>
@@ -79,7 +98,7 @@ export default class ProfilePageKudosu extends React.Component<Props> {
     makeObservable(this);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.xhr?.abort();
     this.showMoreXhr?.abort();
   }
@@ -89,10 +108,14 @@ export default class ProfilePageKudosu extends React.Component<Props> {
       <div className='page-extra'>
         <ExtraHeader name={this.props.name} withEdit={this.props.withEdit} />
 
-        <LazyLoad hasData={this.hasData} name={this.props.name} onLoad={this.handleOnLoad}>
+        <LazyLoad
+          hasData={this.hasData}
+          name={this.props.name}
+          onLoad={this.handleOnLoad}
+        >
           <div className='kudosu-box'>
             <ValueDisplay
-              description={(
+              description={
                 <StringWithComponent
                   mappings={{
                     link: (
@@ -103,7 +126,7 @@ export default class ProfilePageKudosu extends React.Component<Props> {
                   }}
                   pattern={trans('users.show.extra.kudosu.total_info._')}
                 />
-              )}
+              }
               label={trans('users.show.extra.kudosu.total')}
               modifiers='kudosu'
               value={formatNumber(this.props.total)}
@@ -120,10 +143,12 @@ export default class ProfilePageKudosu extends React.Component<Props> {
   private readonly handleOnLoad = () => {
     this.xhr = getPage({ id: this.props.userId }, 'kudosu');
 
-    this.xhr.done((json) => runInAction(() => {
-      this.kudosu = json;
-      this.saveState();
-    }));
+    this.xhr.done((json) =>
+      runInAction(() => {
+        this.kudosu = json;
+        this.saveState();
+      }),
+    );
 
     return this.xhr;
   };
@@ -132,7 +157,10 @@ export default class ProfilePageKudosu extends React.Component<Props> {
   private readonly handleShowMore = () => {
     if (this.kudosu == null) return;
 
-    this.showMoreXhr = apiShowMoreRecentlyReceivedKudosu(this.kudosu, this.props.userId).done(this.saveState);
+    this.showMoreXhr = apiShowMoreRecentlyReceivedKudosu(
+      this.kudosu,
+      this.props.userId,
+    ).done(this.saveState);
   };
 
   private renderEntries() {
@@ -148,7 +176,9 @@ export default class ProfilePageKudosu extends React.Component<Props> {
 
     return (
       <ul className='profile-extra-entries profile-extra-entries--kudosu'>
-        {this.kudosu.items.map((kudosu) => <Entry key={kudosu.id} kudosu={kudosu} />)}
+        {this.kudosu.items.map((kudosu) => (
+          <Entry key={kudosu.id} kudosu={kudosu} />
+        ))}
 
         <li className='profile-extra-entries__item u-contents'>
           <ShowMoreLink

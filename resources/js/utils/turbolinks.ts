@@ -26,10 +26,16 @@ export function currentUrlRelative() {
 
 function keepScrollOnLoad() {
   const { pageXOffset, pageYOffset } = window;
-  $(document).one('turbo:load', () => window.scrollTo(pageXOffset, pageYOffset));
+  $(document).one('turbo:load', () =>
+    window.scrollTo(pageXOffset, pageYOffset),
+  );
 }
 
-export function navigate(url: string, keepScroll = false, options?: VisitOptions) {
+export function navigate(
+  url: string,
+  keepScroll = false,
+  options?: VisitOptions,
+) {
   if (keepScroll) {
     keepScrollOnLoad();
   }

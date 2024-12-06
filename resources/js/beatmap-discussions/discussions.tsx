@@ -2,7 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import IconExpand from 'components/icon-expand';
-import BeatmapsetDiscussionJson, { BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
+import BeatmapsetDiscussionJson, {
+  BeatmapsetDiscussionJsonForShow,
+} from 'interfaces/beatmapset-discussion-json';
 import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -78,7 +80,10 @@ export class Discussions extends React.Component<Props> {
 
   @computed
   private get isTimelineVisible() {
-    return this.discussionsState.currentPage === 'timeline' && this.currentSort === 'timeline';
+    return (
+      this.discussionsState.currentPage === 'timeline' &&
+      this.currentSort === 'timeline'
+    );
   }
 
   private get store() {
@@ -89,23 +94,28 @@ export class Discussions extends React.Component<Props> {
   private get sortedDiscussions() {
     if (this.discussionsState.currentPage === 'events') return [];
 
-    const discussions = this.discussionsState.discussionsForSelectedUserByMode[this.discussionsState.currentPage];
+    const discussions =
+      this.discussionsState.discussionsForSelectedUserByMode[
+        this.discussionsState.currentPage
+      ];
 
-    return discussions.slice().sort((a: BeatmapsetDiscussionJson, b: BeatmapsetDiscussionJson) => {
-      const mapperNoteCompare =
-        // no sticky for timeline sort
-        this.currentSort !== 'timeline'
-        // stick the mapper note
-        && [a.message_type, b.message_type].includes('mapper_note')
-        // but if both are mapper note, do base comparison
-        && a.message_type !== b.message_type;
+    return discussions
+      .slice()
+      .sort((a: BeatmapsetDiscussionJson, b: BeatmapsetDiscussionJson) => {
+        const mapperNoteCompare =
+          // no sticky for timeline sort
+          this.currentSort !== 'timeline' &&
+          // stick the mapper note
+          [a.message_type, b.message_type].includes('mapper_note') &&
+          // but if both are mapper note, do base comparison
+          a.message_type !== b.message_type;
 
-      if (mapperNoteCompare) {
-        return a.message_type === 'mapper_note' ? -1 : 1;
-      } else {
-        return sortPresets[this.currentSort].sort(a, b);
-      }
-    });
+        if (mapperNoteCompare) {
+          return a.message_type === 'mapper_note' ? -1 : 1;
+        } else {
+          return sortPresets[this.currentSort].sort(a, b);
+        }
+      });
   }
 
   constructor(props: Props) {
@@ -121,12 +131,16 @@ export class Discussions extends React.Component<Props> {
             {trans('beatmaps.discussions.title')}
           </div>
           <div className={`${bn}__toolbar`}>
-            <div className={`${bn}__toolbar-content ${bn}__toolbar-content--left`}>
+            <div
+              className={`${bn}__toolbar-content ${bn}__toolbar-content--left`}
+            >
               <div className={`${bn}__toolbar-item`}>
                 {this.renderSortOptions()}
               </div>
             </div>
-            <div className={`${bn}__toolbar-content ${bn}__toolbar-content--right`}>
+            <div
+              className={`${bn}__toolbar-content ${bn}__toolbar-content--right`}
+            >
               {this.renderShowDeletedToggle()}
               {this.renderExpandCollapseAllButton('collapse')}
               {this.renderExpandCollapseAllButton('expand')}
@@ -140,18 +154,26 @@ export class Discussions extends React.Component<Props> {
   }
 
   @action
-  private readonly handleChangeSort = (e: React.SyntheticEvent<HTMLButtonElement>) => {
+  private readonly handleChangeSort = (
+    e: React.SyntheticEvent<HTMLButtonElement>,
+  ) => {
     if (this.discussionsState.currentPage === 'events') return;
-    this.sort[this.discussionsState.currentPage] = e.currentTarget.dataset.sortPreset as Sort;
+    this.sort[this.discussionsState.currentPage] = e.currentTarget.dataset
+      .sortPreset as Sort;
   };
 
   @action
-  private readonly handleExpandClick = (e: React.SyntheticEvent<HTMLButtonElement>) => {
-    this.discussionsState.discussionDefaultCollapsed = e.currentTarget.dataset.type === 'collapse';
+  private readonly handleExpandClick = (
+    e: React.SyntheticEvent<HTMLButtonElement>,
+  ) => {
+    this.discussionsState.discussionDefaultCollapsed =
+      e.currentTarget.dataset.type === 'collapse';
     this.discussionsState.discussionCollapsed.clear();
   };
 
-  private readonly renderDiscussionPage = (discussion: BeatmapsetDiscussionJsonForShow) => {
+  private readonly renderDiscussionPage = (
+    discussion: BeatmapsetDiscussionJsonForShow,
+  ) => {
     const parentDiscussion = this.store.discussions.get(discussion.parent_id);
 
     return (
@@ -160,7 +182,9 @@ export class Discussions extends React.Component<Props> {
         discussion={discussion}
         discussionsState={this.discussionsState}
         isTimelineVisible={this.isTimelineVisible}
-        parentDiscussion={parentDiscussion?.message_type === 'review' ? parentDiscussion : null}
+        parentDiscussion={
+          parentDiscussion?.message_type === 'review' ? parentDiscussion : null
+        }
         store={this.store}
       />
     );
@@ -174,8 +198,7 @@ export class Discussions extends React.Component<Props> {
         <div className={`${bn}__discussions ${bn}__discussions--empty`}>
           {this.discussionsState.discussionsByFilter.total.length > count
             ? trans('beatmaps.discussions.empty.hidden')
-            : trans('beatmaps.discussions.empty.empty')
-          }
+            : trans('beatmaps.discussions.empty.empty')}
         </div>
       );
     }
@@ -184,7 +207,9 @@ export class Discussions extends React.Component<Props> {
       <div className={`${bn}__discussions`}>
         {this.renderTimelineCircle()}
 
-        {this.isTimelineVisible && <div className={`${bn}__timeline-line hidden-xs`} />}
+        {this.isTimelineVisible && (
+          <div className={`${bn}__timeline-line hidden-xs`} />
+        )}
 
         {this.sortedDiscussions.map(this.renderDiscussionPage)}
 
@@ -201,7 +226,10 @@ export class Discussions extends React.Component<Props> {
         onClick={this.handleExpandClick}
         type='button'
       >
-        <IconExpand expand={type === 'expand'} parentClass={`${bn}__toolbar-link-content`} />
+        <IconExpand
+          expand={type === 'expand'}
+          parentClass={`${bn}__toolbar-link-content`}
+        />
         <span className={`${bn}__toolbar-link-content`}>
           {trans(`beatmaps.discussions.collapse.all-${type}`)}
         </span>
@@ -219,7 +247,13 @@ export class Discussions extends React.Component<Props> {
         type='button'
       >
         <span className={`${bn}__toolbar-link-content`}>
-          <span className={this.discussionsState.showDeleted ? 'fas fa-check-square' : 'far fa-square'} />
+          <span
+            className={
+              this.discussionsState.showDeleted
+                ? 'fas fa-check-square'
+                : 'far fa-square'
+            }
+          />
         </span>
         <span className={`${bn}__toolbar-link-content`}>
           {trans('beatmaps.discussions.show_deleted')}
@@ -229,18 +263,23 @@ export class Discussions extends React.Component<Props> {
   }
 
   private renderSortOptions() {
-    const presets: Sort[] = this.discussionsState.currentPage === 'timeline'
-      ? ['timeline', 'updated_at']
-      : ['created_at', 'updated_at'];
+    const presets: Sort[] =
+      this.discussionsState.currentPage === 'timeline'
+        ? ['timeline', 'updated_at']
+        : ['created_at', 'updated_at'];
 
     return (
       <div className='sort sort--beatmapset-discussions'>
         <div className='sort__items'>
-          <span className='sort__item sort__item--title'>{trans('sort._')}</span>
+          <span className='sort__item sort__item--title'>
+            {trans('sort._')}
+          </span>
           {presets.map((preset) => (
             <button
               key={preset}
-              className={classWithModifiers('sort__item', 'button', { active: this.currentSort === preset })}
+              className={classWithModifiers('sort__item', 'button', {
+                active: this.currentSort === preset,
+              })}
               data-sort-preset={preset}
               onClick={this.handleChangeSort}
               type='button'

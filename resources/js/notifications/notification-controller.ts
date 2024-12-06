@@ -2,7 +2,11 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { action, computed, makeObservable, observable } from 'mobx';
-import NotificationType, { getValidName, Name as NotificationTypeName, typeNames } from 'models/notification-type';
+import NotificationType, {
+  getValidName,
+  Name as NotificationTypeName,
+  typeNames,
+} from 'models/notification-type';
 import { NotificationContextData } from 'notifications-context';
 import NotificationStackStore from 'stores/notification-stack-store';
 import NotificationStore from 'stores/notification-store';
@@ -22,7 +26,12 @@ export default class NotificationController {
 
   @computed
   get stacks() {
-    return this.store.orderedStacksOfType(this.currentFilter).filter((stack) => stack.hasVisibleNotifications && !this.isExcluded(stack.objectType));
+    return this.store
+      .orderedStacksOfType(this.currentFilter)
+      .filter(
+        (stack) =>
+          stack.hasVisibleNotifications && !this.isExcluded(stack.objectType),
+      );
   }
 
   @computed
@@ -39,21 +48,29 @@ export default class NotificationController {
     protected readonly contextType: NotificationContextData,
     filter?: NotificationTypeName,
   ) {
-    this.typeNamesWithoutNull = typeNames.filter((name) => !(name == null || this.isExcluded(name)));
+    this.typeNamesWithoutNull = typeNames.filter(
+      (name) => !(name == null || this.isExcluded(name)),
+    );
 
     // TODO: should probably not infer from url here.
     this.currentFilter = filter !== undefined ? filter : this.typeNameFromUrl;
 
-    this.store = contextType.isWidget ? notificationStore.unreadStacks : notificationStore.stacks;
+    this.store = contextType.isWidget
+      ? notificationStore.unreadStacks
+      : notificationStore.stacks;
 
     makeObservable(this);
   }
 
   getTotal(type: NotificationType) {
-    return this.getNonNullTypes(type).reduce((acc, current) => acc + current.total, 0);
+    return this.getNonNullTypes(type).reduce(
+      (acc, current) => acc + current.total,
+      0,
+    );
   }
 
-  readonly getType = (name: NotificationTypeName) => this.store.getOrCreateType({ objectType: name });
+  readonly getType = (name: NotificationTypeName) =>
+    this.store.getOrCreateType({ objectType: name });
 
   @action
   loadMore() {

@@ -17,7 +17,15 @@ import PpValue from 'scores/pp-value';
 import { classWithModifiers, Modifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
-import { accuracy, filterMods, hasMenu, isPerfectCombo, attributeDisplayTotals, rank, scoreUrl } from 'utils/score-helper';
+import {
+  accuracy,
+  filterMods,
+  hasMenu,
+  isPerfectCombo,
+  attributeDisplayTotals,
+  rank,
+  scoreUrl,
+} from 'utils/score-helper';
 
 const bn = 'beatmap-scoreboard-table';
 
@@ -31,7 +39,10 @@ function TdLink(linkProps: TdLinkProps) {
   return (
     <td className={`${bn}__cell`}>
       <a
-        className={classWithModifiers(`${bn}__cell-content`, linkProps.modifiers)}
+        className={classWithModifiers(
+          `${bn}__cell-content`,
+          linkProps.modifiers,
+        )}
         href={linkProps.href}
       >
         {linkProps.children}
@@ -65,11 +76,14 @@ export default class ScoreboardTableRow extends React.Component<Props> {
   render() {
     const score = this.props.score;
     const scoreAccuracy = accuracy(score);
-    const blockClass = classWithModifiers(`${bn}__body-row`,
+    const blockClass = classWithModifiers(
+      `${bn}__body-row`,
       this.props.activated ? 'menu-active' : 'highlightable',
       {
         first: this.props.index === 0,
-        friend: this.props.highlightFriends && core.currentUserModel.isFriendWith(score.user.id),
+        friend:
+          this.props.highlightFriends &&
+          core.currentUserModel.isFriendWith(score.user.id),
         self: score.user.id === core.currentUser?.id,
       },
     );
@@ -81,19 +95,24 @@ export default class ScoreboardTableRow extends React.Component<Props> {
         </TdLink>
 
         <TdLink href={this.scoreUrl} modifiers='grade'>
-          <div className={classWithModifiers('score-rank', ['tiny', rank(score)])} />
+          <div
+            className={classWithModifiers('score-rank', ['tiny', rank(score)])}
+          />
         </TdLink>
 
         <TdLink href={this.scoreUrl} modifiers='score'>
           <ScoreValue score={score} />
         </TdLink>
 
-        <TdLink href={this.scoreUrl} modifiers={{ perfect: scoreAccuracy === 1 }}>
+        <TdLink
+          href={this.scoreUrl}
+          modifiers={{ perfect: scoreAccuracy === 1 }}
+        >
           {`${formatNumber(scoreAccuracy * 100, 2)}%`}
         </TdLink>
 
         <td className={`${bn}__cell`}>
-          {score.user.country_code != null &&
+          {score.user.country_code != null && (
             <a
               className={`${bn}__cell-content`}
               href={route('rankings', {
@@ -104,19 +123,20 @@ export default class ScoreboardTableRow extends React.Component<Props> {
             >
               <FlagCountry country={score.user.country} modifiers='flat' />
             </a>
-          }
+          )}
         </td>
 
         {score.user.is_deleted ? (
-          <TdLink href={this.scoreUrl}>
-            {trans('users.deleted')}
-          </TdLink>
+          <TdLink href={this.scoreUrl}>{trans('users.deleted')}</TdLink>
         ) : (
           <td className={`${bn}__cell u-relative`}>
             <a
               className={`${bn}__cell-content ${bn}__cell-content--user-link js-usercard`}
               data-user-id={score.user.id}
-              href={route('users.show', { mode: this.props.beatmap.mode, user: score.user.id })}
+              href={route('users.show', {
+                mode: this.props.beatmap.mode,
+                user: score.user.id,
+              })}
             >
               {score.user.username}
             </a>
@@ -125,7 +145,10 @@ export default class ScoreboardTableRow extends React.Component<Props> {
           </td>
         )}
 
-        <TdLink href={this.scoreUrl} modifiers={{ perfect: isPerfectCombo(score) }}>
+        <TdLink
+          href={this.scoreUrl}
+          modifiers={{ perfect: isPerfectCombo(score) }}
+        >
           {`${formatNumber(score.max_combo)}x`}
         </TdLink>
 
@@ -139,11 +162,11 @@ export default class ScoreboardTableRow extends React.Component<Props> {
           </TdLink>
         ))}
 
-        {this.props.showPp &&
+        {this.props.showPp && (
           <TdLink href={this.scoreUrl}>
             <PpValue score={score} />
           </TdLink>
-        }
+        )}
 
         <TdLink href={this.scoreUrl} modifiers='time'>
           <ScoreboardTime dateTime={score.ended_at} />
@@ -151,7 +174,9 @@ export default class ScoreboardTableRow extends React.Component<Props> {
 
         <TdLink href={this.scoreUrl} modifiers='mods'>
           <div className={`${bn}__mods`}>
-            {filterMods(score).map((mod) => <Mod key={mod.acronym} mod={mod} />)}
+            {filterMods(score).map((mod) => (
+              <Mod key={mod.acronym} mod={mod} />
+            ))}
           </div>
         </TdLink>
 

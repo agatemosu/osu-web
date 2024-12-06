@@ -9,6 +9,6 @@ export function ensureRuleset(maybeRuleset: string): Ruleset | undefined {
   }
 }
 
-type Ruleset = typeof rulesets[number];
+type Ruleset = (typeof rulesets)[number];
 
 export default Ruleset;

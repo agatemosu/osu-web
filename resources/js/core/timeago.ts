@@ -26,9 +26,9 @@ export default class Timeago {
         break;
       case 'attributes':
         if (
-          mutation.target instanceof HTMLTimeElement
-          && mutation.target.dateTime !== mutation.oldValue
-          && mutation.target.classList.contains(Timeago.className)
+          mutation.target instanceof HTMLTimeElement &&
+          mutation.target.dateTime !== mutation.oldValue &&
+          mutation.target.classList.contains(Timeago.className)
         ) {
           $(mutation.target).timeago('updateFromDOM');
         }

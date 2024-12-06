@@ -4,9 +4,12 @@
 import remarkWikiLink, { RemarkWikiLinkPlugin } from 'remark-wiki-link';
 import { wikiUrlWithoutLocale } from 'utils/url';
 
-const wikiLink: RemarkWikiLinkPlugin = [remarkWikiLink, {
-  hrefTemplate: wikiUrlWithoutLocale,
-  pageResolver: (name: string) => [name],
-}];
+const wikiLink: RemarkWikiLinkPlugin = [
+  remarkWikiLink,
+  {
+    hrefTemplate: wikiUrlWithoutLocale,
+    pageResolver: (name: string) => [name],
+  },
+];
 
 export default wikiLink;

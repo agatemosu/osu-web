@@ -20,8 +20,11 @@ interface Props {
 @observer
 export default class DetailBar extends React.Component<Props> {
   private get showMessageButton() {
-    return core.currentUser == null
-      || (core.currentUser.id !== this.props.user.id && !core.currentUserModel.blocks.has(this.props.user.id));
+    return (
+      core.currentUser == null ||
+      (core.currentUser.id !== this.props.user.id &&
+        !core.currentUserModel.blocks.has(this.props.user.id))
+    );
   }
 
   render() {
@@ -34,7 +37,9 @@ export default class DetailBar extends React.Component<Props> {
           userId={this.props.user.id}
         />
 
-        {this.props.user.is_bot ? this.renderMessageButton() : this.renderNonBotButtons()}
+        {this.props.user.is_bot
+          ? this.renderMessageButton()
+          : this.renderNonBotButtons()}
       </div>
     );
   }
@@ -72,7 +77,7 @@ export default class DetailBar extends React.Component<Props> {
 
         {showExtraMenu(this.props.user) && <ExtraMenu user={this.props.user} />}
 
-        {this.props.user.statistics != null &&
+        {this.props.user.statistics != null && (
           <div className='profile-detail-bar__level'>
             <div className='profile-detail-bar__level-bar'>
               <Bar
@@ -86,7 +91,7 @@ export default class DetailBar extends React.Component<Props> {
 
             <UserLevel level={this.props.user.statistics.level.current} />
           </div>
-        }
+        )}
       </>
     );
   }

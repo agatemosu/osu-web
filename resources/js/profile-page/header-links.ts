@@ -13,8 +13,10 @@ const nonBotModes: LinkMode[] = ['modding', 'playlists', 'realtime'];
 
 const url = {
   modding: (userId: number) => route('users.modding.index', { user: userId }),
-  playlists: (userId: number) => route('users.multiplayer.index', { typeGroup: 'playlists', user: userId }),
-  realtime: (userId: number) => route('users.multiplayer.index', { typeGroup: 'realtime', user: userId }),
+  playlists: (userId: number) =>
+    route('users.multiplayer.index', { typeGroup: 'playlists', user: userId }),
+  realtime: (userId: number) =>
+    route('users.multiplayer.index', { typeGroup: 'realtime', user: userId }),
   show: (userId: number) => route('users.show', { user: userId }),
 };
 

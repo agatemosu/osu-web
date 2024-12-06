@@ -51,7 +51,10 @@ export default class CoverSelection extends React.PureComponent<Props> {
   private readonly onClick = () => {
     if (this.props.preset.url == null || this.isSelected) return;
 
-    if (this.props.controller.holdoverCoverPreset != null && !confirm(trans('users.show.edit.cover.holdover_remove_confirm'))) {
+    if (
+      this.props.controller.holdoverCoverPreset != null &&
+      !confirm(trans('users.show.edit.cover.holdover_remove_confirm'))
+    ) {
       return;
     }
 

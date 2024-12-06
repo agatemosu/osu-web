@@ -13,9 +13,7 @@ export function popup(message: string, type: PopupType = 'info') {
   const closeAlert = () => $alert.trigger('click');
 
   // handle types of alerts by changing the colour
-  $alert
-    .addClass(`alert-${type} popup-active`)
-    .removeClass('popup-clone');
+  $alert.addClass(`alert-${type} popup-active`).removeClass('popup-clone');
 
   $alert.find('.popup-text').html(message);
 

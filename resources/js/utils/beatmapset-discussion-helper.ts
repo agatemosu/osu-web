@@ -3,7 +3,9 @@
 
 import { Filter, filters } from 'beatmap-discussions/current-discussions';
 import DiscussionMode from 'beatmap-discussions/discussion-mode';
-import DiscussionPage, { isDiscussionPage } from 'beatmap-discussions/discussion-page';
+import DiscussionPage, {
+  isDiscussionPage,
+} from 'beatmap-discussions/discussion-page';
 import guestGroup from 'beatmap-discussions/guest-group';
 import mapperGroup from 'beatmap-discussions/mapper-group';
 import BeatmapJson from 'interfaces/beatmap-json';
@@ -33,32 +35,30 @@ type MakeUrlOptions = {
   filter?: Filter;
   mode?: DiscussionPage;
   user?: number;
-} & (
-  // enforces mutual exclusivity when passing in as paramaters.
-  // doesn't completely discriminate the type during type checks.
-  {
-    beatmap?: never;
-    beatmapId?: number;
-    beatmapsetId?: number;
-    discussion?: never;
-    discussionId?: number;
-    post?: never;
-    postId?: number;
-  } | {
-    beatmap?: BeatmapJson;
-    beatmapId?: never;
-    beatmapsetId?: never;
-    discussion?: BeatmapsetDiscussionJson;
-    discussionId?: never;
-    post?: BeatmapsetDiscussionPostJson;
-    postId?: never;
-  }
+} & ( // doesn't completely discriminate the type during type checks. // enforces mutual exclusivity when passing in as paramaters.
+  | {
+      beatmap?: never;
+      beatmapId?: number;
+      beatmapsetId?: number;
+      discussion?: never;
+      discussionId?: number;
+      post?: never;
+      postId?: number;
+    }
+  | {
+      beatmap?: BeatmapJson;
+      beatmapId?: never;
+      beatmapsetId?: never;
+      discussion?: BeatmapsetDiscussionJson;
+      discussionId?: never;
+      post?: BeatmapsetDiscussionPostJson;
+      postId?: never;
+    }
 );
 
 // This is more for ensuring parseUrl returns the correct non-nullable properties
-type ParsedUrlParams =
-  Omit<MakeUrlOptions, 'beatmap' | 'discussion' | 'post'>
-  & Required<Pick<MakeUrlOptions, 'beatmapsetId' | 'filter' | 'mode'>>;
+type ParsedUrlParams = Omit<MakeUrlOptions, 'beatmap' | 'discussion' | 'post'> &
+  Required<Pick<MakeUrlOptions, 'beatmapsetId' | 'filter' | 'mode'>>;
 
 interface PropsFromHrefValue {
   children?: string;
@@ -75,16 +75,24 @@ const generalPages = new Set<unknown>(['events', 'generalAll', 'reviews']);
 const defaultBeatmapId = '-';
 
 const linkTimestampRegex = /\b((\d{2}):(\d{2})[:.](\d{3})( \([\d,|]+\)|\b))/g;
-export const timestampRegex = /\b(((\d{2,}):([0-5]\d)[:.](\d{3}))(\s\((?:\d+[,|])*\d+\))?)/;
+export const timestampRegex =
+  /\b(((\d{2,}):([0-5]\d)[:.](\d{3}))(\s\((?:\d+[,|])*\d+\))?)/;
 export const timestampRegexGlobal = new RegExp(timestampRegex, 'g');
 export const maxLengthTimeline = 750;
 export const maxMessagePreviewLength = 100;
 
-export type NearbyDiscussion<T extends BeatmapsetDiscussionJson> = T & { timestamp: number };
+export type NearbyDiscussion<T extends BeatmapsetDiscussionJson> = T & {
+  timestamp: number;
+};
 type NearbyDiscussionsCategory = 'd0' | 'd100' | 'd1000' | 'other';
 const nearbyDiscussionsMessageTypes = new Set(['suggestion', 'problem']);
 
-export function badgeGroup({ beatmapset, currentBeatmap, discussion, user }: BadgeGroupParams) {
+export function badgeGroup({
+  beatmapset,
+  currentBeatmap,
+  discussion,
+  user,
+}: BadgeGroupParams) {
   if (user == null) {
     return null;
   }
@@ -93,7 +101,11 @@ export function badgeGroup({ beatmapset, currentBeatmap, discussion, user }: Bad
     return mapperGroup;
   }
 
-  if (currentBeatmap != null && discussion.beatmap_id === currentBeatmap.id && isOwner(user.id, currentBeatmap)) {
+  if (
+    currentBeatmap != null &&
+    discussion.beatmap_id === currentBeatmap.id &&
+    isOwner(user.id, currentBeatmap)
+  ) {
     return guestGroup;
   }
 
@@ -112,10 +124,14 @@ export function canModeratePosts() {
 }
 
 export function defaultMode(beatmapId?: number | string | null) {
-  return beatmapId != null && beatmapId !== defaultBeatmapId ? 'timeline' : 'generalAll';
+  return beatmapId != null && beatmapId !== defaultBeatmapId
+    ? 'timeline'
+    : 'generalAll';
 }
 
-export function discussionMode(discussion: BeatmapsetDiscussionJson): DiscussionMode {
+export function discussionMode(
+  discussion: BeatmapsetDiscussionJson,
+): DiscussionMode {
   return discussion.message_type === 'review'
     ? 'reviews'
     : discussion.beatmap_id != null
@@ -138,29 +154,46 @@ function isFilter(value: string): value is Filter {
   return filterLookup.has(value);
 }
 
-function isNearbyDiscussion<T extends BeatmapsetDiscussionJson>(discussion: T): discussion is NearbyDiscussion<T> {
-  return discussion.deleted_at == null
-    && discussion.timestamp != null
-    && nearbyDiscussionsMessageTypes.has(discussion.message_type)
-    && (discussion.user_id !== core.currentUserOrFail.id || moment(discussion.updated_at).diff(moment(), 'hour') <= -24);
+function isNearbyDiscussion<T extends BeatmapsetDiscussionJson>(
+  discussion: T,
+): discussion is NearbyDiscussion<T> {
+  return (
+    discussion.deleted_at == null &&
+    discussion.timestamp != null &&
+    nearbyDiscussionsMessageTypes.has(discussion.message_type) &&
+    (discussion.user_id !== core.currentUserOrFail.id ||
+      moment(discussion.updated_at).diff(moment(), 'hour') <= -24)
+  );
 }
 
 // sync with $defaultRulesets in app/Models/UserGroup.php
-const defaultGroupRulesets: Partial<Record<string, readonly Ruleset[]>> = { nat: rulesets };
+const defaultGroupRulesets: Partial<Record<string, readonly Ruleset[]>> = {
+  nat: rulesets,
+};
 
-export function isUserFullNominator(user?: UserJson | null, gameMode?: Ruleset) {
-  return user != null && user.groups != null && user.groups.some((group) => {
-    if (gameMode != null) {
-      let groupRulesets: readonly Ruleset[] = group.playmodes ?? [];
-      if (groupRulesets.length === 0) {
-        groupRulesets = defaultGroupRulesets[group.identifier] ?? [];
+export function isUserFullNominator(
+  user?: UserJson | null,
+  gameMode?: Ruleset,
+) {
+  return (
+    user != null &&
+    user.groups != null &&
+    user.groups.some((group) => {
+      if (gameMode != null) {
+        let groupRulesets: readonly Ruleset[] = group.playmodes ?? [];
+        if (groupRulesets.length === 0) {
+          groupRulesets = defaultGroupRulesets[group.identifier] ?? [];
+        }
+
+        return (
+          (group.identifier === 'bng' || group.identifier === 'nat') &&
+          groupRulesets.includes(gameMode)
+        );
+      } else {
+        return group.identifier === 'bng' || group.identifier === 'nat';
       }
-
-      return (group.identifier === 'bng' || group.identifier === 'nat') && groupRulesets.includes(gameMode);
-    } else {
-      return (group.identifier === 'bng' || group.identifier === 'nat');
-    }
-  });
+    })
+  );
 }
 
 export function linkTimestamp(text: string, classNames: string[] = []) {
@@ -175,21 +208,9 @@ export function linkTimestamp(text: string, classNames: string[] = []) {
 }
 
 export function makeUrl(options: MakeUrlOptions) {
-  const {
-    beatmap,
-    discussion,
-    filter,
-    post,
-    user,
-  } = options;
+  const { beatmap, discussion, filter, post, user } = options;
 
-  let {
-    beatmapId,
-    beatmapsetId,
-    discussionId,
-    mode,
-    postId,
-  } = options;
+  let { beatmapId, beatmapsetId, discussionId, mode, postId } = options;
 
   // TODO: beatmap and discussion are never passed at the same time;
   // ids are also never passed if the objects are being used (except the user id)
@@ -211,7 +232,10 @@ export function makeUrl(options: MakeUrlOptions) {
   postId = post?.id ?? postId;
 
   const params: Partial<Record<string, string | number | null>> = {
-    beatmap: beatmapId == null || generalPages.has(mode) ? defaultBeatmapId : beatmapId,
+    beatmap:
+      beatmapId == null || generalPages.has(mode)
+        ? defaultBeatmapId
+        : beatmapId,
     beatmapset: beatmapsetId,
     mode: mode ?? defaultMode(beatmapId),
   };
@@ -236,7 +260,10 @@ export function makeUrl(options: MakeUrlOptions) {
   return value.toString();
 }
 
-export function nearbyDiscussions<T extends BeatmapsetDiscussionJson, R extends NearbyDiscussion<T>>(discussions: T[], timestamp: number): R[] {
+export function nearbyDiscussions<
+  T extends BeatmapsetDiscussionJson,
+  R extends NearbyDiscussion<T>,
+>(discussions: T[], timestamp: number): R[] {
   const nearby: Partial<Record<NearbyDiscussionsCategory, R[]>> = {};
 
   for (const discussion of discussions) {
@@ -251,12 +278,15 @@ export function nearbyDiscussions<T extends BeatmapsetDiscussionJson, R extends 
     }
   }
 
-  const shownDiscussions = nearby.d0 ?? nearby.d100 ?? nearby.d1000 ?? nearby.other ?? [];
+  const shownDiscussions =
+    nearby.d0 ?? nearby.d100 ?? nearby.d1000 ?? nearby.other ?? [];
 
   return sortBy(shownDiscussions, 'timestamp');
 }
 
-function nearbyDiscussionsDistanceToCategory(distance: number): NearbyDiscussionsCategory | null {
+function nearbyDiscussionsDistanceToCategory(
+  distance: number,
+): NearbyDiscussionsCategory | null {
   if (distance > 5000) {
     return null;
   } else if (distance === 0) {
@@ -283,13 +313,29 @@ export function parseTimestamp(message?: string | null) {
   return (timestamp[2] * 60 + timestamp[3]) * 1000 + timestamp[4];
 }
 
-export function parseUrl(urlString?: string | null, discussions?: BeatmapsetDiscussionJson[] | null, defaultFilter: Filter = 'total') {
+export function parseUrl(
+  urlString?: string | null,
+  discussions?: BeatmapsetDiscussionJson[] | null,
+  defaultFilter: Filter = 'total',
+) {
   const url = new URL(urlString ?? currentUrl().href);
 
-  const [, pathBeatmapsets, beatmapsetIdString, pathDiscussions, beatmapIdString, mode, filter] = url.pathname.split(/\/+/);
+  const [
+    ,
+    pathBeatmapsets,
+    beatmapsetIdString,
+    pathDiscussions,
+    beatmapIdString,
+    mode,
+    filter,
+  ] = url.pathname.split(/\/+/);
   const beatmapsetId = getInt(beatmapsetIdString);
 
-  if (pathBeatmapsets !== 'beatmapsets' || pathDiscussions !== 'discussion' || beatmapsetId == null) {
+  if (
+    pathBeatmapsets !== 'beatmapsets' ||
+    pathDiscussions !== 'discussion' ||
+    beatmapsetId == null
+  ) {
     return null;
   }
 
@@ -313,7 +359,9 @@ export function parseUrl(urlString?: string | null, discussions?: BeatmapsetDisc
       }
 
       if (discussions != null && discussionId != null) {
-        const discussion = discussions.find((value) => value.id === discussionId);
+        const discussion = discussions.find(
+          (value) => value.id === discussionId,
+        );
 
         if (discussion != null) {
           assign(ret, stateFromDiscussion(discussion));
@@ -357,7 +405,9 @@ export function propsFromHref(href = '') {
   if (targetUrl != null && targetUrl.host === currentUrl().host) {
     const target = parseUrl(targetUrl.href);
     if (target?.discussionId != null && target.beatmapsetId != null) {
-      const hash = [target.discussionId, target.postId].filter(Number.isFinite).join('/');
+      const hash = [target.discussionId, target.postId]
+        .filter(Number.isFinite)
+        .join('/');
       if (current?.beatmapsetId === target.beatmapsetId) {
         // same beatmapset, format: #123
         props.children = `#${hash}`;
@@ -391,8 +441,11 @@ export function stateFromDiscussion(discussion: BeatmapsetDiscussionJson) {
   };
 }
 
-export function validMessageLength(message?: string | null, isTimeline = false) {
-  if (message == null || message.length === 0 ) return false;
+export function validMessageLength(
+  message?: string | null,
+  isTimeline = false,
+) {
+  if (message == null || message.length === 0) return false;
 
   return !isTimeline || message.length <= maxLengthTimeline;
 }

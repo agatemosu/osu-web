@@ -20,7 +20,15 @@ interface Props {
   sidebarMeta: NewsSidebarMetaJson;
 }
 
-function NavPost({ post, subtitle, modifiers }: { modifiers: Modifiers; post?: NewsPostJson; subtitle: string }) {
+function NavPost({
+  post,
+  subtitle,
+  modifiers,
+}: {
+  modifiers: Modifiers;
+  post?: NewsPostJson;
+  subtitle: string;
+}) {
   if (post == null) {
     return null;
   }
@@ -29,18 +37,16 @@ function NavPost({ post, subtitle, modifiers }: { modifiers: Modifiers; post?: N
     <a
       className={classWithModifiers('page-nav-fancy', modifiers)}
       href={route('news.show', { news: post.slug })}
-      style={{
-        '--bg': urlPresence(post.first_image),
-        '--bg-2x': urlPresence(post['first_image@2x']),
-      } as React.CSSProperties}
+      style={
+        {
+          '--bg': urlPresence(post.first_image),
+          '--bg-2x': urlPresence(post['first_image@2x']),
+        } as React.CSSProperties
+      }
     >
       <div className='page-nav-fancy__label'>
-        <div className='page-nav-fancy__subtitle'>
-          {subtitle}
-        </div>
-        <div className='page-nav-fancy__title'>
-          {post.title}
-        </div>
+        <div className='page-nav-fancy__subtitle'>{subtitle}</div>
+        <div className='page-nav-fancy__title'>{post.title}</div>
       </div>
       <div className='page-nav-fancy__icon'>
         <i className='fas fa-chevron-right' />
@@ -64,7 +70,10 @@ export default class Main extends React.Component<Props> {
         <div className='osu-page osu-page--wiki'>
           <div className='wiki-page'>
             <div className='wiki-page__toc'>
-              <NewsSidebar currentPost={this.props.post} data={this.props.sidebarMeta} />
+              <NewsSidebar
+                currentPost={this.props.post}
+                data={this.props.sidebarMeta}
+              />
             </div>
 
             <div className='wiki-page__content'>
@@ -75,17 +84,20 @@ export default class Main extends React.Component<Props> {
                   <h1 className='news-show__title'>{this.props.post.title}</h1>
                   <p className='news-show__author'>
                     <StringWithComponent
-                      mappings={{ user: <strong>{this.props.post.author}</strong> }}
+                      mappings={{
+                        user: <strong>{this.props.post.author}</strong>,
+                      }}
                       pattern={trans('news.show.by')}
                     />
                   </p>
                 </div>
 
-                <div dangerouslySetInnerHTML={{ __html: content }} className='js-audio--group' />
+                <div
+                  dangerouslySetInnerHTML={{ __html: content }}
+                  className='js-audio--group'
+                />
 
-                <div className='news-show__nav'>
-                  {this.renderNav()}
-                </div>
+                <div className='news-show__nav'>{this.renderNav()}</div>
               </div>
             </div>
           </div>
@@ -141,7 +153,9 @@ export default class Main extends React.Component<Props> {
     const firstImageUrl = this.props.post.first_image;
 
     if (firstImageUrl != null) {
-      const firstImage = contentHTML.querySelector(`img[src="${CSS.escape(firstImageUrl)}"]`);
+      const firstImage = contentHTML.querySelector(
+        `img[src="${CSS.escape(firstImageUrl)}"]`,
+      );
 
       if (firstImage != null) {
         const firstImageParent = firstImage.parentElement;
@@ -169,8 +183,16 @@ export default class Main extends React.Component<Props> {
 
     return (
       <>
-        <NavPost modifiers='next' post={newerPost} subtitle={trans('news.show.nav.newer')} />
-        <NavPost modifiers='prev' post={olderPost} subtitle={trans('news.show.nav.older')} />
+        <NavPost
+          modifiers='next'
+          post={newerPost}
+          subtitle={trans('news.show.nav.newer')}
+        />
+        <NavPost
+          modifiers='prev'
+          post={olderPost}
+          subtitle={trans('news.show.nav.older')}
+        />
       </>
     );
   };

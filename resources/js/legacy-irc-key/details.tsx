@@ -36,7 +36,9 @@ export default class Details extends React.Component<Props> {
     const user = core.currentUser;
 
     if (user == null) {
-      throw new Error('rendering Details component with no current user available');
+      throw new Error(
+        'rendering Details component with no current user available',
+      );
     }
 
     return (
@@ -46,25 +48,19 @@ export default class Details extends React.Component<Props> {
             <div className='legacy-api-details__label'>
               {trans('legacy_irc_key.form.server_host')}
             </div>
-            <div className='legacy-api-details__value'>
-              {serverHost}
-            </div>
+            <div className='legacy-api-details__value'>{serverHost}</div>
           </div>
           <div className='legacy-api-details__entry'>
             <div className='legacy-api-details__label'>
               {trans('legacy_irc_key.form.server_port')}
             </div>
-            <div className='legacy-api-details__value'>
-              {serverPort}
-            </div>
+            <div className='legacy-api-details__value'>{serverPort}</div>
           </div>
           <div className='legacy-api-details__entry'>
             <div className='legacy-api-details__label'>
               {trans('legacy_irc_key.form.username')}
             </div>
-            <div className='legacy-api-details__value'>
-              {user.username}
-            </div>
+            <div className='legacy-api-details__value'>{user.username}</div>
           </div>
           <div className='legacy-api-details__entry'>
             <div className='legacy-api-details__label'>
@@ -82,7 +78,9 @@ export default class Details extends React.Component<Props> {
             props={{
               onClick: this.onClickToggleKeyVisibility,
             }}
-            text={trans(`legacy_irc_key.view.${this.keyVisible ? 'hide' : 'show'}`)}
+            text={trans(
+              `legacy_irc_key.view.${this.keyVisible ? 'hide' : 'show'}`,
+            )}
           />
           <BigButton
             icon='fas fa-trash'

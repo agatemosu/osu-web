@@ -5,4 +5,6 @@ import core from 'osu-core-singleton';
 import Main from 'profile-page/main';
 import * as React from 'react';
 
-core.reactTurbolinks.register('profile-page', (container: HTMLElement) => <Main container={container} />);
+core.reactTurbolinks.register('profile-page', (container: HTMLElement) => (
+  <Main container={container} />
+));

@@ -46,7 +46,11 @@ export default class MessageGroup extends React.Component<Props> {
     const sender = messages[0].sender;
 
     return (
-      <div className={classWithModifiers('chat-message-group', { own: sender.id === core.currentUser?.id })}>
+      <div
+        className={classWithModifiers('chat-message-group', {
+          own: sender.id === core.currentUser?.id,
+        })}
+      >
         <div className='chat-message-group__sender'>
           <UserLink
             reportable={this.reportable}
@@ -54,7 +58,10 @@ export default class MessageGroup extends React.Component<Props> {
             user={sender}
           >
             <div className='chat-message-group__avatar'>
-              <UserAvatar modifiers='full-circle' user={{ avatar_url: sender.avatarUrl }} />
+              <UserAvatar
+                modifiers='full-circle'
+                user={{ avatar_url: sender.avatarUrl }}
+              />
             </div>
           </UserLink>
           <div className='chat-message-group__username u-ellipsis-overflow'>
@@ -66,15 +73,17 @@ export default class MessageGroup extends React.Component<Props> {
             const timestamp = moment(message.timestamp).format('LT');
             const showTimestamp: boolean =
               // show timestamp if this is the last message in the group
-              (key === messages.length - 1) ||
+              key === messages.length - 1 ||
               // or if the next message has a different displayed timestamp
-              (timestamp !== moment(messages[key + 1].timestamp).format('LT'));
+              timestamp !== moment(messages[key + 1].timestamp).format('LT');
 
             return (
               <React.Fragment key={message.uuid}>
                 <MessageItem message={message} />
                 {showTimestamp && (
-                  <div className='chat-message-group__timestamp'>{timestamp}</div>
+                  <div className='chat-message-group__timestamp'>
+                    {timestamp}
+                  </div>
                 )}
               </React.Fragment>
             );

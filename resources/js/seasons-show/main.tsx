@@ -31,7 +31,7 @@ export default function Main(props: Props) {
         />
 
         <div className='grid-items grid-items--ranking-info-bar'>
-          {props.currentSeason.start_date !== null &&
+          {props.currentSeason.start_date !== null && (
             <div className='counter-box counter-box--ranking'>
               <div className='counter-box__title'>
                 {trans('rankings.spotlight.start_date')}
@@ -43,20 +43,21 @@ export default function Main(props: Props) {
                 />
               </div>
             </div>
-          }
+          )}
 
           <div className='counter-box counter-box--ranking'>
             <div className='counter-box__title'>
               {trans('rankings.spotlight.end_date')}
             </div>
             <div className='counter-box__count'>
-              {props.currentSeason.end_date !== null
-                ? <TimeWithTooltip
+              {props.currentSeason.end_date !== null ? (
+                <TimeWithTooltip
                   dateTime={props.currentSeason.end_date}
                   format='YYYY-MM-DD'
                 />
-                : <div title={trans('rankings.seasons.ongoing')}>---</div>
-              }
+              ) : (
+                <div title={trans('rankings.seasons.ongoing')}>---</div>
+              )}
             </div>
           </div>
 
@@ -73,7 +74,9 @@ export default function Main(props: Props) {
 
       <div className='osu-page osu-page--generic'>
         <RoomList
-          showMoreUrl={route('seasons.rooms', { season: props.currentSeason.id })}
+          showMoreUrl={route('seasons.rooms', {
+            season: props.currentSeason.id,
+          })}
           store={props.store}
         />
       </div>

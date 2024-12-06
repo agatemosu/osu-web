@@ -38,16 +38,17 @@ export default function Main(props: Props) {
         data-mobile-toggle-target='news-archive'
         type='button'
       >
-        <h2 className='sidebar__title'>
-          {trans('news.sidebar.archive')}
-        </h2>
+        <h2 className='sidebar__title'>{trans('news.sidebar.archive')}</h2>
 
         <div className='sidebar__mobile-toggle-icon'>
           <i className='fas fa-chevron-down' />
         </div>
       </button>
 
-      <div className='sidebar__content hidden-xs js-mobile-toggle' data-mobile-toggle-id='news-archive'>
+      <div
+        className='sidebar__content hidden-xs js-mobile-toggle'
+        data-mobile-toggle-id='news-archive'
+      >
         <Years currentYear={props.data.current_year} years={props.data.years} />
 
         {orderedPostDates.map((key) => {
@@ -61,13 +62,15 @@ export default function Main(props: Props) {
           const initialExpand = first;
           first = false;
 
-          return (<MonthListing
-            key={key}
-            currentPost={props.currentPost}
-            date={date}
-            initialExpand={initialExpand}
-            posts={posts}
-          />);
+          return (
+            <MonthListing
+              key={key}
+              currentPost={props.currentPost}
+              date={date}
+              initialExpand={initialExpand}
+              posts={posts}
+            />
+          );
         })}
       </div>
     </div>

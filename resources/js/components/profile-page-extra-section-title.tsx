@@ -15,11 +15,9 @@ export default function ProfilePageExtraSectionTitle(props: Props) {
     <h3 className='title title--page-extra-small'>
       {trans(props.titleKey)}
 
-      {props.count != null &&
-        <span className='title__count'>
-          {formatNumber(props.count)}
-        </span>
-      }
+      {props.count != null && (
+        <span className='title__count'>{formatNumber(props.count)}</span>
+      )}
     </h3>
   );
 }

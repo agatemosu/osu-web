@@ -38,7 +38,9 @@ interface Props<T extends Option> {
 }
 
 @observer
-export default class SelectOptions<T extends Option> extends React.Component<Props<T>> {
+export default class SelectOptions<T extends Option> extends React.Component<
+  Props<T>
+> {
   static readonly defaultProps = { blackout: true };
 
   private readonly ref = React.createRef<HTMLDivElement>();
@@ -47,9 +49,12 @@ export default class SelectOptions<T extends Option> extends React.Component<Pro
   constructor(props: Props<T>) {
     super(props);
     makeObservable(this);
-    disposeOnUnmount(this, autorun(() => {
-      blackoutToggle(this, this.props.blackout && this.showingSelector);
-    }));
+    disposeOnUnmount(
+      this,
+      autorun(() => {
+        blackoutToggle(this, this.props.blackout && this.showingSelector);
+      }),
+    );
   }
 
   componentDidMount() {
@@ -88,9 +93,7 @@ export default class SelectOptions<T extends Option> extends React.Component<Pro
           })}
         </div>
 
-        <div className={`${bn}__selector`}>
-          {this.renderOptions()}
-        </div>
+        <div className={`${bn}__selector`}>{this.renderOptions()}</div>
       </div>
     );
   }
@@ -98,7 +101,11 @@ export default class SelectOptions<T extends Option> extends React.Component<Pro
   // dismiss the selector if clicking anywhere outside of it.
   @action
   private readonly hideSelector = (e: MouseEvent) => {
-    if (e.button === 0 && this.ref.current != null && !e.composedPath().includes(this.ref.current)) {
+    if (
+      e.button === 0 &&
+      this.ref.current != null &&
+      !e.composedPath().includes(this.ref.current)
+    ) {
       this.showingSelector = false;
     }
   };
@@ -112,7 +119,12 @@ export default class SelectOptions<T extends Option> extends React.Component<Pro
     this.props.onChange?.(option);
   };
 
-  private renderOption({ children, onClick, option, selected = false }: ComponentOptionRenderProps<T>) {
+  private renderOption({
+    children,
+    onClick,
+    option,
+    selected = false,
+  }: ComponentOptionRenderProps<T>) {
     const cssClasses = classWithModifiers(`${bn}__option`, { selected });
 
     if (this.props.renderOption != null) {
@@ -120,30 +132,23 @@ export default class SelectOptions<T extends Option> extends React.Component<Pro
     }
 
     return (
-      <a
-        key={option.id}
-        className={cssClasses}
-        href='#'
-        onClick={onClick}
-      >
+      <a key={option.id} className={cssClasses} href='#' onClick={onClick}>
         {children}
       </a>
     );
   }
 
   private renderOptions() {
-    return this.props.options.map((option) => this.renderOption({
-      children: (
-        <div className='u-ellipsis-overflow'>
-          {option.text}
-        </div>
-      ),
-      onClick: (event: React.MouseEvent) => {
-        this.optionSelected(event, option);
-      },
-      option,
-      selected: this.props.selected?.id === option.id,
-    }));
+    return this.props.options.map((option) =>
+      this.renderOption({
+        children: <div className='u-ellipsis-overflow'>{option.text}</div>,
+        onClick: (event: React.MouseEvent) => {
+          this.optionSelected(event, option);
+        },
+        option,
+        selected: this.props.selected?.id === option.id,
+      }),
+    );
   }
 
   @action

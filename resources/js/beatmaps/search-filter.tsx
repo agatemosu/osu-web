@@ -28,7 +28,9 @@ export class SearchFilter extends React.Component<Props> {
   private get currentSelection() {
     const optionKeys = this.options.map((option) => option.id);
 
-    const filters = this.controller.getFilters(this.props.name)?.filter((option) => optionKeys.includes(option));
+    const filters = this.controller
+      .getFilters(this.props.name)
+      ?.filter((option) => optionKeys.includes(option));
     return new Set<string | null>(filters);
   }
 
@@ -48,8 +50,17 @@ export class SearchFilter extends React.Component<Props> {
 
   render() {
     return (
-      <div className={classWithModifiers('beatmapsets-search-filter', this.props.modifiers)}>
-        {this.props.title != null && <span className='beatmapsets-search-filter__header'>{this.props.title}</span>}
+      <div
+        className={classWithModifiers(
+          'beatmapsets-search-filter',
+          this.props.modifiers,
+        )}
+      >
+        {this.props.title != null && (
+          <span className='beatmapsets-search-filter__header'>
+            {this.props.title}
+          </span>
+        )}
         <div className='beatmapsets-search-filter__items'>
           {this.options.map(this.renderOption)}
         </div>
@@ -58,7 +69,7 @@ export class SearchFilter extends React.Component<Props> {
   }
 
   private href(id: string | null) {
-    return this.controller.filters.href(this.props.name, this.newSelection(id) );
+    return this.controller.filters.href(this.props.name, this.newSelection(id));
   }
 
   private isSelected(key: string | null) {
@@ -69,7 +80,9 @@ export class SearchFilter extends React.Component<Props> {
 
   // TODO: rename
   private newSelection(key: string | null) {
-    const newSet = this.props.multiselect ? new Set(this.currentSelection) : new Set<string | null>();
+    const newSet = this.props.multiselect
+      ? new Set(this.currentSelection)
+      : new Set<string | null>();
     if (this.isSelected(key)) {
       newSet.delete(key);
     } else {
@@ -80,14 +93,21 @@ export class SearchFilter extends React.Component<Props> {
     return value.length === 0 ? null : value;
   }
 
-  private readonly renderOption = (option: { id: string | null; name: string }) => {
+  private readonly renderOption = (option: {
+    id: string | null;
+    name: string;
+  }) => {
     const cssClasses = classWithModifiers('beatmapsets-search-filter__item', {
       active: this.isSelected(option.id),
       'featured-artists': option.id === 'featured_artists',
     });
 
     let text = option.name;
-    if (this.props.name === 'general' && option.id === 'recommended' && this.controller.recommendedDifficulty != null) {
+    if (
+      this.props.name === 'general' &&
+      option.id === 'recommended' &&
+      this.controller.recommendedDifficulty != null
+    ) {
       text += ` (${formatNumber(this.controller.recommendedDifficulty, 2)})`;
     }
     // FIXME: do an actual navigation

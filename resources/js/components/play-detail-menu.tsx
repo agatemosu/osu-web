@@ -9,7 +9,13 @@ import core from 'osu-core-singleton';
 import * as React from 'react';
 import { rulesetName } from 'utils/beatmap-helper';
 import { trans } from 'utils/lang';
-import { canBeReported, hasReplay, hasShow, scoreDownloadUrl, scoreUrl } from 'utils/score-helper';
+import {
+  canBeReported,
+  hasReplay,
+  hasShow,
+  scoreDownloadUrl,
+  scoreUrl,
+} from 'utils/score-helper';
 import { PopupMenuPersistent } from './popup-menu-persistent';
 import { ReportReportable } from './report-reportable';
 
@@ -55,17 +61,15 @@ export class PlayDetailMenu extends React.Component<Props> {
             className='simple-menu__item'
             onFormOpen={dismiss}
             reportableId={(score.best_id ?? score.id).toString()}
-            reportableType={score.type === 'solo_score' ? score.type : `score_best_${ruleset}`}
+            reportableType={
+              score.type === 'solo_score' ? score.type : `score_best_${ruleset}`
+            }
             user={user}
           />
         )}
       </div>
     );
 
-    return (
-      <PopupMenuPersistent>
-        {children}
-      </PopupMenuPersistent>
-    );
+    return <PopupMenuPersistent>{children}</PopupMenuPersistent>;
   }
 }

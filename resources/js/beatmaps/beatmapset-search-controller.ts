@@ -3,28 +3,46 @@
 
 import { BeatmapsetSearch, SearchResponse } from 'beatmaps/beatmapset-search';
 import ResultSet from 'beatmaps/result-set';
-import { BeatmapsetSearchFilters, FilterKey, filtersFromUrl } from 'beatmapset-search-filters';
+import {
+  BeatmapsetSearchFilters,
+  FilterKey,
+  filtersFromUrl,
+} from 'beatmapset-search-filters';
 import { route } from 'laroute';
 import { debounce, intersection } from 'lodash';
-import { action, computed, IObjectDidChange, Lambda, makeObservable, observable, observe, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  IObjectDidChange,
+  Lambda,
+  makeObservable,
+  observable,
+  observe,
+  runInAction,
+} from 'mobx';
 import core from 'osu-core-singleton';
 import { trans, transArray } from 'utils/lang';
 import { popup } from 'utils/popup';
 import { updateHistory, currentUrl } from 'utils/turbolinks';
 import { updateQueryString } from 'utils/url';
 
-
-const expandFilters: FilterKey[] = ['genre', 'language', 'extra', 'rank', 'played'];
+const expandFilters: FilterKey[] = [
+  'genre',
+  'language',
+  'extra',
+  'rank',
+  'played',
+];
 
 export interface SearchStatus {
   error?: any;
   from: number;
   restore?: boolean;
-  state: 'completed' // search not doing anything
-  | 'input'        // receiving input but not searching
-  | 'paging'       // getting more pages
-  | 'searching'    // actually doing a search
-  ;
+  state:
+    | 'completed' // search not doing anything
+    | 'input' // receiving input but not searching
+    | 'paging' // getting more pages
+    | 'searching'; // actually doing a search
 }
 
 export class BeatmapsetSearchController {
@@ -40,7 +58,10 @@ export class BeatmapsetSearchController {
     state: 'completed',
   };
 
-  private readonly debouncedFilterChangedSearch = debounce(() => this.filterChangedSearch(), 500);
+  private readonly debouncedFilterChangedSearch = debounce(
+    () => this.filterChangedSearch(),
+    500,
+  );
   private filtersObserver!: Lambda;
   private initialErrorMessage?: string;
 
@@ -64,7 +85,10 @@ export class BeatmapsetSearchController {
 
   @computed
   get isBusy() {
-    return this.searchStatus.state === 'searching' || this.searchStatus.state === 'input';
+    return (
+      this.searchStatus.state === 'searching' ||
+      this.searchStatus.state === 'input'
+    );
   }
 
   @computed
@@ -74,7 +98,10 @@ export class BeatmapsetSearchController {
 
   @computed
   get isSupporterMissing() {
-    return !(core.currentUser?.is_supporter ?? false) && this.filters.supporterRequired.length > 0;
+    return (
+      !(core.currentUser?.is_supporter ?? false) &&
+      this.filters.supporterRequired.length > 0
+    );
   }
 
   @computed
@@ -84,7 +111,9 @@ export class BeatmapsetSearchController {
 
   @computed
   get supporterRequiredFilterText() {
-    const text = this.filters.supporterRequired.map((name) => trans(`beatmaps.listing.search.filters.${name}`));
+    const text = this.filters.supporterRequired.map((name) =>
+      trans(`beatmaps.listing.search.filters.${name}`),
+    );
     return transArray(text);
   }
 
@@ -152,7 +181,9 @@ export class BeatmapsetSearchController {
   }
 
   @action
-  private readonly filterChangedHandler = (change: IObjectDidChange<BeatmapsetSearchFilters>) => {
+  private readonly filterChangedHandler = (
+    change: IObjectDidChange<BeatmapsetSearchFilters>,
+  ) => {
     if (change.type === 'update' && change.oldValue === change.newValue) return;
 
     this.searchStatus.state = 'input';
@@ -180,10 +211,14 @@ export class BeatmapsetSearchController {
     this.filters = new BeatmapsetSearchFilters(url);
 
     // normalize url
-    updateHistory(updateQueryString(null, { ...this.filters.queryParams }), 'replace');
+    updateHistory(
+      updateQueryString(null, { ...this.filters.queryParams }),
+      'replace',
+    );
 
     this.filtersObserver = observe(this.filters, this.filterChangedHandler);
 
-    this.isExpanded = intersection(Object.keys(filtersFromUrl(url)), expandFilters).length > 0;
+    this.isExpanded =
+      intersection(Object.keys(filtersFromUrl(url)), expandFilters).length > 0;
   }
 }

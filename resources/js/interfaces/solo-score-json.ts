@@ -4,7 +4,10 @@
 import BeatmapExtendedJson from './beatmap-extended-json';
 import Rank from './rank';
 import Ruleset from './ruleset';
-import { ScoreJsonAvailableIncludes, ScoreJsonDefaultIncludes } from './score-json';
+import {
+  ScoreJsonAvailableIncludes,
+  ScoreJsonDefaultIncludes,
+} from './score-json';
 import ScoreModJson from './score-mod-json';
 import WithBeatmapOwners from './with-beatmap-owners';
 
@@ -63,28 +66,39 @@ interface SoloScoreJsonAttributesSoloScore extends SoloScoreJsonAttributesBase {
   type: 'solo_score';
 }
 
-interface SoloScoreJsonAttributesMultiplayer extends SoloScoreJsonAttributesSoloScore {
+interface SoloScoreJsonAttributesMultiplayer
+  extends SoloScoreJsonAttributesSoloScore {
   playlist_item_id: number;
   room_id: number;
   solo_score_id: number;
 }
 
-type SoloScoreJsonAttributes = SoloScoreJsonAttributesLegacy | SoloScoreJsonAttributesMultiplayer | SoloScoreJsonAttributesSoloScore;
+type SoloScoreJsonAttributes =
+  | SoloScoreJsonAttributesLegacy
+  | SoloScoreJsonAttributesMultiplayer
+  | SoloScoreJsonAttributesSoloScore;
 
-type SoloScoreJson = SoloScoreJsonAttributes & ScoreJsonDefaultIncludes & Partial<ScoreJsonAvailableIncludes>;
+type SoloScoreJson = SoloScoreJsonAttributes &
+  ScoreJsonDefaultIncludes &
+  Partial<ScoreJsonAvailableIncludes>;
 
 export default SoloScoreJson;
 
-export type SoloScoreJsonForBeatmap = SoloScoreJson & Required<Pick<SoloScoreJson, 'user'>>;
+export type SoloScoreJsonForBeatmap = SoloScoreJson &
+  Required<Pick<SoloScoreJson, 'user'>>;
 
-export type SoloScoreJsonForShow = SoloScoreJson
-& Required<Pick<SoloScoreJson, 'beatmapset' | 'best_id' | 'rank_global' | 'user'>>
-& {
-  beatmap: WithBeatmapOwners<BeatmapExtendedJson>;
-};
+export type SoloScoreJsonForShow = SoloScoreJson &
+  Required<
+    Pick<SoloScoreJson, 'beatmapset' | 'best_id' | 'rank_global' | 'user'>
+  > & {
+    beatmap: WithBeatmapOwners<BeatmapExtendedJson>;
+  };
 
-export type SoloScoreJsonForUser = SoloScoreJson & Required<Pick<SoloScoreJson, 'beatmap' | 'beatmapset'>>;
+export type SoloScoreJsonForUser = SoloScoreJson &
+  Required<Pick<SoloScoreJson, 'beatmap' | 'beatmapset'>>;
 
-export function isSoloScoreJsonForUser(score: SoloScoreJson): score is SoloScoreJsonForUser {
+export function isSoloScoreJsonForUser(
+  score: SoloScoreJson,
+): score is SoloScoreJsonForUser {
   return score.beatmap != null && score.beatmapset != null;
 }

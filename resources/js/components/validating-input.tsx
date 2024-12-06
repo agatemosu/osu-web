@@ -15,20 +15,22 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 @observer
 export class ValidatingInput extends React.Component<Props> {
   render() {
-    const {
-      blockName,
-      errors,
-      name,
-      ...otherProps
-    } = this.props;
+    const { blockName, errors, name, ...otherProps } = this.props;
 
     const messages = errors.get(name) || [];
-    const jsx = messages.map((message, index) => <div key={index} className={`${blockName}__error`}>{message}</div>);
+    const jsx = messages.map((message, index) => (
+      <div key={index} className={`${blockName}__error`}>
+        {message}
+      </div>
+    ));
 
     return (
       <>
         <input
-          className={classWithModifiers(`${blockName}__input`, messages.length > 0 ? ['has-error'] : [])}
+          className={classWithModifiers(
+            `${blockName}__input`,
+            messages.length > 0 ? ['has-error'] : [],
+          )}
           name={name}
           {...otherProps}
         />

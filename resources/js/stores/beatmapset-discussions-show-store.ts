@@ -7,7 +7,9 @@ import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussion
 import { computed, makeObservable, observable } from 'mobx';
 import { mapBy, mapByWithNulls } from 'utils/map';
 
-export default class BeatmapsetDiscussionsShowStore implements BeatmapsetDiscussionsStore {
+export default class BeatmapsetDiscussionsShowStore
+  implements BeatmapsetDiscussionsStore
+{
   @observable beatmapset: BeatmapsetWithDiscussionsJson;
 
   @computed
@@ -20,14 +22,19 @@ export default class BeatmapsetDiscussionsShowStore implements BeatmapsetDiscuss
     }
 
     return mapBy(
-      this.beatmapset.beatmaps.filter((beatmap) => beatmap.deleted_at == null || hasDiscussion.has(beatmap.id)),
+      this.beatmapset.beatmaps.filter(
+        (beatmap) =>
+          beatmap.deleted_at == null || hasDiscussion.has(beatmap.id),
+      ),
       'id',
     );
   }
 
   @computed
   get beatmapsets() {
-    return new Map<number, BeatmapsetExtendedJson>([[this.beatmapset.id, this.beatmapset]]);
+    return new Map<number, BeatmapsetExtendedJson>([
+      [this.beatmapset.id, this.beatmapset],
+    ]);
   }
 
   @computed

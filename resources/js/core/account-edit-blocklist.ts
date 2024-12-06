@@ -12,7 +12,9 @@ const labelClass = '.js-account-edit-blocklist';
 export default class AccountEditBlocklist {
   constructor(private readonly core: OsuCore) {
     $(document).on('click', labelClass, this.toggle);
-    $(() => reaction(() => this.core.currentUser?.blocks, this.updateBlockCount));
+    $(() =>
+      reaction(() => this.core.currentUser?.blocks, this.updateBlockCount),
+    );
   }
 
   private readonly toggle = (e: JQuery.ClickEvent) => {
@@ -30,6 +32,10 @@ export default class AccountEditBlocklist {
   private readonly updateBlockCount = () => {
     if (this.core.currentUser == null) return;
 
-    $(countClass).text(trans('users.blocks.blocked_count', { count: this.core.currentUser.blocks.length ?? 0 }));
+    $(countClass).text(
+      trans('users.blocks.blocked_count', {
+        count: this.core.currentUser.blocks.length ?? 0,
+      }),
+    );
   };
 }

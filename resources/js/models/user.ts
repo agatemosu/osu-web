@@ -10,7 +10,7 @@ export function normaliseUsername(username: string) {
   return username.trim().toLowerCase();
 }
 
-export function usernameSortAscending(x: UserJson | User , y: UserJson | User) {
+export function usernameSortAscending(x: UserJson | User, y: UserJson | User) {
   return x.username.localeCompare(y.username);
 }
 
@@ -73,7 +73,7 @@ export default class User {
     this.isOnline = json.is_online;
     this.isSupporter = json.is_supporter;
     this.pmFriendsOnly = json.pm_friends_only;
-    this.profileColour= json.profile_colour ?? '';
+    this.profileColour = json.profile_colour ?? '';
     this.username = json.username;
 
     if (json.groups != null) {

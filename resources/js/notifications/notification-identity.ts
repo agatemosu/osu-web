@@ -21,7 +21,9 @@ export function resolveStackId(identity: NotificationIdentity) {
   return `${identity.objectType}-${identity.objectId}-${identity.category}`;
 }
 
-export function resolveIdentityType(identity: NotificationIdentity): NotificationIdentityType | undefined {
+export function resolveIdentityType(
+  identity: NotificationIdentity,
+): NotificationIdentityType | undefined {
   if (identity.objectId != null) {
     if (identity.category != null) {
       if (identity.id != null) {

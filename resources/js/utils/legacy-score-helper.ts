@@ -16,7 +16,10 @@ document.addEventListener('turbo:load', () => {
 });
 
 function shouldHaveHiddenRank(score: SoloScoreJson) {
-  return score.mods.some((mod) => mod.acronym === 'FI' || mod.acronym === 'FL' || mod.acronym === 'HD');
+  return score.mods.some(
+    (mod) =>
+      mod.acronym === 'FI' || mod.acronym === 'FL' || mod.acronym === 'HD',
+  );
 }
 
 export function legacyAccuracyAndRank(score: SoloScoreJson) {
@@ -38,9 +41,11 @@ export function legacyAccuracyAndRank(score: SoloScoreJson) {
         const countOk = score.statistics.ok ?? 0;
 
         const totalHits = countMeh + countOk + countGreat + countMiss;
-        accuracy = totalHits > 0
-          ? (countMeh * 50 + countOk * 100 + countGreat * 300) / (totalHits * 300)
-          : 1;
+        accuracy =
+          totalHits > 0
+            ? (countMeh * 50 + countOk * 100 + countGreat * 300) /
+              (totalHits * 300)
+            : 1;
 
         const ratioGreat = totalHits > 0 ? countGreat / totalHits : 1;
         const ratioMeh = totalHits > 0 ? countMeh / totalHits : 1;
@@ -67,9 +72,10 @@ export function legacyAccuracyAndRank(score: SoloScoreJson) {
         const countOk = score.statistics.ok ?? 0;
 
         const totalHits = countOk + countGreat + countMiss;
-        accuracy = totalHits > 0
-          ? (countOk * 150 + countGreat * 300) / (totalHits * 300)
-          : 1;
+        accuracy =
+          totalHits > 0
+            ? (countOk * 150 + countGreat * 300) / (totalHits * 300)
+            : 1;
 
         const ratioGreat = totalHits > 0 ? countGreat / totalHits : 1;
 
@@ -96,10 +102,16 @@ export function legacyAccuracyAndRank(score: SoloScoreJson) {
         const countSmallTickHit = score.statistics.small_tick_hit ?? 0;
         const countSmallTickMiss = score.statistics.small_tick_miss ?? 0;
 
-        const totalHits = countSmallTickHit + countLargeTickHit + countGreat + countMiss + countSmallTickMiss;
-        accuracy = totalHits > 0
-          ? (countSmallTickHit + countLargeTickHit + countGreat) / totalHits
-          : 1;
+        const totalHits =
+          countSmallTickHit +
+          countLargeTickHit +
+          countGreat +
+          countMiss +
+          countSmallTickMiss;
+        accuracy =
+          totalHits > 0
+            ? (countSmallTickHit + countLargeTickHit + countGreat) / totalHits
+            : 1;
 
         if (score.rank === 'F') {
           rank = 'F';
@@ -125,10 +137,21 @@ export function legacyAccuracyAndRank(score: SoloScoreJson) {
         const countOk = score.statistics.ok ?? 0;
         const countMeh = score.statistics.meh ?? 0;
 
-        const totalHits = countPerfect + countGood + countOk + countMeh + countGreat + countMiss;
-        accuracy = totalHits > 0
-          ? ((countGreat + countPerfect) * 300 + countGood * 200 + countOk * 100 + countMeh * 50) / (totalHits * 300)
-          : 1;
+        const totalHits =
+          countPerfect +
+          countGood +
+          countOk +
+          countMeh +
+          countGreat +
+          countMiss;
+        accuracy =
+          totalHits > 0
+            ? ((countGreat + countPerfect) * 300 +
+                countGood * 200 +
+                countOk * 100 +
+                countMeh * 50) /
+              (totalHits * 300)
+            : 1;
 
         if (score.rank === 'F') {
           rank = 'F';

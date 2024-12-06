@@ -19,7 +19,10 @@ function format(value: unknown) {
   return String(value);
 }
 
-function settingsLabel(modJson: NonNullable<typeof modNames[string]>, scoreModJson: ScoreModJson) {
+function settingsLabel(
+  modJson: NonNullable<(typeof modNames)[string]>,
+  scoreModJson: ScoreModJson,
+) {
   const settings = [];
   for (const [setting, value] of Object.entries(scoreModJson.settings ?? {})) {
     // Can use a better way to custom format mod settings but this is the
@@ -34,9 +37,7 @@ function settingsLabel(modJson: NonNullable<typeof modNames[string]>, scoreModJs
     }
   }
 
-  return settings.length === 0
-    ? ''
-    : ` (${settings.join(', ')})`;
+  return settings.length === 0 ? '' : ` (${settings.join(', ')})`;
 }
 
 interface Props {
@@ -53,7 +54,11 @@ export default function Mod({ mod }: Props) {
 
   return (
     <div
-      className={classWithModifiers('mod', modJson.acronym, `type-${modJson.type}`)}
+      className={classWithModifiers(
+        'mod',
+        modJson.acronym,
+        `type-${modJson.type}`,
+      )}
       data-acronym={modJson.acronym}
       title={`${modJson.name}${settingsLabel(modJson, mod)}`}
     />

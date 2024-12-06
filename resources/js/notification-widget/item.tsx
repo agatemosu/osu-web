@@ -78,17 +78,25 @@ export default class Item extends React.Component<Props> {
       return null;
     }
 
-    const label = trans(`notifications.item.${this.props.item.displayType}.${this.props.item.category}._`);
+    const label = trans(
+      `notifications.item.${this.props.item.displayType}.${this.props.item.category}._`,
+    );
 
     if (label === '') {
       return null;
     }
 
-    return <div className='notification-popup-item__row notification-popup-item__row--category'>{label}</div>;
+    return (
+      <div className='notification-popup-item__row notification-popup-item__row--category'>
+        {label}
+      </div>
+    );
   }
 
   private renderCover() {
-    const coverUrl = this.props.withCoverImage ? this.props.item.details.coverUrl : null;
+    const coverUrl = this.props.withCoverImage
+      ? this.props.item.details.coverUrl
+      : null;
 
     return (
       <div
@@ -149,7 +157,9 @@ export default class Item extends React.Component<Props> {
 
     return (
       <NotificationReadButton
-        isMarkingAsRead={this.props.isMarkingAsRead ?? this.props.item.isMarkingAsRead}
+        isMarkingAsRead={
+          this.props.isMarkingAsRead ?? this.props.item.isMarkingAsRead
+        }
         modifiers={['fancy']}
         onMarkAsRead={this.props.markRead}
       />
@@ -184,8 +194,6 @@ export default class Item extends React.Component<Props> {
   private renderUnreadStripe() {
     if (this.context.isWidget || !this.canMarkAsRead) return null;
 
-    return (
-      <span className='notification-popup-item__unread-stripe' />
-    );
+    return <span className='notification-popup-item__unread-stripe' />;
   }
 }

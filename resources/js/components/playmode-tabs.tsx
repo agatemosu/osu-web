@@ -49,17 +49,23 @@ export default class PlaymodeTabs extends React.Component<Props> {
       <>
         <span
           className={`fal fa-extra-mode-${entry.mode}`}
-          title={entry.disabled ? undefined : trans(`beatmaps.mode.${entry.mode}`)}
+          title={
+            entry.disabled ? undefined : trans(`beatmaps.mode.${entry.mode}`)
+          }
         />
-        {entry.mode === this.props.defaultMode &&
+        {entry.mode === this.props.defaultMode && (
           <span
             className='game-mode-link__icon'
             title={trans('users.show.edit.default_playmode.is_default_tooltip')}
           >
             <span className='fas fa-star' />
           </span>
-        }
-        {entry.count != null && <span className='game-mode-link__badge' title={entry.countTooltip}>{entry.count}</span>}
+        )}
+        {entry.count != null && (
+          <span className='game-mode-link__badge' title={entry.countTooltip}>
+            {entry.count}
+          </span>
+        )}
       </>
     );
 
@@ -70,18 +76,18 @@ export default class PlaymodeTabs extends React.Component<Props> {
 
     return (
       <li key={entry.mode}>
-        {entry.disabled
-          ? <span className={className}>{content}</span>
-          : (
-            <a
-              className={className}
-              data-mode={entry.mode}
-              href={entry.href ?? '#'}
-              onClick={this.onClick}
-            >
-              {content}
-            </a>
-          )}
+        {entry.disabled ? (
+          <span className={className}>{content}</span>
+        ) : (
+          <a
+            className={className}
+            data-mode={entry.mode}
+            href={entry.href ?? '#'}
+            onClick={this.onClick}
+          >
+            {content}
+          </a>
+        )}
       </li>
     );
   };

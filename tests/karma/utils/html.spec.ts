@@ -1,7 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { formatBytes, formatNumber, isClickable, isInputElement } from 'utils/html';
+import {
+  formatBytes,
+  formatNumber,
+  isClickable,
+  isInputElement,
+} from 'utils/html';
 
 describe('utils/html', () => {
   describe('formatBytes', () => {
@@ -33,17 +38,18 @@ describe('utils/html', () => {
   });
 
   describe('isClickable', () => {
-    ([
-      [false, ['div', 'li', 'ol', 'p', 'ul']],
-      [true, ['a', 'button', 'input', 'option', 'select', 'textarea']],
-    ] as const).forEach(([res, elTypes]) => {
+    (
+      [
+        [false, ['div', 'li', 'ol', 'p', 'ul']],
+        [true, ['a', 'button', 'input', 'option', 'select', 'textarea']],
+      ] as const
+    ).forEach(([res, elTypes]) => {
       elTypes.forEach((elType) => {
         it(`returns ${res} for "${elType}" element`, () => {
           expect(isClickable(document.createElement(elType))).toBe(res);
         });
       });
     });
-
 
     it('returns true for child of clickable element', () => {
       const el = document.createElement('p');
@@ -59,10 +65,12 @@ describe('utils/html', () => {
   });
 
   describe('isInputElement', () => {
-    ([
-      [false, ['a', 'button', 'div', 'li', 'ol', 'p', 'ul']],
-      [true, ['input', 'select', 'option', 'textarea']],
-    ] as const).forEach(([res, elTypes]) => {
+    (
+      [
+        [false, ['a', 'button', 'div', 'li', 'ol', 'p', 'ul']],
+        [true, ['input', 'select', 'option', 'textarea']],
+      ] as const
+    ).forEach(([res, elTypes]) => {
       elTypes.forEach((elType) => {
         it(`returns ${res} for "${elType}" element`, () => {
           expect(isInputElement(document.createElement(elType))).toBe(res);

@@ -29,8 +29,7 @@ export default class Tocify {
   private setHeaderIds() {
     for (const header of document.querySelectorAll(selectors)) {
       if (header instanceof HTMLElement) {
-        header.id = header
-          .innerText
+        header.id = header.innerText
           .toLowerCase()
           .replace(/\s+/g, '-')
           .replace(/[^\w-]+/g, '')

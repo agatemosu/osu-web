@@ -54,11 +54,18 @@ export interface LegacyNominationsInterface extends BaseNominationsInterface {
 }
 
 export type BeatmapsetNominationsInterface =
-  NominationsInterface | LegacyNominationsInterface;
+  | NominationsInterface
+  | LegacyNominationsInterface;
 // #endregion
 
 export type BeatmapsetStatus =
-  'graveyard' | 'wip' | 'pending' | 'ranked' | 'approved' | 'qualified' | 'loved';
+  | 'graveyard'
+  | 'wip'
+  | 'pending'
+  | 'ranked'
+  | 'approved'
+  | 'qualified'
+  | 'loved';
 
 export interface CurrentUserAttributes {
   can_beatmap_update_owner: boolean;
@@ -123,5 +130,6 @@ interface BeatmapsetJsonDefaultAttributes {
   video: boolean;
 }
 
-type BeatmapsetJson = BeatmapsetJsonDefaultAttributes & Partial<BeatmapsetJsonAvailableIncludes>;
+type BeatmapsetJson = BeatmapsetJsonDefaultAttributes &
+  Partial<BeatmapsetJsonAvailableIncludes>;
 export default BeatmapsetJson;

@@ -5,12 +5,24 @@ import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
 import Ruleset from 'interfaces/ruleset';
 import DiscussionMode from './discussion-mode';
 
-export const filters = ['deleted', 'hype', 'mapperNotes', 'mine', 'pending', 'praises', 'resolved', 'total'] as const;
+export const filters = [
+  'deleted',
+  'hype',
+  'mapperNotes',
+  'mine',
+  'pending',
+  'praises',
+  'resolved',
+  'total',
+] as const;
 export type Filter = (typeof filters)[number];
 
 // TODO: move to store/context
 export default interface CurrentDiscussions {
-  byFilter: Record<Filter, Record<DiscussionMode, Partial<Record<number, BeatmapsetDiscussionJson>>>>;
+  byFilter: Record<
+    Filter,
+    Record<DiscussionMode, Partial<Record<number, BeatmapsetDiscussionJson>>>
+  >;
   countsByBeatmap: Partial<Record<number, number>>;
   countsByPlaymode: Partial<Record<Ruleset, number>>;
   general: BeatmapsetDiscussionJson[];

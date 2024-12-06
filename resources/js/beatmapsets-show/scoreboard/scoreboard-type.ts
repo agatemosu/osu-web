@@ -3,5 +3,5 @@
 
 export const scoreboardTypes = ['global', 'country', 'friend'] as const;
 
-type ScoreboardType = typeof scoreboardTypes[number];
+type ScoreboardType = (typeof scoreboardTypes)[number];
 export default ScoreboardType;

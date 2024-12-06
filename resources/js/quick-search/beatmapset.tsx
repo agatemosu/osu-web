@@ -9,22 +9,35 @@ import { getArtist, getTitle } from 'utils/beatmapset-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 
-export default function Beatmapset({ beatmapset, modifiers = [] }: { beatmapset: BeatmapsetJson; modifiers?: string[] }) {
+export default function Beatmapset({
+  beatmapset,
+  modifiers = [],
+}: {
+  beatmapset: BeatmapsetJson;
+  modifiers?: string[];
+}) {
   const url = route('beatmapsets.show', { beatmapset: beatmapset.id });
 
   return (
-    <a className={classWithModifiers('beatmapset-search-card', modifiers)} href={url}>
+    <a
+      className={classWithModifiers('beatmapset-search-card', modifiers)}
+      href={url}
+    >
       <BeatmapsetCover beatmapset={beatmapset} modifiers='search' size='list' />
       <div className='beatmapset-search-card__details'>
         <div className='beatmapset-search-card__title'>
           {`${getTitle(beatmapset)} `}
           <span className='beatmapset-search-card__title-artist'>
-            {trans('users.show.extra.beatmaps.by_artist', { artist: getArtist(beatmapset) })}
+            {trans('users.show.extra.beatmaps.by_artist', {
+              artist: getArtist(beatmapset),
+            })}
           </span>
         </div>
 
         <div className='beatmapset-search-card__extra'>
-          {trans('beatmapsets.show.details.mapped_by', { mapper: beatmapset.creator })}
+          {trans('beatmapsets.show.details.mapped_by', {
+            mapper: beatmapset.creator,
+          })}
         </div>
       </div>
     </a>

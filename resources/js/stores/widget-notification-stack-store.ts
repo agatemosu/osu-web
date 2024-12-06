@@ -13,7 +13,10 @@ import {
 import NotificationStackStore from './notification-stack-store';
 
 @dispatchListener
-export default class WidgetNotificationStackStore extends NotificationStackStore implements DispatchListener {
+export default class WidgetNotificationStackStore
+  extends NotificationStackStore
+  implements DispatchListener
+{
   @override
   handleNotificationEventMoreLoaded(event: NotificationEventMoreLoaded) {
     if (event.context.isWidget) {

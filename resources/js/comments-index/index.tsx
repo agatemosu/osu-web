@@ -17,7 +17,9 @@ export default class CommentsIndex extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);
-    this.controller = new CommentsController(this.props.controllerStateSelector);
+    this.controller = new CommentsController(
+      this.props.controllerStateSelector,
+    );
   }
 
   componentWillUnmount() {
@@ -25,16 +27,18 @@ export default class CommentsIndex extends React.Component<Props> {
   }
 
   render() {
-    const comments = this.controller.getComments(this.controller.state.commentIdsByParentId[-1] ?? []);
+    const comments = this.controller.getComments(
+      this.controller.state.commentIdsByParentId[-1] ?? [],
+    );
 
-    return comments.length === 0
-      ? (
-        <div className='comments'>
-          <div className='comments__items comments__items--empty'>
-            {trans('comments.index.no_comments')}
-          </div>
+    return comments.length === 0 ? (
+      <div className='comments'>
+        <div className='comments__items comments__items--empty'>
+          {trans('comments.index.no_comments')}
         </div>
-      ) : comments.map((comment) => (
+      </div>
+    ) : (
+      comments.map((comment) => (
         <Comment
           key={comment.id}
           comment={comment}
@@ -45,6 +49,7 @@ export default class CommentsIndex extends React.Component<Props> {
           modifiers='dark'
           showCommentableMeta
         />
-      ));
+      ))
+    );
   }
 }

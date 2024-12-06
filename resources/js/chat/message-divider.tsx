@@ -10,13 +10,26 @@ interface Props {
   type: string;
 }
 
-const MessageDividerBase = ({ timestamp, type }: Props, innerRef: React.Ref<HTMLDivElement>) => {
+const MessageDividerBase = (
+  { timestamp, type }: Props,
+  innerRef: React.Ref<HTMLDivElement>,
+) => {
   switch (type) {
     case 'DAY_MARKER':
-      return (<div ref={innerRef} className='chat-conversation__day-divider'>{moment(timestamp).format('LL')}</div>);
+      return (
+        <div ref={innerRef} className='chat-conversation__day-divider'>
+          {moment(timestamp).format('LL')}
+        </div>
+      );
 
     case 'UNREAD_MARKER':
-      return (<div ref={innerRef} className='chat-conversation__unread-marker' data-content={trans('chat.unread_messages')} />);
+      return (
+        <div
+          ref={innerRef}
+          className='chat-conversation__unread-marker'
+          data-content={trans('chat.unread_messages')}
+        />
+      );
 
     default:
       return null;

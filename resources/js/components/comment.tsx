@@ -1,7 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CommentsController, { CommentEditMode } from 'components/comments-controller';
+import CommentsController, {
+  CommentEditMode,
+} from 'components/comments-controller';
 import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import { truncate } from 'lodash';
@@ -58,12 +60,17 @@ export default class Comment extends React.Component<Props> {
   @observable private showNewReply = false;
 
   private get hasVoted() {
-    return this.props.controller.state.votedCommentIds.has(this.props.comment.id);
+    return this.props.controller.state.votedCommentIds.has(
+      this.props.comment.id,
+    );
   }
 
   @computed
   private get isBlocked() {
-    return this.props.comment.userId != null && core.currentUserModel.blocks.has(this.props.comment.userId);
+    return (
+      this.props.comment.userId != null &&
+      core.currentUserModel.blocks.has(this.props.comment.userId)
+    );
   }
 
   private get isLongContent() {
@@ -99,7 +106,8 @@ export default class Comment extends React.Component<Props> {
 
     return comment.isDeleted
       ? trans('comments.deleted')
-      : comment.userId != null && core.currentUserModel.blocks.has(comment.userId)
+      : comment.userId != null &&
+          core.currentUserModel.blocks.has(comment.userId)
         ? trans('users.blocks.comment_text')
         : truncate(stripTags(comment.messageHtml ?? ''), { length: 100 });
   }
@@ -124,7 +132,10 @@ export default class Comment extends React.Component<Props> {
       return true;
     }
 
-    if (canModerateComments() && core.userPreferences.get('comments_show_deleted')) {
+    if (
+      canModerateComments() &&
+      core.userPreferences.get('comments_show_deleted')
+    ) {
       return true;
     }
 
@@ -139,7 +150,10 @@ export default class Comment extends React.Component<Props> {
       return false;
     }
 
-    if (canModerateComments() && core.userPreferences.get('comments_show_deleted')) {
+    if (
+      canModerateComments() &&
+      core.userPreferences.get('comments_show_deleted')
+    ) {
       return true;
     }
 
@@ -164,7 +178,8 @@ export default class Comment extends React.Component<Props> {
     } else {
       const children = this.replies;
       // Collapse if either no children is loaded, current level doesn't add indentation, or this comment is blocked.
-      this.expandReplies = !this.isBlocked && children?.length > 0 && this.props.depth < maxDepth;
+      this.expandReplies =
+        !this.isBlocked && children?.length > 0 && this.props.depth < maxDepth;
     }
 
     makeObservable(this);
@@ -176,24 +191,26 @@ export default class Comment extends React.Component<Props> {
     }
 
     return (
-      <div className={classWithModifiers(
-        'comment',
-        this.props.modifiers,
-        { top: this.props.depth === 0 },
-      )}>
+      <div
+        className={classWithModifiers('comment', this.props.modifiers, {
+          top: this.props.depth === 0,
+        })}
+      >
         {!this.props.comment.isDeleted && this.isBlocked && !this.forceShow
           ? this.renderBlocked()
-          : this.renderMain()
-        }
+          : this.renderMain()}
       </div>
     );
   }
 
-  private getCommentUser(comment: CommentModel): UserJson | { username: string } {
-    return this.getUser(comment.userId) ?? (
-      comment.legacyName == null
+  private getCommentUser(
+    comment: CommentModel,
+  ): UserJson | { username: string } {
+    return (
+      this.getUser(comment.userId) ??
+      (comment.legacyName == null
         ? deletedUserJson
-        : { username: comment.legacyName }
+        : { username: comment.legacyName })
     );
   }
 
@@ -230,7 +247,10 @@ export default class Comment extends React.Component<Props> {
   };
 
   private readonly onShowDeletedToggleClick = () => {
-    core.userPreferences.set('comments_show_deleted', !core.userPreferences.get('comments_show_deleted'));
+    core.userPreferences.set(
+      'comments_show_deleted',
+      !core.userPreferences.get('comments_show_deleted'),
+    );
   };
 
   @action
@@ -277,8 +297,7 @@ export default class Comment extends React.Component<Props> {
         <div className='comment__container'>
           <div className='comment__message'>
             <p className='osu-md osu-md--comment osu-md__paragraph'>
-              {trans('users.blocks.comment_text')}
-              {' '}
+              {trans('users.blocks.comment_text')}{' '}
               {this.renderForceShowButton()}
             </p>
           </div>
@@ -309,15 +328,19 @@ export default class Comment extends React.Component<Props> {
       <div className='comment__commentable-meta'>
         {this.props.comment.commentableType != null && (
           <span className='comment__commentable-meta-type'>
-            <span className='comment__commentable-meta-icon fas fa-comment' />
-            {' '}
-            {trans(`comments.commentable_name.${this.props.comment.commentableType}`)}
+            <span className='comment__commentable-meta-icon fas fa-comment' />{' '}
+            {trans(
+              `comments.commentable_name.${this.props.comment.commentableType}`,
+            )}
           </span>
         )}
-        {'url' in meta
-          ? <a className='comment__link' href={meta.url}>{meta.title}</a>
-          : <span>{meta.title}</span>
-        }
+        {'url' in meta ? (
+          <a className='comment__link' href={meta.url}>
+            {meta.title}
+          </a>
+        ) : (
+          <span>{meta.title}</span>
+        )}
       </div>
     );
   }
@@ -339,7 +362,8 @@ export default class Comment extends React.Component<Props> {
   }
 
   private renderDeletedBy() {
-    if (this.props.comment.deletedAt == null || !this.props.comment.canModerate) return;
+    if (this.props.comment.deletedAt == null || !this.props.comment.canModerate)
+      return;
 
     return (
       <div className='comment__row-item comment__row-item--info'>
@@ -351,11 +375,17 @@ export default class Comment extends React.Component<Props> {
                 relative
               />
             ),
-            user: (
-              this.props.comment.deletedById == null
-                ? trans('comments.deleted_by_system')
-                : <UserLink user={this.getUser(this.props.comment.deletedById) ?? deletedUserJson} />
-            ),
+            user:
+              this.props.comment.deletedById == null ? (
+                trans('comments.deleted_by_system')
+              ) : (
+                <UserLink
+                  user={
+                    this.getUser(this.props.comment.deletedById) ??
+                    deletedUserJson
+                  }
+                />
+              ),
           }}
           pattern={trans('comments.deleted_by')}
         />
@@ -369,7 +399,9 @@ export default class Comment extends React.Component<Props> {
     return (
       <div className='comment__row-item'>
         <button
-          className={classWithModifiers('comment__action', { active: this.editing })}
+          className={classWithModifiers('comment__action', {
+            active: this.editing,
+          })}
           onClick={this.onToggleEdit}
           type='button'
         >
@@ -388,8 +420,19 @@ export default class Comment extends React.Component<Props> {
       <div className='comment__row-item comment__row-item--info'>
         <StringWithComponent
           mappings={{
-            timeago: <TimeWithTooltip dateTime={this.props.comment.editedAt} relative />,
-            user: <UserLink user={this.getUser(this.props.comment.editedById) ?? deletedUserJson} />,
+            timeago: (
+              <TimeWithTooltip
+                dateTime={this.props.comment.editedAt}
+                relative
+              />
+            ),
+            user: (
+              <UserLink
+                user={
+                  this.getUser(this.props.comment.editedById) ?? deletedUserJson
+                }
+              />
+            ),
           }}
           pattern={trans('comments.edited')}
         />
@@ -400,11 +443,11 @@ export default class Comment extends React.Component<Props> {
   private renderFooter() {
     return (
       <div className='comment__row comment__row--footer'>
-        {this.props.comment.canHaveVote &&
+        {this.props.comment.canHaveVote && (
           <div className='comment__row-item visible-xs'>
             {this.renderVoteButton(true)}
           </div>
-        }
+        )}
 
         <div className='comment__row-item comment__row-item--info'>
           <TimeWithTooltip dateTime={this.props.comment.createdAt} relative />
@@ -429,9 +472,7 @@ export default class Comment extends React.Component<Props> {
     if (!this.isBlocked || this.props.comment.isDeleted) return;
 
     return (
-      <div className='comment__row-item'>
-        {this.renderForceShowButton()}
-      </div>
+      <div className='comment__row-item'>{this.renderForceShowButton()}</div>
     );
   }
 
@@ -444,8 +485,7 @@ export default class Comment extends React.Component<Props> {
       >
         {this.forceShow
           ? trans('users.blocks.hide_comment')
-          : trans('users.blocks.show_comment')
-        }
+          : trans('users.blocks.show_comment')}
       </button>
     );
   }
@@ -462,16 +502,19 @@ export default class Comment extends React.Component<Props> {
             clip: this.clipped && this.isLongContent,
             deleted: this.props.comment.isDeleted || this.isBlocked,
           })}
-          style={{
-            '--clip-lines': clipLines,
-            '--line-height': this.lines == null ? undefined : `${this.lines.lineHeight}px`,
-          } as React.CSSProperties}
+          style={
+            {
+              '--clip-lines': clipLines,
+              '--line-height':
+                this.lines == null ? undefined : `${this.lines.lineHeight}px`,
+            } as React.CSSProperties
+          }
         >
-          {this.props.comment.canHaveVote &&
+          {this.props.comment.canHaveVote && (
             <div className='comment__float-container comment__float-container--left hidden-xs'>
               {this.renderVoteButton(false)}
             </div>
-          }
+          )}
 
           {this.renderUserAvatar()}
 
@@ -480,25 +523,24 @@ export default class Comment extends React.Component<Props> {
               {<UserLink className='comment__row-item' user={this.user} />}
               {this.renderOwnerBadge()}
 
-              {this.props.comment.pinned &&
+              {this.props.comment.pinned && (
                 <span className='comment__row-item  comment__row-item--pinned'>
-                  <span className='fa fa-thumbtack' />
-                  {' '}
+                  <span className='fa fa-thumbtack' />{' '}
                   {trans('comments.pinned')}
                 </span>
-              }
+              )}
 
               {this.renderParentLink()}
 
-              {this.props.comment.isDeleted &&
+              {this.props.comment.isDeleted && (
                 <span className='comment__row-item comment__row-item--deleted'>
                   {trans('comments.deleted')}
                 </span>
-              }
+              )}
             </div>
 
-            {this.editing
-              ? <div className='comment__editor'>
+            {this.editing ? (
+              <div className='comment__editor'>
                 <CommentEditor
                   close={this.onCloseEdit}
                   controller={this.props.controller}
@@ -507,17 +549,19 @@ export default class Comment extends React.Component<Props> {
                   modifiers={this.props.modifiers}
                 />
               </div>
-              : this.shouldRenderContent &&
-              <>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: this.props.comment.messageHtml ?? '',
-                  }}
-                  className='comment__message'
-                />
-                {this.isLongContent && this.renderToggleClipButton()}
-              </>
-            }
+            ) : (
+              this.shouldRenderContent && (
+                <>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: this.props.comment.messageHtml ?? '',
+                    }}
+                    className='comment__message'
+                  />
+                  {this.isLongContent && this.renderToggleClipButton()}
+                </>
+              )
+            )}
 
             {this.renderFooter()}
 
@@ -525,11 +569,13 @@ export default class Comment extends React.Component<Props> {
           </div>
         </div>
 
-        {this.props.comment.visibleReplyCount > 0 &&
-          <div className={classWithModifiers('comment__replies', {
-            hidden: !this.expandReplies,
-            indented: this.props.depth < maxDepth,
-          })}>
+        {this.props.comment.visibleReplyCount > 0 && (
+          <div
+            className={classWithModifiers('comment__replies', {
+              hidden: !this.expandReplies,
+              indented: this.props.depth < maxDepth,
+            })}
+          >
             {this.replies.map(this.renderComment)}
 
             <DeletedCommentsCount comments={this.replies} />
@@ -538,13 +584,17 @@ export default class Comment extends React.Component<Props> {
               ref={this.showMoreRef}
               comments={this.replies}
               controller={this.props.controller}
-              label={this.replies.length === 0 ? trans('comments.load_replies') : undefined}
+              label={
+                this.replies.length === 0
+                  ? trans('comments.load_replies')
+                  : undefined
+              }
               modifiers={this.props.modifiers}
               parent={this.props.comment}
               total={this.props.comment.visibleReplyCount}
             />
           </div>
-        }
+        )}
       </>
     );
   }
@@ -552,7 +602,12 @@ export default class Comment extends React.Component<Props> {
   private renderOwnerBadge() {
     const meta = this.meta;
 
-    if (meta == null || !('owner_id' in meta) || meta.owner_id == null || this.props.comment.userId !== meta.owner_id) {
+    if (
+      meta == null ||
+      !('owner_id' in meta) ||
+      meta.owner_id == null ||
+      this.props.comment.userId !== meta.owner_id
+    ) {
       return;
     }
 
@@ -579,18 +634,17 @@ export default class Comment extends React.Component<Props> {
 
     return (
       <span className='comment__row-item comment__row-item--parent'>
-        {this.props.linkParent
-          ? (
-            <a
-              className='comment__link'
-              href={route('comments.show', { comment: parent.id })}
-              title={this.parentPreview}
-            >
-              {content}
-            </a>
-          ) : (
-            <span title={this.parentPreview}>{content}</span>
-          )}
+        {this.props.linkParent ? (
+          <a
+            className='comment__link'
+            href={route('comments.show', { comment: parent.id })}
+            title={this.parentPreview}
+          >
+            {content}
+          </a>
+        ) : (
+          <span title={this.parentPreview}>{content}</span>
+        )}
       </span>
     );
   }
@@ -619,7 +673,9 @@ export default class Comment extends React.Component<Props> {
           onClick={this.onTogglePinned}
           type='button'
         >
-          {trans(`common.buttons.${this.props.comment.pinned ? 'unpin' : 'pin'}`)}
+          {trans(
+            `common.buttons.${this.props.comment.pinned ? 'unpin' : 'pin'}`,
+          )}
         </button>
       </div>
     );
@@ -636,7 +692,10 @@ export default class Comment extends React.Component<Props> {
       label = trans('comments.load_replies');
     } else {
       callback = this.onToggleReplies;
-      label = transChoice('comments.replies_count', this.props.comment.repliesCount);
+      label = transChoice(
+        'comments.replies_count',
+        this.props.comment.repliesCount,
+      );
     }
 
     return (
@@ -662,7 +721,9 @@ export default class Comment extends React.Component<Props> {
           onClick={this.onToggleReplies}
           type='button'
         >
-          <span className={`fas ${this.expandReplies ? 'fa-angle-up' : 'fa-angle-down'}`} />
+          <span
+            className={`fas ${this.expandReplies ? 'fa-angle-up' : 'fa-angle-down'}`}
+          />
         </button>
       </div>
     );
@@ -691,7 +752,9 @@ export default class Comment extends React.Component<Props> {
     return (
       <div className='comment__row-item'>
         <button
-          className={classWithModifiers('comment__action', { active: this.showNewReply })}
+          className={classWithModifiers('comment__action', {
+            active: this.showNewReply,
+          })}
           onClick={this.onToggleNewReply}
           type='button'
         >
@@ -758,10 +821,13 @@ export default class Comment extends React.Component<Props> {
               type='button'
             >
               <span className='sort__item-icon'>
-                <span className={core.userPreferences.get('comments_show_deleted')
-                  ?'fas fa-check-square'
-                  : 'far fa-square'
-                } />
+                <span
+                  className={
+                    core.userPreferences.get('comments_show_deleted')
+                      ? 'fas fa-check-square'
+                      : 'far fa-square'
+                  }
+                />
               </span>
               {trans('common.buttons.show_deleted')}
             </button>
@@ -774,38 +840,38 @@ export default class Comment extends React.Component<Props> {
   private renderUserAvatar() {
     const user = this.user;
 
-    return ('id' in user)
-      ? (
-        <a
-          className='comment__avatar js-usercard'
-          data-user-id={user.id}
-          href={route('users.show', { user: user.id })}
-        >
-          <UserAvatar modifiers='full-circle' user={user} />
-        </a>
-      ) : (
-        <span className='comment__avatar'>
-          <UserAvatar modifiers='full-circle' user={{ avatar_url: undefined, ...user }} />
-        </span>
-      );
+    return 'id' in user ? (
+      <a
+        className='comment__avatar js-usercard'
+        data-user-id={user.id}
+        href={route('users.show', { user: user.id })}
+      >
+        <UserAvatar modifiers='full-circle' user={user} />
+      </a>
+    ) : (
+      <span className='comment__avatar'>
+        <UserAvatar
+          modifiers='full-circle'
+          user={{ avatar_url: undefined, ...user }}
+        />
+      </span>
+    );
   }
 
   private renderVoteButton(inline: boolean) {
     const hasVoted = this.hasVoted;
 
-    const className = classWithModifiers('comment-vote',
-      this.props.modifiers,
-      {
-        disabled: !this.props.comment.canVote,
-        inline,
-        on: hasVoted,
-        posting: this.postingVote,
-      },
-    );
+    const className = classWithModifiers('comment-vote', this.props.modifiers, {
+      disabled: !this.props.comment.canVote,
+      inline,
+      on: hasVoted,
+      posting: this.postingVote,
+    });
 
-    const hover = !inline && !hasVoted
-      ? <div className='comment-vote__hover'>+1</div>
-      : null;
+    const hover =
+      !inline && !hasVoted ? (
+        <div className='comment-vote__hover'>+1</div>
+      ) : null;
 
     return (
       <button
@@ -817,11 +883,11 @@ export default class Comment extends React.Component<Props> {
         <span className='comment-vote__text'>
           +{formatNumberSuffixed(this.props.comment.votesCount)}
         </span>
-        {this.postingVote &&
+        {this.postingVote && (
           <span className='comment-vote__spinner'>
             <Spinner />
           </span>
-        }
+        )}
         {hover}
       </button>
     );

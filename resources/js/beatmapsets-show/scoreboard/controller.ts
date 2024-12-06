@@ -4,7 +4,14 @@
 import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
 import { SoloScoreJsonForBeatmap } from 'interfaces/solo-score-json';
 import { route } from 'laroute';
-import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  reaction,
+  runInAction,
+} from 'mobx';
 import core from 'osu-core-singleton';
 import ScoreboardType from './scoreboard-type';
 
@@ -15,7 +22,12 @@ interface SetOptions {
   type?: ScoreboardType;
 }
 
-export type ScoreLoadingState = null | 'error' | 'loading' | 'supporter_only' | 'unranked';
+export type ScoreLoadingState =
+  | null
+  | 'error'
+  | 'loading'
+  | 'supporter_only'
+  | 'unranked';
 
 interface UserScore {
   position: number;
@@ -65,17 +77,25 @@ export default class Controller {
       return 'unranked';
     }
 
-    if (!core.currentUser?.is_supporter && (this.currentType !== 'global' || this.enabledMods.size > 0)) {
+    if (
+      !core.currentUser?.is_supporter &&
+      (this.currentType !== 'global' || this.enabledMods.size > 0)
+    ) {
       return 'supporter_only';
     }
 
     return this.xhrState;
   }
 
-  constructor(private readonly container: HTMLElement, private readonly getBeatmap: () => BeatmapExtendedJson) {
+  constructor(
+    private readonly container: HTMLElement,
+    private readonly getBeatmap: () => BeatmapExtendedJson,
+  ) {
     let storedState: StoredState | null = null;
     try {
-      storedState = JSON.parse(this.container.dataset.scoreboardState ?? 'null') as (StoredState | null);
+      storedState = JSON.parse(
+        this.container.dataset.scoreboardState ?? 'null',
+      ) as StoredState | null;
     } catch {
       // Do nothing if failed parsing.
     }
@@ -93,10 +113,12 @@ export default class Controller {
     // fetch score data if needed
     this.setCurrent({});
 
-    this.disposers.add(reaction(
-      () => `${this.beatmap.mode}:${this.beatmap.id}`,
-      () => this.setCurrent({ resetMods: true, type: 'global' }),
-    ));
+    this.disposers.add(
+      reaction(
+        () => `${this.beatmap.mode}:${this.beatmap.id}`,
+        () => this.setCurrent({ resetMods: true, type: 'global' }),
+      ),
+    );
   }
 
   destroy() {
@@ -148,12 +170,18 @@ export default class Controller {
       dataType: 'JSON',
       method: 'GET',
     });
-    this.xhr.done((data) => runInAction(() => {
-      this.allData[dataKey] = data;
-      this.xhrState = null;
-    })).fail((_xhr, status) => runInAction(() => {
-      this.xhrState = status === 'abort' ? null : 'error';
-    }));
+    this.xhr
+      .done((data) =>
+        runInAction(() => {
+          this.allData[dataKey] = data;
+          this.xhrState = null;
+        }),
+      )
+      .fail((_xhr, status) =>
+        runInAction(() => {
+          this.xhrState = status === 'abort' ? null : 'error';
+        }),
+      );
   };
 
   private readonly storeState = () => {

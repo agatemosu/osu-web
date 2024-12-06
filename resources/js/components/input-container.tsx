@@ -15,13 +15,17 @@ interface CommonProps {
   showError?: boolean;
 }
 
-type Props = CommonProps & ({
-  input: string;
-  maxLength: number;
-} | {
-  input?: string;
-  maxLength?: never;
-});
+type Props = CommonProps &
+  (
+    | {
+        input: string;
+        maxLength: number;
+      }
+    | {
+        input?: string;
+        maxLength?: never;
+      }
+  );
 
 // TODO: look at combining with ValidatingInput
 // TODO: show error message
@@ -29,7 +33,14 @@ const InputContainer = observer((props: React.PropsWithChildren<Props>) => {
   const error = props.hasError && props.showError;
 
   return (
-    <label className={classWithModifiers('input-container', { error }, props.modifiers)} htmlFor={props.for}>
+    <label
+      className={classWithModifiers(
+        'input-container',
+        { error },
+        props.modifiers,
+      )}
+      htmlFor={props.for}
+    >
       {props.labelKey != null && (
         <div className='input-container__label'>
           {trans(props.labelKey)}

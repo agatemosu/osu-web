@@ -12,7 +12,10 @@ const autoPagerTriggerDistance = 3000;
 @observer
 export class Paginator extends React.Component<Record<string, never>> {
   private readonly lineRef = React.createRef<HTMLDivElement>();
-  private readonly throttledAutoPagerOnScroll = throttle(() => this.autoPagerOnScroll(), 500);
+  private readonly throttledAutoPagerOnScroll = throttle(
+    () => this.autoPagerOnScroll(),
+    500,
+  );
 
   private get controller() {
     return core.beatmapsetSearchController;
@@ -43,12 +46,18 @@ export class Paginator extends React.Component<Record<string, never>> {
   }
 
   private autoPagerOnScroll() {
-    if (this.controller.error != null || !this.controller.hasMore || this.controller.isPaging || this.lineRef.current == null) {
+    if (
+      this.controller.error != null ||
+      !this.controller.hasMore ||
+      this.controller.isPaging ||
+      this.lineRef.current == null
+    ) {
       return;
     }
 
     const currentTarget = this.lineRef.current.getBoundingClientRect().top;
-    const target = document.documentElement.clientHeight + autoPagerTriggerDistance;
+    const target =
+      document.documentElement.clientHeight + autoPagerTriggerDistance;
 
     if (currentTarget > target) return;
 

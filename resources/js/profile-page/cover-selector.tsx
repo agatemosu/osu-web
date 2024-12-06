@@ -53,19 +53,19 @@ export default class CoverSelector extends React.Component<Props> {
           {trans('users.show.edit.cover.title')}
         </h2>
         <div className='profile-cover-change-popup__defaults'>
-          {this.props.controller.userCoverPresets.map((preset) =>
-            (<CoverSelection
+          {this.props.controller.userCoverPresets.map((preset) => (
+            <CoverSelection
               key={preset.id}
               controller={this.props.controller}
               preset={preset}
-            />),
-          )}
-          {holdoverCoverPreset != null &&
+            />
+          ))}
+          {holdoverCoverPreset != null && (
             <CoverSelection
               controller={this.props.controller}
               preset={holdoverCoverPreset}
             />
-          }
+          )}
           <p className='profile-cover-change-popup__selections-info'>
             {trans('users.show.edit.cover.defaults_info')}
           </p>
@@ -75,16 +75,19 @@ export default class CoverSelector extends React.Component<Props> {
           controller={this.props.controller}
           dropzoneRef={this.dropzoneRef}
         />
-        {this.props.controller.canUploadCover &&
+        {this.props.controller.canUploadCover && (
           <div
-            className={classWithModifiers('profile-cover-change-popup__drop-overlay', this.dropOverlayState)}
+            className={classWithModifiers(
+              'profile-cover-change-popup__drop-overlay',
+              this.dropOverlayState,
+            )}
             data-visibility={this.dropOverlayVisibility}
             onDragEnter={this.dropOverlayEnter}
             onDragLeave={this.dropOverlayLeave}
           >
             {trans('users.show.edit.cover.upload.dropzone')}
           </div>
-        }
+        )}
       </div>
     );
   }

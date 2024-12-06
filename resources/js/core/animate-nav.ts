@@ -6,7 +6,8 @@ export default class AnimateNav {
     $(document)
       .on('turbo:before-cache', () => {
         document.body.classList.remove('js-animate-nav');
-      }).on('turbo:load', () => {
+      })
+      .on('turbo:load', () => {
         window.setTimeout(() => {
           document.body.classList.add('js-animate-nav');
         }, 0);

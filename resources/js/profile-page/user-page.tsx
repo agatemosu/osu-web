@@ -17,7 +17,11 @@ import UserPageEditor from './user-page-editor';
 export default class UserPage extends React.Component<ExtraPageProps> {
   @computed
   private get canEdit() {
-    return this.props.controller.withEdit || (core.currentUser != null && (core.currentUser.is_moderator || core.currentUser.is_admin));
+    return (
+      this.props.controller.withEdit ||
+      (core.currentUser != null &&
+        (core.currentUser.is_moderator || core.currentUser.is_admin))
+    );
   }
 
   constructor(props: ExtraPageProps) {
@@ -32,20 +36,25 @@ export default class UserPage extends React.Component<ExtraPageProps> {
 
     return (
       <div className='page-extra page-extra--userpage'>
-        <ExtraHeader name={this.props.name} withEdit={this.props.controller.withEdit} />
+        <ExtraHeader
+          name={this.props.name}
+          withEdit={this.props.controller.withEdit}
+        />
 
-        {!this.props.controller.state.editingUserPage && canEdit && !isBlank && (
-          <div className='page-extra__actions'>
-            <button
-              className='btn-circle btn-circle--page-toggle'
-              onClick={this.editStart}
-              title={trans('users.show.page.edit_big')}
-              type='button'
-            >
-              <span className='fas fa-pencil-alt' />
-            </button>
-          </div>
-        )}
+        {!this.props.controller.state.editingUserPage &&
+          canEdit &&
+          !isBlank && (
+            <div className='page-extra__actions'>
+              <button
+                className='btn-circle btn-circle--page-toggle'
+                onClick={this.editStart}
+                title={trans('users.show.page.edit_big')}
+                type='button'
+              >
+                <span className='fas fa-pencil-alt' />
+              </button>
+            </div>
+          )}
 
         {this.props.controller.state.editingUserPage ? (
           <UserPageEditor controller={this.props.controller} />
@@ -88,7 +97,9 @@ export default class UserPage extends React.Component<ExtraPageProps> {
         </p>
 
         <p
-          dangerouslySetInnerHTML={{ __html: trans('users.show.page.description') }}
+          dangerouslySetInnerHTML={{
+            __html: trans('users.show.page.description'),
+          }}
           className='profile-extra-user-page__new-content'
         />
 
@@ -98,8 +109,10 @@ export default class UserPage extends React.Component<ExtraPageProps> {
               mappings={{
                 link: (
                   <a
-                    href={route('store.products.show', { product: 'supporter-tag' })}
-                    rel="noreferrer"
+                    href={route('store.products.show', {
+                      product: 'supporter-tag',
+                    })}
+                    rel='noreferrer'
                     target='_blank'
                   >
                     {trans('users.show.page.restriction_info.link')}
@@ -117,7 +130,9 @@ export default class UserPage extends React.Component<ExtraPageProps> {
   private renderPageShow() {
     return (
       <div
-        dangerouslySetInnerHTML={{ __html: this.props.controller.state.user.page.html }}
+        dangerouslySetInnerHTML={{
+          __html: this.props.controller.state.user.page.html,
+        }}
         className='js-audio--group'
       />
     );

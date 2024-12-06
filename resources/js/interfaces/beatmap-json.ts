@@ -31,6 +31,7 @@ interface BeatmapJsonDefaultAttributes {
   version: string;
 }
 
-type BeatmapJson = BeatmapJsonDefaultAttributes & Partial<BeatmapJsonAvailableIncludes>;
+type BeatmapJson = BeatmapJsonDefaultAttributes &
+  Partial<BeatmapJsonAvailableIncludes>;
 
 export default BeatmapJson;

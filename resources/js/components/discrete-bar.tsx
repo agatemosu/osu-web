@@ -21,7 +21,9 @@ export default function DiscreteBar(props: Props) {
       {times(total, (i) => (
         <div
           key={i}
-          className={classWithModifiers('discrete-bar__item', { on: i < current })}
+          className={classWithModifiers('discrete-bar__item', {
+            on: i < current,
+          })}
         >
           {props.label}
         </div>

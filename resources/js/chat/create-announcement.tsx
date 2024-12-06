@@ -21,7 +21,11 @@ export default class CreateAnnouncement extends React.Component<Props> {
 
   @computed
   private get canSend() {
-    return core.dataStore.chatState.isReady && !core.dataStore.chatState.isAddingChannel && this.model.isValid;
+    return (
+      core.dataStore.chatState.isReady &&
+      !core.dataStore.chatState.isAddingChannel &&
+      this.model.isValid
+    );
   }
 
   @computed
@@ -38,7 +42,9 @@ export default class CreateAnnouncement extends React.Component<Props> {
       this.model.initialize();
     });
 
-    this.usernameInputInitialProps = runInAction(() => this.model.propsForUsernameInput);
+    this.usernameInputInitialProps = runInAction(
+      () => this.model.propsForUsernameInput,
+    );
   }
 
   render() {
@@ -47,7 +53,9 @@ export default class CreateAnnouncement extends React.Component<Props> {
     return (
       <div className='chat-form'>
         <div className='chat-form__fields'>
-          <div className='chat-form__title'>{trans('chat.form.title.announcement')}</div>
+          <div className='chat-form__title'>
+            {trans('chat.form.title.announcement')}
+          </div>
           <InputContainer
             labelKey='chat.form.labels.name'
             {...this.model.inputContainerPropsFor('name')}
@@ -114,7 +122,11 @@ export default class CreateAnnouncement extends React.Component<Props> {
               isBusy={core.dataStore.chatState.isAddingChannel}
               modifiers='chat-send'
               props={{ onClick: this.handleButtonClick }}
-              text={trans(core.dataStore.chatState.isReady ? 'chat.input.create' : 'chat.input.disconnected')}
+              text={trans(
+                core.dataStore.chatState.isReady
+                  ? 'chat.input.create'
+                  : 'chat.input.disconnected',
+              )}
             />
           </div>
         </div>
@@ -123,7 +135,11 @@ export default class CreateAnnouncement extends React.Component<Props> {
   }
 
   @action
-  private readonly handleBlur = (e: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLTextAreaElement>) => {
+  private readonly handleBlur = (
+    e:
+      | React.FocusEvent<HTMLInputElement>
+      | React.FocusEvent<HTMLTextAreaElement>,
+  ) => {
     const elem = e.target;
 
     if (isInputKey(elem.name)) {
@@ -137,7 +153,11 @@ export default class CreateAnnouncement extends React.Component<Props> {
   };
 
   @action
-  private readonly handleInput = (e: React.ChangeEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>) => {
+  private readonly handleInput = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.FormEvent<HTMLTextAreaElement>,
+  ) => {
     const elem = e.currentTarget;
 
     if (isInputKey(elem.name)) {

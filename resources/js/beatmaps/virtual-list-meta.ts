@@ -7,7 +7,9 @@ import core from 'osu-core-singleton';
 export default class VirtualListMeta {
   get cardHeight() {
     if (core.windowSize.isDesktop) {
-      return core.userPreferences.get('beatmapset_card_size') === 'normal' ? 100 : 140;
+      return core.userPreferences.get('beatmapset_card_size') === 'normal'
+        ? 100
+        : 140;
     }
 
     return 120;

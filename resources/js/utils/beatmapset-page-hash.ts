@@ -15,7 +15,13 @@ export function parse(hash: string) {
   };
 }
 
-export function generate({ beatmap, ruleset }: { beatmap?: BeatmapJson; ruleset?: Ruleset }) {
+export function generate({
+  beatmap,
+  ruleset,
+}: {
+  beatmap?: BeatmapJson;
+  ruleset?: Ruleset;
+}) {
   let hash = '';
 
   ruleset ??= beatmap?.mode;

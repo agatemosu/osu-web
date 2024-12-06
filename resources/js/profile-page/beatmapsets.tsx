@@ -52,8 +52,15 @@ export default class Beatmapsets extends React.Component<ExtraPageProps> {
   render() {
     return (
       <div className='page-extra'>
-        <ExtraHeader name={this.props.name} withEdit={this.props.controller.withEdit} />
-        <LazyLoad hasData={this.hasData} name={this.props.name} onLoad={this.handleOnLoad}>
+        <ExtraHeader
+          name={this.props.name}
+          withEdit={this.props.controller.withEdit}
+        />
+        <LazyLoad
+          hasData={this.hasData}
+          name={this.props.name}
+          onLoad={this.handleOnLoad}
+        >
           {sectionKeys.map(this.renderBeatmapsets)}
         </LazyLoad>
       </div>
@@ -66,7 +73,9 @@ export default class Beatmapsets extends React.Component<ExtraPageProps> {
     this.props.controller.apiShowMore(section);
   };
 
-  private readonly renderBeatmapsets = (section: typeof sectionKeys[number]) => {
+  private readonly renderBeatmapsets = (
+    section: (typeof sectionKeys)[number],
+  ) => {
     const state = this.props.controller.state.lazy.beatmaps?.[section.key];
     if (state == null) return;
 

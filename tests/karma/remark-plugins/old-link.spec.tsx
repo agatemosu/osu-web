@@ -48,9 +48,7 @@ describe('oldLink renders old link', () => {
 
     it(`renders correctly: ${name}`, () => {
       const out = renderToStaticMarkup(
-        <ReactMarkdown remarkPlugins={[oldLink]}>
-          {source}
-        </ReactMarkdown>,
+        <ReactMarkdown remarkPlugins={[oldLink]}>{source}</ReactMarkdown>,
       );
 
       expect(out).toBe(result);

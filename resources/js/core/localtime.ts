@@ -35,7 +35,10 @@ export default class Localtime {
       return [];
     }
 
-    if (parent instanceof HTMLTimeElement && parent.classList.contains('js-localtime')) {
+    if (
+      parent instanceof HTMLTimeElement &&
+      parent.classList.contains('js-localtime')
+    ) {
       return [parent];
     } else {
       // Casting is needed because the compiler doesn't detect result of

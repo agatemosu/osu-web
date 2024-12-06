@@ -54,13 +54,17 @@ function popup(stats: DailyChallengeUserStatsJson) {
   const values = [
     [
       'daily_streak_best',
-      trans('users.show.daily_challenge.unit.day', { value: formatNumber(stats.daily_streak_best) }),
+      trans('users.show.daily_challenge.unit.day', {
+        value: formatNumber(stats.daily_streak_best),
+      }),
       'fancy',
       tierStyle(stats.daily_streak_best),
     ],
     [
       'weekly_streak_best',
-      trans('users.show.daily_challenge.unit.week', { value: formatNumber(stats.weekly_streak_best) }),
+      trans('users.show.daily_challenge.unit.week', {
+        value: formatNumber(stats.weekly_streak_best),
+      }),
       ['fancy', 'weekly'],
       tierStyleWeekly(stats.weekly_streak_best),
     ],
@@ -71,20 +75,27 @@ function popup(stats: DailyChallengeUserStatsJson) {
   return (
     <div className='daily-challenge-popup'>
       <div className='daily-challenge-popup__content daily-challenge-popup__content--top'>
-        {([
-          ['playcount', tierStylePlaycount, 'day'],
-          ['daily_streak_current', tierStyle, 'day'],
-          ['weekly_streak_current', tierStyleWeekly, 'week'],
-        ] as const).map(([key, tierFn, unit]) => (
+        {(
+          [
+            ['playcount', tierStylePlaycount, 'day'],
+            ['daily_streak_current', tierStyle, 'day'],
+            ['weekly_streak_current', tierStyleWeekly, 'week'],
+          ] as const
+        ).map(([key, tierFn, unit]) => (
           <div key={key} className='daily-challenge-popup__top-entry'>
             <div className='daily-challenge-popup__top-title'>
               {trans(`users.show.daily_challenge.${key}`)}
             </div>
             <div
-              className={classWithModifiers('daily-challenge-popup__value', ['fancy', 'top'])}
+              className={classWithModifiers('daily-challenge-popup__value', [
+                'fancy',
+                'top',
+              ])}
               style={tierFn(stats[key])}
             >
-              {trans(`users.show.daily_challenge.unit.${unit}`, { value: formatNumber(stats[key]) })}
+              {trans(`users.show.daily_challenge.unit.${unit}`, {
+                value: formatNumber(stats[key]),
+              })}
             </div>
           </div>
         ))}
@@ -96,7 +107,10 @@ function popup(stats: DailyChallengeUserStatsJson) {
               {trans(`users.show.daily_challenge.${transKey}`)}
             </div>
             <div
-              className={classWithModifiers('daily-challenge-popup__value', valueMods)}
+              className={classWithModifiers(
+                'daily-challenge-popup__value',
+                valueMods,
+              )}
               style={valueStyle}
             >
               {value}
@@ -129,19 +143,20 @@ export default class DailyChallenge extends React.Component<Props> {
         onMouseOver={this.onMouseOver}
       >
         <div className='daily-challenge__name'>
-          {trans('users.show.daily_challenge.title').split('\\n').map((line, i) => (
-            <div key={i}>{line}</div>
-          ))}
+          {trans('users.show.daily_challenge.title')
+            .split('\\n')
+            .map((line, i) => (
+              <div key={i}>{line}</div>
+            ))}
         </div>
         <div className='daily-challenge__value-box'>
           <div
             className='daily-challenge__value'
             style={tierStylePlaycount(this.props.stats.playcount)}
           >
-            {trans(
-              'users.show.daily_challenge.unit.day',
-              { value: formatNumber(this.props.stats.playcount) },
-            )}
+            {trans('users.show.daily_challenge.unit.day', {
+              value: formatNumber(this.props.stats.playcount),
+            })}
           </div>
         </div>
       </div>
@@ -151,31 +166,34 @@ export default class DailyChallenge extends React.Component<Props> {
   private readonly onMouseOver = (event: React.MouseEvent<HTMLDivElement>) => {
     if (this.disposer != null) return;
 
-    $(this.valueRef.current ?? []).qtip({
-      content: '[placeholder]',
-      hide: {
-        delay: 200,
-        fixed: true,
-      },
-      overwrite: false,
-      position: {
-        adjust: {
-          scroll: false,
+    $(this.valueRef.current ?? []).qtip(
+      {
+        content: '[placeholder]',
+        hide: {
+          delay: 200,
+          fixed: true,
         },
-        at: 'top left',
-        my: 'bottom left',
-        viewport: $(window),
+        overwrite: false,
+        position: {
+          adjust: {
+            scroll: false,
+          },
+          at: 'top left',
+          my: 'bottom left',
+          viewport: $(window),
+        },
+        show: {
+          delay: 200,
+          event: event.type,
+          ready: true,
+        },
+        style: {
+          classes: 'qtip qtip--daily-challenge',
+          tip: false,
+        },
       },
-      show: {
-        delay: 200,
-        event: event.type,
-        ready: true,
-      },
-      style: {
-        classes: 'qtip qtip--daily-challenge',
-        tip: false,
-      },
-    }, event);
+      event,
+    );
 
     this.disposer = autorun(() => {
       const content = renderToStaticMarkup(popup(this.props.stats));

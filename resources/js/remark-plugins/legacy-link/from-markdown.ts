@@ -2,14 +2,21 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type { Link } from 'mdast';
-import type { CompileContext, Extension, Token } from 'mdast-util-from-markdown';
+import type {
+  CompileContext,
+  Extension,
+  Token,
+} from 'mdast-util-from-markdown';
 
 function enterLegacyLink(this: CompileContext, token: Token) {
-  this.enter({
-    children: [],
-    type: 'link',
-    url: '',
-  }, token);
+  this.enter(
+    {
+      children: [],
+      type: 'link',
+      url: '',
+    },
+    token,
+  );
 }
 
 function enterLegacyLinkTitle(this: CompileContext) {
@@ -18,10 +25,12 @@ function enterLegacyLinkTitle(this: CompileContext) {
 
 function exitLegacyLinkTitle(this: CompileContext) {
   const title = this.resume();
-  (top(this.stack) as Link).children = [{
-    type: 'text',
-    value: title,
-  }];
+  (top(this.stack) as Link).children = [
+    {
+      type: 'text',
+      value: title,
+    },
+  ];
 }
 
 function exitLegacyLinkUrl(this: CompileContext, token: Token) {

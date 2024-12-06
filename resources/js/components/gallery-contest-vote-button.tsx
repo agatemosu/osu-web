@@ -21,7 +21,10 @@ interface State {
   isLoading: boolean;
 }
 
-export default class GalleryContestVoteButton extends React.PureComponent<Props, State> {
+export default class GalleryContestVoteButton extends React.PureComponent<
+  Props,
+  State
+> {
   private readonly eventId = `gallery-contest-${nextVal()}`;
   private readonly mainRef = React.createRef<HTMLButtonElement>();
 
@@ -50,7 +53,12 @@ export default class GalleryContestVoteButton extends React.PureComponent<Props,
 
   render() {
     return (
-      <button ref={this.mainRef} className={this.mainClass()} onClick={this.vote} title={this.buttonTitle()}>
+      <button
+        ref={this.mainRef}
+        className={this.mainClass()}
+        onClick={this.vote}
+        title={this.buttonTitle()}
+      >
         <span className={this.iconClass()} />
       </button>
     );
@@ -64,7 +72,9 @@ export default class GalleryContestVoteButton extends React.PureComponent<Props,
     // FIXME: possibly string | undefined
     const id: string = this.props.pswp.currItem.element.dataset.buttonId;
 
-    return document.querySelector(`.js-contest-vote-button[data-button-id='${id}']`) as HTMLElement;
+    return document.querySelector(
+      `.js-contest-vote-button[data-button-id='${id}']`,
+    ) as HTMLElement;
   }
 
   private readonly buttonState = () => {
@@ -96,7 +106,6 @@ export default class GalleryContestVoteButton extends React.PureComponent<Props,
     }
 
     return trans('contest.voting.button.add');
-
   };
 
   private iconClass() {
@@ -107,9 +116,10 @@ export default class GalleryContestVoteButton extends React.PureComponent<Props,
     }
   }
 
-  private readonly isDisabled = () => this.state.isLoading ||
-      this.state.button.votingOver ||
-      (!this.state.button.isSelected && !this.state.button.hasVote);
+  private readonly isDisabled = () =>
+    this.state.isLoading ||
+    this.state.button.votingOver ||
+    (!this.state.button.isSelected && !this.state.button.hasVote);
 
   private readonly loadingEnd = () => {
     this.setState({ isLoading: false });

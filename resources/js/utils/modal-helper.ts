@@ -4,5 +4,9 @@
 import { isModalOpen } from 'components/modal';
 
 export function isModalShowing() {
-  return isModalOpen() || $('#overlay').is(':visible') || document.body.classList.contains('modal-open');
+  return (
+    isModalOpen() ||
+    $('#overlay').is(':visible') ||
+    document.body.classList.contains('modal-open')
+  );
 }

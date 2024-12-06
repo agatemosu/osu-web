@@ -34,7 +34,10 @@ export default class BeatmapsetCardViewSelector extends React.Component<Props> {
   render() {
     return (
       <button
-        className={classWithModifiers(this.props.classElement, { active: this.isActive, button: true })}
+        className={classWithModifiers(this.props.classElement, {
+          active: this.isActive,
+          button: true,
+        })}
         onClick={this.handleClick}
         type='button'
       >

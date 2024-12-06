@@ -8,7 +8,11 @@ import { makeUrl } from 'utils/beatmapset-discussion-helper';
 
 export function urlGroup(item: Notification) {
   if (isBeatmapOwnerChangeNotification(item)) {
-    return route('beatmapsets.discussion', { beatmap: '-', beatmapset: item.objectId, mode: 'events' });
+    return route('beatmapsets.discussion', {
+      beatmap: '-',
+      beatmapset: item.objectId,
+      mode: 'events',
+    });
   }
 
   if (item.name === 'comment_new' || item.name === 'comment_reply') {
@@ -34,13 +38,19 @@ export function urlGroup(item: Notification) {
         ? route('chat.index', { channel_id: item.details.channelId })
         : route('chat.index', { sendto: item.sourceUserId });
     case 'forum_topic':
-      return route('forum.topics.show', { start: 'unread', topic: item.objectId });
+      return route('forum.topics.show', {
+        start: 'unread',
+        topic: item.objectId,
+      });
   }
 }
 
 export function urlSingular(item: Notification) {
   if (isBeatmapOwnerChangeNotification(item)) {
-    return route('beatmapsets.discussion', { beatmap: item.details.beatmapId, beatmapset: item.objectId });
+    return route('beatmapsets.discussion', {
+      beatmap: item.details.beatmapId,
+      beatmapset: item.objectId,
+    });
   }
 
   switch (item.name) {
@@ -76,9 +86,13 @@ export function urlSingular(item: Notification) {
     case 'user_achievement_unlock':
       return userAchievementUrl(item);
     case 'user_beatmapset_new':
-      return route('beatmapsets.show', { beatmapset: item.details.beatmapsetId });
+      return route('beatmapsets.show', {
+        beatmapset: item.details.beatmapsetId,
+      });
     case 'user_beatmapset_revive':
-      return route('beatmapsets.show', { beatmapset: item.details.beatmapsetId });
+      return route('beatmapsets.show', {
+        beatmapset: item.details.beatmapsetId,
+      });
   }
 }
 

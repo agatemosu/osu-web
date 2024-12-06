@@ -18,23 +18,31 @@ interface Props {
 export default function SystemPost({ post, user }: Props) {
   if (post.message.type !== 'resolved') switchNever(post.message.type);
 
-  const className = classWithModifiers('beatmap-discussion-system-post', post.message.type, {
-    deleted: post.deleted_at != null,
-  });
+  const className = classWithModifiers(
+    'beatmap-discussion-system-post',
+    post.message.type,
+    {
+      deleted: post.deleted_at != null,
+    },
+  );
 
   return (
     <div className={className}>
       <div className='beatmap-discussion-system-post__content'>
         <StringWithComponent
           mappings={{
-            user: <a
-              className='beatmap-discussion-system-post__user'
-              href={route('users.show', { user: user.id })}
-            >
-              {user.username}
-            </a>,
+            user: (
+              <a
+                className='beatmap-discussion-system-post__user'
+                href={route('users.show', { user: user.id })}
+              >
+                {user.username}
+              </a>
+            ),
           }}
-          pattern={trans(`beatmap_discussions.system.resolved.${post.message.value}`)}
+          pattern={trans(
+            `beatmap_discussions.system.resolved.${post.message.value}`,
+          )}
         />
       </div>
     </div>

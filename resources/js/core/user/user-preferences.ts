@@ -2,7 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import CurrentUserJson from 'interfaces/current-user-json';
-import UserPreferencesJson, { defaultUserPreferencesJson } from 'interfaces/user-preferences-json';
+import UserPreferencesJson, {
+  defaultUserPreferencesJson,
+} from 'interfaces/user-preferences-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { onErrorWithCallback } from 'utils/ajax';
@@ -27,7 +29,10 @@ export default class UserPreferences {
   }
 
   @action
-  set<T extends keyof UserPreferencesJson>(key: T, value: UserPreferencesJson[T]) {
+  set<T extends keyof UserPreferencesJson>(
+    key: T,
+    value: UserPreferencesJson[T],
+  ) {
     if (this.current[key] === value) return;
 
     this.current[key] = value;
@@ -41,13 +46,14 @@ export default class UserPreferences {
       data: { user_profile_customization: { [key]: value } },
       dataType: 'JSON',
       method: 'PUT',
-    }).done((user: CurrentUserJson) => {
-      $.publish('user:update', user);
-    }).fail(
-      onErrorWithCallback(),
-    ).always(() => {
-      this.updatingOptions = false;
-    });
+    })
+      .done((user: CurrentUserJson) => {
+        $.publish('user:update', user);
+      })
+      .fail(onErrorWithCallback())
+      .always(() => {
+        this.updatingOptions = false;
+      });
   }
 
   @action

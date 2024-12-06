@@ -51,12 +51,18 @@ export default class MenuImages extends React.Component<Props> {
 
   componentDidMount() {
     this.setAutoRotateTimer();
-    document.addEventListener('visibilitychange', this.handlePageVisibilityChange);
+    document.addEventListener(
+      'visibilitychange',
+      this.handlePageVisibilityChange,
+    );
   }
 
   componentWillUnmount() {
     this.clearAutoRotateTimer();
-    document.removeEventListener('visibilitychange', this.handlePageVisibilityChange);
+    document.removeEventListener(
+      'visibilitychange',
+      this.handlePageVisibilityChange,
+    );
   }
 
   render() {
@@ -69,9 +75,11 @@ export default class MenuImages extends React.Component<Props> {
         <div className={bn}>
           <div
             className={`${bn}__blur`}
-            style={{
-              '--url': urlPresence(this.images[0].image_url),
-            } as React.CSSProperties}
+            style={
+              {
+                '--url': urlPresence(this.images[0].image_url),
+              } as React.CSSProperties
+            }
           />
           <div className={`${bn}__images`}>
             <div className={`${bn}__container`}>
@@ -94,15 +102,19 @@ export default class MenuImages extends React.Component<Props> {
           <div
             key={imageJson.image_url}
             className={`${bn}__blur`}
-            style={{
-              '--url': urlPresence(imageJson.image_url),
-              opacity: i === currentIndex ? 1 : 0,
-            } as React.CSSProperties}
+            style={
+              {
+                '--url': urlPresence(imageJson.image_url),
+                opacity: i === currentIndex ? 1 : 0,
+              } as React.CSSProperties
+            }
           />
         ))}
         <div className={`${bn}__images`}>
           <div
-            className={classWithModifiers(`${bn}__container`, { transition: this.transition })}
+            className={classWithModifiers(`${bn}__container`, {
+              transition: this.transition,
+            })}
             onTransitionEnd={this.handleTransitionEnd}
             style={{ '--index': this.index } as React.CSSProperties}
           >
@@ -130,17 +142,23 @@ export default class MenuImages extends React.Component<Props> {
     window.clearInterval(this.autoRotateTimerId);
   };
 
-  private readonly handleArrowClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    this.setIndex(this.index + parseInt(event.currentTarget.dataset.increment ?? '', 10));
+  private readonly handleArrowClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    this.setIndex(
+      this.index + parseInt(event.currentTarget.dataset.increment ?? '', 10),
+    );
   };
 
-  private readonly handleIndicatorClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  private readonly handleIndicatorClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     // Increment the index by the visible difference between the selected and
     // active indicator
     this.setIndex(
-      this.index
-        + parseInt(event.currentTarget.dataset.index ?? '', 10)
-        - modulo(this.index, this.length),
+      this.index +
+        parseInt(event.currentTarget.dataset.index ?? '', 10) -
+        modulo(this.index, this.length),
     );
   };
 
@@ -153,8 +171,13 @@ export default class MenuImages extends React.Component<Props> {
   };
 
   @action
-  private readonly handleTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
-    if (event.propertyName !== 'transform' || event.currentTarget !== event.target) {
+  private readonly handleTransitionEnd = (
+    event: React.TransitionEvent<HTMLDivElement>,
+  ) => {
+    if (
+      event.propertyName !== 'transform' ||
+      event.currentTarget !== event.target
+    ) {
       return;
     }
 
@@ -186,10 +209,9 @@ export default class MenuImages extends React.Component<Props> {
         {this.images.map((_, index) => (
           <button
             key={index}
-            className={classWithModifiers(
-              `${bn}__indicator`,
-              { active: index === modulo(this.index, this.length) },
-            )}
+            className={classWithModifiers(`${bn}__indicator`, {
+              active: index === modulo(this.index, this.length),
+            })}
             data-index={index}
             onClick={this.handleIndicatorClick}
           />

@@ -34,8 +34,14 @@ export default function Dial(props: Props) {
         <svg viewBox='0 0 200 200'>
           <defs>
             <linearGradient gradientTransform='rotate(90)' id='dial-outer'>
-              <stop className='score-dial__outer-gradient score-dial__outer-gradient--start' offset='0%' />
-              <stop className='score-dial__outer-gradient score-dial__outer-gradient--end' offset='100%' />
+              <stop
+                className='score-dial__outer-gradient score-dial__outer-gradient--start'
+                offset='0%'
+              />
+              <stop
+                className='score-dial__outer-gradient score-dial__outer-gradient--end'
+                offset='100%'
+              />
             </linearGradient>
           </defs>
           <g transform='translate(100, 100)'>
@@ -50,7 +56,9 @@ export default function Dial(props: Props) {
               <path
                 key={d.index}
                 className={`score-dial__outer score-dial__outer--${d.index}`}
-                d={arc({ innerRadius: 75, outerRadius: 100, ...d }) ?? undefined}
+                d={
+                  arc({ innerRadius: 75, outerRadius: 100, ...d }) ?? undefined
+                }
               />
             ))}
           </g>

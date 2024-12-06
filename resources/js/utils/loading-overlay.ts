@@ -19,7 +19,9 @@ export function showImmediateLoadingOverlay() {
   el.classList.add('loading-overlay--visible');
 }
 
-export const showLoadingOverlay = debounce(showImmediateLoadingOverlay, 5000, { maxWait: 5000 });
+export const showLoadingOverlay = debounce(showImmediateLoadingOverlay, 5000, {
+  maxWait: 5000,
+});
 
 export function hideLoadingOverlay() {
   showLoadingOverlay.cancel();

@@ -7,7 +7,10 @@ import { computed, makeObservable } from 'mobx';
 import core from 'osu-core-singleton';
 
 export function canModerateComments(): boolean {
-  return core.currentUser != null && (core.currentUser.is_admin || core.currentUser.is_moderator);
+  return (
+    core.currentUser != null &&
+    (core.currentUser.is_admin || core.currentUser.is_moderator)
+  );
 }
 
 export type CommentSort = 'new' | 'old' | 'top';
@@ -31,7 +34,10 @@ export default class Comment {
   userId: number | null;
   votesCount: number;
 
-  constructor(json: CommentJson, private readonly controller: CommentsController) {
+  constructor(
+    json: CommentJson,
+    private readonly controller: CommentsController,
+  ) {
     this.commentableId = json.commentable_id;
     this.commentableType = json.commentable_type;
     this.createdAt = json.created_at;
@@ -100,7 +106,11 @@ export default class Comment {
 
     const meta = this.controller.getCommentableMeta(this);
 
-    return meta != null && 'owner_id' in meta && meta.owner_id === core.currentUser.id;
+    return (
+      meta != null &&
+      'owner_id' in meta &&
+      meta.owner_id === core.currentUser.id
+    );
   }
 
   @computed
@@ -145,7 +155,9 @@ export default class Comment {
       return baseCount;
     }
 
-    const deletedCount = this.controller.getReplies(this).filter((reply) => !reply.isVisible).length;
+    const deletedCount = this.controller
+      .getReplies(this)
+      .filter((reply) => !reply.isVisible).length;
 
     return Math.max(0, baseCount - deletedCount);
   }

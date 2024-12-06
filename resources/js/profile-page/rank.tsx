@@ -45,9 +45,7 @@ export default function Rank({ highest, stats, type }: Props) {
       modifiers='rank'
       value={
         <div data-html-title={tooltip.join('')} title=''>
-          {rank != null ? (
-            `#${formatNumber(rank)}`
-          ) : '-'}
+          {rank != null ? `#${formatNumber(rank)}` : '-'}
         </div>
       }
     />

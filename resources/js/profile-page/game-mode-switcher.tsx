@@ -39,7 +39,10 @@ export default class GameModeSwitcher extends React.Component<Props> {
           defaultMode={this.props.controller.state.user.playmode}
           entries={rulesets.map((mode) => ({
             disabled: false,
-            href: route('users.show', { mode, user: this.props.controller.state.user.id }),
+            href: route('users.show', {
+              mode,
+              user: this.props.controller.state.user.id,
+            }),
             mode,
           }))}
         />
@@ -48,7 +51,11 @@ export default class GameModeSwitcher extends React.Component<Props> {
   }
 
   private renderSetDefault() {
-    if (!this.props.controller.withEdit || this.props.controller.state.user.playmode === this.props.controller.currentMode) {
+    if (
+      !this.props.controller.withEdit ||
+      this.props.controller.state.user.playmode ===
+        this.props.controller.currentMode
+    ) {
       return null;
     }
 
@@ -62,7 +69,11 @@ export default class GameModeSwitcher extends React.Component<Props> {
         >
           <StringWithComponent
             mappings={{
-              mode: <strong>{trans(`beatmaps.mode.${this.props.controller.currentMode}`)}</strong>,
+              mode: (
+                <strong>
+                  {trans(`beatmaps.mode.${this.props.controller.currentMode}`)}
+                </strong>
+              ),
             }}
             pattern={trans('users.show.edit.default_playmode.set')}
           />
@@ -75,9 +86,13 @@ export default class GameModeSwitcher extends React.Component<Props> {
   private readonly setDefault = () => {
     this.settingDefault = true;
 
-    this.props.controller.apiSetDefaultGameMode()
-      .always(action(() => {
-        this.settingDefault = false;
-      })).fail(onErrorWithCallback(this.setDefault));
+    this.props.controller
+      .apiSetDefaultGameMode()
+      .always(
+        action(() => {
+          this.settingDefault = false;
+        }),
+      )
+      .fail(onErrorWithCallback(this.setDefault));
   };
 }

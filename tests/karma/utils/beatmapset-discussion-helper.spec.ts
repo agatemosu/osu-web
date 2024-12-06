@@ -7,7 +7,13 @@ import UserGroupJson from 'interfaces/user-group-json';
 import UserJson from 'interfaces/user-json';
 import * as moment from 'moment';
 import core from 'osu-core-singleton';
-import { discussionMode, isUserFullNominator, maxLengthTimeline, nearbyDiscussions, validMessageLength } from 'utils/beatmapset-discussion-helper';
+import {
+  discussionMode,
+  isUserFullNominator,
+  maxLengthTimeline,
+  nearbyDiscussions,
+  validMessageLength,
+} from 'utils/beatmapset-discussion-helper';
 import testCurrentUserJson from '../test-current-user-json';
 
 interface TestCase<T> {
@@ -45,7 +51,10 @@ describe('utils/beatmapset-discussion-helper', () => {
       {
         description: 'discussion without beatmap without timestamp',
         expected: 'generalAll',
-        json: Object.assign({}, template, { beatmap_id: null, timestamp: null }),
+        json: Object.assign({}, template, {
+          beatmap_id: null,
+          timestamp: null,
+        }),
       },
       {
         description: 'discussion without beatmap with timestamp',
@@ -93,7 +102,10 @@ describe('utils/beatmapset-discussion-helper', () => {
         cases.push({
           description: `${identifier} is full nominator`,
           expected: true,
-          user: { ...userTemplate, groups: [{ ...groupsTemplate, identifier }] },
+          user: {
+            ...userTemplate,
+            groups: [{ ...groupsTemplate, identifier }],
+          },
         });
       }
 
@@ -101,7 +113,10 @@ describe('utils/beatmapset-discussion-helper', () => {
         cases.push({
           description: `${identifier} is not full nominator`,
           expected: false,
-          user: { ...userTemplate, groups: [{ ...groupsTemplate, identifier }] },
+          user: {
+            ...userTemplate,
+            groups: [{ ...groupsTemplate, identifier }],
+          },
         });
       }
 
@@ -119,20 +134,29 @@ describe('utils/beatmapset-discussion-helper', () => {
     });
 
     describe('with gameMode', () => {
-      const cases: (TestCase<boolean> & { gameMode: GameMode; user: UserJson })[] = [];
+      const cases: (TestCase<boolean> & {
+        gameMode: GameMode;
+        user: UserJson;
+      })[] = [];
       for (const identifier of allowedGroups) {
         cases.push({
           description: `${identifier} with matching playmode is full nominator`,
           expected: true,
           gameMode: 'osu',
-          user: { ...userTemplate, groups: [{ ...groupsTemplate, identifier, playmodes: ['osu'] }] },
+          user: {
+            ...userTemplate,
+            groups: [{ ...groupsTemplate, identifier, playmodes: ['osu'] }],
+          },
         });
 
         cases.push({
           description: `${identifier} without matching playmode is not full nominator`,
           expected: false,
           gameMode: 'osu',
-          user: { ...userTemplate, groups: [{ ...groupsTemplate, identifier, playmodes: ['taiko'] }] },
+          user: {
+            ...userTemplate,
+            groups: [{ ...groupsTemplate, identifier, playmodes: ['taiko'] }],
+          },
         });
 
         const isFullNominatorWhenNoRulesets = identifier === 'nat';
@@ -140,13 +164,18 @@ describe('utils/beatmapset-discussion-helper', () => {
           description: `${identifier} without playmodes is${isFullNominatorWhenNoRulesets ? '' : ' not'} full nominator`,
           expected: isFullNominatorWhenNoRulesets,
           gameMode: 'osu',
-          user: { ...userTemplate, groups: [{ ...groupsTemplate, identifier }] },
+          user: {
+            ...userTemplate,
+            groups: [{ ...groupsTemplate, identifier }],
+          },
         });
       }
 
       cases.forEach((test) => {
         it(test.description, () => {
-          expect(isUserFullNominator(test.user, test.gameMode)).toBe(test.expected);
+          expect(isUserFullNominator(test.user, test.gameMode)).toBe(
+            test.expected,
+          );
         });
       });
     });
@@ -157,12 +186,18 @@ describe('utils/beatmapset-discussion-helper', () => {
       const cases = [
         {
           description: 'less than 24 hours ago should be ignored',
-          discussions: [Object.assign({}, template, { updated_at: moment().toISOString() })],
+          discussions: [
+            Object.assign({}, template, { updated_at: moment().toISOString() }),
+          ],
           expectEmpty: true,
         },
         {
           description: 'at least than 24 hours ago should be included',
-          discussions: [Object.assign({}, template, { updated_at: moment().add(-24, 'hours').toISOString() })],
+          discussions: [
+            Object.assign({}, template, {
+              updated_at: moment().add(-24, 'hours').toISOString(),
+            }),
+          ],
           expectEmpty: false,
         },
       ];
@@ -186,10 +221,30 @@ describe('utils/beatmapset-discussion-helper', () => {
 
   describe('.validMessageLength', () => {
     const cases = [
-      { description: 'should fail general null message', expected: false, isTimeline: false, message: null },
-      { description: 'should fail general empty message', expected: false, isTimeline: false, message: '' },
-      { description: 'should fail timeline null message', expected: false, isTimeline: true, message: null },
-      { description: 'should fail timeline empty message', expected: false, isTimeline: true, message: '' },
+      {
+        description: 'should fail general null message',
+        expected: false,
+        isTimeline: false,
+        message: null,
+      },
+      {
+        description: 'should fail general empty message',
+        expected: false,
+        isTimeline: false,
+        message: '',
+      },
+      {
+        description: 'should fail timeline null message',
+        expected: false,
+        isTimeline: true,
+        message: null,
+      },
+      {
+        description: 'should fail timeline empty message',
+        expected: false,
+        isTimeline: true,
+        message: '',
+      },
       {
         description: `should pass general message of ${maxLengthTimeline} characters`,
         expected: true,
@@ -218,7 +273,9 @@ describe('utils/beatmapset-discussion-helper', () => {
 
     cases.forEach((test) => {
       it(test.description, () => {
-        expect(validMessageLength(test.message, test.isTimeline)).toBe(test.expected);
+        expect(validMessageLength(test.message, test.isTimeline)).toBe(
+          test.expected,
+        );
       });
     });
   });

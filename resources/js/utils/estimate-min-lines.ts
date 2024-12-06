@@ -46,7 +46,9 @@ export function estimateMinLines(domString: string) {
     refLineHeight = firstChild;
   }
 
-  const lineHeight = parseFloat(window.getComputedStyle(refLineHeight).getPropertyValue('line-height'));
+  const lineHeight = parseFloat(
+    window.getComputedStyle(refLineHeight).getPropertyValue('line-height'),
+  );
   const height = counter.scrollHeight;
   const count = Math.ceil(height / lineHeight);
 

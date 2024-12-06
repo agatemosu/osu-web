@@ -46,10 +46,11 @@ export default class Hype extends React.Component<Props> {
   }
 
   private get userCanDisqualify() {
-    return core.currentUser != null && (
-      core.currentUser.is_moderator
-      || core.currentUser.is_admin
-      || core.currentUser.is_full_bn
+    return (
+      core.currentUser != null &&
+      (core.currentUser.is_moderator ||
+        core.currentUser.is_admin ||
+        core.currentUser.is_full_bn)
     );
   }
 
@@ -57,25 +58,38 @@ export default class Hype extends React.Component<Props> {
     return (
       <div className={bn}>
         <div className={`${bn}__box ${bn}__box--description`}>
-          <div className={`${bn}__description-row ${bn}__description-row--status`}>
+          <div
+            className={`${bn}__description-row ${bn}__description-row--status`}
+          >
             <div className='beatmapset-status beatmapset-status--hype'>
               {trans(`beatmapsets.show.status.${this.props.beatmapset.status}`)}
             </div>
           </div>
-          <p className={`${bn}__description-row ${bn}__description-row--current`}>
+          <p
+            className={`${bn}__description-row ${bn}__description-row--current`}
+          >
             {trans('beatmapsets.show.hype.current._', {
-              status: trans(`beatmapsets.show.hype.current.status.${this.props.beatmapset.status}`),
+              status: trans(
+                `beatmapsets.show.hype.current.status.${this.props.beatmapset.status}`,
+              ),
             })}
           </p>
           {this.props.beatmapset.status === 'qualified' ? (
-            <p className={`${bn}__description-row ${bn}__description-row--action`}>
+            <p
+              className={`${bn}__description-row ${bn}__description-row--action`}
+            >
               <StringWithComponent
                 mappings={{
-                  link: <a href={this.reportUrl}>{trans('beatmapsets.show.hype.report.link')}</a>,
+                  link: (
+                    <a href={this.reportUrl}>
+                      {trans('beatmapsets.show.hype.report.link')}
+                    </a>
+                  ),
                 }}
-                pattern={this.userCanDisqualify
-                  ? trans('beatmapsets.show.hype.disqualify._')
-                  : trans('beatmapsets.show.hype.report._')
+                pattern={
+                  this.userCanDisqualify
+                    ? trans('beatmapsets.show.hype.disqualify._')
+                    : trans('beatmapsets.show.hype.report._')
                 }
               />
             </p>
@@ -109,10 +123,15 @@ export default class Hype extends React.Component<Props> {
 
           <div
             className={`${bn}__button`}
-            title={this.props.beatmapset.current_user_attributes?.can_hype_reason}
+            title={
+              this.props.beatmapset.current_user_attributes?.can_hype_reason
+            }
           >
             <BigButton
-              disabled={core.currentUser != null && !this.props.beatmapset.current_user_attributes.can_hype}
+              disabled={
+                core.currentUser != null &&
+                !this.props.beatmapset.current_user_attributes.can_hype
+              }
               href={this.hypeUrl}
               icon='fas fa-bullhorn'
               modifiers='full'
@@ -131,7 +150,10 @@ export default class Hype extends React.Component<Props> {
 
     const [text, icon] = this.userCanDisqualify
       ? [trans('beatmaps.nominations.disqualify'), 'fas fa-thumbs-down']
-      : [trans('beatmapsets.show.hype.report.button'), 'fas fa-exclamation-triangle'];
+      : [
+          trans('beatmapsets.show.hype.report.button'),
+          'fas fa-exclamation-triangle',
+        ];
 
     return (
       <BigButton

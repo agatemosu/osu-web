@@ -33,17 +33,19 @@ describe('BeatmapsetSearchFilters', () => {
 
   describe('.update', () => {
     beforeEach(() => {
-      subject = new BeatmapsetSearchFilters('https://notarealdomain/?sort=title_desc');
+      subject = new BeatmapsetSearchFilters(
+        'https://notarealdomain/?sort=title_desc',
+      );
     });
 
     it('should reset sort when query changes', () => {
-      subject.update('query', 'foo' );
+      subject.update('query', 'foo');
 
       expect(subject.sort).toBeNull();
     });
 
     it('should reset sort when status changes', () => {
-      subject.update('status', 'foo' );
+      subject.update('status', 'foo');
 
       expect(subject.sort).toBeNull();
     });

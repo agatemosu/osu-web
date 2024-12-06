@@ -57,9 +57,9 @@ export default class ProfileEditButton extends React.Component<Props> {
           <span className='fas fa-pencil-alt' />
         </button>
 
-        {this.popupOpen &&
+        {this.popupOpen && (
           <ProfileEditPopup controller={this.props.controller} />
-        }
+        )}
       </div>
     );
   }

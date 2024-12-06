@@ -14,19 +14,15 @@ interface Props {
 }
 
 export default function UserGroupBadges(props: Props) {
-  const {
-    groups = [],
-    modifiers,
-    short = false,
-    wrapper,
-  } = props;
+  const { groups = [], modifiers, short = false, wrapper } = props;
 
   let mainGroupWasSet = false;
 
   return (
     <>
       {groups.map((group) => {
-        const className = short && mainGroupWasSet ? `${wrapper} u-hidden-narrow` : wrapper;
+        const className =
+          short && mainGroupWasSet ? `${wrapper} u-hidden-narrow` : wrapper;
         mainGroupWasSet = true;
 
         return (

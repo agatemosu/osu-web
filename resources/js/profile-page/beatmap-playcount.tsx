@@ -25,7 +25,9 @@ export default class BeatmapPlaycount extends React.PureComponent<Props> {
     const beatmapset = this.props.playcount.beatmapset;
 
     if (beatmap == null || beatmapset == null) {
-      throw new Error('playcount JSON is missing beatmap or beatmapset include');
+      throw new Error(
+        'playcount JSON is missing beatmap or beatmapset include',
+      );
     }
 
     const url = beatmapUrl(beatmap, this.props.currentMode);
@@ -33,7 +35,11 @@ export default class BeatmapPlaycount extends React.PureComponent<Props> {
     return (
       <div className={bn}>
         <a className={`${bn}__cover`} href={url}>
-          <BeatmapsetCover beatmapset={beatmapset} modifiers='full' size='list' />
+          <BeatmapsetCover
+            beatmapset={beatmapset}
+            modifiers='full'
+            size='list'
+          />
           <div className={`${bn}__cover-count`}>
             {this.renderPlaycountText()}
           </div>
@@ -44,7 +50,9 @@ export default class BeatmapPlaycount extends React.PureComponent<Props> {
               <a className={`${bn}__title`} href={url}>
                 {`${getTitle(beatmapset)} [${beatmap.version}] `}
                 <span className={`${bn}__title-artist`}>
-                  {trans('users.show.extra.beatmaps.by_artist', { artist: getArtist(beatmapset) })}
+                  {trans('users.show.extra.beatmaps.by_artist', {
+                    artist: getArtist(beatmapset),
+                  })}
                 </span>
               </a>
             </div>

@@ -38,6 +38,9 @@ export default class ScoringModeToggle extends React.Component<Props> {
   }
 
   private handleClick(this: void) {
-    core.userPreferences.set('scoring_mode', toggledMode[core.userPreferences.get('scoring_mode')]);
+    core.userPreferences.set(
+      'scoring_mode',
+      toggledMode[core.userPreferences.get('scoring_mode')],
+    );
   }
 }

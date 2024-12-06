@@ -14,7 +14,7 @@ import NotificationStore from 'stores/notification-store';
 import { makeNotificationJson, makeStackJson } from './helpers';
 
 const baseUnreadCount = 10;
-const stackIdentity  = {
+const stackIdentity = {
   category: 'beatmapset_discussion',
   objectId: 1,
   objectType: 'beatmapset',
@@ -34,18 +34,29 @@ describe('Notification Events', () => {
       const notificationJson = makeNotificationJson(toJson(identity));
 
       const bundleBase = {
-        stacks: [makeStackJson(identity, 5, 'beatmapset_discussion_post_new', identity.id - 100)],
+        stacks: [
+          makeStackJson(
+            identity,
+            5,
+            'beatmapset_discussion_post_new',
+            identity.id - 100,
+          ),
+        ],
         types: [
-          { cursor: null, name: null,  total: baseUnreadCount },
+          { cursor: null, name: null, total: baseUnreadCount },
           { cursor: null, name: 'beatmapset', total: 5 },
         ],
       };
 
-      const bundleWithNotification = { ...bundleBase } as NotificationBundleJson;
+      const bundleWithNotification = {
+        ...bundleBase,
+      } as NotificationBundleJson;
       bundleWithNotification.notifications = [notificationJson];
       bundleWithNotification.unread_count = baseUnreadCount;
 
-      const bundleWithoutNotification = { ...bundleBase } as NotificationBundleJson;
+      const bundleWithoutNotification = {
+        ...bundleBase,
+      } as NotificationBundleJson;
       bundleWithoutNotification.unread_count = baseUnreadCount;
 
       let store!: NotificationStore;
@@ -63,7 +74,14 @@ describe('Notification Events', () => {
           const extra = { ...stackIdentity, id: 1003, objectId: 2 };
           const bundle = { ...bundleBase } as NotificationBundleJson;
 
-          bundle.stacks?.push(makeStackJson(extra, 5, 'beatmapset_discussion_post_new', identity.id - 100));
+          bundle.stacks?.push(
+            makeStackJson(
+              extra,
+              5,
+              'beatmapset_discussion_post_new',
+              identity.id - 100,
+            ),
+          );
           bundle.notifications = [
             makeNotificationJson(toJson(identity)),
             makeNotificationJson(toJson(extra)),
@@ -80,7 +98,11 @@ describe('Notification Events', () => {
             const stack = store.unreadStacks.getStack(extra);
             expect(stack).toBeDefined();
             if (stack != null) {
-              expect([...stack.notifications.values()].find((notification) => notification.isRead)).toBeUndefined();
+              expect(
+                [...stack.notifications.values()].find(
+                  (notification) => notification.isRead,
+                ),
+              ).toBeUndefined();
             }
           });
         });
@@ -113,7 +135,11 @@ describe('Notification Events', () => {
         });
 
         it('removes the notification from the stack', () => {
-          expect(store.unreadStacks.getStack(identity)?.notifications.get(identity.id)).toBeUndefined();
+          expect(
+            store.unreadStacks
+              .getStack(identity)
+              ?.notifications.get(identity.id),
+          ).toBeUndefined();
         });
       });
 
@@ -125,7 +151,10 @@ describe('Notification Events', () => {
           beforeEach(() => {
             store.unreadStacks.updateWithBundle(bundleWithoutNotification);
 
-            const event = new NotificationEventRead(unreadEventData, unreadEventData.length);
+            const event = new NotificationEventRead(
+              unreadEventData,
+              unreadEventData.length,
+            );
             dispatch(event);
           });
 
@@ -149,7 +178,10 @@ describe('Notification Events', () => {
           beforeEach(() => {
             store.unreadStacks.updateWithBundle(bundleWithoutNotification);
 
-            const event = new NotificationEventRead(unreadEventData, unreadEventData.length);
+            const event = new NotificationEventRead(
+              unreadEventData,
+              unreadEventData.length,
+            );
             dispatch(event);
           });
 
@@ -170,20 +202,33 @@ describe('Notification Events', () => {
 
     describe('when multiple notifications read', () => {
       const bundleBase = {
-        stacks: [makeStackJson(identities[0], 5, 'beatmapset_discussion_post_new', identities[0].id - 100)],
+        stacks: [
+          makeStackJson(
+            identities[0],
+            5,
+            'beatmapset_discussion_post_new',
+            identities[0].id - 100,
+          ),
+        ],
         types: [
-          { cursor: null, name: null,  total: baseUnreadCount },
+          { cursor: null, name: null, total: baseUnreadCount },
           { cursor: null, name: 'beatmapset', total: 5 },
         ],
       };
 
-      const notificationsJson = identities.map(toJson).map(makeNotificationJson);
+      const notificationsJson = identities
+        .map(toJson)
+        .map(makeNotificationJson);
 
-      const bundleWithNotification = { ...bundleBase } as NotificationBundleJson;
+      const bundleWithNotification = {
+        ...bundleBase,
+      } as NotificationBundleJson;
       bundleWithNotification.notifications = notificationsJson;
       bundleWithNotification.unread_count = baseUnreadCount;
 
-      const bundleWithoutNotification = { ...bundleBase } as NotificationBundleJson;
+      const bundleWithoutNotification = {
+        ...bundleBase,
+      } as NotificationBundleJson;
       bundleWithoutNotification.unread_count = baseUnreadCount;
 
       let store!: NotificationStore;
@@ -196,7 +241,10 @@ describe('Notification Events', () => {
         beforeEach(() => {
           store.unreadStacks.updateWithBundle(bundleWithNotification);
 
-          const event = new NotificationEventRead(identities, identities.length);
+          const event = new NotificationEventRead(
+            identities,
+            identities.length,
+          );
           dispatch(event);
         });
 
@@ -215,7 +263,10 @@ describe('Notification Events', () => {
         });
 
         it('does not decrement the unread count on duplicate notification', () => {
-          const event = new NotificationEventRead(identities, identities.length);
+          const event = new NotificationEventRead(
+            identities,
+            identities.length,
+          );
           dispatch(event);
 
           const identity = identities[0];
@@ -226,7 +277,11 @@ describe('Notification Events', () => {
 
         it('removes the notifications from the stack', () => {
           for (const identity of identities) {
-            expect(store.unreadStacks.getStack(identity)?.notifications.get(identity.id)).toBeUndefined();
+            expect(
+              store.unreadStacks
+                .getStack(identity)
+                ?.notifications.get(identity.id),
+            ).toBeUndefined();
           }
         });
       });
@@ -245,7 +300,10 @@ describe('Notification Events', () => {
         beforeEach(() => {
           store.unreadStacks.updateWithBundle(bundleWithNotification);
 
-          const event = new NotificationEventRead(unreadEventData, unreadEventData.length);
+          const event = new NotificationEventRead(
+            unreadEventData,
+            unreadEventData.length,
+          );
           dispatch(event);
         });
 
@@ -269,20 +327,33 @@ describe('Notification Events', () => {
       const typeSize = 5;
 
       const bundleBase = {
-        stacks: [makeStackJson(stackIdentity, stackSize, 'beatmapset_discussion_post_new', identities[0].id - 100)],
+        stacks: [
+          makeStackJson(
+            stackIdentity,
+            stackSize,
+            'beatmapset_discussion_post_new',
+            identities[0].id - 100,
+          ),
+        ],
         types: [
-          { cursor: null, name: null,  total: baseUnreadCount },
+          { cursor: null, name: null, total: baseUnreadCount },
           { cursor: null, name: 'beatmapset', total: typeSize },
         ],
       };
 
-      const notificationsJson = identities.map(toJson).map(makeNotificationJson);
+      const notificationsJson = identities
+        .map(toJson)
+        .map(makeNotificationJson);
 
-      const bundleWithNotification = { ...bundleBase } as NotificationBundleJson;
+      const bundleWithNotification = {
+        ...bundleBase,
+      } as NotificationBundleJson;
       bundleWithNotification.notifications = notificationsJson;
       bundleWithNotification.unread_count = baseUnreadCount;
 
-      const bundleWithoutNotification = { ...bundleBase } as NotificationBundleJson;
+      const bundleWithoutNotification = {
+        ...bundleBase,
+      } as NotificationBundleJson;
       bundleWithoutNotification.unread_count = baseUnreadCount;
 
       let store!: NotificationStore;
@@ -304,7 +375,11 @@ describe('Notification Events', () => {
           // this is just to remove undefined from the typing
           expect(stack).toBeDefined();
           if (stack != null) {
-            expect([...stack.notifications.values()].every((notification) => notification.isRead)).toBe(true);
+            expect(
+              [...stack.notifications.values()].every(
+                (notification) => notification.isRead,
+              ),
+            ).toBe(true);
           }
         });
 
@@ -339,7 +414,11 @@ describe('Notification Events', () => {
           // this is just to remove undefined from the typing
           expect(stack).toBeDefined();
           if (stack != null) {
-            expect([...stack.notifications.values()].every((notification) => notification.isRead)).toBe(true);
+            expect(
+              [...stack.notifications.values()].every(
+                (notification) => notification.isRead,
+              ),
+            ).toBe(true);
           }
         });
 
@@ -374,7 +453,11 @@ describe('Notification Events', () => {
           // this is just to remove undefined from the typing
           expect(stack).toBeDefined();
           if (stack != null) {
-            expect([...stack.notifications.values()].every((notification) => notification.isRead)).toBe(true);
+            expect(
+              [...stack.notifications.values()].every(
+                (notification) => notification.isRead,
+              ),
+            ).toBe(true);
           }
         });
 
@@ -406,9 +489,16 @@ describe('Notification Events', () => {
 
   describe('on NotificationEventMoreLoaded', () => {
     const bundleBase = {
-      stacks: [makeStackJson(identities[0], 5, 'beatmapset_discussion_post_new', identities[0].id - 100)],
+      stacks: [
+        makeStackJson(
+          identities[0],
+          5,
+          'beatmapset_discussion_post_new',
+          identities[0].id - 100,
+        ),
+      ],
       types: [
-        { cursor: null, name: null,  total: baseUnreadCount },
+        { cursor: null, name: null, total: baseUnreadCount },
         { cursor: null, name: 'beatmapset', total: 5 },
       ],
     };
@@ -426,10 +516,10 @@ describe('Notification Events', () => {
 
     describe('all notifications', () => {
       beforeEach(() => {
-        dispatch(new NotificationEventMoreLoaded(bundle, { isWidget: false } ));
+        dispatch(new NotificationEventMoreLoaded(bundle, { isWidget: false }));
       });
 
-      it ('does not update the unread count', () => {
+      it('does not update the unread count', () => {
         // does not update because the response doesn't have it
         expect(store.unreadStacks.total).toBe(0);
       });
@@ -437,8 +527,12 @@ describe('Notification Events', () => {
       it('store.stacks is not empty', () => {
         expect(store.stacks.allStacks.size).toBe(1);
         expect(store.stacks.types.size).toBe(2);
-        expect(store.stacks.getOrCreateType({ objectType: null })).toBeDefined();
-        expect(store.stacks.getOrCreateType({ objectType: 'beatmapset' })).toBeDefined();
+        expect(
+          store.stacks.getOrCreateType({ objectType: null }),
+        ).toBeDefined();
+        expect(
+          store.stacks.getOrCreateType({ objectType: 'beatmapset' }),
+        ).toBeDefined();
       });
 
       it('store.unreadStacks is empty', () => {
@@ -447,14 +541,16 @@ describe('Notification Events', () => {
 
       it('notifications added to store.notifications', () => {
         identities.forEach((identity) => {
-          expect(store.notifications.get(identity.id)).toEqual(jasmine.any(Notification));
+          expect(store.notifications.get(identity.id)).toEqual(
+            jasmine.any(Notification),
+          );
         });
       });
     });
 
     describe('only unread notifications', () => {
       beforeEach(() => {
-        dispatch(new NotificationEventMoreLoaded(bundle, { isWidget: true } ));
+        dispatch(new NotificationEventMoreLoaded(bundle, { isWidget: true }));
       });
 
       it('updates the unread count', () => {
@@ -468,13 +564,19 @@ describe('Notification Events', () => {
       it('store.unreadStacks is not empty', () => {
         expect(store.unreadStacks.allStacks.size).toBe(1);
         expect(store.unreadStacks.types.size).toBe(2);
-        expect(store.unreadStacks.getOrCreateType({ objectType: null })).toBeDefined();
-        expect(store.unreadStacks.getOrCreateType({ objectType: 'beatmapset' })).toBeDefined();
+        expect(
+          store.unreadStacks.getOrCreateType({ objectType: null }),
+        ).toBeDefined();
+        expect(
+          store.unreadStacks.getOrCreateType({ objectType: 'beatmapset' }),
+        ).toBeDefined();
       });
 
       it('notifications added to store.notifications', () => {
         identities.forEach((identity) => {
-          expect(store.notifications.get(identity.id)).toEqual(jasmine.any(Notification));
+          expect(store.notifications.get(identity.id)).toEqual(
+            jasmine.any(Notification),
+          );
         });
       });
     });
@@ -484,14 +586,23 @@ describe('Notification Events', () => {
     describe('has existing stack', () => {
       const notificationJson = makeNotificationJson(toJson(identities[0]));
       const bundleBase = {
-        stacks: [makeStackJson(identities[0], 5, 'beatmapset_discussion_post_new', identities[0].id)],
+        stacks: [
+          makeStackJson(
+            identities[0],
+            5,
+            'beatmapset_discussion_post_new',
+            identities[0].id,
+          ),
+        ],
         types: [
-          { cursor: null, name: null,  total: baseUnreadCount },
+          { cursor: null, name: null, total: baseUnreadCount },
           { cursor: null, name: 'beatmapset', total: 5 },
         ],
       };
 
-      const bundleWithNotification = { ...bundleBase } as NotificationBundleJson;
+      const bundleWithNotification = {
+        ...bundleBase,
+      } as NotificationBundleJson;
       bundleWithNotification.notifications = [notificationJson];
       bundleWithNotification.unread_count = baseUnreadCount;
 
@@ -512,46 +623,67 @@ describe('Notification Events', () => {
 
       describe('NotificationEventNew dispatched', () => {
         describe('notification belongs to an existing stack', () => {
-          const newNotificationIdentity = { ...toJson(identities[0]), id: identities[0].id + 100 }; // make it look newer
-          const newNotificationJson = makeNotificationJson(newNotificationIdentity);
+          const newNotificationIdentity = {
+            ...toJson(identities[0]),
+            id: identities[0].id + 100,
+          }; // make it look newer
+          const newNotificationJson = makeNotificationJson(
+            newNotificationIdentity,
+          );
 
           beforeEach(() => {
             dispatch(new NotificationEventNew(newNotificationJson));
           });
 
           it('should add the notification to the store', () => {
-            expect([...store.notifications.keys()]).toContain(newNotificationIdentity.id);
+            expect([...store.notifications.keys()]).toContain(
+              newNotificationIdentity.id,
+            );
           });
 
           it('should add the new notification to the stack', () => {
-            const stack = store.unreadStacks.getStack(fromJson(newNotificationIdentity));
+            const stack = store.unreadStacks.getStack(
+              fromJson(newNotificationIdentity),
+            );
 
             expect(stack).toBeDefined();
             if (stack != null) {
-              expect([...stack.notifications.keys()]).toContain(newNotificationIdentity.id);
+              expect([...stack.notifications.keys()]).toContain(
+                newNotificationIdentity.id,
+              );
               expect(stack.notifications.size).toBe(2);
             }
           });
 
           it('the new notification should be first in order', () => {
-            const stack = store.unreadStacks.getStack(fromJson(newNotificationIdentity));
+            const stack = store.unreadStacks.getStack(
+              fromJson(newNotificationIdentity),
+            );
 
-            expect(stack?.orderedNotifications[0].id).toBe(newNotificationIdentity.id);
+            expect(stack?.orderedNotifications[0].id).toBe(
+              newNotificationIdentity.id,
+            );
           });
 
           it('the new notification should be first', () => {
-            const stack = store.unreadStacks.getStack(fromJson(newNotificationIdentity));
+            const stack = store.unreadStacks.getStack(
+              fromJson(newNotificationIdentity),
+            );
 
             expect(stack?.first.id).toBe(newNotificationIdentity.id);
           });
 
           it('should increment the stack unread count', () => {
-            const stack = store.unreadStacks.getStack(fromJson(newNotificationIdentity));
+            const stack = store.unreadStacks.getStack(
+              fromJson(newNotificationIdentity),
+            );
             expect(stack?.total).toBe(6);
           });
 
           it('should increment the type unread count', () => {
-            const type = store.unreadStacks.getOrCreateType(fromJson(newNotificationIdentity));
+            const type = store.unreadStacks.getOrCreateType(
+              fromJson(newNotificationIdentity),
+            );
             expect(type?.total).toBe(6);
           });
 
@@ -565,8 +697,14 @@ describe('Notification Events', () => {
         });
 
         describe('notification does not belong to an existing stack', () => {
-          const newNotificationIdentity = { ...toJson(identities[0]), id: identities[0].id + 100, object_id: 2 };
-          const newNotificationJson = makeNotificationJson(newNotificationIdentity);
+          const newNotificationIdentity = {
+            ...toJson(identities[0]),
+            id: identities[0].id + 100,
+            object_id: 2,
+          };
+          const newNotificationJson = makeNotificationJson(
+            newNotificationIdentity,
+          );
 
           beforeEach(() => {
             dispatch(new NotificationEventNew(newNotificationJson));
@@ -602,34 +740,49 @@ describe('Notification Events', () => {
       });
 
       describe('NotificationEventNew dispatched', () => {
-        const newNotificationIdentity = { ...toJson(identities[0]), id: identities[0].id + 100 }; // make it look newer
-        const newNotificationJson = makeNotificationJson(newNotificationIdentity);
+        const newNotificationIdentity = {
+          ...toJson(identities[0]),
+          id: identities[0].id + 100,
+        }; // make it look newer
+        const newNotificationJson = makeNotificationJson(
+          newNotificationIdentity,
+        );
 
         beforeEach(() => {
           dispatch(new NotificationEventNew(newNotificationJson));
         });
 
         it('should add the notification to the store', () => {
-          expect([...store.notifications.keys()]).toContain(newNotificationIdentity.id);
+          expect([...store.notifications.keys()]).toContain(
+            newNotificationIdentity.id,
+          );
         });
 
         it('should create a new stack', () => {
-          const stack = store.unreadStacks.getStack(fromJson(newNotificationIdentity));
+          const stack = store.unreadStacks.getStack(
+            fromJson(newNotificationIdentity),
+          );
 
           expect(stack).toBeDefined();
           if (stack != null) {
-            expect([...stack.notifications.keys()]).toContain(newNotificationIdentity.id);
+            expect([...stack.notifications.keys()]).toContain(
+              newNotificationIdentity.id,
+            );
             expect(stack.notifications.size).toBe(1);
           }
         });
 
         it('should increment the stack unread count', () => {
-          const stack = store.unreadStacks.getStack(fromJson(newNotificationIdentity));
+          const stack = store.unreadStacks.getStack(
+            fromJson(newNotificationIdentity),
+          );
           expect(stack?.total).toBe(1);
         });
 
         it('should increment the type unread count', () => {
-          const type = store.unreadStacks.getOrCreateType(fromJson(newNotificationIdentity));
+          const type = store.unreadStacks.getOrCreateType(
+            fromJson(newNotificationIdentity),
+          );
           expect(type?.total).toBe(1);
         });
 

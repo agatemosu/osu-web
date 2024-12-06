@@ -15,18 +15,25 @@ export default class SetLanguage {
   }
 
   constructor() {
-    this.languages = JSON.parse(document.body.dataset.languages ?? '') as string[];
+    this.languages = JSON.parse(
+      document.body.dataset.languages ?? '',
+    ) as string[];
     this.language = this.currentLanguage();
 
     document.addEventListener('click', this.updateLanguage);
   }
 
   private currentLanguage() {
-    return presence(window.localStorage.getItem(currentStorageKey)) ?? this.languages[0];
+    return (
+      presence(window.localStorage.getItem(currentStorageKey)) ??
+      this.languages[0]
+    );
   }
 
   private readonly updateLanguage = (event: MouseEvent) => {
-    const button = htmlElementOrNull(htmlElementOrNull(event.target)?.closest('.js-set-language'));
+    const button = htmlElementOrNull(
+      htmlElementOrNull(event.target)?.closest('.js-set-language'),
+    );
     if (button == null) return;
 
     this.language = button.dataset.languageName ?? '';

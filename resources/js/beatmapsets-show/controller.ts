@@ -4,7 +4,13 @@
 import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
 import UserJson from 'interfaces/user-json';
 import { keyBy } from 'lodash';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 import { deletedUserJson } from 'models/user';
 import core from 'osu-core-singleton';
 import { find, findDefault, group } from 'utils/beatmap-helper';
@@ -12,7 +18,12 @@ import { parse } from 'utils/beatmapset-page-hash';
 import { parseJson } from 'utils/json';
 import { currentUrl } from 'utils/turbolinks';
 
-export type ScoreLoadingState = null | 'error' | 'loading' | 'supporter_only' | 'unranked';
+export type ScoreLoadingState =
+  | null
+  | 'error'
+  | 'loading'
+  | 'supporter_only'
+  | 'unranked';
 
 type BeatmapJsonForBeatmapsetShow = BeatmapsetJsonForShow['converts'][number];
 
@@ -72,13 +83,17 @@ export default class Controller {
 
   @computed
   get usersById() {
-    return keyBy(this.beatmapset.related_users, 'id') as Partial<Record<number, UserJson>>;
+    return keyBy(this.beatmapset.related_users, 'id') as Partial<
+      Record<number, UserJson>
+    >;
   }
 
   constructor(private readonly container: HTMLElement) {
     let state: State | null = null;
     try {
-      state = JSON.parse(this.container.dataset.state ?? 'null') as (State | null);
+      state = JSON.parse(
+        this.container.dataset.state ?? 'null',
+      ) as State | null;
     } catch {
       // Do nothing if failed parsing.
     }
@@ -91,7 +106,9 @@ export default class Controller {
         beatmapId: optionsHash.beatmapId,
         beatmapset,
         playmode: optionsHash.playmode,
-        showingNsfwWarning: beatmapset.nsfw && runInAction(() => !core.userPreferences.get('beatmapset_show_nsfw')),
+        showingNsfwWarning:
+          beatmapset.nsfw &&
+          runInAction(() => !core.userPreferences.get('beatmapset_show_nsfw')),
       };
     }
 
@@ -108,7 +125,9 @@ export default class Controller {
   }
 
   owners(beatmap: BeatmapJsonForBeatmapsetShow) {
-    return beatmap.owners.map((mapper) => this.usersById[mapper.id] ?? deletedUserJson);
+    return beatmap.owners.map(
+      (mapper) => this.usersById[mapper.id] ?? deletedUserJson,
+    );
   }
 
   @action

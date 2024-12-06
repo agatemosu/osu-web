@@ -32,7 +32,9 @@ export default class BlockButton extends React.Component<Props> {
 
   @computed
   private get block() {
-    return core.currentUser?.blocks.find((f) => f.target_id === this.props.userId);
+    return core.currentUser?.blocks.find(
+      (f) => f.target_id === this.props.userId,
+    );
   }
 
   constructor(props: Props) {
@@ -45,9 +47,11 @@ export default class BlockButton extends React.Component<Props> {
   private get isVisible() {
     // - not a guest
     // - not viewing own profile
-    return core.currentUser != null &&
+    return (
+      core.currentUser != null &&
       Number.isFinite(this.props.userId) &&
-      this.props.userId !== core.currentUser.id;
+      this.props.userId !== core.currentUser.id
+    );
   }
 
   componentWillUnmount() {
@@ -78,16 +82,15 @@ export default class BlockButton extends React.Component<Props> {
       >
         <span className={contentClass}>
           {this.loading ? (
-            <span className={`${bn}__icon fa-fw`}><Spinner /></span>
+            <span className={`${bn}__icon fa-fw`}>
+              <Spinner />
+            </span>
           ) : (
             <span className={`${bn}__icon fas fa-ban fa-fw`} />
-          )}
-          {' '}
-          {this.block == null ? (
-            trans('users.blocks.button.block')
-          ) : (
-            trans('users.blocks.button.unblock')
-          )}
+          )}{' '}
+          {this.block == null
+            ? trans('users.blocks.button.block')
+            : trans('users.blocks.button.unblock')}
         </span>
       </button>
     );
@@ -107,21 +110,29 @@ export default class BlockButton extends React.Component<Props> {
 
     if (this.block == null) {
       // blocking
-      this.xhr = $.ajax(route('blocks.store', { target: this.props.userId }), { type: 'POST' });
+      this.xhr = $.ajax(route('blocks.store', { target: this.props.userId }), {
+        type: 'POST',
+      });
     } else {
       // un-blocking
-      this.xhr = $.ajax(route('blocks.destroy', { block: this.props.userId }), { type: 'DELETE' });
+      this.xhr = $.ajax(route('blocks.destroy', { block: this.props.userId }), {
+        type: 'DELETE',
+      });
     }
 
     this.xhr
       .done(this.updateBlocks)
       .fail(onErrorWithCallback(this.toggleBlock))
-      .always(action(() => this.loading = false));
+      .always(action(() => (this.loading = false)));
   };
 
   @action
   private readonly updateBlocks = (data: BlockUserResponse | null) => {
-    core.currentUserModel.updateUserRelation(data?.user_relation, 'blocks', this.props.userId);
+    core.currentUserModel.updateUserRelation(
+      data?.user_relation,
+      'blocks',
+      this.props.userId,
+    );
     this.props.onClick?.();
   };
 }

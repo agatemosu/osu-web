@@ -63,7 +63,11 @@ export class OwnClients extends React.Component {
   }
 
   renderEmpty() {
-    return <div className='oauth-clients__client'>{trans('oauth.own_clients.none')}</div>;
+    return (
+      <div className='oauth-clients__client'>
+        {trans('oauth.own_clients.none')}
+      </div>
+    );
   }
 
   renderModaledComponents() {
@@ -76,10 +80,6 @@ export class OwnClients extends React.Component {
       return null;
     }
 
-    return (
-      <Modal onClose={this.handleModalClose}>
-        {component}
-      </Modal>
-    );
+    return <Modal onClose={this.handleModalClose}>{component}</Modal>;
   }
 }

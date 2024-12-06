@@ -71,8 +71,11 @@ export class UserCard extends React.PureComponent<Props, State> {
   private url?: string;
 
   private get canMessage() {
-    return !this.isSelf
-      && _.find(core.currentUser?.blocks ?? [], { target_id: this.user.id }) == null;
+    return (
+      !this.isSelf &&
+      _.find(core.currentUser?.blocks ?? [], { target_id: this.user.id }) ==
+        null
+    );
   }
 
   private get isOnline() {
@@ -124,7 +127,9 @@ export class UserCard extends React.PureComponent<Props, State> {
       this.props.activated ? 'active' : 'highlightable',
     );
 
-    this.url = this.isUserVisible ? route('users.show', { user: this.user.id }) : undefined;
+    this.url = this.isUserVisible
+      ? route('users.show', { user: this.user.id })
+      : undefined;
 
     return (
       <div className={blockClass}>
@@ -132,14 +137,18 @@ export class UserCard extends React.PureComponent<Props, State> {
 
         <div className='user-card__card'>
           <div className='user-card__content user-card__content--details'>
-            <div className='user-card__user'>
-              {this.renderAvatar()}
-            </div>
+            <div className='user-card__user'>{this.renderAvatar()}</div>
             <div className='user-card__details'>
               {this.renderIcons()}
               <div className='user-card__username-row'>
                 {this.renderUsername()}
-                <div className='user-card__group-badges'><UserGroupBadges groups={this.user.groups} short wrapper='user-card__group-badge' /></div>
+                <div className='user-card__group-badges'>
+                  <UserGroupBadges
+                    groups={this.user.groups}
+                    short
+                    wrapper='user-card__group-badge'
+                  />
+                </div>
               </div>
               {this.renderListModeIcons()}
             </div>
@@ -156,7 +165,9 @@ export class UserCard extends React.PureComponent<Props, State> {
 
     return (
       <div className='user-card__avatar-space'>
-        <div className={classWithModifiers('user-card__avatar-spinner', modifiers)}>
+        <div
+          className={classWithModifiers('user-card__avatar-spinner', modifiers)}
+        >
           {hasAvatar && <Spinner modifiers={modifiers} />}
         </div>
         {this.isUserLoaded && hasAvatar && (
@@ -188,7 +199,11 @@ export class UserCard extends React.PureComponent<Props, State> {
 
       background = (
         <>
-          <img className={backgroundCssClass} onLoad={this.onBackgroundLoad} src={this.user.cover.url} />
+          <img
+            className={backgroundCssClass}
+            onLoad={this.onBackgroundLoad}
+            src={this.user.cover.url}
+          />
           <div className={overlayCssClass} />
         </>
       );
@@ -198,10 +213,7 @@ export class UserCard extends React.PureComponent<Props, State> {
 
     if (this.isUserVisible) {
       backgroundLink = (
-        <a
-          className='user-card__background-container'
-          href={this.url}
-        >
+        <a className='user-card__background-container' href={this.url}>
           {background}
         </a>
       );
@@ -221,7 +233,11 @@ export class UserCard extends React.PureComponent<Props, State> {
       <div className='user-card__icons user-card__icons--card'>
         <a
           className='user-card__icon user-card__icon--flag'
-          href={route('rankings', { country: this.user.country_code, mode: 'osu', type: 'performance' })}
+          href={route('rankings', {
+            country: this.user.country_code,
+            mode: 'osu',
+            type: 'performance',
+          })}
         >
           <FlagCountry country={this.user.country} />
         </a>
@@ -238,7 +254,10 @@ export class UserCard extends React.PureComponent<Props, State> {
             </div>
             {!this.user.is_bot && (
               <div className='user-card__icon'>
-                <FollowUserMappingButton modifiers={['user-card']} userId={this.user.id} />
+                <FollowUserMappingButton
+                  modifiers={['user-card']}
+                  userId={this.user.id}
+                />
               </div>
             )}
           </>
@@ -256,7 +275,10 @@ export class UserCard extends React.PureComponent<Props, State> {
       <div className='user-card__icons'>
         {this.user.is_supporter && (
           <a className='user-card__icon' href={route('support-the-game')}>
-            <SupporterIcon level={this.user.support_level} modifiers='user-list' />
+            <SupporterIcon
+              level={this.user.support_level}
+              modifiers='user-list'
+            />
           </a>
         )}
 
@@ -266,7 +288,10 @@ export class UserCard extends React.PureComponent<Props, State> {
 
         {!this.user.is_bot && (
           <div className='user-card__icon'>
-            <FollowUserMappingButton modifiers={['user-list']} userId={this.user.id} />
+            <FollowUserMappingButton
+              modifiers={['user-list']}
+              userId={this.user.id}
+            />
           </div>
         )}
       </div>
@@ -300,7 +325,12 @@ export class UserCard extends React.PureComponent<Props, State> {
           {` ${trans('users.card.gift_supporter')}`}
         </a>
 
-        <BlockButton modifiers='inline' onClick={dismiss} userId={this.user.id} wrapperClass='simple-menu__item' />
+        <BlockButton
+          modifiers='inline'
+          onClick={dismiss}
+          userId={this.user.id}
+          wrapperClass='simple-menu__item'
+        />
 
         <ReportReportable
           className='simple-menu__item'
@@ -325,7 +355,9 @@ export class UserCard extends React.PureComponent<Props, State> {
       return null;
     }
 
-    const status = this.isOnline ? trans('users.status.online') : trans('users.status.offline');
+    const status = this.isOnline
+      ? trans('users.status.online')
+      : trans('users.status.offline');
 
     return (
       <div className='user-card__content user-card__content--status'>
@@ -336,7 +368,12 @@ export class UserCard extends React.PureComponent<Props, State> {
               {!this.isOnline && this.user.last_visit != null && (
                 <StringWithComponent
                   mappings={{
-                    date: <TimeWithTooltip dateTime={this.user.last_visit} relative />,
+                    date: (
+                      <TimeWithTooltip
+                        dateTime={this.user.last_visit}
+                        relative
+                      />
+                    ),
                   }}
                   pattern={trans('users.show.lastvisit')}
                 />
@@ -361,18 +398,27 @@ export class UserCard extends React.PureComponent<Props, State> {
 
     return (
       <div className='user-card__status-icon-container'>
-        <div className={`user-card__status-icon user-card__status-icon--${this.isOnline ? 'online' : 'offline'}`} />
+        <div
+          className={`user-card__status-icon user-card__status-icon--${this.isOnline ? 'online' : 'offline'}`}
+        />
       </div>
     );
   }
 
   private renderUsername() {
-    const displayName = this.user.is_deleted ? trans('users.deleted') : this.user.username;
+    const displayName = this.user.is_deleted
+      ? trans('users.deleted')
+      : this.user.username;
 
     return this.url == null ? (
-      <div className='user-card__username u-ellipsis-pre-overflow'>{displayName}</div>
+      <div className='user-card__username u-ellipsis-pre-overflow'>
+        {displayName}
+      </div>
     ) : (
-      <a className='user-card__username u-ellipsis-pre-overflow' href={this.url}>
+      <a
+        className='user-card__username u-ellipsis-pre-overflow'
+        href={this.url}
+      >
         {displayName}
       </a>
     );

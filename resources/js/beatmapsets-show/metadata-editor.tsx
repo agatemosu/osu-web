@@ -21,12 +21,12 @@ interface Props {
 
 let genresCache: GenreJson[];
 function genres() {
-  return genresCache ??= parseJson('json-genres');
+  return (genresCache ??= parseJson('json-genres'));
 }
 
 let languagesCache: LanguageJson[];
 function languages() {
-  return languagesCache ??= parseJson('json-languages');
+  return (languagesCache ??= parseJson('json-languages'));
 }
 
 @observer
@@ -89,12 +89,13 @@ export default class MetadataEditor extends React.Component<Props> {
               onChange={this.setLanguageId}
               value={this.languageId}
             >
-              {languages().map((language) => (
-                language.id === null ? null :
+              {languages().map((language) =>
+                language.id === null ? null : (
                   <option key={language.id} value={language.id}>
                     {language.name}
                   </option>
-              ))}
+                ),
+              )}
             </select>
           </div>
         </label>
@@ -111,17 +112,18 @@ export default class MetadataEditor extends React.Component<Props> {
               onChange={this.setGenreId}
               value={this.genreId}
             >
-              {genres().map((genre) => (
-                genre.id === null ? null :
+              {genres().map((genre) =>
+                genre.id === null ? null : (
                   <option key={genre.id} value={genre.id}>
                     {genre.name}
                   </option>
-              ))}
+                ),
+              )}
             </select>
           </div>
         </label>
 
-        {this.canEditTags &&
+        {this.canEditTags && (
           <label className='simple-form__row'>
             <div className='simple-form__label'>
               {trans('beatmapsets.show.info.tags')}
@@ -135,9 +137,9 @@ export default class MetadataEditor extends React.Component<Props> {
               value={this.tags}
             />
           </label>
-        }
+        )}
 
-        {this.canEditOffset &&
+        {this.canEditOffset && (
           <label className='simple-form__row'>
             <div className='simple-form__label'>
               {trans('beatmapsets.show.info.offset')}
@@ -152,7 +154,7 @@ export default class MetadataEditor extends React.Component<Props> {
               value={this.offset}
             />
           </label>
-        }
+        )}
 
         <div className='simple-form__row'>
           <div className='simple-form__label'>
@@ -202,23 +204,36 @@ export default class MetadataEditor extends React.Component<Props> {
 
   @action
   private readonly save = () => {
-    this.xhr = $.ajax(route('beatmapsets.update', { beatmapset: this.controller.beatmapset.id }), {
-      data: { beatmapset: {
-        genre_id: this.genreId,
-        language_id: this.languageId,
-        nsfw: this.nsfw,
-        offset: this.canEditOffset ? getInt(this.offset) : undefined,
-        tags: this.canEditTags ? this.tags : undefined,
-      } },
-      method: 'PATCH',
-    });
-    this.xhr.fail(onError).always(action(() => {
-      this.xhr = null;
-    }))
-      .done((beatmapset) => runInAction(() => {
-        this.controller.state.beatmapset = beatmapset;
-        this.props.onClose();
-      }));
+    this.xhr = $.ajax(
+      route('beatmapsets.update', {
+        beatmapset: this.controller.beatmapset.id,
+      }),
+      {
+        data: {
+          beatmapset: {
+            genre_id: this.genreId,
+            language_id: this.languageId,
+            nsfw: this.nsfw,
+            offset: this.canEditOffset ? getInt(this.offset) : undefined,
+            tags: this.canEditTags ? this.tags : undefined,
+          },
+        },
+        method: 'PATCH',
+      },
+    );
+    this.xhr
+      .fail(onError)
+      .always(
+        action(() => {
+          this.xhr = null;
+        }),
+      )
+      .done((beatmapset) =>
+        runInAction(() => {
+          this.controller.state.beatmapset = beatmapset;
+          this.props.onClose();
+        }),
+      );
   };
 
   @action
@@ -227,7 +242,9 @@ export default class MetadataEditor extends React.Component<Props> {
   };
 
   @action
-  private readonly setLanguageId = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  private readonly setLanguageId = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     this.languageId = parseInt(e.currentTarget.value, 10);
   };
 

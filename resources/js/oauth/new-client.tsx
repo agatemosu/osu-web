@@ -81,20 +81,36 @@ export class NewClient extends React.Component {
 
           <div>
             <StringWithComponent
-              mappings={{ link: (
-                <a href={`${process.env.DOCS_URL}#terms-of-use`}>
-                  {trans('oauth.new_client.terms_of_use.link')}
-                </a>
-              ) }}
+              mappings={{
+                link: (
+                  <a href={`${process.env.DOCS_URL}#terms-of-use`}>
+                    {trans('oauth.new_client.terms_of_use.link')}
+                  </a>
+                ),
+              }}
               pattern={trans('oauth.new_client.terms_of_use._')}
             />
           </div>
 
           <div className='oauth-client-details__buttons'>
-            <button className='btn-osu-big' onClick={this.handleSubmit} type='button'>
-              {uiState.account.isCreatingNewClient ? <Spinner /> : trans('oauth.new_client.register')}
+            <button
+              className='btn-osu-big'
+              onClick={this.handleSubmit}
+              type='button'
+            >
+              {uiState.account.isCreatingNewClient ? (
+                <Spinner />
+              ) : (
+                trans('oauth.new_client.register')
+              )}
             </button>
-            <button className='btn-osu-big' onClick={this.handleCancel} type='button'>{trans('common.buttons.cancel')}</button>
+            <button
+              className='btn-osu-big'
+              onClick={this.handleCancel}
+              type='button'
+            >
+              {trans('common.buttons.cancel')}
+            </button>
           </div>
         </form>
       </div>
@@ -108,12 +124,16 @@ export class NewClient extends React.Component {
   };
 
   @action
-  private readonly handleOnChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  private readonly handleOnChangeName = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     this.params.name = event.currentTarget.value;
   };
 
   @action
-  private readonly handleOnChangeRedirect = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  private readonly handleOnChangeRedirect = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     this.params.redirect = event.currentTarget.value;
   };
 
@@ -129,19 +149,29 @@ export class NewClient extends React.Component {
       data: this.params,
       method: 'POST',
       url: route('oauth.clients.store'),
-    }).then(action((data: OwnClientJson) => {
-      const client = store.updateWithJson(data);
-      uiState.account.newClientVisible = false;
-      uiState.account.client = client;
-    })).catch(this.errors.handleResponse)
-      .always(action(() => {
-        uiState.account.isCreatingNewClient = false;
-      }));
+    })
+      .then(
+        action((data: OwnClientJson) => {
+          const client = store.updateWithJson(data);
+          uiState.account.newClientVisible = false;
+          uiState.account.client = client;
+        }),
+      )
+      .catch(this.errors.handleResponse)
+      .always(
+        action(() => {
+          uiState.account.isCreatingNewClient = false;
+        }),
+      );
   };
 
   private renderRemainingErrors() {
-    return this.errors.except(NewClient.inputFields as readonly string[]).map((error, index) => (
-      <div key={index} className='oauth-client-details__error'>{error}</div>
-    ));
+    return this.errors
+      .except(NewClient.inputFields as readonly string[])
+      .map((error, index) => (
+        <div key={index} className='oauth-client-details__error'>
+          {error}
+        </div>
+      ));
   }
 }

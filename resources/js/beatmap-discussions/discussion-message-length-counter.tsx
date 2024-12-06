@@ -10,8 +10,17 @@ interface Props {
   message: string;
 }
 
-export default function DiscussionMessageLengthCounter({ message, isTimeline }: Props) {
+export default function DiscussionMessageLengthCounter({
+  message,
+  isTimeline,
+}: Props) {
   if (!isTimeline) return null;
 
-  return <MessageLengthCounter maxLength={maxLengthTimeline} message={message} modifiers='discussion' />;
+  return (
+    <MessageLengthCounter
+      maxLength={maxLengthTimeline}
+      message={message}
+      modifiers='discussion'
+    />
+  );
 }

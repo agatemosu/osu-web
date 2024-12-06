@@ -7,9 +7,16 @@ import disableConstructs from 'remark-plugins/disable-constructs';
 import { Element, Text } from 'slate';
 import { unified } from 'unified';
 import type { Parent, Node as UnistNode } from 'unist';
-import { formatTimestamp, startingPost } from 'utils/beatmapset-discussion-helper';
+import {
+  formatTimestamp,
+  startingPost,
+} from 'utils/beatmapset-discussion-helper';
 import { present } from 'utils/string';
-import { BeatmapDiscussionReview, isBeatmapReviewDiscussionType, PersistedDocumentIssueEmbed } from '../interfaces/beatmap-discussion-review';
+import {
+  BeatmapDiscussionReview,
+  isBeatmapReviewDiscussionType,
+  PersistedDocumentIssueEmbed,
+} from '../interfaces/beatmap-discussion-review';
 
 interface ParsedDocumentNode extends UnistNode {
   children: UnistNode[];
@@ -23,14 +30,17 @@ interface TextNode extends UnistNode {
 }
 
 function isParentNode(node: UnistNode | Parent): node is Parent {
-  return ('children' in node) && Array.isArray(node.children);
+  return 'children' in node && Array.isArray(node.children);
 }
 
 function isText(node: UnistNode): node is TextNode {
   return node.type === 'text';
 }
 
-export function parseFromJson(json: string, discussions: Map<number | null | undefined, BeatmapsetDiscussionJson>) {
+export function parseFromJson(
+  json: string,
+  discussions: Map<number | null | undefined, BeatmapsetDiscussionJson>,
+) {
   let srcDoc: BeatmapDiscussionReview;
 
   try {
@@ -53,9 +63,11 @@ export function parseFromJson(json: string, discussions: Map<number | null | und
         if (!present(block.text.trim())) {
           // empty block (aka newline)
           doc.push({
-            children: [{
-              text: '',
-            }],
+            children: [
+              {
+                text: '',
+              },
+            ],
             type: 'paragraph',
           });
         } else {
@@ -75,9 +87,11 @@ export function parseFromJson(json: string, discussions: Map<number | null | und
             });
           } else {
             doc.push({
-              children: [{
-                text: '',
-              }],
+              children: [
+                {
+                  text: '',
+                },
+              ],
               type: 'paragraph',
             });
           }
@@ -89,7 +103,10 @@ export function parseFromJson(json: string, discussions: Map<number | null | und
         const existingEmbedBlock = block as PersistedDocumentIssueEmbed;
         const discussion = discussions.get(existingEmbedBlock.discussion_id);
         if (discussion == null) {
-          console.error('unknown/external discussion referenced', existingEmbedBlock.discussion_id);
+          console.error(
+            'unknown/external discussion referenced',
+            existingEmbedBlock.discussion_id,
+          );
           break;
         }
 
@@ -100,18 +117,26 @@ export function parseFromJson(json: string, discussions: Map<number | null | und
 
         const post = startingPost(discussion);
         if (post == null || post.system) {
-          console.error('embed starting post is missing or is system post', existingEmbedBlock.discussion_id);
+          console.error(
+            'embed starting post is missing or is system post',
+            existingEmbedBlock.discussion_id,
+          );
           break;
         }
 
         doc.push({
           beatmapId: discussion.beatmap_id,
-          children: [{
-            text: post.message,
-          }],
+          children: [
+            {
+              text: post.message,
+            },
+          ],
           discussionId: discussion.id,
           discussionType: discussion.message_type,
-          timestamp: discussion.timestamp != null ? formatTimestamp(discussion.timestamp) : undefined,
+          timestamp:
+            discussion.timestamp != null
+              ? formatTimestamp(discussion.timestamp)
+              : undefined,
           type: 'embed',
         });
         break;
@@ -133,7 +158,10 @@ export function parseFromJson(json: string, discussions: Map<number | null | und
 //   becomes:
 // paragraph -> text (with bold and italic properties set)
 //
-function squash(items: (UnistNode | Parent)[], currentMarks?: { bold: boolean; italic: boolean }) {
+function squash(
+  items: (UnistNode | Parent)[],
+  currentMarks?: { bold: boolean; italic: boolean },
+) {
   let flat: Text[] = [];
   const marks = currentMarks ?? {
     bold: false,

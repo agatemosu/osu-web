@@ -17,7 +17,10 @@ export default class CommentsSort extends React.Component<Props> {
   render() {
     return (
       <Sort
-        currentValue={this.props.controller.nextState.sort ?? this.props.controller.state.sort}
+        currentValue={
+          this.props.controller.nextState.sort ??
+          this.props.controller.state.sort
+        }
         modifiers={this.props.modifiers}
         onChange={this.handleChange}
         values={['new', 'old', 'top']}

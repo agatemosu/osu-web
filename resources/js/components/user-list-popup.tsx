@@ -21,7 +21,11 @@ const atToMy = {
   'top center': 'bottom center',
 };
 
-export function createTooltip(targetFn: () => HTMLElement | null, propsFn: () => Props, positionAt: PositionAt) {
+export function createTooltip(
+  targetFn: () => HTMLElement | null,
+  propsFn: () => Props,
+  positionAt: PositionAt,
+) {
   $(targetFn() ?? []).qtip({
     content: {
       text: '[placeholder]',
@@ -62,7 +66,7 @@ export default function UserListPopup(props: Props) {
   return (
     <div className='user-list-popup'>
       {props.title}
-      {props.users.length > 0 &&
+      {props.users.length > 0 && (
         <div className='user-list-popup__users'>
           {props.users.map((user) => (
             <UserLink
@@ -75,12 +79,15 @@ export default function UserListPopup(props: Props) {
             </UserLink>
           ))}
         </div>
-      }
-      {props.count > props.users.length &&
+      )}
+      {props.count > props.users.length && (
         <div className='user-list-popup__remainder-count'>
-          {transChoice('common.count.plus_others', props.count - props.users.length)}
+          {transChoice(
+            'common.count.plus_others',
+            props.count - props.users.length,
+          )}
         </div>
-      }
+      )}
     </div>
   );
 }

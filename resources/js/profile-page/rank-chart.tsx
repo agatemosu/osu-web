@@ -31,7 +31,9 @@ const options = makeOptionsNumber({
 });
 
 function formatX(d: number) {
-  return d === 0 ? trans('common.time.now') : transChoice('common.time.days_ago', -d);
+  return d === 0
+    ? trans('common.time.now')
+    : transChoice('common.time.days_ago', -d);
 }
 
 function formatY(d: number) {
@@ -45,7 +47,9 @@ export default class RankChart extends React.Component<Props> {
 
   get data() {
     const raw = this.props.rankHistory?.data ?? [];
-    const data = raw.map((rank, i) => ({ x: i - raw.length + 1, y: -rank })).filter((point) => point.y < 0);
+    const data = raw
+      .map((rank, i) => ({ x: i - raw.length + 1, y: -rank }))
+      .filter((point) => point.y < 0);
 
     if (data.length === 0) {
       data.push({ x: 0, y: -this.props.stats.global_rank });
@@ -74,7 +78,9 @@ export default class RankChart extends React.Component<Props> {
       this.rankChart = rankChart;
     }
 
-    this.disposers.add(core.reactTurbolinks.runAfterPageLoad(this.loadRankChart));
+    this.disposers.add(
+      core.reactTurbolinks.runAfterPageLoad(this.loadRankChart),
+    );
   }
 
   componentDidUpdate() {

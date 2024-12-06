@@ -8,7 +8,9 @@ const fs = require('fs');
 const root = `${__dirname}/../../..`;
 
 function modNamesGenerator() {
-  const modsByRuleset = JSON.parse(fs.readFileSync(`${root}/database/mods.json`));
+  const modsByRuleset = JSON.parse(
+    fs.readFileSync(`${root}/database/mods.json`),
+  );
 
   const modNames = {};
   for (const mods of modsByRuleset) {

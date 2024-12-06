@@ -30,10 +30,17 @@ describe('Notification Widget', () => {
 
   const bundle: NotificationBundleJson = {
     notifications: [identities[0]].map(toJson).map(makeNotificationJson),
-    stacks: [makeStackJson(identities[0], 5, 'beatmapset_discussion_post_new', identities[0].id )],
+    stacks: [
+      makeStackJson(
+        identities[0],
+        5,
+        'beatmapset_discussion_post_new',
+        identities[0].id,
+      ),
+    ],
     timestamp: new Date().toJSON(),
     types: [
-      { cursor: { id: identities[0].id }, name: null,  total: 20 },
+      { cursor: { id: identities[0].id }, name: null, total: 20 },
       { cursor: { id: identities[0].id }, name: 'beatmapset', total: 5 },
     ],
   };
@@ -44,7 +51,11 @@ describe('Notification Widget', () => {
     store = new NotificationStore();
     store.unreadStacks.updateWithBundle(bundle);
 
-    controller = new NotificationController(store, { excludes: [], isWidget: true }, null);
+    controller = new NotificationController(
+      store,
+      { excludes: [], isWidget: true },
+      null,
+    );
   });
 
   it('should filter by All', () => {
@@ -63,15 +74,24 @@ describe('Notification Widget', () => {
     beforeEach(() => {
       const loadMoreBundle: NotificationBundleJson = {
         notifications: [identities[1]].map(toJson).map(makeNotificationJson),
-        stacks: [makeStackJson(identities[1], 5, 'beatmapset_discussion_post_new', identities[1].id )],
+        stacks: [
+          makeStackJson(
+            identities[1],
+            5,
+            'beatmapset_discussion_post_new',
+            identities[1].id,
+          ),
+        ],
         timestamp: new Date().toJSON(),
         types: [
-          { cursor: { id: identities[1].id }, name: null,  total: 20 },
+          { cursor: { id: identities[1].id }, name: null, total: 20 },
           { cursor: { id: identities[1].id }, name: 'beatmapset', total: 5 },
         ],
       };
 
-      dispatch(new NotificationEventMoreLoaded(loadMoreBundle, { isWidget: true }));
+      dispatch(
+        new NotificationEventMoreLoaded(loadMoreBundle, { isWidget: true }),
+      );
     });
 
     it('should have 2 notifications', () => {

@@ -9,7 +9,10 @@ import { present } from 'utils/string';
 type Replacement = string | number;
 export type Replacements = Partial<Record<string, Replacement>>;
 
-export function joinComponents(array: React.ReactElement[], key = 'common.array_and') {
+export function joinComponents(
+  array: React.ReactElement[],
+  key = 'common.array_and',
+) {
   const nodes: React.ReactNode[] = [];
 
   if (array.length > 0) {
@@ -17,21 +20,38 @@ export function joinComponents(array: React.ReactElement[], key = 'common.array_
 
     if (array.length > 1) {
       const lastIndex = array.length - 1;
-      const lastConnector = lastIndex === 1 ? trans(`${key}.two_words_connector`) : trans(`${key}.last_word_connector`);
+      const lastConnector =
+        lastIndex === 1
+          ? trans(`${key}.two_words_connector`)
+          : trans(`${key}.last_word_connector`);
       const connector = trans(`${key}.words_connector`);
 
       for (let i = 1; i < lastIndex; i++) {
-        nodes.push(<React.Fragment key={array[i].key}>{connector}{array[i]}</React.Fragment>);
+        nodes.push(
+          <React.Fragment key={array[i].key}>
+            {connector}
+            {array[i]}
+          </React.Fragment>,
+        );
       }
 
-      nodes.push(<React.Fragment key={array[lastIndex].key}>{lastConnector}{array[lastIndex]}</React.Fragment>);
+      nodes.push(
+        <React.Fragment key={array[lastIndex].key}>
+          {lastConnector}
+          {array[lastIndex]}
+        </React.Fragment>,
+      );
     }
   }
 
   return <>{nodes}</>;
 }
 
-export function trans(key: string, replacements: Replacements = {}, locale?: string) {
+export function trans(
+  key: string,
+  replacements: Replacements = {},
+  locale?: string,
+) {
   if (!transExists(key, locale)) {
     locale = fallbackLocale;
   }
@@ -52,7 +72,12 @@ export function transArray(array: Replacement[], key = 'common.array_and') {
   }
 }
 
-export function transChoice(key: string, count: number, replacements: Replacements = {}, locale?: string): string {
+export function transChoice(
+  key: string,
+  count: number,
+  replacements: Replacements = {},
+  locale?: string,
+): string {
   locale ??= currentLocale;
   const isFallbackLocale = locale === fallbackLocale;
 
@@ -60,7 +85,12 @@ export function transChoice(key: string, count: number, replacements: Replacemen
     return transChoice(key, count, replacements, fallbackLocale);
   }
 
-  replacements.count_delimited = formatNumber(count, undefined, undefined, locale);
+  replacements.count_delimited = formatNumber(
+    count,
+    undefined,
+    undefined,
+    locale,
+  );
   const translated = window.Lang.choice(key, count, replacements, locale);
 
   if (!isFallbackLocale && translated == null) {

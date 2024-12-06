@@ -17,7 +17,15 @@ interface Props {
 }
 
 const bn = 'counter-box';
-const statTypes: Filter[] = ['mine', 'mapperNotes', 'resolved', 'pending', 'praises', 'deleted', 'total'];
+const statTypes: Filter[] = [
+  'mine',
+  'mapperNotes',
+  'resolved',
+  'pending',
+  'praises',
+  'deleted',
+  'total',
+];
 
 @observer
 export default class TypeFilters extends React.Component<Props> {
@@ -29,7 +37,9 @@ export default class TypeFilters extends React.Component<Props> {
     for (const type of statTypes) {
       let discussions = this.props.discussionsState.discussionsByFilter[type];
       if (selectedUserId != null) {
-        discussions = discussions.filter((discussion) => discussion.user_id === selectedUserId);
+        discussions = discussions.filter(
+          (discussion) => discussion.user_id === selectedUserId,
+        );
       }
 
       counts[type] = discussions.length;
@@ -43,12 +53,19 @@ export default class TypeFilters extends React.Component<Props> {
   }
 
   private readonly renderType = (type: Filter) => {
-    if ((type === 'deleted') && !core.currentUser?.is_admin) {
+    if (type === 'deleted' && !core.currentUser?.is_admin) {
       return null;
     }
 
-    let topClasses = classWithModifiers(bn, 'beatmap-discussions', kebabCase(type));
-    if (this.props.discussionsState.currentPage !== 'events' && this.props.discussionsState.currentFilter === type) {
+    let topClasses = classWithModifiers(
+      bn,
+      'beatmap-discussions',
+      kebabCase(type),
+    );
+    if (
+      this.props.discussionsState.currentPage !== 'events' &&
+      this.props.discussionsState.currentFilter === type
+    ) {
       topClasses += ' js-active';
     }
 
@@ -69,9 +86,7 @@ export default class TypeFilters extends React.Component<Props> {
           <div className={`${bn}__title`}>
             {trans(`beatmaps.discussions.stats.${snakeCase(type)}`)}
           </div>
-          <div className={`${bn}__count`}>
-            {this.discussionCounts[type]}
-          </div>
+          <div className={`${bn}__count`}>{this.discussionCounts[type]}</div>
         </div>
         <div className={`${bn}__line`} />
       </a>
@@ -83,4 +98,3 @@ export default class TypeFilters extends React.Component<Props> {
     this.props.discussionsState.changeFilter(event.currentTarget.dataset.type);
   };
 }
-

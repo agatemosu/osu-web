@@ -11,7 +11,9 @@ interface Props {
 const containerClass = 'js-portal';
 
 export function removeLeftoverPortalContainers() {
-  for (const container of (window.newBody ?? document.body).querySelectorAll(`.${containerClass}`)) {
+  for (const container of (window.newBody ?? document.body).querySelectorAll(
+    `.${containerClass}`,
+  )) {
     container.remove();
   }
 }
@@ -27,7 +29,9 @@ export default class Portal extends PureComponent<PropsWithChildren<Props>> {
   }
 
   componentDidMount() {
-    (this.props.root ?? window.newBody ?? document.body).appendChild(this.container);
+    (this.props.root ?? window.newBody ?? document.body).appendChild(
+      this.container,
+    );
   }
 
   componentWillUnmount() {

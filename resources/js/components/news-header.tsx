@@ -30,11 +30,5 @@ export default function NewsHeader(props: Props) {
     });
   }
 
-  return (
-    <HeaderV4
-      links={links}
-      linksBreadcrumb
-      theme='news'
-    />
-  );
+  return <HeaderV4 links={links} linksBreadcrumb theme='news' />;
 }

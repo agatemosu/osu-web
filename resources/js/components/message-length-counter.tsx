@@ -20,9 +20,19 @@ function modifier(message: string, maxLength: number) {
   return null;
 }
 
-export default function MessageLengthCounter({ maxLength, message, modifiers }: Props) {
+export default function MessageLengthCounter({
+  maxLength,
+  message,
+  modifiers,
+}: Props) {
   return (
-    <div className={classWithModifiers('message-length-counter', modifier(message, maxLength), modifiers)}>
+    <div
+      className={classWithModifiers(
+        'message-length-counter',
+        modifier(message, maxLength),
+        modifiers,
+      )}
+    >
       {`${message.length} / ${maxLength}`}
     </div>
   );

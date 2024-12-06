@@ -9,4 +9,7 @@ export interface NotificationContextData {
   isWidget: boolean;
 }
 
-export const NotificationContext = createContext<NotificationContextData>({ excludes: [], isWidget: false });
+export const NotificationContext = createContext<NotificationContextData>({
+  excludes: [],
+  isWidget: false,
+});

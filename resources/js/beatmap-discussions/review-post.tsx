@@ -18,18 +18,32 @@ export class ReviewPost extends React.Component<Props> {
     const docBlocks: JSX.Element[] = [];
 
     try {
-      const doc = JSON.parse(this.props.post.message) as PersistedBeatmapDiscussionReview;
+      const doc = JSON.parse(
+        this.props.post.message,
+      ) as PersistedBeatmapDiscussionReview;
 
       doc.forEach((block, index) => {
         switch (block.type) {
           case 'paragraph': {
             const content = block.text.trim() === '' ? '&nbsp;' : block.text;
-            docBlocks.push(<DiscussionMessage key={index} markdown={content} type='reviews' />);
+            docBlocks.push(
+              <DiscussionMessage
+                key={index}
+                markdown={content}
+                type='reviews'
+              />,
+            );
             break;
           }
           case 'embed':
             if (block.discussion_id) {
-              docBlocks.push(<ReviewPostEmbed key={index} data={{ discussion_id: block.discussion_id }} store={this.props.store} />);
+              docBlocks.push(
+                <ReviewPostEmbed
+                  key={index}
+                  data={{ discussion_id: block.discussion_id }}
+                  store={this.props.store}
+                />,
+              );
             }
             break;
         }
@@ -38,10 +52,6 @@ export class ReviewPost extends React.Component<Props> {
       docBlocks.push(<div key={null}>[error parsing review]</div>);
     }
 
-    return (
-      <div className='beatmap-discussion-review-post'>
-        {docBlocks}
-      </div>
-    );
+    return <div className='beatmap-discussion-review-post'>{docBlocks}</div>;
   }
 }

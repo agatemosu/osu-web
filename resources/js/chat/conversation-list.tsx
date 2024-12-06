@@ -1,7 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { SupportedChannelType, supportedChannelTypes } from 'interfaces/chat/channel-json';
+import {
+  SupportedChannelType,
+  supportedChannelTypes,
+} from 'interfaces/chat/channel-json';
 import { chunk } from 'lodash';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
@@ -19,7 +22,11 @@ const icons: Record<SupportedChannelType, string> = {
 
 function renderChannels(type: SupportedChannelType) {
   const channels = core.dataStore.channelStore.groupedChannels[type];
-  if (channels.length > 0 || type === 'PUBLIC' || type === 'ANNOUNCE' && core.dataStore.chatState.canChatAnnounce) {
+  if (
+    channels.length > 0 ||
+    type === 'PUBLIC' ||
+    (type === 'ANNOUNCE' && core.dataStore.chatState.canChatAnnounce)
+  ) {
     const title = trans(`chat.channels.list.title.${type}`);
 
     // Optimization so that the channel list can be rendered as several smaller layers.
@@ -32,11 +39,18 @@ function renderChannels(type: SupportedChannelType) {
         <div className='chat-conversation-list__group'>
           <div className='chat-conversation-list__header'>
             <span className='chat-conversation-list__header-text'>{title}</span>
-            <span className='chat-conversation-list__header-icon' title={title}><i className={icons[type]} /></span>
+            <span className='chat-conversation-list__header-icon' title={title}>
+              <i className={icons[type]} />
+            </span>
           </div>
           {chunks.map((c, index) => (
             <div key={index} className='chat-conversation-list__layer'>
-              {c.map((channel) => <ConversationListItem key={channel.channelId} channel={channel} />)}
+              {c.map((channel) => (
+                <ConversationListItem
+                  key={channel.channelId}
+                  channel={channel}
+                />
+              ))}
             </div>
           ))}
           {type === 'ANNOUNCE' && <AddChannelButton type='create' />}

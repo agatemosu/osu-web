@@ -2,7 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ArtistJson from 'interfaces/artist-json';
-import ArtistTrackJson, { ArtistTrackWithArtistJson } from 'interfaces/artist-track-json';
+import ArtistTrackJson, {
+  ArtistTrackWithArtistJson,
+} from 'interfaces/artist-track-json';
 import { route } from 'laroute';
 import * as React from 'react';
 import { classWithModifiers, Modifiers, urlPresence } from 'utils/css';
@@ -10,12 +12,14 @@ import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
 import { present } from 'utils/string';
 
-type TrackJson = {
-  artist: ArtistJson;
-  track: ArtistTrackJson;
-} | {
-  track: ArtistTrackWithArtistJson;
-};
+type TrackJson =
+  | {
+      artist: ArtistJson;
+      track: ArtistTrackJson;
+    }
+  | {
+      track: ArtistTrackWithArtistJson;
+    };
 
 type Props = {
   modifiers?: Modifiers;
@@ -36,7 +40,11 @@ export default class TracklistTrack extends React.PureComponent<Props> {
   }
 
   render() {
-    let blockClass = classWithModifiers('artist-track', { original: this.props.track.exclusive }, this.props.modifiers);
+    let blockClass = classWithModifiers(
+      'artist-track',
+      { original: this.props.track.exclusive },
+      this.props.modifiers,
+    );
     blockClass += ' js-audio--player';
 
     return (
@@ -51,7 +59,6 @@ export default class TracklistTrack extends React.PureComponent<Props> {
             <span className='fa-fw play-button' />
           </button>
         </div>
-
 
         <div className='artist-track__col artist-track__col--names'>
           <div className='artist-track__title u-ellipsis-overflow'>
@@ -72,7 +79,9 @@ export default class TracklistTrack extends React.PureComponent<Props> {
           </div>
           {this.props.showAlbum && this.props.track.album != null && (
             <div className='artist-track__info'>
-              <a href={`${route('artists.show', { artist: this.artist.id })}#album-${this.props.track.album_id}`}>
+              <a
+                href={`${route('artists.show', { artist: this.artist.id })}#album-${this.props.track.album_id}`}
+              >
                 {this.props.track.album.title}
               </a>
             </div>

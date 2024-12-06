@@ -63,7 +63,9 @@ export default class PlayDetailList extends React.Component<Props> {
 
   @computed
   private get withPinSortable() {
-    return this.props.section === 'scoresPinned' && this.props.controller.withEdit;
+    return (
+      this.props.section === 'scoresPinned' && this.props.controller.withEdit
+    );
   }
 
   @computed
@@ -82,38 +84,44 @@ export default class PlayDetailList extends React.Component<Props> {
     makeObservable(this);
 
     // Do this after makeObservable call to make sure it's the decorated version of the function.
-    this.containerContextValue = { activeKeyDidChange: this.activeKeyDidChange };
+    this.containerContextValue = {
+      activeKeyDidChange: this.activeKeyDidChange,
+    };
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, autorun(() => {
-      const list = this.listRef.current;
-      const enablePinSortable = this.withPinSortable;
+    disposeOnUnmount(
+      this,
+      autorun(() => {
+        const list = this.listRef.current;
+        const enablePinSortable = this.withPinSortable;
 
-      if (list != null) {
-        const $list = $(list);
+        if (list != null) {
+          const $list = $(list);
 
-        if (enablePinSortable) {
-          $list.sortable({
-            cursor: 'move',
-            handle: '.js-score-pin-sortable-handle',
-            items: '.js-score-pin-sortable',
-            scrollSpeed: 10,
-            update: this.onUpdatePinOrder,
-          });
-        } else {
-          if ($list.sortable('instance') != null) {
-            $list.sortable('destroy');
+          if (enablePinSortable) {
+            $list.sortable({
+              cursor: 'move',
+              handle: '.js-score-pin-sortable-handle',
+              items: '.js-score-pin-sortable',
+              scrollSpeed: 10,
+              update: this.onUpdatePinOrder,
+            });
+          } else {
+            if ($list.sortable('instance') != null) {
+              $list.sortable('destroy');
+            }
           }
         }
-      }
-    }));
+      }),
+    );
   }
 
   render() {
     if (this.scores == null) return null;
 
-    const showPpWeight = 'showPpWeight' in this.sectionMap && this.sectionMap.showPpWeight;
+    const showPpWeight =
+      'showPpWeight' in this.sectionMap && this.sectionMap.showPpWeight;
 
     return (
       <>
@@ -122,9 +130,12 @@ export default class PlayDetailList extends React.Component<Props> {
           titleKey={`users.show.extra.${this.sectionMap.translationKey}.title`}
         />
 
-        <div ref={this.listRef} className={`${classWithModifiers('play-detail-list', { 'menu-active': this.activeKey != null })} u-relative`}>
+        <div
+          ref={this.listRef}
+          className={`${classWithModifiers('play-detail-list', { 'menu-active': this.activeKey != null })} u-relative`}
+        >
           <ContainerContext.Provider value={this.containerContextValue}>
-            {(this.uniqueItems).map((score) => (
+            {this.uniqueItems.map((score) => (
               <KeyContext.Provider key={score.id} value={score.id}>
                 <PlayDetail
                   activated={this.activeKey === score.id}
@@ -157,7 +168,10 @@ export default class PlayDetailList extends React.Component<Props> {
     this.props.controller.apiShowMore(this.props.section);
   };
 
-  private readonly onUpdatePinOrder = (event: Event, ui: JQueryUI.SortableUIParams) => {
+  private readonly onUpdatePinOrder = (
+    event: Event,
+    ui: JQueryUI.SortableUIParams,
+  ) => {
     if (this.scores == null) {
       throw new Error('trying to update pin order with missing data');
     }
@@ -167,11 +181,19 @@ export default class PlayDetailList extends React.Component<Props> {
     if (target == null) return;
 
     const $target = $(target);
-    const newOrder = $target.sortable('toArray', { attribute: 'data-score-pin' }).map((jsonString) => JSON.parse(jsonString) as ScoreCurrentUserPinJson);
+    const newOrder = $target
+      .sortable('toArray', { attribute: 'data-score-pin' })
+      .map((jsonString) => JSON.parse(jsonString) as ScoreCurrentUserPinJson);
 
-    const reordered = JSON.parse(ui.item.attr('data-score-pin') ?? '') as ScoreCurrentUserPinJson;
-    const currentIndex = this.scores.items.findIndex((item) => item.id === reordered.score_id);
-    const newIndex = newOrder.findIndex((item) => item.score_id === reordered.score_id);
+    const reordered = JSON.parse(
+      ui.item.attr('data-score-pin') ?? '',
+    ) as ScoreCurrentUserPinJson;
+    const currentIndex = this.scores.items.findIndex(
+      (item) => item.id === reordered.score_id,
+    );
+    const newIndex = newOrder.findIndex(
+      (item) => item.score_id === reordered.score_id,
+    );
 
     if (currentIndex !== newIndex) {
       this.props.controller.apiReorderScorePin(currentIndex, newIndex);

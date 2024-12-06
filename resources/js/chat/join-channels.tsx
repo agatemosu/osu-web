@@ -41,7 +41,9 @@ function Channel({ channel, onClick, status }: ChannelProps) {
   return (
     // anchor instead of button due to Firefox having an issue with button padding in subgrid.
     <a
-      className={classWithModifiers('chat-join-channel__channel', { joined: status === 'joined' })}
+      className={classWithModifiers('chat-join-channel__channel', {
+        joined: status === 'joined',
+      })}
       href={route('chat.index', { channel_id: channel.channel_id })}
       onAuxClick={handleClick}
       onClick={handleClick}
@@ -57,7 +59,11 @@ function Channel({ channel, onClick, status }: ChannelProps) {
 export default class JoinChannels extends React.Component<Props> {
   @computed
   get channels() {
-    return this.publicChannels.channels?.slice().sort((x, y) => x.name.localeCompare(y.name)) ?? [];
+    return (
+      this.publicChannels.channels
+        ?.slice()
+        .sort((x, y) => x.name.localeCompare(y.name)) ?? []
+    );
   }
 
   get publicChannels() {
@@ -70,11 +76,17 @@ export default class JoinChannels extends React.Component<Props> {
 
   @computed
   get joinedPublicChannelIds() {
-    return new Set(core.dataStore.channelStore.groupedChannels.PUBLIC.map((channel) => channel.channelId));
+    return new Set(
+      core.dataStore.channelStore.groupedChannels.PUBLIC.map(
+        (channel) => channel.channelId,
+      ),
+    );
   }
 
   private get buttonModifiers() {
-    return classWithModifiers('btn-osu-big', 'rounded-thin', { disabled: this.isLoading });
+    return classWithModifiers('btn-osu-big', 'rounded-thin', {
+      disabled: this.isLoading,
+    });
   }
 
   constructor(props: Props) {
@@ -111,7 +123,9 @@ export default class JoinChannels extends React.Component<Props> {
     let status: JoinedStatus = null;
     if (this.joinedPublicChannelIds.has(channel.channel_id)) {
       status = 'joined';
-    } else if (core.dataStore.chatState.joiningChannelId === channel.channel_id) {
+    } else if (
+      core.dataStore.chatState.joiningChannelId === channel.channel_id
+    ) {
       status = 'joining';
     }
 
@@ -130,7 +144,11 @@ export default class JoinChannels extends React.Component<Props> {
       return (
         <>
           <p>{trans('errors.load_failed')}</p>
-          <button className={this.buttonModifiers} onClick={this.handleRefreshClick} type='button'>
+          <button
+            className={this.buttonModifiers}
+            onClick={this.handleRefreshClick}
+            type='button'
+          >
             {trans('common.buttons.refresh')}
           </button>
         </>

@@ -17,10 +17,35 @@ import Tab from './tab';
 import Table from './table';
 import TopCard from './top-card';
 
-const defaultMods = ['NM', 'EZ', 'NF', 'HT', 'HR', 'SD', 'PF', 'DT', 'NC', 'HD', 'FL'];
+const defaultMods = [
+  'NM',
+  'EZ',
+  'NF',
+  'HT',
+  'HR',
+  'SD',
+  'PF',
+  'DT',
+  'NC',
+  'HD',
+  'FL',
+];
 const mods = {
   fruits: defaultMods,
-  mania: ['NM', 'EZ', 'NF', 'HT', 'SD', 'PF', 'DT', 'NC', 'FI', 'HD', 'FL', 'MR'],
+  mania: [
+    'NM',
+    'EZ',
+    'NF',
+    'HT',
+    'SD',
+    'PF',
+    'DT',
+    'NC',
+    'FI',
+    'HD',
+    'FL',
+    'MR',
+  ],
   osu: [...defaultMods, 'SO', 'TD'],
   taiko: defaultMods,
 };
@@ -42,7 +67,10 @@ export default class Main extends React.Component<Props> {
 
   @computed
   private get mods() {
-    if (this.controller.beatmap.mode === 'mania' && this.controller.beatmap.convert) {
+    if (
+      this.controller.beatmap.mode === 'mania' &&
+      this.controller.beatmap.convert
+    ) {
       return maniaConvertMods;
     }
 
@@ -51,7 +79,10 @@ export default class Main extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);
-    this.controller = new Controller(this.props.container, () => this.props.beatmap);
+    this.controller = new Controller(
+      this.props.container,
+      () => this.props.beatmap,
+    );
 
     makeObservable(this);
   }
@@ -61,23 +92,27 @@ export default class Main extends React.Component<Props> {
       <div className='beatmapset-scoreboard'>
         <div className='page-tabs'>
           {scoreboardTypes.map((type) => (
-            <Tab
-              key={type}
-              controller={this.controller}
-              type={type}
-            />
+            <Tab key={type} controller={this.controller} type={type} />
           ))}
         </div>
 
-        {this.controller.beatmap.is_scoreable &&
-          <div className={classWithModifiers('beatmapset-scoreboard__mods', { initial: this.controller.enabledMods.size === 0 })}>
-            {this.mods.map((mod) => <Mod key={mod} controller={this.controller} mod={mod} />)}
+        {this.controller.beatmap.is_scoreable && (
+          <div
+            className={classWithModifiers('beatmapset-scoreboard__mods', {
+              initial: this.controller.enabledMods.size === 0,
+            })}
+          >
+            {this.mods.map((mod) => (
+              <Mod key={mod} controller={this.controller} mod={mod} />
+            ))}
           </div>
-        }
+        )}
 
-        <div className={classWithModifiers('beatmapset-scoreboard__main', {
-          loading: this.controller.loadingState === 'loading',
-        })}>
+        <div
+          className={classWithModifiers('beatmapset-scoreboard__main', {
+            loading: this.controller.loadingState === 'loading',
+          })}
+        >
           {this.renderMain()}
         </div>
       </div>
@@ -99,12 +134,14 @@ export default class Main extends React.Component<Props> {
   private renderErrorMessage() {
     return (
       <div className='beatmapset-scoreboard__notice'>
-        <p>
-          {trans('beatmapsets.show.scoreboard.error')}
-        </p>
+        <p>{trans('beatmapsets.show.scoreboard.error')}</p>
 
         <p className='beatmapset-scoreboard__supporter-text beatmapset-scoreboard__supporter-text--small'>
-          <button className='btn-osu-big btn-osu-big--rounded-thin' onClick={this.onClickRetryButton} type='button'>
+          <button
+            className='btn-osu-big btn-osu-big--rounded-thin'
+            onClick={this.onClickRetryButton}
+            type='button'
+          >
             {trans('common.buttons.retry')}
           </button>
         </p>
@@ -151,15 +188,17 @@ export default class Main extends React.Component<Props> {
             />
           </div>
 
-          {this.data.user_score != null && this.data.scores[0].user.id !== this.data.user_score.score.user.id &&
-            <div className='beatmap-scoreboard-top__item'>
-              <TopCard
-                beatmap={this.controller.beatmap}
-                position={this.data.user_score.position}
-                score={this.data.user_score.score}
-              />
-            </div>
-          }
+          {this.data.user_score != null &&
+            this.data.scores[0].user.id !==
+              this.data.user_score.score.user.id && (
+              <div className='beatmap-scoreboard-top__item'>
+                <TopCard
+                  beatmap={this.controller.beatmap}
+                  position={this.data.user_score.position}
+                  score={this.data.user_score.score}
+                />
+              </div>
+            )}
         </div>
 
         <Table controller={this.controller} />
@@ -176,7 +215,13 @@ export default class Main extends React.Component<Props> {
 
         <p className='beatmapset-scoreboard__supporter-text beatmapset-scoreboard__supporter-text--small'>
           <StringWithComponent
-            mappings={{ here: <a href={route('support-the-game')}>{trans('beatmapsets.show.scoreboard.supporter_link.here')}</a> }}
+            mappings={{
+              here: (
+                <a href={route('support-the-game')}>
+                  {trans('beatmapsets.show.scoreboard.supporter_link.here')}
+                </a>
+              ),
+            }}
             pattern={trans('beatmapsets.show.scoreboard.supporter_link._')}
           />
         </p>

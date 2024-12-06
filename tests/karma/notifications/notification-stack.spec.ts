@@ -40,13 +40,16 @@ describe('Widget Notification Stack', () => {
     ],
     timestamp: new Date().toJSON(),
     types: [
-      { cursor: null, name: null,  total: identities.length },
+      { cursor: null, name: null, total: identities.length },
       { cursor: null, name: 'beatmapset', total: identities.length },
     ],
   };
 
   const identityToRemove = identities[0];
-  const expectedStackOrder = [resolveStackId(identities[0]), resolveStackId(identities[1])];
+  const expectedStackOrder = [
+    resolveStackId(identities[0]),
+    resolveStackId(identities[1]),
+  ];
 
   let store!: NotificationStore;
   beforeEach(() => {
@@ -55,7 +58,9 @@ describe('Widget Notification Stack', () => {
   });
 
   it('stacks should be ordered by latest notification', () => {
-    const ids = store.unreadStacks.orderedStacksOfType('beatmapset').map((stack) => stack.id);
+    const ids = store.unreadStacks
+      .orderedStacksOfType('beatmapset')
+      .map((stack) => stack.id);
 
     expect(ids).toEqual(expectedStackOrder);
   });
@@ -71,11 +76,15 @@ describe('Widget Notification Stack', () => {
     });
 
     it('should remove the notification', () => {
-      expect(store.unreadStacks.getStack(identityToRemove)?.notifications.size).toBe(1);
+      expect(
+        store.unreadStacks.getStack(identityToRemove)?.notifications.size,
+      ).toBe(1);
     });
 
     it('order should not change', () => {
-      const ids = store.unreadStacks.orderedStacksOfType('beatmapset').map((stack) => stack.id);
+      const ids = store.unreadStacks
+        .orderedStacksOfType('beatmapset')
+        .map((stack) => stack.id);
 
       expect(ids).toEqual(expectedStackOrder);
     });

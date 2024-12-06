@@ -17,9 +17,9 @@ export default function SupporterIcon(props: Props) {
       className={classWithModifiers('supporter-icon', props.modifiers)}
       title={trans('users.show.is_supporter')}
     >
-      {
-        times(props.level ?? 1, (n) => <span key={n} className='fas fa-heart' />)
-      }
+      {times(props.level ?? 1, (n) => (
+        <span key={n} className='fas fa-heart' />
+      ))}
     </span>
   );
 }

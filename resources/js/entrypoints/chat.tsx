@@ -63,33 +63,44 @@ function getInitialChannel(sendTo?: SendToJson) {
   }
 }
 
-core.reactTurbolinks.register('chat', action(() => {
-  const initial = parseJsonNullable<ChatInitialJson>('json-chat-initial', true);
+core.reactTurbolinks.register(
+  'chat',
+  action(() => {
+    const initial = parseJsonNullable<ChatInitialJson>(
+      'json-chat-initial',
+      true,
+    );
 
-  if (initial != null) {
-    if (Array.isArray(initial.presence)) {
-      // initial population of channel/presence data
-      core.dataStore.channelStore.updateMany(initial.presence);
-      core.dataStore.chatState.skipRefresh = true;
-      core.dataStore.chatState.canChatAnnounce = initial.current_user_attributes.can_chat_announce;
+    if (initial != null) {
+      if (Array.isArray(initial.presence)) {
+        // initial population of channel/presence data
+        core.dataStore.channelStore.updateMany(initial.presence);
+        core.dataStore.chatState.skipRefresh = true;
+        core.dataStore.chatState.canChatAnnounce =
+          initial.current_user_attributes.can_chat_announce;
+      }
+
+      core.dataStore.channelStore.lastReceivedMessageId =
+        initial.last_message_id ?? 0;
     }
 
-    core.dataStore.channelStore.lastReceivedMessageId = initial.last_message_id ?? 0;
-  }
+    const channelId = currentUrl().hash.slice(1);
 
-  const channelId = currentUrl().hash.slice(1);
-
-  if (channelId === 'create' || channelId === 'join') {
-    core.dataStore.chatState.selectChannel(channelId, 'replace');
-  } else {
-    const channel = getInitialChannel(initial?.send_to);
-
-    if (channel === undefined) {
-      core.dataStore.chatState.selectFirst();
+    if (channelId === 'create' || channelId === 'join') {
+      core.dataStore.chatState.selectChannel(channelId, 'replace');
     } else {
-      core.dataStore.chatState.selectChannel(channel?.channelId ?? null, 'replace');
-    }
-  }
+      const channel = getInitialChannel(initial?.send_to);
 
-  return <MainView />;
-}));
+      if (channel === undefined) {
+        core.dataStore.chatState.selectFirst();
+      } else {
+        core.dataStore.chatState.selectChannel(
+          channel?.channelId ?? null,
+          'replace',
+        );
+      }
+    }
+
+    return <MainView />;
+  }),
+);

@@ -6,9 +6,7 @@ module.exports = {
     es2020: true,
     node: true,
   },
-  extends: [
-    'eslint:recommended',
-  ],
+  extends: ['eslint:recommended'],
   overrides: [
     {
       extends: [
@@ -88,7 +86,8 @@ module.exports = {
         '@typescript-eslint/no-unsafe-return': 'warn',
         '@typescript-eslint/no-unused-expressions': 'error',
         '@typescript-eslint/no-unused-vars': [
-          'error', {
+          'error',
+          {
             argsIgnorePattern: '^_',
             caughtErrorsIgnorePattern: '^_',
             ignoreRestSiblings: true,
@@ -125,19 +124,30 @@ module.exports = {
         'react/jsx-max-props-per-line': ['error', { when: 'multiline' }],
         'react/jsx-no-bind': 'error',
         'react/jsx-sort-props': ['error', { reservedFirst: true }],
-        'react/jsx-tag-spacing': ['error', {
-          afterOpening: 'never',
-          beforeClosing: 'never',
-          beforeSelfClosing: 'always',
-          closingSlash: 'never',
-        }],
+        'react/jsx-tag-spacing': [
+          'error',
+          {
+            afterOpening: 'never',
+            beforeClosing: 'never',
+            beforeSelfClosing: 'always',
+            closingSlash: 'never',
+          },
+        ],
         'react/jsx-wrap-multilines': 'error',
         'react/no-deprecated': 'warn',
         'react/no-unsafe': 'off',
         'react/self-closing-comp': 'error',
         semi: 'off',
-        'typescript-sort-keys/interface': ['error', 'asc', { caseSensitive: false }],
-        'typescript-sort-keys/string-enum': ['error', 'asc', { caseSensitive: false }],
+        'typescript-sort-keys/interface': [
+          'error',
+          'asc',
+          { caseSensitive: false },
+        ],
+        'typescript-sort-keys/string-enum': [
+          'error',
+          'asc',
+          { caseSensitive: false },
+        ],
       },
       settings: {
         react: {
@@ -171,10 +181,7 @@ module.exports = {
   parserOptions: {
     sourceType: 'module',
   },
-  plugins: [
-    'eslint-plugin-jsdoc',
-    'eslint-plugin-import',
-  ],
+  plugins: ['eslint-plugin-jsdoc', 'eslint-plugin-import'],
   rules: {
     'arrow-body-style': 'error',
     complexity: 'off',

@@ -16,17 +16,23 @@ import StringWithComponent from './string-with-component';
 const bn = 'report-form';
 const maxLength = 2000;
 
-export function showReportForm(params: { reportableId: string; reportableType: ReportableType; username: string }) {
+export function showReportForm(params: {
+  reportableId: string;
+  reportableType: ReportableType;
+  username: string;
+}) {
   const root = document.createElement('div');
 
-  render(<ReportForm
-    reportableId={params.reportableId}
-    reportableType={params.reportableType}
-    root={root}
-    username={params.username}
-  />, root);
+  render(
+    <ReportForm
+      reportableId={params.reportableId}
+      reportableType={params.reportableType}
+      root={root}
+      username={params.username}
+    />,
+    root,
+  );
 }
-
 
 type GroupKey =
   | 'beatmapset'
@@ -69,7 +75,9 @@ const reasons = {
   score: ['Cheating', 'MultipleAccounts', 'Other'],
 } as const;
 
-const availableOptionsByGroupKey: Partial<Record<GroupKey, readonly (keyof typeof availableOptions)[]>> = {
+const availableOptionsByGroupKey: Partial<
+  Record<GroupKey, readonly (keyof typeof availableOptions)[]>
+> = {
   beatmapset: reasons.beatmapset,
   beatmapset_discussion_post: reasons.post,
   comment: reasons.post,
@@ -99,7 +107,10 @@ export default class ReportForm extends React.Component<Props> {
   private timeout: number | undefined;
 
   private get canSubmit() {
-    return !this.disabled && (this.comments.length > 0 || this.props.reportableType === 'message');
+    return (
+      !this.disabled &&
+      (this.comments.length > 0 || this.props.reportableType === 'message')
+    );
   }
 
   private get groupKey() {
@@ -108,11 +119,13 @@ export default class ReportForm extends React.Component<Props> {
 
   @computed
   private get options() {
-    const options = availableOptionsByGroupKey[this.groupKey]
-      ?? Object.keys(availableOptions) as (keyof typeof availableOptions)[];
+    const options =
+      availableOptionsByGroupKey[this.groupKey] ??
+      (Object.keys(availableOptions) as (keyof typeof availableOptions)[]);
 
     return options.map((option) => ({
-      id: option as string, text: availableOptions[option],
+      id: option as string,
+      text: availableOptions[option],
     }));
   }
 
@@ -141,9 +154,7 @@ export default class ReportForm extends React.Component<Props> {
             </div>
 
             <div className={`${bn}__row ${bn}__row--title`}>
-              <span>
-                {this.renderTitle()}
-              </span>
+              <span>{this.renderTitle()}</span>
             </div>
           </div>
 
@@ -158,7 +169,9 @@ export default class ReportForm extends React.Component<Props> {
   };
 
   @action
-  private readonly handleCommentsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  private readonly handleCommentsChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     this.comments = e.target.value;
   };
 
@@ -185,13 +198,19 @@ export default class ReportForm extends React.Component<Props> {
       url: route('reports.store'),
     };
 
-    $.ajax(params).done(action(() => {
-      this.timeout = window.setTimeout(this.handleClose, 1000);
-      this.completed = true;
-    })).fail(action((xhr: JQuery.jqXHR) => {
-      onError(xhr);
-      this.disabled = false;
-    }));
+    $.ajax(params)
+      .done(
+        action(() => {
+          this.timeout = window.setTimeout(this.handleClose, 1000);
+          this.completed = true;
+        }),
+      )
+      .fail(
+        action((xhr: JQuery.jqXHR) => {
+          onError(xhr);
+          this.disabled = false;
+        }),
+      );
   };
 
   private renderFormContent() {
@@ -199,9 +218,7 @@ export default class ReportForm extends React.Component<Props> {
       <div>
         {this.options.length !== 0 && (
           <>
-            <div className={`${bn}__row`}>
-              {trans('users.report.reason')}
-            </div>
+            <div className={`${bn}__row`}>{trans('users.report.reason')}</div>
             <div className={`${bn}__row`}>
               <SelectOptions
                 blackout={false}
@@ -213,9 +230,7 @@ export default class ReportForm extends React.Component<Props> {
             </div>
           </>
         )}
-        <div className={`${bn}__row`}>
-          {trans('users.report.comments')}
-        </div>
+        <div className={`${bn}__row`}>{trans('users.report.comments')}</div>
         <div className={`${bn}__row`}>
           <textarea
             className={`${bn}__textarea`}

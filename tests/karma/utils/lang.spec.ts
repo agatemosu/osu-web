@@ -3,7 +3,6 @@
 
 import { trans, transArray, transExists } from 'utils/lang';
 
-
 describe('utils/lang', () => {
   describe('locale file loaded in test runner', () => {
     it('should be loaded', () => {
@@ -17,7 +16,9 @@ describe('utils/lang', () => {
     });
 
     it('returns the untranslated key for missing translation', () => {
-      expect(trans('common.this_is_not_existed')).toBe('common.this_is_not_existed');
+      expect(trans('common.this_is_not_existed')).toBe(
+        'common.this_is_not_existed',
+      );
     });
   });
 

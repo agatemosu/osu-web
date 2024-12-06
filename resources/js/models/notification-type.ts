@@ -12,7 +12,15 @@ import { NotificationResolver } from 'notifications/notification-resolver';
 import { NotificationContextData } from 'notifications-context';
 
 // List is in the order they appear on the notification filter.
-export const typeNames = [null, 'user', 'beatmapset', 'forum_topic', 'news_post', 'build', 'channel'] as const;
+export const typeNames = [
+  null,
+  'user',
+  'beatmapset',
+  'forum_topic',
+  'news_post',
+  'build',
+  'channel',
+] as const;
 export type Name = (typeof typeNames)[number];
 
 export function getValidName(value: unknown) {
@@ -24,7 +32,9 @@ export function getValidName(value: unknown) {
   return typeNames[0];
 }
 
-export default class NotificationType implements NotificationReadable, NotificationDeletable {
+export default class NotificationType
+  implements NotificationReadable, NotificationDeletable
+{
   @observable cursor?: NotificationCursor | null;
   @observable isDeleting = false;
   @observable isLoading = false;
@@ -38,7 +48,7 @@ export default class NotificationType implements NotificationReadable, Notificat
   }
 
   @computed get hasVisibleNotifications() {
-    return (this.total > 0 && this.stacks.size > 0);
+    return this.total > 0 && this.stacks.size > 0;
   }
 
   get identity(): NotificationIdentity {
@@ -61,10 +71,16 @@ export default class NotificationType implements NotificationReadable, Notificat
   }
 
   @computed get stackNotificationCount() {
-    return [...this.stacks.values()].reduce((acc, stack) => acc + stack.total, 0);
+    return [...this.stacks.values()].reduce(
+      (acc, stack) => acc + stack.total,
+      0,
+    );
   }
 
-  constructor(readonly name: string | null, readonly resolver: NotificationResolver) {
+  constructor(
+    readonly name: string | null,
+    readonly resolver: NotificationResolver,
+  ) {
     makeObservable(this);
   }
 
@@ -85,10 +101,11 @@ export default class NotificationType implements NotificationReadable, Notificat
 
     this.isLoading = true;
 
-    this.resolver.loadMore(this.identity, context, this.cursor)
-      .always(action(() => {
+    this.resolver.loadMore(this.identity, context, this.cursor).always(
+      action(() => {
         this.isLoading = false;
-      }));
+      }),
+    );
   }
 
   @action

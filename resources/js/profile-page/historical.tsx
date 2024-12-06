@@ -29,7 +29,8 @@ function convertUserDataForChart(rawData: RawChartData[]): ChartData[] {
     .map((count) => ({
       x: new Date(count.start_date),
       y: count.count,
-    })).reduce(dataPadder, []);
+    }))
+    .reduce(dataPadder, []);
 
   if (data.length === 1) {
     data.unshift({
@@ -45,11 +46,15 @@ function dataPadder(padded: ChartData[], entry: ChartData) {
   if (padded.length > 0) {
     const lastEntry = padded[padded.length - 1];
     // use UTC to prevent wrong month calculation on timezone with DST
-    const missingMonths = moment.utc(entry.x).diff(moment.utc(lastEntry.x), 'months') - 1;
+    const missingMonths =
+      moment.utc(entry.x).diff(moment.utc(lastEntry.x), 'months') - 1;
 
     times(missingMonths, (i) => {
       padded.push({
-        x: moment.utc(lastEntry.x).add(i + 1, 'months').toDate(),
+        x: moment
+          .utc(lastEntry.x)
+          .add(i + 1, 'months')
+          .toDate(),
         y: 0,
       });
     });
@@ -91,9 +96,16 @@ export default class Historical extends React.Component<ExtraPageProps> {
   render() {
     return (
       <div className='page-extra'>
-        <ExtraHeader name={this.props.name} withEdit={this.props.controller.withEdit} />
+        <ExtraHeader
+          name={this.props.name}
+          withEdit={this.props.controller.withEdit}
+        />
 
-        <LazyLoad hasData={this.hasData} name={this.props.name} onLoad={this.handleOnLoad}>
+        <LazyLoad
+          hasData={this.hasData}
+          name={this.props.name}
+          onLoad={this.handleOnLoad}
+        >
           {this.renderHistorical()}
         </LazyLoad>
       </div>
@@ -115,22 +127,25 @@ export default class Historical extends React.Component<ExtraPageProps> {
 
     return (
       <>
-        {this.hasSection('monthly_playcounts') &&
+        {this.hasSection('monthly_playcounts') && (
           <>
             <ProfilePageExtraSectionTitle titleKey='users.show.extra.historical.monthly_playcounts.title' />
 
             <div className='page-extra__chart'>
-              <Chart data={this.monthlyPlaycountsData} labelY={`${trans('users.show.extra.historical.monthly_playcounts.count_label')}`} />
+              <Chart
+                data={this.monthlyPlaycountsData}
+                labelY={`${trans('users.show.extra.historical.monthly_playcounts.count_label')}`}
+              />
             </div>
           </>
-        }
+        )}
 
         <ProfilePageExtraSectionTitle
           count={this.data.beatmap_playcounts.count}
           titleKey='users.show.extra.historical.most_played.title'
         />
 
-        {this.data.beatmap_playcounts.count > 0 &&
+        {this.data.beatmap_playcounts.count > 0 && (
           <div>
             {this.data.beatmap_playcounts.items.map((playcount) => (
               <BeatmapPlaycount
@@ -146,19 +161,25 @@ export default class Historical extends React.Component<ExtraPageProps> {
               modifiers='profile-page'
             />
           </div>
-        }
+        )}
 
-        <PlayDetailList controller={this.props.controller} section='scoresRecent' />
+        <PlayDetailList
+          controller={this.props.controller}
+          section='scoresRecent'
+        />
 
-        {this.hasSection('replays_watched_counts') &&
+        {this.hasSection('replays_watched_counts') && (
           <>
             <ProfilePageExtraSectionTitle titleKey='users.show.extra.historical.replays_watched_counts.title' />
 
             <div className='page-extra__chart'>
-              <Chart data={this.replaysWatchedCountsData} labelY={`${trans('users.show.extra.historical.replays_watched_counts.count_label')}`} />
+              <Chart
+                data={this.replaysWatchedCountsData}
+                labelY={`${trans('users.show.extra.historical.replays_watched_counts.count_label')}`}
+              />
             </div>
           </>
-        }
+        )}
       </>
     );
   }

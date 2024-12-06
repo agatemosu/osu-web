@@ -42,15 +42,23 @@ export default class RecentActivity extends React.Component<ExtraPageProps> {
   render() {
     return (
       <div className='page-extra'>
-        <ExtraHeader name={this.props.name} withEdit={this.props.controller.withEdit} />
-        <LazyLoad hasData={this.hasData} name={this.props.name} onLoad={this.handleOnLoad}>
+        <ExtraHeader
+          name={this.props.name}
+          withEdit={this.props.controller.withEdit}
+        />
+        <LazyLoad
+          hasData={this.hasData}
+          name={this.props.name}
+          onLoad={this.handleOnLoad}
+        >
           {this.count > 0 ? this.renderEntries() : this.renderEmpty()}
         </LazyLoad>
       </div>
     );
   }
 
-  private readonly handleOnLoad = () => this.props.controller.get('recent_activity');
+  private readonly handleOnLoad = () =>
+    this.props.controller.get('recent_activity');
 
   private readonly onShowMore = () => {
     this.props.controller.apiShowMore('recentActivity');
@@ -78,15 +86,20 @@ export default class RecentActivity extends React.Component<ExtraPageProps> {
   }
 
   private readonly renderEntry = (event: EventJson) => {
-    const { badge, iconModifiers, mappings } = parseEvent(event, 'recent-activity');
+    const { badge, iconModifiers, mappings } = parseEvent(
+      event,
+      'recent-activity',
+    );
     if (mappings == null) return null;
 
     return (
       <li key={event.id} className='profile-extra-entries__item'>
         <div className='profile-extra-entries__detail'>
-          <div className={classWithModifiers('profile-extra-entries__icon', [
-            iconModifiers,
-          ])}>
+          <div
+            className={classWithModifiers('profile-extra-entries__icon', [
+              iconModifiers,
+            ])}
+          >
             {badge}
           </div>
           <div className='profile-extra-entries__text'>

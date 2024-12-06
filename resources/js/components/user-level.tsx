@@ -29,8 +29,8 @@ export default function UserLevel({ level }: { level: number }) {
       style={{ '--bg': `var(--level-tier-${tier})` } as React.CSSProperties}
       title={trans('users.show.stats.level', { level })}
     >
-      <div className="user-level__icon" />
-      <span className="user-level__level">{level}</span>
+      <div className='user-level__icon' />
+      <span className='user-level__level'>{level}</span>
     </div>
   );
 }

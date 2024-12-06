@@ -30,7 +30,10 @@ interface State {
 export class ClientDetails extends React.Component<Props, State> {
   private readonly errors = new FormErrors();
   @observable private isSecretVisible = false;
-  @observable private redirect = this.props.client.redirect.replace(/,/g, '\r\n');
+  @observable private redirect = this.props.client.redirect.replace(
+    /,/g,
+    '\r\n',
+  );
 
   constructor(props: Props) {
     super(props);
@@ -46,17 +49,19 @@ export class ClientDetails extends React.Component<Props, State> {
         </div>
 
         <div className='oauth-client-details__group'>
-          <div className='oauth-client-details__label'>{trans('oauth.client.id')}</div>
+          <div className='oauth-client-details__label'>
+            {trans('oauth.client.id')}
+          </div>
           <div>{this.props.client.id}</div>
         </div>
         <div className='oauth-client-details__group'>
-          <div className='oauth-client-details__label'>{trans('oauth.client.secret')}</div>
+          <div className='oauth-client-details__label'>
+            {trans('oauth.client.secret')}
+          </div>
           <div>
-            {
-              this.isSecretVisible
-                ? this.props.client.secret
-                : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-            }
+            {this.isSecretVisible
+              ? this.props.client.secret
+              : 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'}
           </div>
           <div className='oauth-client-details__buttons'>
             <button
@@ -68,11 +73,17 @@ export class ClientDetails extends React.Component<Props, State> {
             </button>
             <button
               className='btn-osu-big btn-osu-big--danger'
-              disabled={this.props.client.isResetting || this.props.client.revoked}
+              disabled={
+                this.props.client.isResetting || this.props.client.revoked
+              }
               onClick={this.handleReset}
               type='button'
             >
-              {this.props.client.isResetting ? <Spinner /> : trans('oauth.client.reset')}
+              {this.props.client.isResetting ? (
+                <Spinner />
+              ) : (
+                trans('oauth.client.reset')
+              )}
             </button>
           </div>
         </div>
@@ -105,7 +116,11 @@ export class ClientDetails extends React.Component<Props, State> {
             onClick={this.handleUpdate}
             type='button'
           >
-            {this.props.client.isUpdating ? <Spinner /> : trans('common.buttons.update')}
+            {this.props.client.isUpdating ? (
+              <Spinner />
+            ) : (
+              trans('common.buttons.update')
+            )}
           </button>
 
           <button
@@ -114,12 +129,18 @@ export class ClientDetails extends React.Component<Props, State> {
             onClick={this.handleDelete}
             type='button'
           >
-            {this.props.client.isRevoking ? <Spinner /> : trans('common.buttons.delete')}
+            {this.props.client.isRevoking ? (
+              <Spinner />
+            ) : (
+              trans('common.buttons.delete')
+            )}
           </button>
         </div>
 
         <div className='oauth-client-details__buttons'>
-          <button className='btn-osu-big' onClick={this.handleClose}>{trans('common.buttons.close')}</button>
+          <button className='btn-osu-big' onClick={this.handleClose}>
+            {trans('common.buttons.close')}
+          </button>
         </div>
       </div>
     );
@@ -135,13 +156,17 @@ export class ClientDetails extends React.Component<Props, State> {
     if (this.props.client.isRevoking) return;
     if (!confirm(trans('oauth.own_clients.confirm_delete'))) return;
 
-    this.props.client.delete().then(action(() => {
-      uiState.account.client = null;
-    }));
+    this.props.client.delete().then(
+      action(() => {
+        uiState.account.client = null;
+      }),
+    );
   };
 
   @action
-  private readonly handleOnChangeRedirect = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  private readonly handleOnChangeRedirect = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     this.redirect = event.currentTarget.value;
   };
 
@@ -150,10 +175,13 @@ export class ClientDetails extends React.Component<Props, State> {
     if (!confirm(trans('oauth.own_clients.confirm_reset'))) return;
     if (this.props.client.isResetting) return;
 
-    this.props.client.resetSecret()
-      .done(action(() => {
-        this.isSecretVisible = true;
-      }))
+    this.props.client
+      .resetSecret()
+      .done(
+        action(() => {
+          this.isSecretVisible = true;
+        }),
+      )
       .fail(onError);
   };
 
@@ -165,8 +193,11 @@ export class ClientDetails extends React.Component<Props, State> {
   @action
   private readonly handleUpdate = () => {
     if (this.props.client.isUpdating) return;
-    this.props.client.updateWith({ redirect: this.redirect }).then(() => {
-      this.errors.clear();
-    }).catch(this.errors.handleResponse);
+    this.props.client
+      .updateWith({ redirect: this.redirect })
+      .then(() => {
+        this.errors.clear();
+      })
+      .catch(this.errors.handleResponse);
   };
 }

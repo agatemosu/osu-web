@@ -6,7 +6,11 @@ import { BeatmapIcon } from 'components/beatmap-icon';
 import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
 import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
 import * as React from 'react';
-import { formatTimestamp, makeUrl, startingPost } from 'utils/beatmapset-discussion-helper';
+import {
+  formatTimestamp,
+  makeUrl,
+  startingPost,
+} from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import DiscussionMessage from './discussion-message';
@@ -37,18 +41,26 @@ export const ReviewPostEmbed = ({ data, store }: Props) => {
     // if a discussion has been deleted or is otherwise missing
     return (
       <div className={classWithModifiers(bn, ['deleted', 'lighter'])}>
-        <div className={`${bn}__missing`}>{trans('beatmaps.discussions.review.embed.missing')}</div>
+        <div className={`${bn}__missing`}>
+          {trans('beatmaps.discussions.review.embed.missing')}
+        </div>
       </div>
     );
   }
 
   const post = startingPost(discussion);
   if (post == null || post.system) {
-    console.error('embed starting post is missing or is system post', discussion.id);
+    console.error(
+      'embed starting post is missing or is system post',
+      discussion.id,
+    );
     return null;
   }
 
-  const beatmap = discussion.beatmap_id == null ? undefined : beatmaps.get(discussion.beatmap_id);
+  const beatmap =
+    discussion.beatmap_id == null
+      ? undefined
+      : beatmaps.get(discussion.beatmap_id);
 
   const messageTypeIcon = () => {
     const type = discussion.message_type;
@@ -66,11 +78,9 @@ export const ReviewPostEmbed = ({ data, store }: Props) => {
 
   const timestamp = () => (
     <div className={`${bn}__timestamp-text`}>
-      {
-        discussion.timestamp !== null
-          ? formatTimestamp(discussion.timestamp)
-          : trans('beatmap_discussions.timestamp_display.general')
-      }
+      {discussion.timestamp !== null
+        ? formatTimestamp(discussion.timestamp)
+        : trans('beatmap_discussions.timestamp_display.general')}
     </div>
   );
 
@@ -93,21 +103,28 @@ export const ReviewPostEmbed = ({ data, store }: Props) => {
   };
 
   return (
-    <div className={classWithModifiers(bn, 'lighter', postEmbedModifiers(discussion))}>
+    <div
+      className={classWithModifiers(
+        bn,
+        'lighter',
+        postEmbedModifiers(discussion),
+      )}
+    >
       <div className={`${bn}__content`}>
         <div className={`${bn}__selectors`}>
           <div className='icon-dropdown-menu icon-dropdown-menu--disabled'>
             {beatmap != null && <BeatmapIcon beatmap={beatmap} withTooltip />}
-            {discussion.beatmap_id == null &&
-              <i className='fas fa-fw fa-star-of-life' title={trans('beatmaps.discussions.mode.scopes.generalAll')} />
-            }
+            {discussion.beatmap_id == null && (
+              <i
+                className='fas fa-fw fa-star-of-life'
+                title={trans('beatmaps.discussions.mode.scopes.generalAll')}
+              />
+            )}
           </div>
           <div className='icon-dropdown-menu icon-dropdown-menu--disabled'>
             {messageTypeIcon()}
           </div>
-          <div className={`${bn}__timestamp`}>
-            {timestamp()}
-          </div>
+          <div className={`${bn}__timestamp`}>{timestamp()}</div>
           <div className={`${bn}__stripe`} />
           {parentLink()}
         </div>

@@ -2,7 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import Ruleset from 'interfaces/ruleset';
-import SoloScoreJson, { SoloScoreStatisticsAttribute } from 'interfaces/solo-score-json';
+import SoloScoreJson, {
+  SoloScoreStatisticsAttribute,
+} from 'interfaces/solo-score-json';
 import { route } from 'laroute';
 import core from 'osu-core-singleton';
 import { rulesetName } from './beatmap-helper';
@@ -16,9 +18,11 @@ export function accuracy(score: SoloScoreJson) {
 }
 
 export function canBeReported(score: SoloScoreJson) {
-  return (score.best_id != null || score.type === 'solo_score')
-    && core.currentUser != null
-    && score.user_id !== core.currentUser.id;
+  return (
+    (score.best_id != null || score.type === 'solo_score') &&
+    core.currentUser != null &&
+    score.user_id !== core.currentUser.id
+  );
 }
 
 // Removes CL mod on legacy score if user has lazer mode disabled
@@ -26,12 +30,16 @@ export function filterMods(score: SoloScoreJson) {
   return shouldReturnLegacyValue(score)
     ? score.mods.filter((mod) => mod.acronym !== 'CL')
     : score.mods;
-
 }
 
 // TODO: move to application state repository thingy later
 export function hasMenu(score: SoloScoreJson) {
-  return canBeReported(score) || hasReplay(score) || hasShow(score) || core.scorePins.canBePinned(score);
+  return (
+    canBeReported(score) ||
+    hasReplay(score) ||
+    hasShow(score) ||
+    core.scorePins.canBePinned(score)
+  );
 }
 
 export function hasReplay(score: SoloScoreJson) {
@@ -91,11 +99,17 @@ export const modeAttributesMap: Record<Ruleset, AttributeDisplayMapping[]> = {
   ],
 };
 
-export function attributeDisplayTotals(ruleset: Ruleset, score: SoloScoreJson): AttributeDisplayTotal[] {
+export function attributeDisplayTotals(
+  ruleset: Ruleset,
+  score: SoloScoreJson,
+): AttributeDisplayTotal[] {
   return modeAttributesMap[ruleset].map((mapping) => ({
     key: mapping.key,
     label: mapping.label,
-    total: mapping.attributes.reduce((sum, attribute) => sum + (score.statistics[attribute] ?? 0), 0),
+    total: mapping.attributes.reduce(
+      (sum, attribute) => sum + (score.statistics[attribute] ?? 0),
+      0,
+    ),
   }));
 }
 
@@ -177,7 +191,7 @@ export function scoreDownloadUrl(score: SoloScoreJson) {
     });
   }
 
-  throw new Error('score json doesn\'t have download url');
+  throw new Error("score json doesn't have download url");
 }
 
 export function scoreUrl(score: SoloScoreJson) {
@@ -192,11 +206,14 @@ export function scoreUrl(score: SoloScoreJson) {
     });
   }
 
-  throw new Error('score json doesn\'t have url');
+  throw new Error("score json doesn't have url");
 }
 
 function shouldReturnLegacyValue(score: SoloScoreJson) {
-  return score.legacy_score_id !== null && core.userPreferences.get('legacy_score_only');
+  return (
+    score.legacy_score_id !== null &&
+    core.userPreferences.get('legacy_score_only')
+  );
 }
 
 export function totalScore(score: SoloScoreJson) {
@@ -204,7 +221,10 @@ export function totalScore(score: SoloScoreJson) {
     return score.legacy_total_score;
   }
 
-  if (score.type === 'solo_score' && core.userPreferences.get('scoring_mode') === 'classic') {
+  if (
+    score.type === 'solo_score' &&
+    core.userPreferences.get('scoring_mode') === 'classic'
+  ) {
     return score.classic_total_score;
   }
 

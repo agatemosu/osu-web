@@ -5,5 +5,7 @@ import DispatcherAction from 'actions/dispatcher-action';
 import Message from 'models/chat/message';
 
 export class ChatMessageSendAction implements DispatcherAction {
-  constructor(public message: Message) { /* do nothing */ }
+  constructor(public message: Message) {
+    /* do nothing */
+  }
 }

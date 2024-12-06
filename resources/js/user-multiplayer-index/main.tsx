@@ -21,7 +21,8 @@ import { trans } from 'utils/lang';
 interface Props {
   store: RoomListStore;
   typeGroup: MultiplayerTypeGroup;
-  user: UserExtendedJson & Required<Pick<UserExtendedJson, ProfileHeaderIncludes>>;
+  user: UserExtendedJson &
+    Required<Pick<UserExtendedJson, ProfileHeaderIncludes>>;
 }
 
 export default function Main(props: Props) {
@@ -31,12 +32,21 @@ export default function Main(props: Props) {
         backgroundImage={props.user.cover.url}
         links={headerLinks(props.user, props.typeGroup)}
         // add space for warning banner when user is blocked
-        modifiers={{ restricted: core.currentUserModel.blocks.has(props.user.id) || props.user.is_restricted }}
+        modifiers={{
+          restricted:
+            core.currentUserModel.blocks.has(props.user.id) ||
+            props.user.is_restricted,
+        }}
         theme='users'
       />
 
       <div className='osu-page osu-page--generic-compact'>
-        <Cover coverUrl={props.user.cover.url} currentMode={props.user.playmode} modifiers='multiplayer' user={props.user} />
+        <Cover
+          coverUrl={props.user.cover.url}
+          currentMode={props.user.playmode}
+          modifiers='multiplayer'
+          user={props.user}
+        />
 
         {props.user.active_tournament_banners.map((banner) => (
           <ProfileTournamentBanner key={banner.id} banner={banner} />
@@ -48,9 +58,14 @@ export default function Main(props: Props) {
 
         <div className='user-profile-pages user-profile-pages--no-tabs'>
           <div className='page-extra'>
-            <h2 className='title title--page-extra'>{trans(`users.show.extra.${props.typeGroup}.title`)}</h2>
+            <h2 className='title title--page-extra'>
+              {trans(`users.show.extra.${props.typeGroup}.title`)}
+            </h2>
             <RoomList
-              showMoreUrl={route('users.multiplayer.index', { typeGroup: props.typeGroup, user: props.user.id })}
+              showMoreUrl={route('users.multiplayer.index', {
+                typeGroup: props.typeGroup,
+                user: props.user.id,
+              })}
               store={props.store}
               typeGroup={props.typeGroup}
             />

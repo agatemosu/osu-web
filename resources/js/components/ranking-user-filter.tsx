@@ -10,7 +10,7 @@ import { Sort } from './sort';
 const filters = ['all', 'friends'] as const;
 
 interface Props {
-  current: (typeof filters[number]) |  null;
+  current: (typeof filters)[number] | null;
 }
 
 export default class RankingUserFilter extends React.PureComponent<Props> {
@@ -32,6 +32,11 @@ export default class RankingUserFilter extends React.PureComponent<Props> {
   }
 
   private readonly onChange = (event: React.MouseEvent<HTMLButtonElement>) => {
-    navigate(updateQueryString(null, { filter: event.currentTarget.dataset.value, page: null }));
+    navigate(
+      updateQueryString(null, {
+        filter: event.currentTarget.dataset.value,
+        page: null,
+      }),
+    );
   };
 }

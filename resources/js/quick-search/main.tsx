@@ -15,7 +15,6 @@ import User from './user';
 import { ResultMode, Section } from './worker';
 import Worker from './worker';
 
-
 interface Props {
   modifiers?: string[];
   onClose?: () => void;
@@ -24,7 +23,8 @@ interface Props {
 
 const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
 
-@observer export default class QuickSearch extends React.Component<Props> {
+@observer
+export default class QuickSearch extends React.Component<Props> {
   private readonly inputRef = React.createRef<HTMLInputElement>();
 
   focus = () => {
@@ -47,7 +47,11 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
         <div className='quick-search-input'>
           <div className='quick-search-input__field'>
             <span className='quick-search-input__icon'>
-              {this.props.worker.searching ? <Spinner /> : <span className='fas fa-search' />}
+              {this.props.worker.searching ? (
+                <Spinner />
+              ) : (
+                <span className='fas fa-search' />
+              )}
             </span>
 
             <input
@@ -97,7 +101,9 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
     }
   }
 
-  private readonly onInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  private readonly onInputKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
     const key = event.key;
     if (key === 'Enter') {
       // this will prevent keyboard arrow navigation
@@ -128,21 +134,25 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
 
     return (
       <div className='quick-search-items'>
-        {this.props.worker.searchResult.beatmapset.beatmapsets.map((beatmapset, idx) => (
-          <div
-            key={beatmapset.id}
-            className='quick-search-items__item'
-            data-index={idx}
-            data-section='beatmapset'
-            onMouseEnter={this.onMouseEnter}
-            onMouseLeave={this.onMouseLeave}
-          >
-            <Beatmapset
-              beatmapset={beatmapset}
-              modifiers={this.boxIsActive('beatmapset', idx) ? ['active'] : []}
-            />
-          </div>
-        ))}
+        {this.props.worker.searchResult.beatmapset.beatmapsets.map(
+          (beatmapset, idx) => (
+            <div
+              key={beatmapset.id}
+              className='quick-search-items__item'
+              data-index={idx}
+              data-section='beatmapset'
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
+            >
+              <Beatmapset
+                beatmapset={beatmapset}
+                modifiers={
+                  this.boxIsActive('beatmapset', idx) ? ['active'] : []
+                }
+              />
+            </div>
+          ),
+        )}
 
         <div
           className='quick-search-items__item'
@@ -150,7 +160,10 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
         >
-          {this.renderResultLink('beatmapset', this.boxIsActive('beatmapset_others', 0))}
+          {this.renderResultLink(
+            'beatmapset',
+            this.boxIsActive('beatmapset_others', 0),
+          )}
         </div>
       </div>
     );
@@ -192,7 +205,9 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
       <div className='quick-search-items quick-search-items--empty'>
         {modes.map((mode) => (
           <div key={mode} className='quick-search-items__item'>
-            {trans('quick_search.result.empty_for', { modes: trans(`quick_search.mode.${mode}`) })}
+            {trans('quick_search.result.empty_for', {
+              modes: trans(`quick_search.mode.${mode}`),
+            })}
           </div>
         ))}
       </div>
@@ -253,7 +268,10 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
 
     return (
       <a
-        className={classWithModifiers('search-result-more', active ? ['active'] : [])}
+        className={classWithModifiers(
+          'search-result-more',
+          active ? ['active'] : [],
+        )}
         href={route('search', { mode, query: this.props.worker.query })}
       >
         <div className='search-result-more__content'>
@@ -273,7 +291,9 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
     return (
       <h2 className='title'>
         <StringWithComponent
-          mappings={{ mode: <strong>{trans(`quick_search.mode.${mode}`)}</strong> }}
+          mappings={{
+            mode: <strong>{trans(`quick_search.mode.${mode}`)}</strong>,
+          }}
           pattern={trans('quick_search.result.title')}
         />
       </h2>
@@ -288,7 +308,9 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
     if (this.count('user') === 0) {
       return (
         <span className='quick-search-items quick-search-items--empty'>
-          {trans('quick_search.result.empty', { mode: trans('quick_search.mode.beatmapset') })}
+          {trans('quick_search.result.empty', {
+            mode: trans('quick_search.mode.beatmapset'),
+          })}
         </span>
       );
     }
@@ -311,7 +333,8 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
           </div>
         ))}
 
-        {this.count('user') > this.props.worker.searchResult.user.users.length && (
+        {this.count('user') >
+          this.props.worker.searchResult.user.users.length && (
           <div
             className='quick-search-items__item'
             data-section='user_others'
@@ -329,7 +352,9 @@ const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
     this.props.worker.setSelected(section, index);
   }
 
-  private readonly updateQuery = (event: React.SyntheticEvent<HTMLInputElement>) => {
+  private readonly updateQuery = (
+    event: React.SyntheticEvent<HTMLInputElement>,
+  ) => {
     this.props.worker.updateQuery(event.currentTarget.value);
   };
 }

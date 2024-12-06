@@ -47,7 +47,6 @@ export class UserCard extends React.PureComponent<Props> {
               <span className={`${bn}__user-link`}>
                 {this.renderUsername()}
               </span>
-
             ) : (
               <a
                 className={`${bn}__user-link`}
@@ -59,8 +58,12 @@ export class UserCard extends React.PureComponent<Props> {
             {!this.props.user.is_bot && !this.props.user.is_deleted && (
               <a
                 className={`${bn}__user-modding-history-link`}
-                href={route('users.modding.index', { user: this.props.user.id })}
-                title={trans('beatmap_discussion_posts.item.modding_history_link')}
+                href={route('users.modding.index', {
+                  user: this.props.user.id,
+                })}
+                title={trans(
+                  'beatmap_discussion_posts.item.modding_history_link',
+                )}
               >
                 <i className='fas fa-align-left' />
               </a>
@@ -79,9 +82,7 @@ export class UserCard extends React.PureComponent<Props> {
 
   private renderUsername() {
     return (
-      <span className='u-ellipsis-overflow'>
-        {this.props.user.username}
-      </span>
+      <span className='u-ellipsis-overflow'>{this.props.user.username}</span>
     );
   }
 }

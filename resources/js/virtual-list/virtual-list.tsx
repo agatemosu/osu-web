@@ -31,7 +31,6 @@ function topFromWindow(element: Window | HTMLElement | Element | null): number {
   return offsetTop + topFromWindow(offsetParent);
 }
 
-
 @observer
 export default class VirtualList<T> extends React.Component<Props<T>> {
   static readonly defaultProps = {
@@ -53,16 +52,26 @@ export default class VirtualList<T> extends React.Component<Props<T>> {
     const { itemBuffer, itemHeight } = this.props;
     const scrollBottom = this.scrollTop + viewHeight;
 
-    const listTop = topFromWindow(this.ref.current) - topFromWindow(this.scrollContainer); // top of the list inside the scroll container
+    const listTop =
+      topFromWindow(this.ref.current) - topFromWindow(this.scrollContainer); // top of the list inside the scroll container
     const listHeight = itemHeight * length;
 
     // visible portion of the list
     const listViewTop = Math.max(0, this.scrollTop - listTop);
-    const listViewBottom = Math.max(0, Math.min(listHeight, scrollBottom - listTop));
+    const listViewBottom = Math.max(
+      0,
+      Math.min(listHeight, scrollBottom - listTop),
+    );
 
     // visible item indexes
-    const firstItemIndex = Math.max(0, Math.floor(listViewTop / itemHeight) - itemBuffer);
-    const lastItemIndex = Math.min(length, Math.ceil(listViewBottom / itemHeight) + itemBuffer);
+    const firstItemIndex = Math.max(
+      0,
+      Math.floor(listViewTop / itemHeight) - itemBuffer,
+    );
+    const lastItemIndex = Math.min(
+      length,
+      Math.ceil(listViewBottom / itemHeight) + itemBuffer,
+    );
 
     return {
       firstItemIndex,
@@ -86,7 +95,13 @@ export default class VirtualList<T> extends React.Component<Props<T>> {
 
   render() {
     const visibleItemBounds = this.visibleItemBounds;
-    const items = visibleItemBounds.lastItemIndex > 0 ? this.props.items.slice(visibleItemBounds.firstItemIndex, visibleItemBounds.lastItemIndex) : [];
+    const items =
+      visibleItemBounds.lastItemIndex > 0
+        ? this.props.items.slice(
+            visibleItemBounds.firstItemIndex,
+            visibleItemBounds.lastItemIndex,
+          )
+        : [];
 
     const style: React.CSSProperties = {
       boxSizing: 'border-box',

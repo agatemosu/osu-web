@@ -6,14 +6,29 @@ import { ChatNewConversationAdded } from 'actions/chat-new-conversation-added';
 import ChatUpdateSilences from 'actions/chat-update-silences';
 import DispatcherAction from 'actions/dispatcher-action';
 import { dispatch, dispatchListener } from 'app-dispatcher';
-import { getChannel, newConversation, partChannel as apiPartChannel, sendMessage } from 'chat/chat-api';
+import {
+  getChannel,
+  newConversation,
+  partChannel as apiPartChannel,
+  sendMessage,
+} from 'chat/chat-api';
 import MessageNewEvent from 'chat/message-new-event';
 import DispatchListener from 'dispatch-listener';
-import ChannelJson, { filterSupportedChannelTypes, SupportedChannelType, supportedChannelTypes } from 'interfaces/chat/channel-json';
+import ChannelJson, {
+  filterSupportedChannelTypes,
+  SupportedChannelType,
+  supportedChannelTypes,
+} from 'interfaces/chat/channel-json';
 import ChatUpdatesJson from 'interfaces/chat/chat-updates-json';
 import MessageJson from 'interfaces/chat/message-json';
 import { groupBy, maxBy } from 'lodash';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 import Channel from 'models/chat/channel';
 import Message from 'models/chat/message';
 import core from 'osu-core-singleton';
@@ -248,14 +263,19 @@ export default class ChannelStore implements DispatchListener {
         const userId = channel.pmTarget;
 
         if (userId == null) {
-          console.error('sendMessage:: userId not found?? this shouldn\'t happen');
+          console.error(
+            "sendMessage:: userId not found?? this shouldn't happen",
+          );
           return;
         }
 
         const response = await newConversation(userId, message);
         runInAction(() => {
           this.channels.delete(message.channelId);
-          const newChannel = this.addNewConversation(response.channel, response.message);
+          const newChannel = this.addNewConversation(
+            response.channel,
+            response.message,
+          );
           dispatch(new ChatNewConversationAdded(newChannel.channelId));
         });
       } else {
@@ -272,7 +292,9 @@ export default class ChannelStore implements DispatchListener {
 
   @action
   private handleChatUpdateSilences(event: ChatUpdateSilences) {
-    const silencedUserIds = new Set<number>(event.json.map((json) => json.user_id));
+    const silencedUserIds = new Set<number>(
+      event.json.map((json) => json.user_id),
+    );
     this.removePublicMessagesFromUserIds(silencedUserIds);
   }
 
@@ -287,6 +309,7 @@ export default class ChannelStore implements DispatchListener {
   private updateLastReceivedMessageId(json?: MessageJson[]) {
     if (json == null) return;
 
-    this.lastReceivedMessageId = maxBy(json, 'message_id')?.message_id ?? this.lastReceivedMessageId;
+    this.lastReceivedMessageId =
+      maxBy(json, 'message_id')?.message_id ?? this.lastReceivedMessageId;
   }
 }

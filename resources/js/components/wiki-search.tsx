@@ -24,7 +24,10 @@ export class WikiSearch extends React.Component {
     // scroll highlighted option into view if triggered by keys
     if (this.keepSelectionInView) {
       // FIXME: probably doesn't work on Edge?
-      $('.wiki-search__suggestion--active')[0]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      $('.wiki-search__suggestion--active')[0]?.scrollIntoView({
+        block: 'nearest',
+        inline: 'nearest',
+      });
       this.keepSelectionInView = false;
     }
   }
@@ -101,26 +104,34 @@ export class WikiSearch extends React.Component {
     if (!this.controller.isSuggestionsVisible) return null;
 
     return (
-      <div ref={this.ref} className='wiki-search__suggestions u-fancy-scrollbar' onMouseLeave={this.handleMouseLeave}>
-        {
-          this.controller.suggestions.map((item, index) => (
-            <a
-              key={index}
-              className={classWithModifiers('wiki-search__suggestion', { active: this.controller.selectedIndex === index })}
-              data-index={index}
-              href={wikiUrl(item.path)}
-              onMouseEnter={this.handleSuggestionMouseEnter}
-            >
-              <span dangerouslySetInnerHTML={{ __html: item.highlight }} />
-            </a>
-          ))
-        }
+      <div
+        ref={this.ref}
+        className='wiki-search__suggestions u-fancy-scrollbar'
+        onMouseLeave={this.handleMouseLeave}
+      >
+        {this.controller.suggestions.map((item, index) => (
+          <a
+            key={index}
+            className={classWithModifiers('wiki-search__suggestion', {
+              active: this.controller.selectedIndex === index,
+            })}
+            data-index={index}
+            href={wikiUrl(item.path)}
+            onMouseEnter={this.handleSuggestionMouseEnter}
+          >
+            <span dangerouslySetInnerHTML={{ __html: item.highlight }} />
+          </a>
+        ))}
       </div>
     );
   }
 
-  private readonly handleSuggestionMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
+  private readonly handleSuggestionMouseEnter = (
+    e: React.SyntheticEvent<HTMLElement>,
+  ) => {
     this.keepSelectionInView = false;
-    this.controller.selectIndex(parseInt(e.currentTarget.dataset.index ?? '', 10));
+    this.controller.selectIndex(
+      parseInt(e.currentTarget.dataset.index ?? '', 10),
+    );
   };
 }

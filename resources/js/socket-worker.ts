@@ -8,20 +8,34 @@ import { dispatch, dispatchListener } from 'app-dispatcher';
 import { route } from 'laroute';
 import { forEach } from 'lodash';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { NotificationEventLogoutJson, NotificationEventVerifiedJson } from 'notifications/notification-events';
+import {
+  NotificationEventLogoutJson,
+  NotificationEventVerifiedJson,
+} from 'notifications/notification-events';
 import core from 'osu-core-singleton';
-import SocketMessageEvent, { isSocketEventData, SocketEventData } from 'socket-message-event';
+import SocketMessageEvent, {
+  isSocketEventData,
+  SocketEventData,
+} from 'socket-message-event';
 import RetryDelay from 'utils/retry-delay';
 
-const isNotificationEventLogoutJson = (arg: SocketEventData): arg is NotificationEventLogoutJson => arg.event === 'logout';
+const isNotificationEventLogoutJson = (
+  arg: SocketEventData,
+): arg is NotificationEventLogoutJson => arg.event === 'logout';
 
-const isNotificationEventVerifiedJson = (arg: SocketEventData): arg is NotificationEventVerifiedJson => arg.event === 'verified';
+const isNotificationEventVerifiedJson = (
+  arg: SocketEventData,
+): arg is NotificationEventVerifiedJson => arg.event === 'verified';
 
 interface NotificationFeedMetaJson {
   url: string;
 }
 
-type ConnectionStatus = 'disconnected' | 'disconnecting' | 'connecting' | 'connected';
+type ConnectionStatus =
+  | 'disconnected'
+  | 'disconnecting'
+  | 'connecting'
+  | 'connected';
 
 @dispatchListener
 export default class SocketWorker {
@@ -97,11 +111,14 @@ export default class SocketWorker {
 
     const token = tokenEl.getAttribute('content');
     this.ws = new WebSocket(`${this.endpoint}?csrf=${token}`);
-    this.ws.addEventListener('open', action(() => {
-      this.retryDelay.reset();
-      this.connectionStatus = 'connected';
-      this.hasConnectedOnce = true;
-    }));
+    this.ws.addEventListener(
+      'open',
+      action(() => {
+        this.retryDelay.reset();
+        this.connectionStatus = 'connected';
+        this.hasConnectedOnce = true;
+      }),
+    );
     this.ws.addEventListener('close', this.reconnectWebSocket);
     this.ws.addEventListener('message', this.handleNewEvent);
   }
@@ -157,10 +174,13 @@ export default class SocketWorker {
       return;
     }
 
-    this.timeout.connectWebSocket = window.setTimeout(action(() => {
-      this.ws = null;
-      this.connectWebSocket();
-    }), this.retryDelay.get());
+    this.timeout.connectWebSocket = window.setTimeout(
+      action(() => {
+        this.ws = null;
+        this.connectWebSocket();
+      }),
+      this.retryDelay.get(),
+    );
   };
 
   private readonly startWebSocket = () => {
@@ -191,7 +211,10 @@ export default class SocketWorker {
           this.destroy();
           return;
         }
-        this.timeout.startWebSocket = window.setTimeout(this.startWebSocket, this.retryDelay.get());
+        this.timeout.startWebSocket = window.setTimeout(
+          this.startWebSocket,
+          this.retryDelay.get(),
+        );
       });
   };
 }

@@ -22,9 +22,7 @@ export class AuthorizedClient extends React.Component<Props> {
     return (
       <div className='oauth-client'>
         <div className='oauth-client__details'>
-          <div className='oauth-client__name'>
-            {client.name}
-          </div>
+          <div className='oauth-client__name'>{client.name}</div>
           <span className='oauth-client__owner'>
             <StringWithComponent
               mappings={{
@@ -33,9 +31,7 @@ export class AuthorizedClient extends React.Component<Props> {
               pattern={trans('oauth.authorized_clients.owned_by')}
             />
           </span>
-          <div className='oauth-client__scopes'>
-            {this.renderPermissions()}
-          </div>
+          <div className='oauth-client__scopes'>{this.renderPermissions()}</div>
         </div>
         <div>
           <BigButton
@@ -59,14 +55,14 @@ export class AuthorizedClient extends React.Component<Props> {
       <>
         <div>{trans('oauth.authorized_clients.scopes_title')}</div>
         <ul className='oauth-scopes'>
-          {
-            scopes.map((scope) => (
-              <li key={scope}>
-                <span className='oauth-scopes__icon'><span className='fas fa-check' /></span>
-                {trans(`api.scopes.${scope}`)}
-              </li>
-            ))
-          }
+          {scopes.map((scope) => (
+            <li key={scope}>
+              <span className='oauth-scopes__icon'>
+                <span className='fas fa-check' />
+              </span>
+              {trans(`api.scopes.${scope}`)}
+            </li>
+          ))}
         </ul>
       </>
     );

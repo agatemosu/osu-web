@@ -30,18 +30,17 @@ export default function BeatmapsetCover(props: Props) {
 
   if (props.isDeleted ?? false) {
     return (
-      <div
-        className={className}
-        title={trans('beatmapsets.cover.deleted')}
-      >
+      <div className={className} title={trans('beatmapsets.cover.deleted')}>
         <span className='fas fa-trash' />
       </div>
     );
   }
 
-  const style = props.beatmapset != null && (props.forceShowVisual || showVisual(props.beatmapset))
-    ? cssVar2x(props.beatmapset.covers[props.size])
-    : undefined;
+  const style =
+    props.beatmapset != null &&
+    (props.forceShowVisual || showVisual(props.beatmapset))
+      ? cssVar2x(props.beatmapset.covers[props.size])
+      : undefined;
 
   return <div className={className} style={style} />;
 }

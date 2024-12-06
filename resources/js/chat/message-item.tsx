@@ -26,26 +26,31 @@ const components = Object.freeze({
 export default class MessageItem extends React.Component<Props> {
   render() {
     return (
-      <div className={classWithModifiers('chat-message-item', { sending: !this.props.message.persisted })}>
+      <div
+        className={classWithModifiers('chat-message-item', {
+          sending: !this.props.message.persisted,
+        })}
+      >
         <div className='chat-message-item__entry'>
           {this.renderMarkdown()}
-          {!this.props.message.persisted && !this.props.message.errored &&
+          {!this.props.message.persisted && !this.props.message.errored && (
             <div className='chat-message-item__status'>
               <Spinner />
             </div>
-          }
-          {this.props.message.errored &&
+          )}
+          {this.props.message.errored && (
             <div className='chat-message-item__status chat-message-item__status--errored'>
               <i className='fas fa-times' />
             </div>
-          }
+          )}
         </div>
       </div>
     );
   }
 
   private renderMarkdown() {
-    const remarkType = this.props.message.type === 'markdown' ? 'chat' : 'chatPlain';
+    const remarkType =
+      this.props.message.type === 'markdown' ? 'chat' : 'chatPlain';
 
     return (
       <ReactMarkdown

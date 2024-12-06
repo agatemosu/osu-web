@@ -22,10 +22,12 @@ export default class ScorePins {
       data: pin,
       dataType: 'json',
       method: toPin ? 'POST' : 'DELETE',
-    }).done(action(() => {
-      this.markPinned(score, toPin);
-      $.publish('score:pin', [toPin, score]);
-    })) as JQuery.jqXHR<void>;
+    }).done(
+      action(() => {
+        this.markPinned(score, toPin);
+        $.publish('score:pin', [toPin, score]);
+      }),
+    ) as JQuery.jqXHR<void>;
   }
 
   canBePinned(score: SoloScoreJson) {

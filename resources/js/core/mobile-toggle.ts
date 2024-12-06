@@ -21,7 +21,9 @@ export default class MobileToggle {
       return;
     }
 
-    const target = document.querySelector(`.js-mobile-toggle[data-mobile-toggle-id=${targetId}]`);
+    const target = document.querySelector(
+      `.js-mobile-toggle[data-mobile-toggle-id=${targetId}]`,
+    );
 
     if (!(target instanceof HTMLElement)) {
       return;

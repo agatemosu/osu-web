@@ -15,10 +15,10 @@ export const profileExtraPages = [
   'account_standing',
 ] as const;
 
-export type ProfileExtraPage = typeof profileExtraPages[number];
+export type ProfileExtraPage = (typeof profileExtraPages)[number];
 
 type UserExtendedDefaultIncludes =
-  'country'
+  | 'country'
   | 'cover'
   | 'is_admin'
   | 'is_bng'
@@ -54,6 +54,8 @@ interface UserExtendedAdditionalAttributes {
   website: string | null;
 }
 
-type UserExtendedJson = UserJson & Required<Pick<UserJson, UserExtendedDefaultIncludes>> & UserExtendedAdditionalAttributes;
+type UserExtendedJson = UserJson &
+  Required<Pick<UserJson, UserExtendedDefaultIncludes>> &
+  UserExtendedAdditionalAttributes;
 
 export default UserExtendedJson;

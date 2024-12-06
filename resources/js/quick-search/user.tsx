@@ -10,7 +10,13 @@ import { route } from 'laroute';
 import * as React from 'react';
 import { classWithModifiers, urlPresence } from 'utils/css';
 
-export default function User({ user, modifiers = [] }: { modifiers?: string[]; user: UserJson }) {
+export default function User({
+  user,
+  modifiers = [],
+}: {
+  modifiers?: string[];
+  user: UserJson;
+}) {
   const url = route('users.show', { user: user.id });
 
   return (
@@ -18,7 +24,10 @@ export default function User({ user, modifiers = [] }: { modifiers?: string[]; u
       <a className='user-search-card__background-container' href={url} />
       <div className='user-search-card__container'>
         <a className='user-search-card__avatar-container' href={url}>
-          <div className='avatar avatar--full' style={{ backgroundImage: urlPresence(user.avatar_url) }} />
+          <div
+            className='avatar avatar--full'
+            style={{ backgroundImage: urlPresence(user.avatar_url) }}
+          />
         </a>
 
         <div className='user-search-card__details'>
@@ -26,18 +35,27 @@ export default function User({ user, modifiers = [] }: { modifiers?: string[]; u
             <FlagCountry country={user.country} />
           </div>
 
-          <a className='user-search-card__col user-search-card__col--username' href={url}>
+          <a
+            className='user-search-card__col user-search-card__col--username'
+            href={url}
+          >
             {user.username}
           </a>
 
-          {user.is_supporter
-            ? (
-              <div className='user-search-card__col user-search-card__col--icon u-hidden-narrow'>
-                <SupporterIcon level={user.support_level} modifiers='quick-search' />
-              </div>
-            ) : null}
+          {user.is_supporter ? (
+            <div className='user-search-card__col user-search-card__col--icon u-hidden-narrow'>
+              <SupporterIcon
+                level={user.support_level}
+                modifiers='quick-search'
+              />
+            </div>
+          ) : null}
 
-          <UserGroupBadges groups={user.groups} short wrapper='user-search-card__col user-search-card__col--icon' />
+          <UserGroupBadges
+            groups={user.groups}
+            short
+            wrapper='user-search-card__col user-search-card__col--icon'
+          />
 
           <div className='user-search-card__col user-search-card__col--icon'>
             <FriendButton modifiers='quick-search' userId={user.id} />

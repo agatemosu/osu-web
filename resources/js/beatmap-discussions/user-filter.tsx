@@ -109,7 +109,12 @@ export class UserFilter extends React.Component<Props> {
     return user != null && user.id === this.ownerId;
   }
 
-  private readonly renderOption = ({ cssClasses, children, onClick, option }: OptionRenderProps<Option>) => {
+  private readonly renderOption = ({
+    cssClasses,
+    children,
+    onClick,
+    option,
+  }: OptionRenderProps<Option>) => {
     const group = this.getGroup(option);
     const style = groupColour(group);
 

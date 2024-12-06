@@ -28,19 +28,23 @@ interface FilterProps {
   options: FilterOption[];
 }
 
-const Filter = observer(({ multiselect = false, name, options, grid = false }: FilterProps) => {
-  const title = grid ? trans(`beatmaps.listing.search.filters.${name}`) : undefined;
+const Filter = observer(
+  ({ multiselect = false, name, options, grid = false }: FilterProps) => {
+    const title = grid
+      ? trans(`beatmaps.listing.search.filters.${name}`)
+      : undefined;
 
-  return (
-    <SearchFilter
-      modifiers={{ grid }}
-      multiselect={multiselect}
-      name={name}
-      options={options}
-      title={title}
-    />
-  );
-});
+    return (
+      <SearchFilter
+        modifiers={{ grid }}
+        multiselect={multiselect}
+        name={name}
+        options={options}
+        title={title}
+      />
+    );
+  },
+);
 
 // props don't change anymore when selecting a new filter
 @observer
@@ -75,17 +79,15 @@ export class SearchPanel extends React.Component<Props> {
     return (
       <>
         {breadcrumbsElement != null && (
-          <Portal root={breadcrumbsElement}>
-            {this.renderBreadcrumbs()}
-          </Portal>
+          <Portal root={breadcrumbsElement}>{this.renderBreadcrumbs()}</Portal>
         )}
         {contentElement != null && (
-          <Portal root={contentElement}>
-            {this.renderStickyContent()}
-          </Portal>
+          <Portal root={contentElement}>{this.renderStickyContent()}</Portal>
         )}
         <div className='osu-page osu-page--beatmapsets-search-header'>
-          {this.controller.advancedSearch ? this.renderUser() : this.renderGuest()}
+          {this.controller.advancedSearch
+            ? this.renderUser()
+            : this.renderGuest()}
         </div>
       </>
     );
@@ -106,7 +108,9 @@ export class SearchPanel extends React.Component<Props> {
   // TODO: deprecated event. Update to onbeforeinput once safari adds it on normal enter
   // (or maybe change to form and intercept onsubmit instead)
   // This shouldn't trigger during ime composition
-  private readonly onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  private readonly onKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
     if (event.key === 'Enter') {
       htmlElementOrNull(event.target)?.blur();
     }
@@ -136,7 +140,11 @@ export class SearchPanel extends React.Component<Props> {
     return (
       <div ref={this.props.innerRef} className='beatmapsets-search'>
         <div className='beatmapsets-search__cover'>
-          <BeatmapsetCover beatmapset={this.props.firstBeatmapset} modifiers='full' size='cover' />
+          <BeatmapsetCover
+            beatmapset={this.props.firstBeatmapset}
+            modifiers='full'
+            size='cover'
+          />
         </div>
         <div className='beatmapsets-search__input-container js-user-link'>
           <input
@@ -173,7 +181,10 @@ export class SearchPanel extends React.Component<Props> {
           </div>
         </div>
         <div className='beatmapsets-search__filters'>
-          <Filter name='status' options={this.props.availableFilters.statuses} />
+          <Filter
+            name='status'
+            options={this.props.availableFilters.statuses}
+          />
           <Filter name='mode' options={this.props.availableFilters.modes} />
         </div>
       </div>
@@ -182,12 +193,18 @@ export class SearchPanel extends React.Component<Props> {
 
   private renderUser() {
     const filters = this.props.availableFilters;
-    const cssClasses = classWithModifiers('beatmapsets-search', { expanded: this.controller.isExpanded });
+    const cssClasses = classWithModifiers('beatmapsets-search', {
+      expanded: this.controller.isExpanded,
+    });
 
     return (
       <div ref={this.props.innerRef} className={cssClasses}>
         <div className='beatmapsets-search__cover'>
-          <BeatmapsetCover beatmapset={this.props.firstBeatmapset} modifiers='full' size='cover' />
+          <BeatmapsetCover
+            beatmapset={this.props.firstBeatmapset}
+            modifiers='full'
+            size='cover'
+          />
         </div>
         <div className='beatmapsets-search__input-container'>
           <input
@@ -209,9 +226,15 @@ export class SearchPanel extends React.Component<Props> {
           <Filter grid name='mode' options={filters.modes} />
           <Filter grid name='status' options={filters.statuses} />
           <Filter grid name='nsfw' options={filters.nsfw} />
-          <a className='beatmapsets-search__expand-link' href='#' onClick={this.expand}>
+          <a
+            className='beatmapsets-search__expand-link'
+            href='#'
+            onClick={this.expand}
+          >
             <div>{trans('beatmaps.listing.search.options')}</div>
-            <div><i className='fas fa-angle-down' /></div>
+            <div>
+              <i className='fas fa-angle-down' />
+            </div>
           </a>
           <div className='beatmapsets-search__advanced'>
             <Filter grid name='genre' options={filters.genres} />
@@ -230,7 +253,10 @@ export class SearchPanel extends React.Component<Props> {
 
     if (pinned && document.activeElement === this.inputRef.current) {
       this.pinnedInputRef.current?.focus(focusOptions);
-    } else if (!pinned && document.activeElement === this.pinnedInputRef.current) {
+    } else if (
+      !pinned &&
+      document.activeElement === this.pinnedInputRef.current
+    ) {
       this.inputRef.current?.focus(focusOptions);
     }
   };

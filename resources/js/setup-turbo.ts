@@ -19,19 +19,26 @@ document.addEventListener('turbo:submit-start', (e) => {
 });
 document.addEventListener('turbo:submit-end', hideLoadingOverlay);
 document.addEventListener('turbo:submit-end', (e) => {
-  if (e.detail.success && e.detail.formSubmission.formElement.dataset.reloadOnSuccess === '1') {
+  if (
+    e.detail.success &&
+    e.detail.formSubmission.formElement.dataset.reloadOnSuccess === '1'
+  ) {
     reloadPage();
   }
 });
 
 document.addEventListener('turbo:before-fetch-response', (e) => {
-  if (!e.detail.fetchResponse.contentType?.match(/^text\/osu-turbo-redirect[ ;]*/)) {
+  if (
+    !e.detail.fetchResponse.contentType?.match(/^text\/osu-turbo-redirect[ ;]*/)
+  ) {
     return;
   }
 
   e.preventDefault();
   e.detail.fetchResponse.responseText.then((url) => {
-    const [currentUrlBase, urlBase] = [document.location.href, url].map((u) => u.replace(/#.*/, ''));
+    const [currentUrlBase, urlBase] = [document.location.href, url].map((u) =>
+      u.replace(/#.*/, ''),
+    );
 
     if (currentUrlBase === urlBase) {
       // a normal/advance visit to same url won't reload the page
@@ -47,8 +54,10 @@ document.addEventListener('turbo:click', (event) => {
   const url = new URL(event.detail.url);
 
   if (
-    url.origin === Turbo.session.navigator.rootLocation.origin
-    && url.pathname.match(/^\/(?:(?:api|osu|p|ss|web)\/|(?:beatmapsets|scores(?:\/[^\d]+)?)\/\d+\/download(?:\?|$))/) === null
+    url.origin === Turbo.session.navigator.rootLocation.origin &&
+    url.pathname.match(
+      /^\/(?:(?:api|osu|p|ss|web)\/|(?:beatmapsets|scores(?:\/[^\d]+)?)\/\d+\/download(?:\?|$))/,
+    ) === null
   ) {
     return;
   }

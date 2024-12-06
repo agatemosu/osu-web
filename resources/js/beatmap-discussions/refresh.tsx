@@ -23,7 +23,9 @@ export default class Refresh extends React.PureComponent<Props> {
   render() {
     return (
       <button
-        className={classWithModifiers('floating-toolbar-button', { updates: this.props.worker.hasUpdates })}
+        className={classWithModifiers('floating-toolbar-button', {
+          updates: this.props.worker.hasUpdates,
+        })}
         data-tooltip-float='fixed'
         disabled={!this.props.worker.hasUpdates}
         onClick={this.handleClick}

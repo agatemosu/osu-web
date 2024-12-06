@@ -6,7 +6,14 @@ import Portal from 'components/portal';
 import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
 import { throttle } from 'lodash';
 import * as React from 'react';
-import { Editor as SlateEditor, Element as SlateElement, Node as SlateNode, Point, Text as SlateText, Transforms } from 'slate';
+import {
+  Editor as SlateEditor,
+  Element as SlateElement,
+  Node as SlateNode,
+  Point,
+  Text as SlateText,
+  Transforms,
+} from 'slate';
 import { ReactEditor } from 'slate-react';
 import { trans } from 'utils/lang';
 import { nextVal } from 'utils/seq';
@@ -24,7 +31,8 @@ export class EditorInsertionMenu extends React.Component<Props> {
   private hideInsertMenuTimer?: number;
   private hoveredBlock: HTMLElement | undefined;
   private insertPosition: 'above' | 'below' | undefined;
-  private readonly insertRef: React.RefObject<HTMLDivElement> = React.createRef();
+  private readonly insertRef: React.RefObject<HTMLDivElement> =
+    React.createRef();
   private mouseOver = false;
   private scrollContainer: HTMLElement | undefined;
   private readonly throttledContainerMouseExit;
@@ -48,8 +56,14 @@ export class EditorInsertionMenu extends React.Component<Props> {
 
   componentDidMount() {
     if (this.insertRef.current) {
-      $(this.insertRef.current).on(`mouseenter.${this.eventId}`, this.throttledMenuMouseEnter);
-      $(this.insertRef.current).on(`mouseleave.${this.eventId}`, this.throttledMenuMouseExit);
+      $(this.insertRef.current).on(
+        `mouseenter.${this.eventId}`,
+        this.throttledMenuMouseEnter,
+      );
+      $(this.insertRef.current).on(
+        `mouseleave.${this.eventId}`,
+        this.throttledMenuMouseExit,
+      );
     }
     $(window).on(`scroll.${this.eventId}`, this.throttledScroll);
   }
@@ -72,10 +86,7 @@ export class EditorInsertionMenu extends React.Component<Props> {
   render() {
     return (
       <Portal>
-        <div
-          ref={this.insertRef}
-          className={`${this.bn}`}
-        >
+        <div ref={this.insertRef} className={`${this.bn}`}>
           <div className={`${this.bn}__body`}>
             <i className='fas fa-plus' />
             <div className={`${this.bn}__buttons`}>
@@ -95,8 +106,14 @@ export class EditorInsertionMenu extends React.Component<Props> {
       $(this.scrollContainer).off(`.${this.eventId}`);
     }
     this.scrollContainer = container;
-    $(this.scrollContainer).on(`mousemove.${this.eventId}`, this.throttledContainerMouseMove);
-    $(this.scrollContainer).on(`mouseleave.${this.eventId}`, this.throttledContainerMouseExit);
+    $(this.scrollContainer).on(
+      `mousemove.${this.eventId}`,
+      this.throttledContainerMouseMove,
+    );
+    $(this.scrollContainer).on(
+      `mouseleave.${this.eventId}`,
+      this.throttledContainerMouseExit,
+    );
     $(this.scrollContainer).on(`scroll.${this.eventId}`, this.throttledScroll);
   }
 
@@ -114,7 +131,11 @@ export class EditorInsertionMenu extends React.Component<Props> {
       if (y < child.getBoundingClientRect().top) {
         if (blockOffset > 0) {
           const prevBlock = children[blockOffset - 1];
-          if (y < prevBlock.getBoundingClientRect().top + (prevBlock.getBoundingClientRect().height / 2)) {
+          if (
+            y <
+            prevBlock.getBoundingClientRect().top +
+              prevBlock.getBoundingClientRect().height / 2
+          ) {
             blockOffset--;
           }
         }
@@ -130,7 +151,7 @@ export class EditorInsertionMenu extends React.Component<Props> {
     const blockBounds = this.hoveredBlock.getBoundingClientRect();
 
     // If we're past the half-way point of the block's height then put the menu below the block, otherwise put it above
-    if (y > blockBounds.top + (blockBounds.height / 2)) {
+    if (y > blockBounds.top + blockBounds.height / 2) {
       this.insertPosition = 'below';
     } else {
       this.insertPosition = 'above';
@@ -193,7 +214,8 @@ export class EditorInsertionMenu extends React.Component<Props> {
       // TODO: This horrible mess is a workaround for Slate incorrectly inserting nodes at the wrong place when
       //  inserting relative to empty blocks/paragraphs.
       if (this.insertPosition === 'above') {
-        const previousSlateElement = this.hoveredBlock?.previousSibling?.lastChild;
+        const previousSlateElement =
+          this.hoveredBlock?.previousSibling?.lastChild;
         if (previousSlateElement != null) {
           node = ReactEditor.toSlateNode(ed, previousSlateElement);
           insertAt = SlateEditor.end(ed, ReactEditor.findPath(ed, node));
@@ -213,9 +235,10 @@ export class EditorInsertionMenu extends React.Component<Props> {
       }
     } else {
       const path = ReactEditor.findPath(ed, node);
-      insertAt = this.insertPosition === 'above' ?
-        SlateEditor.start(ed, path) :
-        SlateEditor.end(ed, path);
+      insertAt =
+        this.insertPosition === 'above'
+          ? SlateEditor.start(ed, path)
+          : SlateEditor.end(ed, path);
     }
 
     Transforms.insertNodes(ed, insertNode, { at: insertAt });
@@ -270,7 +293,11 @@ export class EditorInsertionMenu extends React.Component<Props> {
   }
 
   private updatePosition() {
-    if (!this.scrollContainer || !this.hoveredBlock || !this.insertRef.current) {
+    if (
+      !this.scrollContainer ||
+      !this.hoveredBlock ||
+      !this.insertRef.current
+    ) {
       return;
     }
 
@@ -286,5 +313,4 @@ export class EditorInsertionMenu extends React.Component<Props> {
       this.insertRef.current.style.top = `${blockBounds.top + blockBounds.height - 10}px`;
     }
   }
-
 }

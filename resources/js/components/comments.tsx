@@ -30,7 +30,10 @@ export default class Comments extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
-    this.controller = new CommentsController(this.props.controllerStateSelector, this.props.baseCommentableMeta);
+    this.controller = new CommentsController(
+      this.props.controllerStateSelector,
+      this.props.baseCommentableMeta,
+    );
   }
 
   componentWillUnmount() {
@@ -49,14 +52,16 @@ export default class Comments extends React.Component<Props> {
       >
         <h2 className='comments__title'>
           {trans('comments.title')}
-          <span className='comments__count'>{formatNumber(this.controller.state.total)}</span>
+          <span className='comments__count'>
+            {formatNumber(this.controller.state.total)}
+          </span>
         </h2>
 
-        {pinnedComments.length > 0 &&
+        {pinnedComments.length > 0 && (
           <div className='comments__items comments__items--pinned'>
             {this.renderComments(pinnedComments, true)}
           </div>
-        }
+        )}
 
         <div className='comments__new'>
           <CommentEditor
@@ -68,7 +73,10 @@ export default class Comments extends React.Component<Props> {
         </div>
 
         <div className='comments__items comments__items--toolbar'>
-          <CommentsSort controller={this.controller} modifiers={this.props.modifiers} />
+          <CommentsSort
+            controller={this.controller}
+            modifiers={this.props.modifiers}
+          />
           <div className={classWithModifiers('sort', this.props.modifiers)}>
             <div className='sort__items'>
               {this.renderFollowToggle()}
@@ -77,26 +85,31 @@ export default class Comments extends React.Component<Props> {
           </div>
         </div>
 
-        {comments.length === 0
-          ? (
-            <div className='comments__items comments__items--empty'>
-              {pinnedComments.length === 0 ? trans('comments.empty') : trans('comments.empty_other')}
-            </div>
-          ) : (
-            <div className={classWithModifiers('comments__items', { loading: this.controller.nextState.sort != null })}>
-              {this.renderComments(comments, false)}
+        {comments.length === 0 ? (
+          <div className='comments__items comments__items--empty'>
+            {pinnedComments.length === 0
+              ? trans('comments.empty')
+              : trans('comments.empty_other')}
+          </div>
+        ) : (
+          <div
+            className={classWithModifiers('comments__items', {
+              loading: this.controller.nextState.sort != null,
+            })}
+          >
+            {this.renderComments(comments, false)}
 
-              <DeletedCommentsCount comments={topLevelComments} modifiers='top' />
+            <DeletedCommentsCount comments={topLevelComments} modifiers='top' />
 
-              <CommentShowMore
-                comments={topLevelComments}
-                controller={this.controller}
-                modifiers={mergeModifiers('top', this.props.modifiers)}
-                top
-                total={this.controller.state.topLevelCount}
-              />
-            </div>
-          )}
+            <CommentShowMore
+              comments={topLevelComments}
+              controller={this.controller}
+              modifiers={mergeModifiers('top', this.props.modifiers)}
+              top
+              total={this.controller.state.topLevelCount}
+            />
+          </div>
+        )}
       </div>
     );
   }
@@ -106,7 +119,10 @@ export default class Comments extends React.Component<Props> {
   };
 
   private onToggleShowDeleted(this: void) {
-    core.userPreferences.set('comments_show_deleted', !core.userPreferences.get('comments_show_deleted'));
+    core.userPreferences.set(
+      'comments_show_deleted',
+      !core.userPreferences.get('comments_show_deleted'),
+    );
   }
 
   private renderComment(comment: CommentModel, expandReplies?: boolean) {
@@ -125,7 +141,9 @@ export default class Comments extends React.Component<Props> {
   private renderComments(comments: CommentModel[], pinned: boolean) {
     const expandReplies = pinned ? false : undefined;
 
-    return comments.map((comment) => this.renderComment(comment, expandReplies));
+    return comments.map((comment) =>
+      this.renderComment(comment, expandReplies),
+    );
   }
 
   private renderFollowToggle() {

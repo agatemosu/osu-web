@@ -44,22 +44,28 @@ export default function Buttons(props: Props) {
           <PopupMenuPersistent>
             {(dismiss: () => void) => (
               <div className='simple-menu'>
-                {visibleMenuItems.has('pin') &&
+                {visibleMenuItems.has('pin') && (
                   <ScorePin
                     className='simple-menu__item'
                     onUpdate={dismiss}
                     score={props.score}
                   />
-                }
-                {visibleMenuItems.has('report') &&
+                )}
+                {visibleMenuItems.has('report') && (
                   <ReportReportable
                     className='simple-menu__item'
                     onFormOpen={dismiss}
-                    reportableId={(props.score.best_id ?? props.score.id).toString()}
-                    reportableType={props.score.type === 'solo_score' ? props.score.type : `score_best_${ruleset}`}
+                    reportableId={(
+                      props.score.best_id ?? props.score.id
+                    ).toString()}
+                    reportableType={
+                      props.score.type === 'solo_score'
+                        ? props.score.type
+                        : `score_best_${ruleset}`
+                    }
                     user={props.score.user}
                   />
-                }
+                )}
               </div>
             )}
           </PopupMenuPersistent>

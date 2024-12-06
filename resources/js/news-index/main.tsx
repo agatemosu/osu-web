@@ -50,10 +50,7 @@ export default class Main extends React.Component<Props> {
   render() {
     return (
       <>
-        <NewsHeader
-          section='index'
-          title={trans('news.index.title.info')}
-        />
+        <NewsHeader section='index' title={trans('news.index.title.info')} />
         <div className='osu-page osu-page--wiki'>
           <div className='wiki-page'>
             <div className='wiki-page__toc'>
@@ -105,13 +102,23 @@ export default class Main extends React.Component<Props> {
       return;
     }
 
-    this.loadingXhr = $.get(route('news.index'), { ...this.data.search, cursor_string: this.data.cursor_string })
-      .done(action((newData: NewsIndexJson) => {
-        newData.news_posts = this.data.news_posts.concat(newData.news_posts);
-        this.data = newData;
-        this.props.container.dataset.props = JSON.stringify({ data: this.data });
-      })).always(action(() => {
-        this.loadingXhr = null;
-      }));
+    this.loadingXhr = $.get(route('news.index'), {
+      ...this.data.search,
+      cursor_string: this.data.cursor_string,
+    })
+      .done(
+        action((newData: NewsIndexJson) => {
+          newData.news_posts = this.data.news_posts.concat(newData.news_posts);
+          this.data = newData;
+          this.props.container.dataset.props = JSON.stringify({
+            data: this.data,
+          });
+        }),
+      )
+      .always(
+        action(() => {
+          this.loadingXhr = null;
+        }),
+      );
   };
 }

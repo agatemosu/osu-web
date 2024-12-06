@@ -22,7 +22,7 @@ interface Props {
 
 @observer
 export default class NewReview extends React.Component<Props> {
-  private readonly disposers = new Set<((() => void) | undefined)>();
+  private readonly disposers = new Set<(() => void) | undefined>();
   @observable private mounted = false;
   @observable private stickToHeight: number | undefined;
 
@@ -62,10 +62,14 @@ export default class NewReview extends React.Component<Props> {
   componentDidMount(): void {
     // watching for height changes on the stickTo element to handle horizontal scrollbars when they appear.
     $(window).on('resize', this.updateStickToHeight);
-    this.disposers.add(core.reactTurbolinks.runAfterPageLoad(action(() => {
-      this.mounted = true;
-      this.updateStickToHeight();
-    })));
+    this.disposers.add(
+      core.reactTurbolinks.runAfterPageLoad(
+        action(() => {
+          this.mounted = true;
+          this.updateStickToHeight();
+        }),
+      ),
+    );
   }
 
   componentWillUnmount(): void {
@@ -78,7 +82,10 @@ export default class NewReview extends React.Component<Props> {
     const placeholder = this.noPermissionText;
 
     return (
-      <div className={classWithModifiers(floatClass, { pinned: this.pinned })} style={{ top: this.cssTop }}>
+      <div
+        className={classWithModifiers(floatClass, { pinned: this.pinned })}
+        style={{ top: this.cssTop }}
+      >
         <div className={`${floatClass}__floatable`}>
           <div ref={this.props.innerRef} className={`${floatClass}__content`}>
             <div className='osu-page osu-page--small'>
@@ -87,11 +94,17 @@ export default class NewReview extends React.Component<Props> {
                   {trans('beatmaps.discussions.review.new')}
                   <span className='page-title__button'>
                     <span
-                      className={classWithModifiers('btn-circle', { activated: this.pinned })}
+                      className={classWithModifiers('btn-circle', {
+                        activated: this.pinned,
+                      })}
                       onClick={this.toggleSticky}
-                      title={trans(`beatmaps.discussions.new.${this.pinned ? 'unpin' : 'pin'}`)}
+                      title={trans(
+                        `beatmaps.discussions.new.${this.pinned ? 'unpin' : 'pin'}`,
+                      )}
                     >
-                      <span className='btn-circle__content'><i className='fas fa-thumbtack' /></span>
+                      <span className='btn-circle__content'>
+                        <i className='fas fa-thumbtack' />
+                      </span>
                     </span>
                   </span>
                 </div>
@@ -101,7 +114,11 @@ export default class NewReview extends React.Component<Props> {
                     onFocus={this.handleFocus}
                     store={this.props.store}
                   />
-                ) : <div className='beatmap-discussion-new__login-required'>{placeholder}</div>}
+                ) : (
+                  <div className='beatmap-discussion-new__login-required'>
+                    {placeholder}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -126,5 +143,7 @@ export default class NewReview extends React.Component<Props> {
   };
 
   @action
-  private readonly updateStickToHeight = () => this.stickToHeight = this.props.stickTo?.current?.getBoundingClientRect().height;
+  private readonly updateStickToHeight = () =>
+    (this.stickToHeight =
+      this.props.stickTo?.current?.getBoundingClientRect().height);
 }

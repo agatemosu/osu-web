@@ -25,16 +25,24 @@ export function beatmapsetDownloadDirect(id: string | number): string {
 }
 
 export function beatmapUrl(beatmap: BeatmapJson, ruleset?: Ruleset) {
-  return route('beatmapsets.show', { beatmapset: beatmap.beatmapset_id })
-    + generate({ beatmap, ruleset });
+  return (
+    route('beatmapsets.show', { beatmapset: beatmap.beatmapset_id }) +
+    generate({ beatmap, ruleset })
+  );
 }
 
 export function changelogBuild(build: ChangelogBuild): string {
-  return route('changelog.build', { build: build.version, stream: build.update_stream.name });
+  return route('changelog.build', {
+    build: build.version,
+    stream: build.update_stream.name,
+  });
 }
 
 export function giftSupporterTagUrl(user: { username: string }) {
-  return route('store.products.show', { product: 'supporter-tag', target: user.username });
+  return route('store.products.show', {
+    product: 'supporter-tag',
+    target: user.username,
+  });
 }
 
 // external link
@@ -50,7 +58,11 @@ export function openBeatmapEditor(timestampWithRange: string): string {
  * @param options props.className will override classNames if set.
  * @returns html string of the link
  */
-export function linkHtml(url: string, text: string, options?: OsuLinkOptions): string {
+export function linkHtml(
+  url: string,
+  text: string,
+  options?: OsuLinkOptions,
+): string {
   if (options?.unescape) {
     url = unescape(url);
     text = unescape(text);
@@ -92,7 +104,11 @@ export function safeReactMarkdownUrl(url: string | undefined) {
   }
 }
 
-export function updateQueryString(url: string | null, params: Record<string, string | null | undefined>, hash?: string) {
+export function updateQueryString(
+  url: string | null,
+  params: Record<string, string | null | undefined>,
+  hash?: string,
+) {
   const docUrl = currentUrl();
   const urlObj = new URL(url ?? docUrl.href, docUrl.origin);
 
@@ -112,11 +128,15 @@ export function updateQueryString(url: string | null, params: Record<string, str
 }
 
 export function wikiUrl(path: string, locale?: string | null) {
-  return route('wiki.show', { locale: locale ?? currentLocale, path: 'WIKI_PATH' })
-    .replace('WIKI_PATH', encodeURI(path));
+  return route('wiki.show', {
+    locale: locale ?? currentLocale,
+    path: 'WIKI_PATH',
+  }).replace('WIKI_PATH', encodeURI(path));
 }
 
 export function wikiUrlWithoutLocale(path: string) {
-  return route('wiki.show', { path: 'WIKI_PATH' })
-    .replace('/WIKI_PATH', encodeURI(path));
+  return route('wiki.show', { path: 'WIKI_PATH' }).replace(
+    '/WIKI_PATH',
+    encodeURI(path),
+  );
 }

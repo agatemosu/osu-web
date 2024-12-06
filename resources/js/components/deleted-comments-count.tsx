@@ -18,14 +18,21 @@ export default class DeletedCommentsCount extends React.Component<Props> {
       return null;
     }
 
-    const deletedCount = this.props.comments.filter((c) => c.deletedAt != null).length;
+    const deletedCount = this.props.comments.filter(
+      (c) => c.deletedAt != null,
+    ).length;
 
     if (deletedCount === 0) {
       return null;
     }
 
     return (
-      <div className={classWithModifiers('deleted-comments-count', this.props.modifiers)}>
+      <div
+        className={classWithModifiers(
+          'deleted-comments-count',
+          this.props.modifiers,
+        )}
+      >
         <span className='deleted-comments-count__icon'>
           <span className='far fa-trash-alt' />
         </span>

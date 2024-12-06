@@ -18,7 +18,11 @@ export default function ProfileTournamentBanner({ banner }: Props) {
       className='profile-tournament-banner'
       href={route('tournaments.show', { tournament: banner.tournament_id })}
     >
-      <Img2x className='profile-tournament-banner__image' src={banner.image} src2x={banner['image@2x']} />
+      <Img2x
+        className='profile-tournament-banner__image'
+        src={banner.image}
+        src2x={banner['image@2x']}
+      />
     </a>
   );
 }

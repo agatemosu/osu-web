@@ -23,14 +23,25 @@ export default class Discussions extends React.Component<Props> {
   render() {
     return (
       <div className='page-extra'>
-        <h2 className='title title--page-extra'>{trans('users.show.extra.discussions.title_longer')}</h2>
+        <h2 className='title title--page-extra'>
+          {trans('users.show.extra.discussions.title_longer')}
+        </h2>
         <div className='modding-profile-list'>
           {this.props.discussions.length === 0 ? (
-            <div className='modding-profile-list__empty'>{trans('users.show.extra.none')}</div>
+            <div className='modding-profile-list__empty'>
+              {trans('users.show.extra.none')}
+            </div>
           ) : (
             <>
-              {this.props.discussions.map((discussion) => this.renderDiscussion(discussion))}
-              <a className='modding-profile-list__show-more' href={route('beatmapsets.discussions.index', { user: `@${this.props.user.username}` })}>
+              {this.props.discussions.map((discussion) =>
+                this.renderDiscussion(discussion),
+              )}
+              <a
+                className='modding-profile-list__show-more'
+                href={route('beatmapsets.discussions.index', {
+                  user: `@${this.props.user.username}`,
+                })}
+              >
                 {trans('users.show.extra.discussions.show_more')}
               </a>
             </>
@@ -41,12 +52,17 @@ export default class Discussions extends React.Component<Props> {
   }
 
   private renderDiscussion(discussion: BeatmapsetDiscussionJsonForBundle) {
-    const beatmapset = this.props.store.beatmapsets.get(discussion.beatmapset_id);
+    const beatmapset = this.props.store.beatmapsets.get(
+      discussion.beatmapset_id,
+    );
     if (beatmapset == null) return null;
 
     return (
       <div key={discussion.id} className='modding-profile-list__row'>
-        <a className='modding-profile-list__thumbnail' href={makeUrl({ discussion })}>
+        <a
+          className='modding-profile-list__thumbnail'
+          href={makeUrl({ discussion })}
+        >
           <BeatmapsetCover beatmapset={beatmapset} size='list' />
         </a>
         <Discussion

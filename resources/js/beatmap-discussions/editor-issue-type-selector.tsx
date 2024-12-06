@@ -3,7 +3,10 @@
 
 import { discussionTypeIcons } from 'beatmap-discussions/discussion-type';
 import { EmbedElement } from 'editor';
-import { BeatmapReviewDiscussionType, beatmapReviewDiscussionTypes } from 'interfaces/beatmap-discussion-review';
+import {
+  BeatmapReviewDiscussionType,
+  beatmapReviewDiscussionTypes,
+} from 'interfaces/beatmap-discussion-review';
 import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
 import * as React from 'react';
 import { Transforms } from 'slate';
@@ -23,11 +26,18 @@ export default class EditorIssueTypeSelector extends React.Component<Props> {
   declare context: React.ContextType<typeof SlateContext>;
 
   render() {
-    const menuOptions: MenuItem[] = beatmapReviewDiscussionTypes.map((type) => ({
-      icon: <span className={discussionTypeIcons[type]} style={{ color: `var(--beatmapset-discussion-colour--${type})` }} />,
-      id: type,
-      label: trans(`beatmaps.discussions.message_type.${type}`),
-    }));
+    const menuOptions: MenuItem[] = beatmapReviewDiscussionTypes.map(
+      (type) => ({
+        icon: (
+          <span
+            className={discussionTypeIcons[type]}
+            style={{ color: `var(--beatmapset-discussion-colour--${type})` }}
+          />
+        ),
+        id: type,
+        label: trans(`beatmaps.discussions.message_type.${type}`),
+      }),
+    );
 
     return (
       <IconDropdownMenu

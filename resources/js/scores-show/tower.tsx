@@ -32,16 +32,18 @@ export default function ScoreTower(props: Props) {
   const currentRankInt = rankIntMap[props.rank];
 
   return (
-    <div className='score-tower'>{ranks.map((rank) => (
-      <div
-        key={rank}
-        className={classWithModifiers('score-tower__item', {
-          missed: currentRankInt < rankIntMap[rank],
-          passed: currentRankInt > rankIntMap[rank],
-        })}
-      >
-        <div className={`score-rank score-rank--${rank}`} />
-      </div>
-    ))}</div>
+    <div className='score-tower'>
+      {ranks.map((rank) => (
+        <div
+          key={rank}
+          className={classWithModifiers('score-tower__item', {
+            missed: currentRankInt < rankIntMap[rank],
+            passed: currentRankInt > rankIntMap[rank],
+          })}
+        >
+          <div className={`score-rank score-rank--${rank}`} />
+        </div>
+      ))}
+    </div>
   );
 }

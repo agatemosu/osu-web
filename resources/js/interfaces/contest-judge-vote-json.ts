@@ -12,5 +12,5 @@ export default interface ContestJudgeVoteJson {
   user?: UserJson;
 }
 
-export type ContestJudgeVoteJsonForResults = ContestJudgeVoteJson
-& Required<Pick<ContestJudgeVoteJson, 'scores' | 'total_score'>>;
+export type ContestJudgeVoteJsonForResults = ContestJudgeVoteJson &
+  Required<Pick<ContestJudgeVoteJson, 'scores' | 'total_score'>>;

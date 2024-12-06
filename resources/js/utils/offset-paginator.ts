@@ -19,31 +19,50 @@ export interface OffsetPaginatorJson<T> {
   pagination: OffsetPaginationJson;
 }
 
-export const apiShowMore = action(<T>(json: OffsetPaginatorJson<T>, routeName: keyof RouteList, baseRouteParams: RouteParams): JQuery.jqXHR<T[]> => {
-  json.pagination.loading = true;
+export const apiShowMore = action(
+  <T>(
+    json: OffsetPaginatorJson<T>,
+    routeName: keyof RouteList,
+    baseRouteParams: RouteParams,
+  ): JQuery.jqXHR<T[]> => {
+    json.pagination.loading = true;
 
-  const limit = getInt(baseRouteParams.limit) ?? 50;
-  const fetchLimit = limit + 1;
-  const params = {
-    ...baseRouteParams,
-    limit: fetchLimit,
-    offset: json.items.length,
-  };
+    const limit = getInt(baseRouteParams.limit) ?? 50;
+    const fetchLimit = limit + 1;
+    const params = {
+      ...baseRouteParams,
+      limit: fetchLimit,
+      offset: json.items.length,
+    };
 
-  return $.ajax(route(routeName, params))
-    .done((newItems: typeof json.items) => {
-      appendItems(json, newItems, fetchLimit);
-    }).always(action(() => {
-      json.pagination.loading = false;
-    })) as JQuery.jqXHR<T[]>;
-});
+    return $.ajax(route(routeName, params))
+      .done((newItems: typeof json.items) => {
+        appendItems(json, newItems, fetchLimit);
+      })
+      .always(
+        action(() => {
+          json.pagination.loading = false;
+        }),
+      ) as JQuery.jqXHR<T[]>;
+  },
+);
 
-export const apiShowMoreRecentlyReceivedKudosu = (json: OffsetPaginatorJson<KudosuHistoryJson>, userId: number): JQuery.jqXHR<KudosuHistoryJson[]> => apiShowMore(json, 'users.kudosu', { user: userId });
+export const apiShowMoreRecentlyReceivedKudosu = (
+  json: OffsetPaginatorJson<KudosuHistoryJson>,
+  userId: number,
+): JQuery.jqXHR<KudosuHistoryJson[]> =>
+  apiShowMore(json, 'users.kudosu', { user: userId });
 
-export const appendItems = action(<T>(json: OffsetPaginatorJson<T>, newItems: typeof json.items, fetchLimit: number) => {
-  json.pagination.hasMore = hasMoreCheck(fetchLimit - 1, newItems);
-  json.items.push(...newItems);
-});
+export const appendItems = action(
+  <T>(
+    json: OffsetPaginatorJson<T>,
+    newItems: typeof json.items,
+    fetchLimit: number,
+  ) => {
+    json.pagination.hasMore = hasMoreCheck(fetchLimit - 1, newItems);
+    json.items.push(...newItems);
+  },
+);
 
 // mutates items and returns whether there are more items than expectedCount
 export const hasMoreCheck = action(<T>(expectedCount: number, items: T[]) => {

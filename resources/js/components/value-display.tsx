@@ -13,12 +13,19 @@ interface Props {
   value: string | number | JSX.Element;
 }
 
-export default function ValueDisplay({ description, label, modifiers, value }: Props) {
+export default function ValueDisplay({
+  description,
+  label,
+  modifiers,
+  value,
+}: Props) {
   return (
     <div className={classWithModifiers(bn, modifiers)}>
       <div className={`${bn}__label`}>{label}</div>
       <div className={`${bn}__value`}>{value}</div>
-      {description != null && <div className={`${bn}__description`}>{description}</div>}
+      {description != null && (
+        <div className={`${bn}__description`}>{description}</div>
+      )}
     </div>
   );
 }

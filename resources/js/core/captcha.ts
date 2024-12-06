@@ -19,10 +19,15 @@ export default class Captcha {
 
   constructor() {
     $(document).on('turbo:load', this.renderAll);
-    $(document).on('ajax:error', '.js-captcha--reset-on-error', this.resetOnError);
+    $(document).on(
+      'ajax:error',
+      '.js-captcha--reset-on-error',
+      this.resetOnError,
+    );
   }
 
-  containers = () => document.querySelectorAll<HTMLDivElement>('.js-captcha--container');
+  containers = () =>
+    document.querySelectorAll<HTMLDivElement>('.js-captcha--container');
 
   disableSubmit = (container: HTMLDivElement) => {
     const targetButton = this.submitButton(container);
@@ -38,23 +43,26 @@ export default class Captcha {
     }
   };
 
-  findContainer = (formInput: unknown) => htmlElementOrNull(
-    htmlElementOrNull(formInput)?.closest('form'),
-  )?.querySelector<HTMLDivElement>('.js-captcha--container');
+  findContainer = (formInput: unknown) =>
+    htmlElementOrNull(
+      htmlElementOrNull(formInput)?.closest('form'),
+    )?.querySelector<HTMLDivElement>('.js-captcha--container');
 
   init = (sitekey: string) => {
     this.sitekey = sitekey;
     this.renderAll();
   };
 
-  isEnabled = (container: HTMLDivElement) => this.isTriggered(container) &&
-      typeof(turnstile) === 'object' &&
-      typeof(turnstile.render) === 'function' &&
-      this.sitekey !== '';
+  isEnabled = (container: HTMLDivElement) =>
+    this.isTriggered(container) &&
+    typeof turnstile === 'object' &&
+    typeof turnstile.render === 'function' &&
+    this.sitekey !== '';
 
   isLoaded = (container: HTMLDivElement) => container.innerHTML !== '';
 
-  isTriggered = (container: HTMLDivElement) => container.dataset.captchaTriggered === '1';
+  isTriggered = (container: HTMLDivElement) =>
+    container.dataset.captchaTriggered === '1';
 
   render = (container: HTMLDivElement) => {
     if (!isVisible(container)) {
@@ -87,7 +95,10 @@ export default class Captcha {
     }
   };
 
-  submitButton = (container: HTMLDivElement) => container.closest('form')?.querySelector<HTMLButtonElement>('.js-captcha--submit-button');
+  submitButton = (container: HTMLDivElement) =>
+    container
+      .closest('form')
+      ?.querySelector<HTMLButtonElement>('.js-captcha--submit-button');
 
   trigger = (container: HTMLDivElement) => {
     if (this.isTriggered(container)) {
@@ -100,7 +111,7 @@ export default class Captcha {
 
   private readonly remove = (container: HTMLDivElement) => {
     const id = container.dataset.captchaId;
-    delete(container.dataset.captchaId);
+    delete container.dataset.captchaId;
     turnstile.remove(id ?? '');
   };
 

@@ -6,26 +6,35 @@ import { isBeatmapOwnerChangeNotification } from 'models/notification/beatmap-ow
 import NotificationDetails from 'models/notification-details';
 import { trans, transArray, transChoice, transExists } from 'utils/lang';
 
-type Replacements = { title: string } & Partial<Record<string, string|number>>;
+type Replacements = { title: string } & Partial<
+  Record<string, string | number>
+>;
 
-function formatBeatmapsetReviewCounts(counts: NonNullable<NotificationDetails['embeds']>, replacements: Replacements) {
+function formatBeatmapsetReviewCounts(
+  counts: NonNullable<NotificationDetails['embeds']>,
+  replacements: Replacements,
+) {
   const translatedCounts = [];
   for (const type of ['praises', 'problems', 'suggestions'] as const) {
     const count = counts[type];
     if (count > 0) {
-      translatedCounts.push(transChoice(
-        `notifications.item.beatmapset.beatmapset_discussion.review_count.${type}`,
-        count,
-      ));
+      translatedCounts.push(
+        transChoice(
+          `notifications.item.beatmapset.beatmapset_discussion.review_count.${type}`,
+          count,
+        ),
+      );
     }
     // TODO: remove after all translations are updated to use the :review_counts
     replacements[type] = count;
   }
   if (translatedCounts.length === 0) {
-    translatedCounts.push(transChoice(
-      'notifications.item.beatmapset.beatmapset_discussion.review_count.problems',
-      0,
-    ));
+    translatedCounts.push(
+      transChoice(
+        'notifications.item.beatmapset.beatmapset_discussion.review_count.problems',
+        0,
+      ),
+    );
   }
   replacements.review_counts = transArray(translatedCounts);
 }
@@ -41,7 +50,10 @@ export function formatMessage(item: Notification, compact = false) {
     replacements.beatmap = item.details.version;
   }
 
-  if (item.name === 'beatmapset_discussion_review_new' && item.details.embeds != null) {
+  if (
+    item.name === 'beatmapset_discussion_review_new' &&
+    item.details.embeds != null
+  ) {
     formatBeatmapsetReviewCounts(item.details.embeds, replacements);
   }
 
@@ -57,7 +69,10 @@ export function formatMessage(item: Notification, compact = false) {
   }
 
   const emptyKey = `${key}_empty`;
-  if (item.details.content == null && transExists(emptyKey, window.fallbackLocale)) {
+  if (
+    item.details.content == null &&
+    transExists(emptyKey, window.fallbackLocale)
+  ) {
     key = emptyKey;
   }
 
@@ -81,7 +96,10 @@ export function formatMessageGroup(item: Notification) {
       username: item.details.username,
     };
 
-    return trans(`notifications.item.${item.displayType}.${item.category}.${item.name}_group`, replacements);
+    return trans(
+      `notifications.item.${item.displayType}.${item.category}.${item.name}_group`,
+      replacements,
+    );
   }
 
   if (item.category === 'user_beatmapset_new') {
@@ -89,7 +107,10 @@ export function formatMessageGroup(item: Notification) {
       username: item.details.username,
     };
 
-    return trans(`notifications.item.${item.displayType}.${item.category}.${item.category}_group`, replacements);
+    return trans(
+      `notifications.item.${item.displayType}.${item.category}.${item.category}_group`,
+      replacements,
+    );
   }
 
   return item.title;

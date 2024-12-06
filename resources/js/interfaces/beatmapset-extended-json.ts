@@ -36,29 +36,38 @@ interface BeatmapsetExtendedJsonOverrideIncludes {
   beatmaps: BeatmapExtendedJson[];
 }
 
-type BeatmapsetExtendedJson =
-  Omit<BeatmapsetJson, keyof BeatmapsetExtendedJsonOverrideIncludes>
-  & BeatmapsetExtendedJsonAdditionalAttributes
-  & Partial<BeatmapsetExtendedJsonOverrideIncludes>;
+type BeatmapsetExtendedJson = Omit<
+  BeatmapsetJson,
+  keyof BeatmapsetExtendedJsonOverrideIncludes
+> &
+  BeatmapsetExtendedJsonAdditionalAttributes &
+  Partial<BeatmapsetExtendedJsonOverrideIncludes>;
 export default BeatmapsetExtendedJson;
 
 interface BeatmapsetJsonForShowOverrideIncludes {
-  beatmaps: (WithBeatmapOwners<BeatmapExtendedJson> & Required<Pick<BeatmapExtendedJson, 'failtimes' | 'max_combo'>>)[];
-  converts: (WithBeatmapOwners<BeatmapExtendedJson> & Required<Pick<BeatmapExtendedJson, 'failtimes'>>)[];
+  beatmaps: (WithBeatmapOwners<BeatmapExtendedJson> &
+    Required<Pick<BeatmapExtendedJson, 'failtimes' | 'max_combo'>>)[];
+  converts: (WithBeatmapOwners<BeatmapExtendedJson> &
+    Required<Pick<BeatmapExtendedJson, 'failtimes'>>)[];
 }
 
-type BeatmapsetJsonForShowIncludes = Required<Pick<BeatmapsetExtendedJson,
-| 'current_nominations'
-| 'current_user_attributes'
-| 'description'
-| 'genre'
-| 'language'
-| 'ratings'
-| 'recent_favourites'
-| 'related_users'
-| 'user'
->>;
+type BeatmapsetJsonForShowIncludes = Required<
+  Pick<
+    BeatmapsetExtendedJson,
+    | 'current_nominations'
+    | 'current_user_attributes'
+    | 'description'
+    | 'genre'
+    | 'language'
+    | 'ratings'
+    | 'recent_favourites'
+    | 'related_users'
+    | 'user'
+  >
+>;
 
-export type BeatmapsetJsonForShow =
-  Omit<BeatmapsetExtendedJson & BeatmapsetJsonForShowIncludes, keyof BeatmapsetJsonForShowOverrideIncludes>
-  & BeatmapsetJsonForShowOverrideIncludes;
+export type BeatmapsetJsonForShow = Omit<
+  BeatmapsetExtendedJson & BeatmapsetJsonForShowIncludes,
+  keyof BeatmapsetJsonForShowOverrideIncludes
+> &
+  BeatmapsetJsonForShowOverrideIncludes;

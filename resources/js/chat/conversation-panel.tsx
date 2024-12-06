@@ -15,7 +15,9 @@ import JoinChannels from './join-channels';
 const lazerLink = 'https://github.com/ppy/osu/releases';
 
 @observer
-export default class ConversationPanel extends React.Component<Record<string, never>> {
+export default class ConversationPanel extends React.Component<
+  Record<string, never>
+> {
   private readonly disposer: ReturnType<typeof autorun>;
   private navigatingAway = false;
 
@@ -28,10 +30,12 @@ export default class ConversationPanel extends React.Component<Record<string, ne
       // Don't set title if this is on the document that is going away.
       // before-cache should be running before the autorun.
       if (!this.navigatingAway) {
-        const selectedChannelOrType = core.dataStore.chatState.selectedChannelOrType;
-        const channelName = selectedChannelOrType instanceof Channel
-          ? selectedChannelOrType.name
-          : trans(`chat.channels.${selectedChannelOrType ?? 'none'}`);
+        const selectedChannelOrType =
+          core.dataStore.chatState.selectedChannelOrType;
+        const channelName =
+          selectedChannelOrType instanceof Channel
+            ? selectedChannelOrType.name
+            : trans(`chat.channels.${selectedChannelOrType ?? 'none'}`);
 
         core.browserTitleWithNotificationCount.title = `${channelName} · ${trans('page_title.main.chat_controller._')}`;
       }
@@ -53,9 +57,7 @@ export default class ConversationPanel extends React.Component<Record<string, ne
 
   render() {
     return (
-      <div className='chat-conversation-panel'>
-        {this.renderContent()}
-      </div>
+      <div className='chat-conversation-panel'>{this.renderContent()}</div>
     );
   }
 
@@ -76,17 +78,35 @@ export default class ConversationPanel extends React.Component<Record<string, ne
 
     return (
       <div className='chat-conversation-panel__no-channel'>
-        <Img2x alt='Art by Badou_Rammsteiner' src='/images/layout/chat/none-yet.png' title='Art by Badou_Rammsteiner' />
+        <Img2x
+          alt='Art by Badou_Rammsteiner'
+          src='/images/layout/chat/none-yet.png'
+          title='Art by Badou_Rammsteiner'
+        />
         {core.dataStore.channelStore.channels.size > 0 ? (
           <>
-            <div className='chat-conversation-panel__title'>{trans('chat.not_found.title')}</div>
-            <div className='chat-conversation-panel__instructions'>{trans('chat.not_found.message')}</div>
+            <div className='chat-conversation-panel__title'>
+              {trans('chat.not_found.title')}
+            </div>
+            <div className='chat-conversation-panel__instructions'>
+              {trans('chat.not_found.message')}
+            </div>
           </>
         ) : (
           <>
-            <div className='chat-conversation-panel__title'>{trans('chat.no-conversations.title')}</div>
-            <div className='chat-conversation-panel__instructions'>{trans('chat.no-conversations.howto')}</div>
-            <div dangerouslySetInnerHTML={{ __html: trans('chat.no-conversations.lazer', { link: lazerLink }) }} />
+            <div className='chat-conversation-panel__title'>
+              {trans('chat.no-conversations.title')}
+            </div>
+            <div className='chat-conversation-panel__instructions'>
+              {trans('chat.no-conversations.howto')}
+            </div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: trans('chat.no-conversations.lazer', {
+                  link: lazerLink,
+                }),
+              }}
+            />
           </>
         )}
       </div>

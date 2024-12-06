@@ -20,7 +20,14 @@ import { rulesetName, shouldShowPp } from 'utils/beatmap-helper';
 import { classWithModifiers, Modifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
-import { accuracy, filterMods, isPerfectCombo, attributeDisplayTotals, rank, scoreUrl } from 'utils/score-helper';
+import {
+  accuracy,
+  filterMods,
+  isPerfectCombo,
+  attributeDisplayTotals,
+  rank,
+  scoreUrl,
+} from 'utils/score-helper';
 
 interface Props {
   beatmap: BeatmapJson;
@@ -36,7 +43,12 @@ export default class TopCard extends React.PureComponent<Props> {
     const avatar = <UserAvatar user={this.props.score.user} />;
 
     return (
-      <div className={classWithModifiers('beatmap-score-top', this.props.modifiers)}>
+      <div
+        className={classWithModifiers(
+          'beatmap-score-top',
+          this.props.modifiers,
+        )}
+      >
         <a
           className='beatmap-score-top__link-container'
           href={scoreUrl(this.props.score)}
@@ -48,7 +60,13 @@ export default class TopCard extends React.PureComponent<Props> {
               <div className='beatmap-score-top__position-number'>
                 {this.props.position != null ? `#${this.props.position}` : '-'}
               </div>
-              <div className={classWithModifiers('score-rank', 'tiny', rank(this.props.score))} />
+              <div
+                className={classWithModifiers(
+                  'score-rank',
+                  'tiny',
+                  rank(this.props.score),
+                )}
+              />
             </div>
 
             <div className='beatmap-score-top__avatar'>
@@ -57,7 +75,10 @@ export default class TopCard extends React.PureComponent<Props> {
               ) : (
                 <a
                   className='u-hover'
-                  href={route('users.show', { mode: ruleset, user: this.props.score.user_id })}
+                  href={route('users.show', {
+                    mode: ruleset,
+                    user: this.props.score.user_id,
+                  })}
                 >
                   {avatar}
                 </a>
@@ -74,7 +95,12 @@ export default class TopCard extends React.PureComponent<Props> {
               <div className='beatmap-score-top__achieved u-hover'>
                 <StringWithComponent
                   mappings={{
-                    when: <TimeWithTooltip dateTime={this.props.score.ended_at} relative />,
+                    when: (
+                      <TimeWithTooltip
+                        dateTime={this.props.score.ended_at}
+                        relative
+                      />
+                    ),
                   }}
                   pattern={trans('beatmapsets.show.scoreboard.achieved')}
                 />
@@ -98,16 +124,19 @@ export default class TopCard extends React.PureComponent<Props> {
 
           <div className='beatmap-score-top__wrapping-container beatmap-score-top__wrapping-container--right'>
             <div className='beatmap-score-top__stats'>
-              {core.scorePins.canBePinned(this.props.score) &&
+              {core.scorePins.canBePinned(this.props.score) && (
                 <div className='beatmap-score-top__stat'>
                   <div className='beatmap-score-top__stat-header'>
                     {trans('beatmapsets.show.scoreboard.headers.pin')}
                   </div>
                   <div className='beatmap-score-top__stat-value beatmap-score-top__stat-value--smaller u-hover'>
-                    <ScorePin className='btn-osu-big' score={this.props.score} />
+                    <ScorePin
+                      className='btn-osu-big'
+                      score={this.props.score}
+                    />
                   </div>
                 </div>
-              }
+              )}
 
               <div className='beatmap-score-top__stat'>
                 <div className='beatmap-score-top__stat-header beatmap-score-top__stat-header--wider'>
@@ -125,9 +154,12 @@ export default class TopCard extends React.PureComponent<Props> {
                   {trans('beatmapsets.show.scoreboard.headers.accuracy')}
                 </div>
                 <div
-                  className={classWithModifiers('beatmap-score-top__stat-value', {
-                    perfect: scoreAccuracy === 1,
-                  })}
+                  className={classWithModifiers(
+                    'beatmap-score-top__stat-value',
+                    {
+                      perfect: scoreAccuracy === 1,
+                    },
+                  )}
                 >
                   {formatNumber(scoreAccuracy * 100, 2)}%
                 </div>
@@ -138,9 +170,12 @@ export default class TopCard extends React.PureComponent<Props> {
                   {trans('beatmapsets.show.scoreboard.headers.combo')}
                 </div>
                 <div
-                  className={classWithModifiers('beatmap-score-top__stat-value', {
-                    perfect: isPerfectCombo(this.props.score),
-                  })}
+                  className={classWithModifiers(
+                    'beatmap-score-top__stat-value',
+                    {
+                      perfect: isPerfectCombo(this.props.score),
+                    },
+                  )}
                 >
                   {formatNumber(this.props.score.max_combo)}x
                 </div>
@@ -184,7 +219,9 @@ export default class TopCard extends React.PureComponent<Props> {
                   {trans('beatmapsets.show.scoreboard.headers.mods')}
                 </div>
                 <div className='beatmap-score-top__stat-value beatmap-score-top__stat-value--mods u-hover'>
-                  {filterMods(this.props.score).map((mod) => <Mod key={mod.acronym} mod={mod} />)}
+                  {filterMods(this.props.score).map((mod) => (
+                    <Mod key={mod.acronym} mod={mod} />
+                  ))}
                 </div>
               </div>
             </div>

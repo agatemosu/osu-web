@@ -39,7 +39,8 @@ export default class MultiplayerRoom extends React.Component<Props> {
       return 'active';
     }
 
-    const diff = new Date(this.props.room.ends_at).getTime() - new Date().getTime();
+    const diff =
+      new Date(this.props.room.ends_at).getTime() - new Date().getTime();
 
     return diff < endingSoonDiffMs ? 'soon' : 'active';
   }
@@ -58,32 +59,58 @@ export default class MultiplayerRoom extends React.Component<Props> {
         {this.renderCover()}
         <div className='multiplayer-room__content'>
           <div className='multiplayer-room__badge-container'>
-            <div className={classWithModifiers('multiplayer-room__badge', [this.status])}>{trans(`multiplayer.room.status.${this.status}`)}</div>
-            {endsAt != null &&
+            <div
+              className={classWithModifiers('multiplayer-room__badge', [
+                this.status,
+              ])}
+            >
+              {trans(`multiplayer.room.status.${this.status}`)}
+            </div>
+            {endsAt != null && (
               <time className='js-tooltip-time u-hover' title={endsAt}>
                 {this.status === 'ended'
                   ? moment(endsAt).fromNow()
-                  : trans('multiplayer.room.time_left', { time: moment(endsAt).fromNow(true) })}
+                  : trans('multiplayer.room.time_left', {
+                      time: moment(endsAt).fromNow(true),
+                    })}
               </time>
-            }
+            )}
           </div>
           <div className='multiplayer-room__details'>
             <div className='multiplayer-room__name'>{this.props.room.name}</div>
             {this.renderMembers()}
           </div>
           <div className='multiplayer-room__badge-container multiplayer-room__badge-container--bottom'>
-            <div className={classWithModifiers('multiplayer-room__badge', ['map-count'])}>{transChoice('multiplayer.room.map_count', this.playlistItemCount)}</div>
+            <div
+              className={classWithModifiers('multiplayer-room__badge', [
+                'map-count',
+              ])}
+            >
+              {transChoice(
+                'multiplayer.room.map_count',
+                this.playlistItemCount,
+              )}
+            </div>
             <div
               className='multiplayer-room__difficulty'
-              style={{
-                '--max-difficulty': getDiffColour(this.props.room.difficulty_range.max),
-                '--min-difficulty': getDiffColour(this.props.room.difficulty_range.min),
-              } as React.CSSProperties}
+              style={
+                {
+                  '--max-difficulty': getDiffColour(
+                    this.props.room.difficulty_range.max,
+                  ),
+                  '--min-difficulty': getDiffColour(
+                    this.props.room.difficulty_range.min,
+                  ),
+                } as React.CSSProperties
+              }
             >
               <DifficultyBadge rating={this.props.room.difficulty_range.min} />
-              {this.props.room.difficulty_range.max !== this.props.room.difficulty_range.min &&
-                <DifficultyBadge rating={this.props.room.difficulty_range.max} />
-              }
+              {this.props.room.difficulty_range.max !==
+                this.props.room.difficulty_range.min && (
+                <DifficultyBadge
+                  rating={this.props.room.difficulty_range.max}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -93,9 +120,14 @@ export default class MultiplayerRoom extends React.Component<Props> {
 
   private renderCover() {
     return (
-      <a className='multiplayer-room__cover-container' href={route('multiplayer.rooms.show', { room: this.props.room.id })}>
+      <a
+        className='multiplayer-room__cover-container'
+        href={route('multiplayer.rooms.show', { room: this.props.room.id })}
+      >
         <BeatmapsetCover
-          beatmapset={this.props.room.current_playlist_item?.beatmap?.beatmapset}
+          beatmapset={
+            this.props.room.current_playlist_item?.beatmap?.beatmapset
+          }
           modifiers='full'
           size='cover'
         />
@@ -107,7 +139,9 @@ export default class MultiplayerRoom extends React.Component<Props> {
     return (
       <div className='multiplayer-room__host'>
         <StringWithComponent
-          mappings={{ user: <UserLink className='u-hover' user={this.props.room.host} /> }}
+          mappings={{
+            user: <UserLink className='u-hover' user={this.props.room.host} />,
+          }}
           pattern={trans('multiplayer.room.hosted_by')}
         />
       </div>
@@ -126,7 +160,10 @@ export default class MultiplayerRoom extends React.Component<Props> {
   private renderParticipants() {
     return (
       <div className='multiplayer-room__participants'>
-        {transChoice('multiplayer.room.player_count', this.props.room.participant_count)}
+        {transChoice(
+          'multiplayer.room.player_count',
+          this.props.room.participant_count,
+        )}
       </div>
     );
   }

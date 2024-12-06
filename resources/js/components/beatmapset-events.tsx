@@ -14,6 +14,13 @@ export interface Props {
 
 export default class BeatmapsetEvents extends React.PureComponent<Props> {
   render() {
-    return this.props.events.map((event) => <BeatmapsetEvent key={event.id} event={event} mode={this.props.mode} users={this.props.users} />);
+    return this.props.events.map((event) => (
+      <BeatmapsetEvent
+        key={event.id}
+        event={event}
+        mode={this.props.mode}
+        users={this.props.users}
+      />
+    ));
   }
 }

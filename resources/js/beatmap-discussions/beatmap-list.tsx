@@ -26,21 +26,31 @@ export default class BeatmapList extends React.Component<Props> {
 
   @computed
   private get beatmaps() {
-    return this.props.discussionsState.groupedBeatmaps.get(this.props.discussionsState.currentBeatmap.mode) ?? [];
+    return (
+      this.props.discussionsState.groupedBeatmaps.get(
+        this.props.discussionsState.currentBeatmap.mode,
+      ) ?? []
+    );
   }
 
   constructor(props: Props) {
     super(props);
 
     makeObservable(this);
-    disposeOnUnmount(this, autorun(() => {
-      blackoutToggle(this, this.showingSelector);
-    }));
+    disposeOnUnmount(
+      this,
+      autorun(() => {
+        blackoutToggle(this, this.showingSelector);
+      }),
+    );
   }
 
   componentDidMount() {
     $(document).on(`click.${this.eventId}`, this.onDocumentClick);
-    $(document).on(`turbo:before-cache.${this.eventId}`, this.handleBeforeCache);
+    $(document).on(
+      `turbo:before-cache.${this.eventId}`,
+      this.handleBeforeCache,
+    );
   }
 
   componentWillUnmount() {
@@ -50,14 +60,24 @@ export default class BeatmapList extends React.Component<Props> {
 
   render() {
     return (
-      <div className={classWithModifiers('beatmap-list', { selecting: this.showingSelector })}>
+      <div
+        className={classWithModifiers('beatmap-list', {
+          selecting: this.showingSelector,
+        })}
+      >
         <div className='beatmap-list__body'>
           <a
             className='beatmap-list__item beatmap-list__item--selected beatmap-list__item--large js-beatmap-list-selector'
-            href={makeUrl({ beatmap: this.props.discussionsState.currentBeatmap })}
+            href={makeUrl({
+              beatmap: this.props.discussionsState.currentBeatmap,
+            })}
             onClick={this.toggleSelector}
           >
-            <BeatmapListItem beatmap={this.props.discussionsState.currentBeatmap} modifiers='large' showOwners={false} />
+            <BeatmapListItem
+              beatmap={this.props.discussionsState.currentBeatmap}
+              modifiers='large'
+              showOwners={false}
+            />
             <div className='beatmap-list__item-selector-button'>
               <span className='fas fa-chevron-down' />
             </div>
@@ -74,27 +94,33 @@ export default class BeatmapList extends React.Component<Props> {
   }
 
   private readonly beatmapListItem = (beatmap: BeatmapExtendedJson) => {
-    const count = this.props.discussionsState.unresolvedDiscussionCounts.byBeatmap[beatmap.id];
+    const count =
+      this.props.discussionsState.unresolvedDiscussionCounts.byBeatmap[
+        beatmap.id
+      ];
 
     return (
       <div
         key={beatmap.id}
-        className={classWithModifiers('beatmap-list__item', { current: beatmap.id === this.props.discussionsState.currentBeatmap.id })}
+        className={classWithModifiers('beatmap-list__item', {
+          current: beatmap.id === this.props.discussionsState.currentBeatmap.id,
+        })}
         data-id={beatmap.id}
         onClick={this.selectBeatmap}
       >
         <BeatmapListItem
           beatmap={beatmap}
-          beatmapUrl={makeUrl({ beatmap, filter: this.props.discussionsState.currentFilter })}
+          beatmapUrl={makeUrl({
+            beatmap,
+            filter: this.props.discussionsState.currentFilter,
+          })}
           beatmapset={this.props.discussionsState.beatmapset}
           showNonGuestOwner={false}
           showOwners
         />
-        {count != null &&
-          <div className='beatmap-list__item-count'>
-            {formatNumber(count)}
-          </div>
-        }
+        {count != null && (
+          <div className='beatmap-list__item-count'>{formatNumber(count)}</div>
+        )}
       </div>
     );
   };

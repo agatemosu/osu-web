@@ -23,7 +23,10 @@ export interface SearchResponse {
 
 @dispatchListener
 export class BeatmapsetSearch implements DispatchListener {
-  @observable readonly recommendedDifficulties = new Map<string|null, number>();
+  @observable readonly recommendedDifficulties = new Map<
+    string | null,
+    number
+  >();
   @observable readonly resultSets = new Map<string, ResultSet>();
 
   private xhr?: JQueryXHR;
@@ -46,7 +49,9 @@ export class BeatmapsetSearch implements DispatchListener {
 
     const key = filters.toKeyString();
     const resultSet = this.getOrCreate(key);
-    const sufficient = (from > 0 && from < resultSet.beatmapsetIds.size) || (from === 0 && !resultSet.isExpired);
+    const sufficient =
+      (from > 0 && from < resultSet.beatmapsetIds.size) ||
+      (from === 0 && !resultSet.isExpired);
     if (sufficient) {
       return Promise.resolve(resultSet);
     }
@@ -60,7 +65,10 @@ export class BeatmapsetSearch implements DispatchListener {
 
           this.updateBeatmapsetStore(data);
           resultSet.append(data);
-          this.recommendedDifficulties.set(filters.mode, data.recommended_difficulty);
+          this.recommendedDifficulties.set(
+            filters.mode,
+            data.recommended_difficulty,
+          );
         });
       }
 
@@ -101,7 +109,10 @@ export class BeatmapsetSearch implements DispatchListener {
     this.recommendedDifficulties.clear();
   }
 
-  private fetch(filters: BeatmapsetSearchFilters, from: number): PromiseLike<SearchResponse | null> {
+  private fetch(
+    filters: BeatmapsetSearchFilters,
+    from: number,
+  ): PromiseLike<SearchResponse | null> {
     this.cancel();
 
     const params = filters.queryParams;

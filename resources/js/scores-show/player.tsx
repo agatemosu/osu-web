@@ -21,7 +21,8 @@ export default function Player(props: Props) {
   if (
     props.score.rank_global == null ||
     props.score.rank_global === 0 ||
-    (props.score.type === 'solo_score' && (!props.score.ranked || !props.score.preserve))
+    (props.score.type === 'solo_score' &&
+      (!props.score.ranked || !props.score.preserve))
   ) {
     title = trans('scores.status.no_rank');
     content = '-';
@@ -45,18 +46,10 @@ export default function Player(props: Props) {
       </div>
 
       <div className='score-player__row score-player__row--player'>
-        <span>
-          {trans('scores.show.player.by')}
-        </span>
-        <strong>
-          {props.score.user.username}
-        </strong>
-        <span>
-          {trans('scores.show.player.submitted_on')}
-        </span>
-        <strong>
-          {moment(props.score.ended_at).format('LLL')}
-        </strong>
+        <span>{trans('scores.show.player.by')}</span>
+        <strong>{props.score.user.username}</strong>
+        <span>{trans('scores.show.player.submitted_on')}</span>
+        <strong>{moment(props.score.ended_at).format('LLL')}</strong>
       </div>
 
       <div className='score-player__row score-player__row--rank'>

@@ -31,16 +31,13 @@ export default class Main extends React.PureComponent<Props> {
         <div className='osu-page osu-page--generic osu-page--full'>
           <FollowsSubtypes currentSubtype='comment' />
 
-          {this.props.follows.length === 0
-            ? trans('follows.comment.empty')
-            : (
-              <table className='follows-table'>
-                <tbody>
-                  {this.props.follows.map(this.renderItem)}
-                </tbody>
-              </table>
-            )
-          }
+          {this.props.follows.length === 0 ? (
+            trans('follows.comment.empty')
+          ) : (
+            <table className='follows-table'>
+              <tbody>{this.props.follows.map(this.renderItem)}</tbody>
+            </table>
+          )}
         </div>
       </div>
     );
@@ -58,24 +55,38 @@ export default class Main extends React.PureComponent<Props> {
         </td>
 
         <td className='follows-table__data'>
-          {'url' in follow.commentable_meta
-            ? <a href={follow.commentable_meta.url}>{follow.commentable_meta.title}</a>
-            : <span>{follow.commentable_meta.title}</span>
-          }
+          {'url' in follow.commentable_meta ? (
+            <a href={follow.commentable_meta.url}>
+              {follow.commentable_meta.title}
+            </a>
+          ) : (
+            <span>{follow.commentable_meta.title}</span>
+          )}
         </td>
 
         <td className='follows-table__data'>
           {follow.latest_comment != null ? (
-            <a href={route('comments.show', { comment: follow.latest_comment.id })}>
+            <a
+              href={route('comments.show', {
+                comment: follow.latest_comment.id,
+              })}
+            >
               <StringWithComponent
                 mappings={{
-                  time: <TimeWithTooltip dateTime={follow.latest_comment.created_at} relative />,
+                  time: (
+                    <TimeWithTooltip
+                      dateTime={follow.latest_comment.created_at}
+                      relative
+                    />
+                  ),
                   username: follow.latest_comment.user?.username ?? '???',
                 }}
                 pattern={trans('follows.comment.table.latest_comment_value')}
               />
             </a>
-          ) : trans('follows.comment.table.latest_comment_empty')}
+          ) : (
+            trans('follows.comment.table.latest_comment_empty')
+          )}
         </td>
 
         <td className='follows-table__data'>

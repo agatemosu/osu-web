@@ -19,30 +19,33 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
           <div className='modding-profile-list__empty'>
             {trans('beatmap_discussions.index.none_found')}
           </div>
-        ) : (this.props.discussions.map((discussion) => {
-          // TODO: handle in child component? Refactored state might not have beatmapset here (and uses Map)
-          const beatmapset = this.store.beatmapsets.get(discussion.beatmapset_id);
+        ) : (
+          this.props.discussions.map((discussion) => {
+            // TODO: handle in child component? Refactored state might not have beatmapset here (and uses Map)
+            const beatmapset = this.store.beatmapsets.get(
+              discussion.beatmapset_id,
+            );
 
-          return beatmapset != null && (
-            <div key={discussion.id} className='modding-profile-list__row'>
-              <a
-                className='modding-profile-list__thumbnail'
-                href={makeUrl({ discussion })}
-              >
-                <BeatmapsetCover
-                  beatmapset={beatmapset}
-                  size='list'
-                />
-              </a>
-              <Discussion
-                discussion={discussion}
-                discussionsState={null}
-                isTimelineVisible={false}
-                store={this.store}
-              />
-            </div>
-          );
-        }))}
+            return (
+              beatmapset != null && (
+                <div key={discussion.id} className='modding-profile-list__row'>
+                  <a
+                    className='modding-profile-list__thumbnail'
+                    href={makeUrl({ discussion })}
+                  >
+                    <BeatmapsetCover beatmapset={beatmapset} size='list' />
+                  </a>
+                  <Discussion
+                    discussion={discussion}
+                    discussionsState={null}
+                    isTimelineVisible={false}
+                    store={this.store}
+                  />
+                </div>
+              )
+            );
+          })
+        )}
       </div>
     );
   }

@@ -11,11 +11,9 @@ interface Props {
 }
 
 export default function ProfilePageExtraTab(props: Props) {
-  const blockClass = classWithModifiers(
-    'page-mode-link',
-    'profile-page',
-    { 'is-active': props.page === props.currentPage },
-  );
+  const blockClass = classWithModifiers('page-mode-link', 'profile-page', {
+    'is-active': props.page === props.currentPage,
+  });
   const title = trans(`users.show.extra.${props.page}.title`);
 
   return (

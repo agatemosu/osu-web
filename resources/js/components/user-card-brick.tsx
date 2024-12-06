@@ -29,7 +29,9 @@ export default class UserCardBrick extends React.Component<Props> {
   private get friendModifier() {
     if (core.currentUser?.friends == null) return;
 
-    const friendState = core.currentUser.friends.find((friend: UserRelationJson) => friend.target_id === this.props.user.id);
+    const friendState = core.currentUser.friends.find(
+      (friend: UserRelationJson) => friend.target_id === this.props.user.id,
+    );
 
     if (friendState != null) {
       if (friendState.mutual) return 'mutual';
@@ -55,12 +57,17 @@ export default class UserCardBrick extends React.Component<Props> {
       this.friendModifier,
     );
 
-    const group = this.props.user.groups != null && this.props.user.groups.length > 0
-      ? this.props.user.groups[0]
-      : undefined;
+    const group =
+      this.props.user.groups != null && this.props.user.groups.length > 0
+        ? this.props.user.groups[0]
+        : undefined;
 
     return (
-      <div ref={this.ref} className={`js-usercard ${blockClass}`} data-user-id={this.props.user.id}>
+      <div
+        ref={this.ref}
+        className={`js-usercard ${blockClass}`}
+        data-user-id={this.props.user.id}
+      >
         <a
           className='user-card-brick__link'
           href={route('users.show', { user: this.props.user.id })}
@@ -76,7 +83,10 @@ export default class UserCardBrick extends React.Component<Props> {
           </div>
         </a>
         {this.props.onRemoveClick != null && (
-          <button className='user-card-brick__remove' onClick={this.handleRemoveClick}>
+          <button
+            className='user-card-brick__remove'
+            onClick={this.handleRemoveClick}
+          >
             <span className='fas fa-times' />
           </button>
         )}

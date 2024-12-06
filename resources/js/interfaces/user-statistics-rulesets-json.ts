@@ -4,6 +4,8 @@
 import Ruleset from './ruleset';
 import UserStatisticsJson from './user-statistics-json';
 
-type UserStatisticsRulesetsJson = Partial<Record<Ruleset, UserStatisticsJson | null>>;
+type UserStatisticsRulesetsJson = Partial<
+  Record<Ruleset, UserStatisticsJson | null>
+>;
 
 export default UserStatisticsRulesetsJson;

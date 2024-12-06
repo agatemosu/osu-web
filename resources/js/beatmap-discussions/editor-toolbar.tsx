@@ -74,10 +74,7 @@ export class EditorToolbar extends React.Component {
 
     return (
       <Portal>
-        <div
-          ref={this.ref}
-          className={bn}
-        >
+        <div ref={this.ref} className={bn}>
           <EditorToolbarButton format='bold' />
           <EditorToolbarButton format='italic' />
           <div className={`${bn}__popup-tail`} />
@@ -110,7 +107,10 @@ export class EditorToolbar extends React.Component {
         return this.hide();
       }
 
-      for (const p of Editor.positions(this.context, { at: this.context.selection ?? undefined, unit: 'block' })) {
+      for (const p of Editor.positions(this.context, {
+        at: this.context.selection ?? undefined,
+        unit: 'block',
+      })) {
         const block = Node.parent(this.context, p.path);
 
         if (Element.isElement(block) && block.type === 'embed') {
@@ -121,15 +121,16 @@ export class EditorToolbar extends React.Component {
       const containerBounds = this.scrollContainer?.getBoundingClientRect();
       const selectionBounds = selectionRange.getBoundingClientRect();
 
-      const outsideContainer = containerBounds != null
-        && (selectionBounds.top < containerBounds.top
-          || selectionBounds.top > containerBounds.bottom);
+      const outsideContainer =
+        containerBounds != null &&
+        (selectionBounds.top < containerBounds.top ||
+          selectionBounds.top > containerBounds.bottom);
 
       if (outsideContainer) {
         return this.hide();
       } else {
         tooltip.style.display = 'block';
-        tooltip.style.left = `${selectionBounds.left + ((window.pageXOffset - tooltip.offsetWidth) / 2) + (selectionBounds.width / 2)}px`;
+        tooltip.style.left = `${selectionBounds.left + (window.pageXOffset - tooltip.offsetWidth) / 2 + selectionBounds.width / 2}px`;
         tooltip.style.top = `${selectionBounds.top - tooltip.clientHeight - 10}px`;
       }
     }, 10);

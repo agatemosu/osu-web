@@ -34,9 +34,7 @@ export default class BrowserTitleWithNotificationCount {
 
     this.disposer = autorun(() => {
       const count = this.core.dataStore.notificationStore.unreadStacks.total;
-      const titlePrefix = count === 0
-        ? ''
-        : `(${formatNumber(count)}) `;
+      const titlePrefix = count === 0 ? '' : `(${formatNumber(count)}) `;
 
       document.title = `${titlePrefix}${this.customTitle ?? this.origTitle}`;
     });

@@ -4,7 +4,12 @@
 import OsuCore from 'osu-core';
 import AccountEditState from './account-edit-state';
 
-type ContainerEvent = JQuery.TriggeredEvent<unknown, unknown, AccountEditHTMLElement, unknown>;
+type ContainerEvent = JQuery.TriggeredEvent<
+  unknown,
+  unknown,
+  AccountEditHTMLElement,
+  unknown
+>;
 
 const autoSubmitClassSelector = '.js-account-edit-auto-submit';
 const classSelector = '.js-account-edit';
@@ -15,14 +20,21 @@ interface AccountEditHTMLElement extends HTMLElement {
 
 export default class AccountEdit {
   constructor(private readonly core: OsuCore) {
-    $(document).on('input change', autoSubmitClassSelector, this.handleInputChange);
+    $(document).on(
+      'input change',
+      autoSubmitClassSelector,
+      this.handleInputChange,
+    );
     $(document).on('ajax:error', classSelector, this.handleAjaxError);
     $(document).on('ajax:send', classSelector, this.handleAjaxSend);
     $(document).on('ajax:success', classSelector, this.handleAjaxSuccess);
   }
 
   private getState(e: ContainerEvent) {
-    return e.currentTarget.state ??= new AccountEditState(e.currentTarget, this.core);
+    return (e.currentTarget.state ??= new AccountEditState(
+      e.currentTarget,
+      this.core,
+    ));
   }
 
   private readonly handleAjaxError = (e: ContainerEvent) => {

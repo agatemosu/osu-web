@@ -19,10 +19,23 @@ function isVisibleBeatmap(beatmap: BeatmapJson) {
   return true;
 }
 
-const difficultyColourSpectrum = d3.scaleLinear<string>()
+const difficultyColourSpectrum = d3
+  .scaleLinear<string>()
   .domain([0.1, 1.25, 2, 2.5, 3.3, 4.2, 4.9, 5.8, 6.7, 7.7, 9])
   .clamp(true)
-  .range(['#4290FB', '#4FC0FF', '#4FFFD5', '#7CFF4F', '#F6F05C', '#FF8068', '#FF4E6F', '#C645B8', '#6563DE', '#18158E', '#000000'])
+  .range([
+    '#4290FB',
+    '#4FC0FF',
+    '#4FFFD5',
+    '#7CFF4F',
+    '#F6F05C',
+    '#FF8068',
+    '#FF4E6F',
+    '#C645B8',
+    '#6563DE',
+    '#18158E',
+    '#000000',
+  ])
   .interpolate(d3.interpolateRgb.gamma(2.2));
 
 interface FindDefaultParams<T> {
@@ -31,7 +44,9 @@ interface FindDefaultParams<T> {
   mode?: Ruleset;
 }
 
-export function findDefault<T extends BeatmapJson>(params: FindDefaultParams<T>): T | null {
+export function findDefault<T extends BeatmapJson>(
+  params: FindDefaultParams<T>,
+): T | null {
   if (params.items != null) {
     let currentDiffDelta: number | null = null;
     let currentItem: T | null = null;
@@ -40,7 +55,10 @@ export function findDefault<T extends BeatmapJson>(params: FindDefaultParams<T>)
     for (const item of params.items) {
       const diffDelta = Math.abs(item.difficulty_rating - targetDiff);
 
-      if (isVisibleBeatmap(item) && (currentDiffDelta == null || diffDelta < currentDiffDelta)) {
+      if (
+        isVisibleBeatmap(item) &&
+        (currentDiffDelta == null || diffDelta < currentDiffDelta)
+      ) {
         currentDiffDelta = diffDelta;
         currentItem = item;
       }
@@ -86,9 +104,15 @@ export function getDiffColour(rating: number) {
   return difficultyColourSpectrum(rating);
 }
 
-export function group<T extends BeatmapJson>(beatmaps?: T[] | null, includeEmpty = true): Map<Ruleset, T[]> {
+export function group<T extends BeatmapJson>(
+  beatmaps?: T[] | null,
+  includeEmpty = true,
+): Map<Ruleset, T[]> {
   // TODO: replace with mapBy
-  const grouped: Partial<Record<Ruleset, T[]>> = _.groupBy(beatmaps ?? [], 'mode');
+  const grouped: Partial<Record<Ruleset, T[]>> = _.groupBy(
+    beatmaps ?? [],
+    'mode',
+  );
   const ret = new Map<Ruleset, T[]>();
 
   rulesets.forEach((mode) => {
@@ -101,11 +125,17 @@ export function group<T extends BeatmapJson>(beatmaps?: T[] | null, includeEmpty
   return ret;
 }
 
-export function hasGuestOwners(beatmap: WithBeatmapOwners<BeatmapJson>, beatmapset: BeatmapsetJson) {
+export function hasGuestOwners(
+  beatmap: WithBeatmapOwners<BeatmapJson>,
+  beatmapset: BeatmapsetJson,
+) {
   return beatmap.owners.some((owner) => owner.id !== beatmapset.user_id);
 }
 
-export function isOwner(userId: number, beatmap: WithBeatmapOwners<BeatmapJson>) {
+export function isOwner(
+  userId: number,
+  beatmap: WithBeatmapOwners<BeatmapJson>,
+) {
   return beatmap.owners.some((owner) => owner.id === userId);
 }
 
@@ -134,7 +164,11 @@ export function sort<T extends BeatmapJson>(beatmaps: T[]): T[] {
   }
 
   if (beatmaps[0].mode === 'mania') {
-    return _.orderBy(beatmaps, ['convert', 'cs', 'difficulty_rating'], ['desc', 'asc', 'asc']);
+    return _.orderBy(
+      beatmaps,
+      ['convert', 'cs', 'difficulty_rating'],
+      ['desc', 'asc', 'asc'],
+    );
   }
 
   return _.orderBy(beatmaps, ['convert', 'difficulty_rating'], ['desc', 'asc']);
@@ -156,11 +190,13 @@ function userModes() {
   return ret;
 }
 
-let userRecommendedDifficultyCache: Partial<Record<Ruleset, number>> | null = null;
+let userRecommendedDifficultyCache: Partial<Record<Ruleset, number>> | null =
+  null;
 
 function userRecommendedDifficulty(mode: Ruleset) {
   if (userRecommendedDifficultyCache == null) {
-    userRecommendedDifficultyCache = parseJsonNullable('json-recommended-star-difficulty-all') ?? {};
+    userRecommendedDifficultyCache =
+      parseJsonNullable('json-recommended-star-difficulty-all') ?? {};
     $(document).one('turbo:before-cache', () => {
       userRecommendedDifficultyCache = null;
     });

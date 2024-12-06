@@ -28,12 +28,21 @@ import Stats from './stats';
 import Votes from './votes';
 
 // in display order.
-const moddingExtraPages = ['events', 'discussions', 'posts', 'votes', 'kudosu'] as const;
+const moddingExtraPages = [
+  'events',
+  'discussions',
+  'posts',
+  'votes',
+  'kudosu',
+] as const;
 type ModdingExtraPage = (typeof moddingExtraPages)[number];
 type Page = ModdingExtraPage | 'main';
 
 function validPage(page: unknown) {
-  if (typeof page === 'string' && (page === 'main' || moddingExtraPages.includes(page as ModdingExtraPage))) {
+  if (
+    typeof page === 'string' &&
+    (page === 'main' || moddingExtraPages.includes(page as ModdingExtraPage))
+  ) {
     return page as Page;
   }
 
@@ -56,7 +65,8 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
   };
   private readonly pages = React.createRef<HTMLDivElement>();
   private readonly pagesOffsetRef = React.createRef<HTMLDivElement>();
-  @observable private readonly store = new BeatmapsetDiscussionsBundleForModdingProfileStore(this.props);
+  @observable private readonly store =
+    new BeatmapsetDiscussionsBundleForModdingProfileStore(this.props);
   private readonly tabs = React.createRef<HTMLDivElement>();
 
   private get pagesOffset() {
@@ -64,7 +74,10 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
   }
 
   private get stickyHeaderOffset() {
-    return core.stickyHeader.headerHeight + (this.pagesOffset?.getBoundingClientRect().height ?? 0);
+    return (
+      core.stickyHeader.headerHeight +
+      (this.pagesOffset?.getBoundingClientRect().height ?? 0)
+    );
   }
 
   private get user() {
@@ -73,7 +86,9 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
 
   @computed
   private get userDiscussions() {
-    return [...this.store.discussions.values()].filter((d) => d.user_id === this.props.user.id);
+    return [...this.store.discussions.values()].filter(
+      (d) => d.user_id === this.props.user.id,
+    );
   }
 
   constructor(props: BeatmapsetDiscussionsBundleJsonForModdingProfile) {
@@ -84,17 +99,22 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
 
   componentDidMount() {
     // pageScan does not need to run at 144 fps...
-    $(window).on(`scroll.${this.eventId}`, throttle(() => this.pageScan(), 20));
+    $(window).on(
+      `scroll.${this.eventId}`,
+      throttle(() => this.pageScan(), 20),
+    );
 
     const page = validPage(currentUrl().hash.slice(1)) ?? 'main';
 
-    this.disposers.add(core.reactTurbolinks.runAfterPageLoad(() => {
-      if (page != null) {
-        window.setTimeout(() => {
-          this.pageScrollIntoView(page);
-        }, 0);
-      }
-    }));
+    this.disposers.add(
+      core.reactTurbolinks.runAfterPageLoad(() => {
+        if (page != null) {
+          window.setTimeout(() => {
+            this.pageScrollIntoView(page);
+          }, 0);
+        }
+      }),
+    );
   }
 
   componentWillUnmount() {
@@ -157,11 +177,7 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
           </div>
           <div ref={this.pages} className='user-profile-pages'>
             {moddingExtraPages.map((name) => (
-              <div
-                key={name}
-                ref={this.pageRefs[name]}
-                data-page-id={name}
-              >
+              <div key={name} ref={this.pageRefs[name]} data-page-id={name}>
                 {this.extraPage(name)}
               </div>
             ))}
@@ -174,9 +190,21 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
   private readonly extraPage = (name: ModdingExtraPage) => {
     switch (name) {
       case 'discussions':
-        return <Discussions discussions={this.userDiscussions} store={this.store} user={this.user} />;
+        return (
+          <Discussions
+            discussions={this.userDiscussions}
+            store={this.store}
+            user={this.user}
+          />
+        );
       case 'events':
-        return <Events events={this.props.events} user={this.user} users={this.store.users} />;
+        return (
+          <Events
+            events={this.props.events}
+            user={this.user}
+            users={this.store.users}
+          />
+        );
       case 'kudosu':
         return (
           <Kudosu
@@ -188,7 +216,9 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
           />
         );
       case 'posts':
-        return <Posts posts={this.props.posts} store={this.store} user={this.user} />;
+        return (
+          <Posts posts={this.props.posts} store={this.store} user={this.user} />
+        );
       case 'votes':
         return <Votes users={this.store.users} votes={this.props.votes} />;
       default:
@@ -219,10 +249,13 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
       const pageId = page.dataset.pageId as Page;
       const pageDims = page.getBoundingClientRect();
 
-      const pageBottom = pageDims.bottom - Math.min(pageDims.height * 0.75, 200);
-      const match = pageId === 'main'
-        ? pageBottom > 0
-        : pageBottom > this.stickyHeaderOffset && pageDims.top < window.innerHeight;
+      const pageBottom =
+        pageDims.bottom - Math.min(pageDims.height * 0.75, 200);
+      const match =
+        pageId === 'main'
+          ? pageBottom > 0
+          : pageBottom > this.stickyHeaderOffset &&
+            pageDims.top < window.innerHeight;
 
       if (match) {
         matching.add(pageId);
@@ -236,7 +269,10 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
       preferred = last(pageIds);
     } else {
       // prefer using the page being navigated to if its element is in view.
-      preferred = this.pageJumpingTo != null && matching.has(this.pageJumpingTo) ? this.pageJumpingTo : first(pageIds);
+      preferred =
+        this.pageJumpingTo != null && matching.has(this.pageJumpingTo)
+          ? this.pageJumpingTo
+          : first(pageIds);
     }
 
     if (preferred != null) {
@@ -246,7 +282,8 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
 
   @action
   private readonly pageScrollIntoView = (page: Page, smooth = false) => {
-    const target = page === 'main' ? document.body : this.pageRefs[page].current;
+    const target =
+      page === 'main' ? document.body : this.pageRefs[page].current;
     if (target == null) return;
 
     const pageId = target.dataset.pageId as Page;
@@ -256,7 +293,14 @@ export default class Main extends React.Component<BeatmapsetDiscussionsBundleJso
       maxScrollY -= 1;
     }
 
-    const top = Math.floor(Math.min(maxScrollY, window.scrollY + target.getBoundingClientRect().top - this.stickyHeaderOffset));
+    const top = Math.floor(
+      Math.min(
+        maxScrollY,
+        window.scrollY +
+          target.getBoundingClientRect().top -
+          this.stickyHeaderOffset,
+      ),
+    );
     // smooth scroll when using navigation bar.
     window.scrollTo({ behavior: smooth ? 'smooth' : undefined, top });
   };

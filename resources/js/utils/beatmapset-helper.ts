@@ -12,9 +12,11 @@ interface FavouriteResponse {
 }
 
 export function downloadLimited(beatmapset: BeatmapsetJson) {
-  return beatmapset.availability == null
-    || beatmapset.availability.download_disabled
-    || beatmapset.availability.more_information != null;
+  return (
+    beatmapset.availability == null ||
+    beatmapset.availability.download_disabled ||
+    beatmapset.availability.more_information != null
+  );
 }
 
 // TODO: should make a Beatmapset proxy object or something
@@ -51,22 +53,31 @@ export const toggleFavourite = action((beatmapset: BeatmapsetJson) => {
   beatmapset.has_favourited = add;
   beatmapset.favourite_count += add ? 1 : -1;
 
-  const ret = $.ajax(route('beatmapsets.favourites.store', { beatmapset: beatmapset.id }), {
-    data: {
-      action: add ? 'favourite' : 'unfavourite',
+  const ret = $.ajax(
+    route('beatmapsets.favourites.store', { beatmapset: beatmapset.id }),
+    {
+      data: {
+        action: add ? 'favourite' : 'unfavourite',
+      },
+      method: 'POST',
     },
-    method: 'POST',
-  }) as JQuery.jqXHR<FavouriteResponse>;
+  ) as JQuery.jqXHR<FavouriteResponse>;
 
-  ret.fail((xhr, status) => runInAction(() => {
-    // undo faked change
-    beatmapset.has_favourited = !add;
-    beatmapset.favourite_count += add ? -1 : 1;
+  ret
+    .fail((xhr, status) =>
+      runInAction(() => {
+        // undo faked change
+        beatmapset.has_favourited = !add;
+        beatmapset.favourite_count += add ? -1 : 1;
 
-    error(xhr, status, retryCallback);
-  })).done((data) => runInAction(() => {
-    beatmapset.favourite_count = data.favourite_count;
-  }));
+        error(xhr, status, retryCallback);
+      }),
+    )
+    .done((data) =>
+      runInAction(() => {
+        beatmapset.favourite_count = data.favourite_count;
+      }),
+    );
 
   return ret;
 });

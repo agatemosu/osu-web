@@ -11,8 +11,11 @@ import { throttle } from 'lodash';
 //    object) is the correct target
 // 4. stick if matches, unstick otherwise
 export default class StickyFooter {
-  private readonly permanentFixedFooter = document.getElementsByClassName('js-permanent-fixed-footer');
-  private readonly stickMarker = document.getElementsByClassName('js-sticky-footer');
+  private readonly permanentFixedFooter = document.getElementsByClassName(
+    'js-permanent-fixed-footer',
+  );
+  private readonly stickMarker =
+    document.getElementsByClassName('js-sticky-footer');
   private readonly throttledStickOrUnstick;
 
   constructor() {

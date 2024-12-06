@@ -15,7 +15,9 @@ interface Props {
 export default class ChatIcon extends React.Component<Props> {
   @computed
   private get unreadCount() {
-    return core.dataStore.notificationStore.unreadStacks.getOrCreateType({ objectType: 'channel' }).total;
+    return core.dataStore.notificationStore.unreadStacks.getOrCreateType({
+      objectType: 'channel',
+    }).total;
   }
 
   constructor(props: Props) {
@@ -25,6 +27,13 @@ export default class ChatIcon extends React.Component<Props> {
   }
 
   render() {
-    return <NotificationIcon count={this.unreadCount} iconClassName='fas fa-comment-alt' ready={core.notificationsWorker.hasData} type={this.props.type} />;
+    return (
+      <NotificationIcon
+        count={this.unreadCount}
+        iconClassName='fas fa-comment-alt'
+        ready={core.notificationsWorker.hasData}
+        type={this.props.type}
+      />
+    );
   }
 }

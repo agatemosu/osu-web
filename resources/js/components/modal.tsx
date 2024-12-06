@@ -5,7 +5,7 @@ import * as React from 'react';
 import { blackoutToggle } from 'utils/blackout';
 import Portal from './portal';
 
-export const isModalOpen = () => modals.size !==  0;
+export const isModalOpen = () => modals.size !== 0;
 
 interface Props {
   onClose?: () => void;
@@ -13,7 +13,9 @@ interface Props {
 
 const modals = new Set<Modal>();
 
-export default class Modal extends React.PureComponent<React.PropsWithChildren<Props>> {
+export default class Modal extends React.PureComponent<
+  React.PropsWithChildren<Props>
+> {
   private clickEndTarget: undefined | EventTarget;
   private clickStartTarget: undefined | EventTarget;
   private readonly ref = React.createRef<HTMLDivElement>();
@@ -78,10 +80,11 @@ export default class Modal extends React.PureComponent<React.PropsWithChildren<P
    * likewise, starting on an inner element end ending on the outer element will still use the outer element as the event target.
    */
   private readonly hideModal = (e: React.MouseEvent) => {
-    if (this.props.onClose != null
-      && e.button === 0
-      && e.target === this.ref.current
-      && this.clickEndTarget === this.clickStartTarget
+    if (
+      this.props.onClose != null &&
+      e.button === 0 &&
+      e.target === this.ref.current &&
+      this.clickEndTarget === this.clickStartTarget
     ) {
       this.props.onClose();
     }

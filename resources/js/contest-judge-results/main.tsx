@@ -24,11 +24,7 @@ export default function Main(props: Props) {
 
       <div className='contest-judge-results'>
         {props.entry.judge_votes.map((vote) => (
-          <Vote
-            key={vote.id}
-            contest={props.contest}
-            vote={vote}
-          />
+          <Vote key={vote.id} contest={props.contest} vote={vote} />
         ))}
       </div>
     </>

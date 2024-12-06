@@ -11,7 +11,14 @@ import { trans, transExists } from 'utils/lang';
 import { switchNever } from 'utils/switch-never';
 import AchievementBadge from './achievement-badge';
 
-export default function parseEvent(event: EventJson, modifiers: Modifiers): { badge?: React.ReactNode; iconModifiers?: string; mappings?: Record<string, React.ReactNode> } {
+export default function parseEvent(
+  event: EventJson,
+  modifiers: Modifiers,
+): {
+  badge?: React.ReactNode;
+  iconModifiers?: string;
+  mappings?: Record<string, React.ReactNode>;
+} {
   if (event.parse_error) return {};
 
   switch (event.type) {
@@ -26,7 +33,13 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
         ),
         mappings: {
           achievement: <strong>{event.achievement.name}</strong>,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 
@@ -45,21 +58,31 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
         iconModifiers: event.approval,
         mappings: {
           approval: trans(`events.beatmapset_status.${event.approval}`),
-          beatmapset: <a href={event.beatmapset.url}>{event.beatmapset.title}</a>,
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          beatmapset: (
+            <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+          ),
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
     case 'beatmapsetDelete': {
-      const canView = core.currentUser != null && (core.currentUser.is_bng || core.currentUser.is_moderator);
+      const canView =
+        core.currentUser != null &&
+        (core.currentUser.is_bng || core.currentUser.is_moderator);
 
       return {
         badge: <span className='far fa-trash-alt' />,
         iconModifiers: 'danger',
         mappings: {
-          beatmapset: canView
-            ? <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
-            : event.beatmapset.title,
+          beatmapset: canView ? (
+            <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+          ) : (
+            event.beatmapset.title
+          ),
         },
       };
     }
@@ -68,8 +91,14 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
       return {
         badge: <span className='fas fa-trash-restore' />,
         mappings: {
-          beatmapset: <a href={event.beatmapset.url}>{event.beatmapset.title}</a>,
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          beatmapset: (
+            <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+          ),
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
@@ -78,8 +107,18 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
         badge: <span className='fas fa-sync-alt' />,
         iconModifiers: 'green',
         mappings: {
-          beatmapset: <em><a href={event.beatmapset.url}>{event.beatmapset.title}</a></em>,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          beatmapset: (
+            <em>
+              <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+            </em>
+          ),
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 
@@ -88,17 +127,26 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
         badge: <span className='fas fa-arrow-up' />,
         iconModifiers: 'orange',
         mappings: {
-          beatmapset: <a href={event.beatmapset.url}>{event.beatmapset.title}</a>,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          beatmapset: (
+            <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+          ),
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 
     case 'rank': {
       const rankNumber = formatNumber(event.rank);
       // TODO: remove check after all languages are updated to have both `rank` and `value.rank`.
-      let rank: React.ReactNode = transExists('events.rank') && !transExists('events.value.rank')
-        ? rankNumber
-        : (
+      let rank: React.ReactNode =
+        transExists('events.rank') && !transExists('events.value.rank') ? (
+          rankNumber
+        ) : (
           <StringWithComponent
             mappings={{ rank: rankNumber }}
             pattern={trans('events.value.rank')}
@@ -111,10 +159,20 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
       return {
         badge: <div className={`score-rank score-rank--${event.scoreRank}`} />,
         mappings: {
-          beatmap: <em><a href={event.beatmap.url}>{event.beatmap.title}</a></em>,
+          beatmap: (
+            <em>
+              <a href={event.beatmap.url}>{event.beatmap.title}</a>
+            </em>
+          ),
           mode: trans(`beatmaps.mode.${event.mode}`),
           rank,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
     }
@@ -123,9 +181,19 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
       return {
         badge: <span className='fas fa-angle-double-down' />,
         mappings: {
-          beatmap: <em><a href={event.beatmap.url}>{event.beatmap.title}</a></em>,
+          beatmap: (
+            <em>
+              <a href={event.beatmap.url}>{event.beatmap.title}</a>
+            </em>
+          ),
           mode: trans(`beatmaps.mode.${event.mode}`),
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 
@@ -134,7 +202,11 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
         badge: <span className='fas fa-heart' />,
         iconModifiers: 'pink',
         mappings: {
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
@@ -143,7 +215,11 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
         badge: <span className='fas fa-heart' />,
         iconModifiers: 'pink',
         mappings: {
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
@@ -152,7 +228,11 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
         badge: <span className='fas fa-gift' />,
         iconModifiers: 'pink',
         mappings: {
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
@@ -161,7 +241,13 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
         badge: <span className='fas fa-tag' />,
         mappings: {
           previousUsername: <strong>{event.user.previousUsername}</strong>,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 

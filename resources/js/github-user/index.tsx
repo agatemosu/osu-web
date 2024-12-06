@@ -22,14 +22,20 @@ export default class GithubUser extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
-    this.user = JSON.parse(this.props.container.dataset.user ?? '') as GithubUserJson | null;
+    this.user = JSON.parse(
+      this.props.container.dataset.user ?? '',
+    ) as GithubUserJson | null;
 
     makeObservable(this);
 
-    disposeOnUnmount(this, reaction(
-      () => JSON.stringify(this.user),
-      (githubUserJson) => this.props.container.dataset.user = githubUserJson,
-    ));
+    disposeOnUnmount(
+      this,
+      reaction(
+        () => JSON.stringify(this.user),
+        (githubUserJson) =>
+          (this.props.container.dataset.user = githubUserJson),
+      ),
+    );
   }
 
   componentWillUnmount() {
@@ -72,12 +78,11 @@ export default class GithubUser extends React.Component<Props> {
   private readonly onUnlinkButtonClick = () => {
     if (this.unlinkXhr != null) return;
 
-    this.unlinkXhr = $.ajax(
-      route('account.github-users.destroy'),
-      { method: 'DELETE' },
-    )
-      .done(action(() => this.user = null))
+    this.unlinkXhr = $.ajax(route('account.github-users.destroy'), {
+      method: 'DELETE',
+    })
+      .done(action(() => (this.user = null)))
       .fail(onErrorWithCallback(this.onUnlinkButtonClick))
-      .always(action(() => this.unlinkXhr = null));
+      .always(action(() => (this.unlinkXhr = null)));
   };
 }

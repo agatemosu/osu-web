@@ -12,7 +12,13 @@ export interface ScoreCurrentUserPinJson {
   score_id: number;
 }
 
-export type ScoreStatisticsAttribute = 'count_50' | 'count_100' | 'count_300' | 'count_geki' | 'count_katu' | 'count_miss';
+export type ScoreStatisticsAttribute =
+  | 'count_50'
+  | 'count_100'
+  | 'count_300'
+  | 'count_geki'
+  | 'count_katu'
+  | 'count_miss';
 
 interface ScoreCurrentUserAttributesJson {
   pin?: ScoreCurrentUserPinJson;
@@ -63,6 +69,8 @@ interface ScoreJsonDefaultAttributes {
   user_id: number;
 }
 
-type ScoreJson = ScoreJsonDefaultAttributes & ScoreJsonDefaultIncludes & Partial<ScoreJsonAvailableIncludes>;
+type ScoreJson = ScoreJsonDefaultAttributes &
+  ScoreJsonDefaultIncludes &
+  Partial<ScoreJsonAvailableIncludes>;
 
 export default ScoreJson;

@@ -36,7 +36,9 @@ const BeatmapList = ({ items }: RenderProps<number[]>) => (
           const beatmapset = core.dataStore.beatmapsetStore.get(beatmapsetId);
           return (
             <div key={beatmapsetId} className='beatmapsets__item'>
-              {beatmapset != null && <BeatmapsetPanel beatmapset={beatmapset} />}
+              {beatmapset != null && (
+                <BeatmapsetPanel beatmapset={beatmapset} />
+              )}
             </div>
           );
         })}
@@ -79,13 +81,17 @@ export class SearchContent extends React.Component<Props> {
   }
 
   render() {
-    const listCssClasses = classWithModifiers('beatmapsets', { dimmed: this.controller.isBusy });
+    const listCssClasses = classWithModifiers('beatmapsets', {
+      dimmed: this.controller.isBusy,
+    });
 
     return (
       <>
         <SearchPanel
           availableFilters={this.props.availableFilters}
-          firstBeatmapset={core.dataStore.beatmapsetStore.get(this.beatmapsetIds[0])}
+          firstBeatmapset={core.dataStore.beatmapsetStore.get(
+            this.beatmapsetIds[0],
+          )}
           innerRef={this.props.backToTopAnchor}
         />
         <div className='js-sticky-header' />
@@ -100,7 +106,11 @@ export class SearchContent extends React.Component<Props> {
                   <div className='sort hidden-xs'>
                     <div className='sort__items'>
                       {beatmapsetCardSizes.map((size) => (
-                        <BeatmapsetCardSizeSelector key={size} classElement='sort__item' size={size} />
+                        <BeatmapsetCardSizeSelector
+                          key={size}
+                          classElement='sort__item'
+                          size={size}
+                        />
                       ))}
                     </div>
                   </div>
@@ -108,7 +118,9 @@ export class SearchContent extends React.Component<Props> {
               </div>
             )}
             <div className='beatmapsets__content js-audio--group'>
-              {this.controller.isSupporterMissing ? this.renderSupporterRequired() : this.renderList() }
+              {this.controller.isSupporterMissing
+                ? this.renderSupporterRequired()
+                : this.renderList()}
             </div>
             {!this.controller.isSupporterMissing && (
               <div className='beatmapsets__paginator'>
@@ -130,7 +142,9 @@ export class SearchContent extends React.Component<Props> {
       >
         {BeatmapList}
       </VirtualList>
-    ) : <EmptyList />;
+    ) : (
+      <EmptyList />
+    );
   }
 
   private renderSupporterRequired() {

@@ -17,8 +17,17 @@ export default class MainNotificationIcon extends React.Component<Props> {
   @computed
   private get unreadCount() {
     // TODO: need a better way of propagating the exclusion list to this (but it's global anyway?)
-    const types = typeNames.filter((name) => !(name == null || name === 'channel'));
-    return types.reduce((acc, current) => acc + core.dataStore.notificationStore.unreadStacks.getOrCreateType({ objectType: current }).total, 0);
+    const types = typeNames.filter(
+      (name) => !(name == null || name === 'channel'),
+    );
+    return types.reduce(
+      (acc, current) =>
+        acc +
+        core.dataStore.notificationStore.unreadStacks.getOrCreateType({
+          objectType: current,
+        }).total,
+      0,
+    );
   }
 
   constructor(props: Props) {
@@ -28,11 +37,13 @@ export default class MainNotificationIcon extends React.Component<Props> {
   }
 
   render() {
-    return (<NotificationIcon
-      count={this.unreadCount}
-      iconClassName='fas fa-bell'
-      ready={core.notificationsWorker.hasData}
-      type={this.props.type}
-    />);
+    return (
+      <NotificationIcon
+        count={this.unreadCount}
+        iconClassName='fas fa-bell'
+        ready={core.notificationsWorker.hasData}
+        type={this.props.type}
+      />
+    );
   }
 }

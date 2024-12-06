@@ -14,13 +14,17 @@ interface State {
   lineHeight: number;
 }
 
-export default class TextareaAutosize extends React.PureComponent<Props, State> {
+export default class TextareaAutosize extends React.PureComponent<
+  Props,
+  State
+> {
   static readonly defaultProps = {
     async: false,
     rows: 1,
   };
 
-  private readonly ref = this.props.innerRef ?? React.createRef<HTMLTextAreaElement>();
+  private readonly ref =
+    this.props.innerRef ?? React.createRef<HTMLTextAreaElement>();
   private shouldUpdate = true;
 
   private get maxHeight() {
@@ -42,7 +46,13 @@ export default class TextareaAutosize extends React.PureComponent<Props, State> 
         if (this.ref.current != null) {
           if (this.props.maxRows != null) {
             // getting line-height should be delayed until after turbolinks navigation, otherwise it returns NaN.
-            const lineHeight = Math.ceil(parseFloat(window.getComputedStyle(this.ref.current).getPropertyValue('line-height')));
+            const lineHeight = Math.ceil(
+              parseFloat(
+                window
+                  .getComputedStyle(this.ref.current)
+                  .getPropertyValue('line-height'),
+              ),
+            );
             this.setState({ lineHeight });
           }
 
@@ -91,7 +101,9 @@ export default class TextareaAutosize extends React.PureComponent<Props, State> 
     );
   }
 
-  private readonly handleInput = (event: React.SyntheticEvent<HTMLTextAreaElement>) => {
+  private readonly handleInput = (
+    event: React.SyntheticEvent<HTMLTextAreaElement>,
+  ) => {
     this.shouldUpdate = false;
     this.props.onInput?.(event);
   };

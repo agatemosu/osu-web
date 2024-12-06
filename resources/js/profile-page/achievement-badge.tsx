@@ -24,23 +24,29 @@ export default class AchievementBadge extends React.PureComponent<Props> {
     return (
       <AchievementBadgeIcon
         achievement={this.props.achievement}
-        modifiers={mergeModifiers(this.props.modifiers, { locked: this.props.achievedAt == null })}
+        modifiers={mergeModifiers(this.props.modifiers, {
+          locked: this.props.achievedAt == null,
+        })}
         onMouseOver={this.onMouseOver}
       />
     );
   }
 
-  private readonly onMouseOver = (event: React.MouseEvent<HTMLImageElement>) => {
+  private readonly onMouseOver = (
+    event: React.MouseEvent<HTMLImageElement>,
+  ) => {
     const elem = event.currentTarget;
 
     if (elem._tooltip === this.tooltipId) return;
 
-    const $content = $(renderToStaticMarkup(
-      <AchievementBadgePopup
-        achievedAt={this.props.achievedAt}
-        achievement={this.props.achievement}
-      />,
-    ));
+    const $content = $(
+      renderToStaticMarkup(
+        <AchievementBadgePopup
+          achievedAt={this.props.achievedAt}
+          achievement={this.props.achievement}
+        />,
+      ),
+    );
 
     if (elem._tooltip != null) {
       elem._tooltip = this.tooltipId;

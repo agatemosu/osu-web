@@ -21,7 +21,10 @@ export default class ForumPostEdit {
       .attr('data-original-post', null);
   };
 
-  private readonly handleEditSaved = (e: JQuery.TriggeredEvent, data: string) => {
+  private readonly handleEditSaved = (
+    e: JQuery.TriggeredEvent,
+    data: string,
+  ) => {
     const target: unknown = e.target;
 
     // allow another callbacks to finish before replacing form with new post.
@@ -30,7 +33,10 @@ export default class ForumPostEdit {
     });
   };
 
-  private readonly handleEditStart = (e: JQuery.TriggeredEvent, data: string) => {
+  private readonly handleEditStart = (
+    e: JQuery.TriggeredEvent,
+    data: string,
+  ) => {
     const target: unknown = e.target;
 
     // allow another callbacks to finish before replacing post with form.

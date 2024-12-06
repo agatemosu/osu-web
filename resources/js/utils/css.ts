@@ -5,9 +5,17 @@ import GroupJson from 'interfaces/group-json';
 import { forEach } from 'lodash';
 import { present } from './string';
 
-export type Modifiers = (string | null | undefined)[] | Partial<Record<string, boolean | null | undefined>> | string | null | undefined;
+export type Modifiers =
+  | (string | null | undefined)[]
+  | Partial<Record<string, boolean | null | undefined>>
+  | string
+  | null
+  | undefined;
 
-const eachModifier = (modifiersArray: Modifiers[], callback: (modifier: string) => void) => {
+const eachModifier = (
+  modifiersArray: Modifiers[],
+  callback: (modifier: string) => void,
+) => {
   modifiersArray.forEach((modifiers) => {
     if (Array.isArray(modifiers)) {
       modifiers.forEach((modifier) => {
@@ -27,10 +35,13 @@ const eachModifier = (modifiersArray: Modifiers[], callback: (modifier: string) 
   });
 };
 
-export function classWithModifiers(className: string, ...modifiersArray: Modifiers[]) {
+export function classWithModifiers(
+  className: string,
+  ...modifiersArray: Modifiers[]
+) {
   let ret = className;
 
-  eachModifier(modifiersArray, (m) => ret += ` ${className}--${m}`);
+  eachModifier(modifiersArray, (m) => (ret += ` ${className}--${m}`));
 
   return ret;
 }
@@ -51,6 +62,7 @@ export function urlPresence(url?: string | null) {
   // Wrapping the string with quotes and escaping the used quotes inside
   // is sufficient. Use double quote as it's easy to figure out with
   // encodeURI (it doesn't escape single quote).
-  return present(url) ? `url("${String(url).replace(/"/g, '%22')}")` : undefined;
+  return present(url)
+    ? `url("${String(url).replace(/"/g, '%22')}")`
+    : undefined;
 }
-

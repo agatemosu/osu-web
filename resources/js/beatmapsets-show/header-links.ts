@@ -8,7 +8,7 @@ import { trans } from 'utils/lang';
 import { switchNever } from 'utils/switch-never';
 
 const linkModes = ['show', 'discussions'] as const;
-type LinkMode = typeof linkModes[number];
+type LinkMode = (typeof linkModes)[number];
 
 function url(mode: LinkMode, beatmapset: BeatmapsetExtendedJson) {
   switch (mode) {
@@ -26,7 +26,10 @@ function url(mode: LinkMode, beatmapset: BeatmapsetExtendedJson) {
   }
 }
 
-export default function headerLinks(active: LinkMode, beatmapset: BeatmapsetExtendedJson): HeaderLink[] {
+export default function headerLinks(
+  active: LinkMode,
+  beatmapset: BeatmapsetExtendedJson,
+): HeaderLink[] {
   return linkModes.map((mode) => ({
     active: mode === active,
     title: trans(`layout.header.beatmapsets.${mode}`),

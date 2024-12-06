@@ -37,12 +37,16 @@ export class OwnClient extends React.Component<Props> {
 
     return (
       <div className='oauth-client'>
-        <button className='oauth-client__details oauth-client__details--button' onClick={this.showClientDetails}>
+        <button
+          className='oauth-client__details oauth-client__details--button'
+          onClick={this.showClientDetails}
+        >
           <div className='oauth-client__name'>{client.name}</div>
           <div className='oauth-client__redirect'>
-            {redirects[0]}
-            {' '}
-            {redirects.length > 1 ? <small>(+{formatNumber(redirects.length - 1)})</small> : null}
+            {redirects[0]}{' '}
+            {redirects.length > 1 ? (
+              <small>(+{formatNumber(redirects.length - 1)})</small>
+            ) : null}
           </div>
         </button>
         <div className='oauth-client__actions'>

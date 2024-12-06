@@ -24,11 +24,14 @@ export class AuthorizedClients extends React.Component {
       <div key={client.id} className='oauth-clients__client'>
         <AuthorizedClient client={client} />
       </div>
-
     ));
   }
 
   renderEmpty() {
-    return <div className='oauth-clients__client'>{trans('oauth.authorized_clients.none')}</div>;
+    return (
+      <div className='oauth-clients__client'>
+        {trans('oauth.authorized_clients.none')}
+      </div>
+    );
   }
 }

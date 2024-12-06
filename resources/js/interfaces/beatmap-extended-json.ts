@@ -3,7 +3,9 @@
 
 import BeatmapJson from './beatmap-json';
 
-export function isValid(x: BeatmapJson | BeatmapExtendedJson): x is BeatmapExtendedJson {
+export function isValid(
+  x: BeatmapJson | BeatmapExtendedJson,
+): x is BeatmapExtendedJson {
   return (x as BeatmapExtendedJson).accuracy != null;
 }
 

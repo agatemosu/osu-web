@@ -4,7 +4,7 @@
 import UserExtendedJson from 'interfaces/user-extended-json';
 
 type CurrentUserDefaultIncludes =
-  'blocks'
+  | 'blocks'
   | 'follow_user_mapping'
   | 'friends'
   | 'groups'
@@ -12,6 +12,7 @@ type CurrentUserDefaultIncludes =
   | 'unread_pm_count'
   | 'user_preferences';
 
-type CurrentUserJson = UserExtendedJson & Required<Pick<UserExtendedJson, CurrentUserDefaultIncludes>>;
+type CurrentUserJson = UserExtendedJson &
+  Required<Pick<UserExtendedJson, CurrentUserDefaultIncludes>>;
 
 export default CurrentUserJson;

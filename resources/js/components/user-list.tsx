@@ -37,7 +37,10 @@ interface State {
 }
 
 function rankSortDescending(x: UserJson, y: UserJson) {
-  return (x.statistics?.global_rank ?? Number.MAX_VALUE) - (y.statistics?.global_rank ?? Number.MAX_VALUE);
+  return (
+    (x.statistics?.global_rank ?? Number.MAX_VALUE) -
+    (y.statistics?.global_rank ?? Number.MAX_VALUE)
+  );
 }
 
 export class UserList extends React.PureComponent<Props> {
@@ -156,7 +159,9 @@ export class UserList extends React.PureComponent<Props> {
 
           {this.props.group?.description != null && (
             <div
-              dangerouslySetInnerHTML={{ __html: this.props.group.description.html }}
+              dangerouslySetInnerHTML={{
+                __html: this.props.group.description.html,
+              }}
               className='user-list__description'
             />
           )}
@@ -164,17 +169,26 @@ export class UserList extends React.PureComponent<Props> {
           <div className='user-list__toolbar'>
             {this.props.group?.has_playmodes && (
               <div className='user-list__toolbar-row'>
-                <div className='user-list__toolbar-item'>{this.renderPlaymodeFilter()}</div>
+                <div className='user-list__toolbar-item'>
+                  {this.renderPlaymodeFilter()}
+                </div>
               </div>
             )}
             <div className='user-list__toolbar-row'>
-              <div className='user-list__toolbar-item'>{this.renderSorter()}</div>
-              <div className='user-list__toolbar-item'>{this.renderViewMode()}</div>
+              <div className='user-list__toolbar-item'>
+                {this.renderSorter()}
+              </div>
+              <div className='user-list__toolbar-item'>
+                {this.renderViewMode()}
+              </div>
             </div>
           </div>
 
           <div className='user-list__items'>
-            <UserCards users={this.sortedUsers} viewMode={this.state.viewMode} />
+            <UserCards
+              users={this.sortedUsers}
+              viewMode={this.state.viewMode}
+            />
           </div>
         </div>
       </>
@@ -196,8 +210,12 @@ export class UserList extends React.PureComponent<Props> {
         onClick={this.optionSelected}
       >
         <div className='update-streams-v2__bar u-changelog-stream--bg' />
-        <p className='update-streams-v2__row update-streams-v2__row--name'>{trans(`users.status.${key}`)}</p>
-        <p className='update-streams-v2__row update-streams-v2__row--version'>{text}</p>
+        <p className='update-streams-v2__row update-streams-v2__row--name'>
+          {trans(`users.status.${key}`)}
+        </p>
+        <p className='update-streams-v2__row update-streams-v2__row--version'>
+          {text}
+        </p>
       </a>
     );
   }
@@ -206,9 +224,13 @@ export class UserList extends React.PureComponent<Props> {
     return (
       <div className='update-streams-v2 update-streams-v2--with-active update-streams-v2--user-list'>
         <div className='update-streams-v2__container'>
-          {
-            filters.map((filter) => this.renderOption(filter, this.getFilteredUsers(filter).length, filter === this.state.filter))
-          }
+          {filters.map((filter) =>
+            this.renderOption(
+              filter,
+              this.getFilteredUsers(filter).length,
+              filter === this.state.filter,
+            ),
+          )}
         </div>
       </div>
     );
@@ -229,7 +251,10 @@ export class UserList extends React.PureComponent<Props> {
     return (
       <div className='user-list__view-modes'>
         <button
-          className={classWithModifiers('user-list__view-mode', this.state.viewMode === 'card' ? ['active'] : [])}
+          className={classWithModifiers(
+            'user-list__view-mode',
+            this.state.viewMode === 'card' ? ['active'] : [],
+          )}
           data-value='card'
           onClick={this.onViewSelected}
           title={trans('users.view_mode.card')}
@@ -237,7 +262,10 @@ export class UserList extends React.PureComponent<Props> {
           <span className='fas fa-square' />
         </button>
         <button
-          className={classWithModifiers('user-list__view-mode', this.state.viewMode === 'list' ? ['active'] : [])}
+          className={classWithModifiers(
+            'user-list__view-mode',
+            this.state.viewMode === 'list' ? ['active'] : [],
+          )}
           data-value='list'
           onClick={this.onViewSelected}
           title={trans('users.view_mode.list')}
@@ -245,7 +273,10 @@ export class UserList extends React.PureComponent<Props> {
           <span className='fas fa-bars' />
         </button>
         <button
-          className={classWithModifiers('user-list__view-mode', this.state.viewMode === 'brick' ? ['active'] : [])}
+          className={classWithModifiers(
+            'user-list__view-mode',
+            this.state.viewMode === 'brick' ? ['active'] : [],
+          )}
           data-value='brick'
           onClick={this.onViewSelected}
           title={trans('users.view_mode.brick')}
@@ -256,7 +287,11 @@ export class UserList extends React.PureComponent<Props> {
     );
   }
 
-  private getAllowedQueryStringValue<T>(allowed: T[], value: unknown, fallback: unknown) {
+  private getAllowedQueryStringValue<T>(
+    allowed: T[],
+    value: unknown,
+    fallback: unknown,
+  ) {
     const casted = value as T;
     if (allowed.indexOf(casted) > -1) {
       return casted;
@@ -276,12 +311,11 @@ export class UserList extends React.PureComponent<Props> {
     const playmode = this.state.playMode;
     if (playmode !== 'all' && this.props.group?.has_playmodes) {
       const filterGroupId = this.props.group.id;
-      users = users.filter((user) => (
+      users = users.filter((user) =>
         user.groups
           ?.find((group) => group.id === filterGroupId)
-          ?.playmodes
-          ?.includes(playmode)
-      ));
+          ?.playmodes?.includes(playmode),
+      );
     }
 
     switch (filter) {
@@ -298,22 +332,28 @@ export class UserList extends React.PureComponent<Props> {
     const playmodeButtons = playModes.map((mode) => (
       <button
         key={mode}
-        className={classWithModifiers('user-list__view-mode', this.state.playMode === mode ? ['active'] : [])}
+        className={classWithModifiers(
+          'user-list__view-mode',
+          this.state.playMode === mode ? ['active'] : [],
+        )}
         data-value={mode}
         onClick={this.playmodeSelected}
         title={trans(`beatmaps.mode.${mode}`)}
       >
-        {mode === 'all' ?
+        {mode === 'all' ? (
           <span>{trans('beatmaps.mode.all')}</span>
-          :
+        ) : (
           <span className={`fal fa-extra-mode-${mode}`} />
-        }
+        )}
       </button>
     ));
 
     return (
       <div className='user-list__view-modes'>
-        <span className='user-list__view-mode-title'>{trans('users.filtering.by_game_mode')}</span> {playmodeButtons}
+        <span className='user-list__view-mode-title'>
+          {trans('users.filtering.by_game_mode')}
+        </span>{' '}
+        {playmodeButtons}
       </div>
     );
   }

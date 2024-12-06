@@ -143,7 +143,10 @@ export default class Main {
   };
 
   private findPlayer(elem: HTMLElement) {
-    const player = (this.mainPlayer?.contains(elem) ?? false) ? this.pagePlayer : elem.closest('.js-audio--player');
+    const player =
+      (this.mainPlayer?.contains(elem) ?? false)
+        ? this.pagePlayer
+        : elem.closest('.js-audio--player');
 
     if (player instanceof HTMLElement) {
       return player;
@@ -228,13 +231,15 @@ export default class Main {
     this.reattachPagePlayer(newPlayers);
   };
 
-  private readonly onClickPlay = (e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>) => {
+  private readonly onClickPlay = (
+    e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>,
+  ) => {
     e.preventDefault();
 
     const pagePlayer = this.findPlayer(e.currentTarget);
 
     if (pagePlayer == null) {
-      throw new Error('couldn\'t find pagePlayer of the play button');
+      throw new Error("couldn't find pagePlayer of the play button");
     }
 
     if (pagePlayer === this.pagePlayer) {
@@ -303,9 +308,10 @@ export default class Main {
 
   private readonly onSeekEnd = (slider: Slider) => {
     this.currentSlider = undefined;
-    const targetTime = slider.getPercentage() === 1
-      ? this.audio.duration - 0.01
-      : this.audio.duration * slider.getPercentage();
+    const targetTime =
+      slider.getPercentage() === 1
+        ? this.audio.duration - 0.01
+        : this.audio.duration * slider.getPercentage();
 
     this.setTime(targetTime);
   };
@@ -315,9 +321,14 @@ export default class Main {
 
     if (!(bar instanceof HTMLElement)) return;
 
-    if ((this.pagePlayer == null || !this.pagePlayer.contains(bar)) && (this.mainPlayer == null || !this.mainPlayer.contains(bar))) return;
+    if (
+      (this.pagePlayer == null || !this.pagePlayer.contains(bar)) &&
+      (this.mainPlayer == null || !this.mainPlayer.contains(bar))
+    )
+      return;
 
-    if (!Number.isFinite(this.audio.duration) || this.audio.duration === 0) return;
+    if (!Number.isFinite(this.audio.duration) || this.audio.duration === 0)
+      return;
 
     this.currentSlider = Slider.start({
       bar,
@@ -377,7 +388,8 @@ export default class Main {
   };
 
   private readonly replaceAudioElem = (elem: HTMLAudioElement) => {
-    const src = presence(elem.src) ?? presence(elem.querySelector('source')?.src);
+    const src =
+      presence(elem.src) ?? presence(elem.querySelector('source')?.src);
 
     if (src == null) {
       throw new Error('audio element is missing src');
@@ -435,8 +447,10 @@ export default class Main {
       }
 
       if (this.mainPlayer != null) {
-        this.mainPlayer.dataset.audioHasPrev = this.playerPrev == null ? '0' : '1';
-        this.mainPlayer.dataset.audioHasNext = this.playerNext == null ? '0' : '1';
+        this.mainPlayer.dataset.audioHasPrev =
+          this.playerPrev == null ? '0' : '1';
+        this.mainPlayer.dataset.audioHasNext =
+          this.playerNext == null ? '0' : '1';
       }
 
       this.settingNavigation = false;
@@ -491,7 +505,10 @@ export default class Main {
       const progress = this.audio.currentTime / this.audio.duration;
       const over50 = progress >= 0.5 ? '1' : '0';
       const progressFormatted = progress.toString();
-      const currentTimeFormatted = format(this.audio.currentTime, this.timeFormat);
+      const currentTimeFormatted = format(
+        this.audio.currentTime,
+        this.timeFormat,
+      );
       this.updatePlayers((player) => {
         player.style.setProperty('--current-time', currentTimeFormatted);
         player.style.setProperty('--progress', progressFormatted);
@@ -506,7 +523,9 @@ export default class Main {
 
   private readonly syncState = () => {
     this.updatePlayers((player) => {
-      player.dataset.audioHasDuration = Number.isFinite(this.audio.duration) ? '1' : '0';
+      player.dataset.audioHasDuration = Number.isFinite(this.audio.duration)
+        ? '1'
+        : '0';
       player.dataset.audioState = this.state;
       player.dataset.audioTimeFormat = this.timeFormat;
       player.style.setProperty('--duration', this.durationFormatted);
@@ -519,19 +538,27 @@ export default class Main {
   private readonly syncVolumeDisplay = () => {
     if (this.mainPlayer == null) return;
 
-    this.mainPlayer.dataset.audioVolumeBarVisible = this.hasWorkingVolumeControl ? '1' : '0';
+    this.mainPlayer.dataset.audioVolumeBarVisible = this.hasWorkingVolumeControl
+      ? '1'
+      : '0';
     this.mainPlayer.dataset.audioVolume = this.volumeIcon();
     this.mainPlayer.style.setProperty('--volume', this.audio.volume.toString());
   };
 
   @action
   private readonly toggleAutoplay = () => {
-    void this.userPreferences.set('audio_autoplay', !this.userPreferences.get('audio_autoplay'));
+    void this.userPreferences.set(
+      'audio_autoplay',
+      !this.userPreferences.get('audio_autoplay'),
+    );
   };
 
   @action
   private readonly toggleMute = () => {
-    void this.userPreferences.set('audio_muted', !this.userPreferences.get('audio_muted'));
+    void this.userPreferences.set(
+      'audio_muted',
+      !this.userPreferences.get('audio_muted'),
+    );
   };
 
   private readonly togglePlay = () => {

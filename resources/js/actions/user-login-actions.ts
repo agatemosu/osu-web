@@ -3,5 +3,4 @@
 /* eslint-disable max-classes-per-file */
 import DispatcherAction from './dispatcher-action';
 
-export class UserLoginAction implements DispatcherAction {
-}
+export class UserLoginAction implements DispatcherAction {}

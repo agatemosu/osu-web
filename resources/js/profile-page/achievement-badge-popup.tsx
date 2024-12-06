@@ -14,7 +14,10 @@ interface Props {
   achievement: AchievementJson;
 }
 
-export default function AchievementBadgePopup({ achievedAt, achievement }: Props) {
+export default function AchievementBadgePopup({
+  achievedAt,
+  achievement,
+}: Props) {
   return (
     <div className='tooltip-achievement'>
       <div className='tooltip-achievement__badge'>
@@ -31,11 +34,13 @@ export default function AchievementBadgePopup({ achievedAt, achievement }: Props
         {achievement.grouping}
       </div>
 
-      <div className={classWithModifiers('tooltip-achievement__detail-container', { hoverable: achievement.instructions != null })}>
+      <div
+        className={classWithModifiers('tooltip-achievement__detail-container', {
+          hoverable: achievement.instructions != null,
+        })}
+      >
         <div className='tooltip-achievement__detail tooltip-achievement__detail--normal'>
-          <div className='tooltip-achievement__name'>
-            {achievement.name}
-          </div>
+          <div className='tooltip-achievement__name'>{achievement.name}</div>
           <div
             dangerouslySetInnerHTML={{ __html: achievement.description }}
             className='tooltip-achievement__description'

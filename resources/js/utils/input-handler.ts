@@ -9,7 +9,10 @@ export enum InputEventType {
   Submit = 'submit',
 }
 
-export type TextAreaCallback = (type: InputEventType | null, event: KeyboardEvent<HTMLTextAreaElement>) => void;
+export type TextAreaCallback = (
+  type: InputEventType | null,
+  event: KeyboardEvent<HTMLTextAreaElement>,
+) => void;
 
 export function makeTextAreaHandler(callback: TextAreaCallback) {
   return (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -17,7 +20,11 @@ export function makeTextAreaHandler(callback: TextAreaCallback) {
 
     if (event.key === 'Escape') {
       type = InputEventType.Cancel;
-    } else if (event.key === 'Enter' && !event.shiftKey && core.windowSize.isDesktop) {
+    } else if (
+      event.key === 'Enter' &&
+      !event.shiftKey &&
+      core.windowSize.isDesktop
+    ) {
       event.preventDefault();
       type = InputEventType.Submit;
     }

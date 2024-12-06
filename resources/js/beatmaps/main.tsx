@@ -30,11 +30,17 @@ export class Main extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
-    disposeOnUnmount(this, reaction(() => controller.searchStatus, this.searchStatusErrorHandler));
+    disposeOnUnmount(
+      this,
+      reaction(() => controller.searchStatus, this.searchStatusErrorHandler),
+    );
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, reaction(() => controller.searchStatus, this.scrollPositionHandler));
+    disposeOnUnmount(
+      this,
+      reaction(() => controller.searchStatus, this.scrollPositionHandler),
+    );
     $(document).on(`turbo:before-visit.${this.eventId}`, () => {
       controller.cancel();
     });
@@ -60,7 +66,10 @@ export class Main extends React.Component<Props> {
     );
   }
 
-  private readonly scrollPositionHandler = (value: SearchStatus, oldValue: SearchStatus) => {
+  private readonly scrollPositionHandler = (
+    value: SearchStatus,
+    oldValue: SearchStatus,
+  ) => {
     if (value.restore) return;
     if (isEqual(oldValue, value)) return;
 

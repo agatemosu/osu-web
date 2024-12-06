@@ -113,7 +113,8 @@ export default class OsuCore {
     this.forumPostReport = new ForumPostReport();
     this.localtime = new Localtime();
     this.mobileToggle = new MobileToggle();
-    this.browserTitleWithNotificationCount = new BrowserTitleWithNotificationCount(this);
+    this.browserTitleWithNotificationCount =
+      new BrowserTitleWithNotificationCount(this);
     this.referenceLinkTooltip = new ReferenceLinkTooltip();
     this.scorePins = new ScorePins();
     this.spoilerbox = new Spoilerbox();
@@ -141,7 +142,9 @@ export default class OsuCore {
     this.userLoginObserver = new UserLoginObserver();
     this.windowFocusObserver = new WindowFocusObserver();
 
-    this.beatmapsetSearchController = new BeatmapsetSearchController(this.dataStore.beatmapsetSearch);
+    this.beatmapsetSearchController = new BeatmapsetSearchController(
+      this.dataStore.beatmapsetSearch,
+    );
 
     this.socketWorker = new SocketWorker();
     this.notificationsWorker = new NotificationsWorker(this.socketWorker);
@@ -164,14 +167,20 @@ export default class OsuCore {
 
   readonly updateCurrentUser = () => {
     // Remove from DOM so only new data is parsed on navigation.
-    const currentUser = parseJsonNullable<typeof window.currentUser>('json-current-user', true);
+    const currentUser = parseJsonNullable<typeof window.currentUser>(
+      'json-current-user',
+      true,
+    );
 
     if (currentUser != null) {
       this.setCurrentUser(currentUser);
     }
   };
 
-  private readonly onCurrentUserUpdate = (event: unknown, user: CurrentUserJson) => {
+  private readonly onCurrentUserUpdate = (
+    event: unknown,
+    user: CurrentUserJson,
+  ) => {
     this.setCurrentUser(user);
   };
 }

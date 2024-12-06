@@ -47,7 +47,11 @@ export default class ScorePin extends React.Component<Props> {
 
   render() {
     return (
-      <button className={this.props.className} onClick={this.onClick} type='button'>
+      <button
+        className={this.props.className}
+        onClick={this.onClick}
+        type='button'
+      >
         {this.label}
       </button>
     );
@@ -60,10 +64,15 @@ export default class ScorePin extends React.Component<Props> {
       fail: onErrorWithCallback(this.onClick),
     };
 
-    core.scorePins.apiPin(this.props.score, !this.isPinned)
+    core.scorePins
+      .apiPin(this.props.score, !this.isPinned)
       .done(() => {
-        popup(trans(`users.show.extra.top_ranks.pin.to_${targetState}_done`), 'info');
+        popup(
+          trans(`users.show.extra.top_ranks.pin.to_${targetState}_done`),
+          'info',
+        );
         this.onUpdateCallbacks?.done?.();
-      }).fail((xhr, status) => this.onUpdateCallbacks?.fail(xhr, status));
+      })
+      .fail((xhr, status) => this.onUpdateCallbacks?.fail(xhr, status));
   };
 }

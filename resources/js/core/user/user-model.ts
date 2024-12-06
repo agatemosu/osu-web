@@ -56,17 +56,30 @@ export default class UserModel {
   }
 
   @action
-  updateUserRelation(userRelation: UserRelationJson | undefined, relationType: 'blocks' | 'friends', userId: number) {
-    const currentUser = this.core.currentUser ?? fail('trying to update user relation of guest user');
+  updateUserRelation(
+    userRelation: UserRelationJson | undefined,
+    relationType: 'blocks' | 'friends',
+    userId: number,
+  ) {
+    const currentUser =
+      this.core.currentUser ??
+      fail('trying to update user relation of guest user');
     const relations = currentUser[relationType];
 
     if (userRelation == null) {
-      relations.splice(relations.findIndex((relation) => relation.target_id === userId), 1);
+      relations.splice(
+        relations.findIndex((relation) => relation.target_id === userId),
+        1,
+      );
     } else {
       relations.push(userRelation);
     }
 
-    const otherRelations = currentUser[relationType === 'blocks' ? 'friends' : 'blocks'];
-    otherRelations.splice(otherRelations.findIndex((relation) => relation.target_id === userId), 1);
+    const otherRelations =
+      currentUser[relationType === 'blocks' ? 'friends' : 'blocks'];
+    otherRelations.splice(
+      otherRelations.findIndex((relation) => relation.target_id === userId),
+      1,
+    );
   }
 }

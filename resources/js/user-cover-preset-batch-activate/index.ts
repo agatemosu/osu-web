@@ -29,14 +29,26 @@ export default class UserCoverPresetBatchActivate {
       return;
     }
 
-    if (!confirm(trans('user_cover_presets.index.batch_confirm._', {
-      action: trans(`user_cover_presets.index.batch_confirm.${active ? 'enable' : 'disable'}`),
-      items: transChoice('user_cover_presets.index.batch_confirm.items', count),
-    }))) {
+    if (
+      !confirm(
+        trans('user_cover_presets.index.batch_confirm._', {
+          action: trans(
+            `user_cover_presets.index.batch_confirm.${active ? 'enable' : 'disable'}`,
+          ),
+          items: transChoice(
+            'user_cover_presets.index.batch_confirm.items',
+            count,
+          ),
+        }),
+      )
+    ) {
       return;
     }
 
-    this.xhr = $.post(route('user-cover-presets.batch-activate'), { active, ids });
+    this.xhr = $.post(route('user-cover-presets.batch-activate'), {
+      active,
+      ids,
+    });
     this.xhr
       .done(() => {
         reloadPage();
@@ -58,14 +70,20 @@ export default class UserCoverPresetBatchActivate {
     this.xhr = null;
   };
 
-  private readonly handleEvent = (e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>) => {
+  private readonly handleEvent = (
+    e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>,
+  ) => {
     const target = e.currentTarget;
 
     switch (target.dataset.action) {
-      case 'disable-selected': return this.applySelected(false);
-      case 'enable-selected': return this.applySelected(true);
-      case 'select': return this.select(target, e);
-      case 'select-all': return this.toggleAll(target as HTMLInputElement);
+      case 'disable-selected':
+        return this.applySelected(false);
+      case 'enable-selected':
+        return this.applySelected(true);
+      case 'select':
+        return this.select(target, e);
+      case 'select-all':
+        return this.toggleAll(target as HTMLInputElement);
     }
   };
 
@@ -98,7 +116,9 @@ export default class UserCoverPresetBatchActivate {
   };
 
   private selectAllCheckbox() {
-    const ret = document.querySelector('.js-user-cover-preset-batch-enable--select-all');
+    const ret = document.querySelector(
+      '.js-user-cover-preset-batch-enable--select-all',
+    );
     if (!(ret instanceof HTMLInputElement)) {
       throw new Error('select all checkbox element is not HTMLInputElement');
     }

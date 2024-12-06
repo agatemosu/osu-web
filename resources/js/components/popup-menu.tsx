@@ -11,7 +11,11 @@ type Children = (dismiss: () => void) => React.ReactNode;
 
 export interface Props {
   children: Children;
-  customRender?: (children: React.ReactNode, ref: React.RefObject<HTMLElement>, toggle: (event: React.MouseEvent<HTMLElement>) => void) => React.ReactNode;
+  customRender?: (
+    children: React.ReactNode,
+    ref: React.RefObject<HTMLElement>,
+    toggle: (event: React.MouseEvent<HTMLElement>) => void,
+  ) => React.ReactNode;
   direction?: 'left' | 'right';
   onHide?: () => void;
   onShow?: () => void;
@@ -24,7 +28,10 @@ interface State {
   active: boolean;
 }
 
-export default class PopupMenu extends React.PureComponent<PropsWithDefaults, State> {
+export default class PopupMenu extends React.PureComponent<
+  PropsWithDefaults,
+  State
+> {
   static readonly contextType = TooltipContext;
   static readonly defaultProps: DefaultProps = {
     children: () => null,
@@ -67,12 +74,18 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
         $tooltipElement.qtip('option', 'hide.event', false);
       }
 
-      $(document).on(`click.${this.eventId} keydown.${this.eventId}`, this.hide);
+      $(document).on(
+        `click.${this.eventId} keydown.${this.eventId}`,
+        this.hide,
+      );
       this.props.onShow?.();
     } else {
       this.$tooltipElement?.qtip('option', 'hide.event', this.tooltipHideEvent);
 
-      $(document).off(`click.${this.eventId} keydown.${this.eventId}`, this.hide);
+      $(document).off(
+        `click.${this.eventId} keydown.${this.eventId}`,
+        this.hide,
+      );
       this.props.onHide?.();
     }
   }
@@ -84,7 +97,11 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
 
   render() {
     if (this.props.customRender) {
-      return this.props.customRender(this.renderMenu(), this.buttonRef, this.toggle);
+      return this.props.customRender(
+        this.renderMenu(),
+        this.buttonRef,
+        this.toggle,
+      );
     }
 
     return (
@@ -115,7 +132,12 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
     // originalEvent gets eaten by error popup?
     if (event == null) return;
 
-    if (('key' in event && event.key === 'Escape') || ('button' in event && event.button === 0 && !this.isMenuInPath(event.composedPath()))) {
+    if (
+      ('key' in event && event.key === 'Escape') ||
+      ('button' in event &&
+        event.button === 0 &&
+        !this.isMenuInPath(event.composedPath()))
+    ) {
       this.setState({ active: false });
     }
   };

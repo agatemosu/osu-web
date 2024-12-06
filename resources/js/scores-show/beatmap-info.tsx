@@ -17,14 +17,16 @@ interface Props {
 
 export default function BeatmapInfo(props: Props) {
   const { beatmap, beatmapset } = props;
-  const beatmapUrl = route('beatmaps.show', { beatmap: beatmap.id, mode: beatmap.mode });
+  const beatmapUrl = route('beatmaps.show', {
+    beatmap: beatmap.id,
+    mode: beatmap.mode,
+  });
 
   return (
     <div className='score-beatmap'>
       <h1 className='score-beatmap__title'>
         <a className='score-beatmap__link-plain' href={beatmapUrl}>
-          {getTitle(beatmapset)}
-          {' '}
+          {getTitle(beatmapset)}{' '}
           <span className='score-beatmap__artist'>
             {trans('scores.show.beatmap.by', { artist: getArtist(beatmapset) })}
           </span>

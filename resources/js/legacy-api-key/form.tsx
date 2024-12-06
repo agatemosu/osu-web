@@ -45,7 +45,9 @@ export default class Form extends React.Component<Props> {
 
         <form className='oauth-client-details__content'>
           <label className='oauth-client-details__group'>
-            <div className='oauth-client-details__label'>{trans('model_validation.legacy_api_key.attributes.app_name')}</div>
+            <div className='oauth-client-details__label'>
+              {trans('model_validation.legacy_api_key.attributes.app_name')}
+            </div>
             <ValidatingInput
               blockName='oauth-client-details'
               errors={this.errors}
@@ -57,7 +59,9 @@ export default class Form extends React.Component<Props> {
           </label>
 
           <label className='oauth-client-details__group'>
-            <div className='oauth-client-details__label'>{trans('model_validation.legacy_api_key.attributes.app_url')}</div>
+            <div className='oauth-client-details__label'>
+              {trans('model_validation.legacy_api_key.attributes.app_url')}
+            </div>
             <ValidatingInput
               blockName='oauth-client-details'
               errors={this.errors}
@@ -71,20 +75,32 @@ export default class Form extends React.Component<Props> {
 
           <div>
             <StringWithComponent
-              mappings={{ link: (
-                <a href={`${process.env.DOCS_URL}#terms-of-use`}>
-                  {trans('oauth.new_client.terms_of_use.link')}
-                </a>
-              ) }}
+              mappings={{
+                link: (
+                  <a href={`${process.env.DOCS_URL}#terms-of-use`}>
+                    {trans('oauth.new_client.terms_of_use.link')}
+                  </a>
+                ),
+              }}
               pattern={trans('oauth.new_client.terms_of_use._')}
             />
           </div>
 
           <div className='oauth-client-details__buttons'>
             <button className='btn-osu-big' onClick={this.onSubmit}>
-              {this.props.controller.isCreating ? <Spinner /> : trans('legacy_api_key.form.create')}
+              {this.props.controller.isCreating ? (
+                <Spinner />
+              ) : (
+                trans('legacy_api_key.form.create')
+              )}
             </button>
-            <button className='btn-osu-big' onClick={this.onCancelClick} type='button'>{trans('common.buttons.cancel')}</button>
+            <button
+              className='btn-osu-big'
+              onClick={this.onCancelClick}
+              type='button'
+            >
+              {trans('common.buttons.cancel')}
+            </button>
           </div>
         </form>
       </div>
@@ -92,12 +108,16 @@ export default class Form extends React.Component<Props> {
   }
 
   @action
-  private readonly onAppNameInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  private readonly onAppNameInput = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
     this.appName = e.currentTarget.value;
   };
 
   @action
-  private readonly onAppUrlInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  private readonly onAppUrlInput = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
     this.appUrl = e.currentTarget.value;
   };
 
@@ -109,10 +129,13 @@ export default class Form extends React.Component<Props> {
       return;
     }
 
-    this.props.controller.createKey(this.appName, this.appUrl)
+    this.props.controller
+      .createKey(this.appName, this.appUrl)
       .fail(this.errors.handleResponse)
-      .done(action(() => {
-        this.props.controller.state.showing_form = false;
-      }));
+      .done(
+        action(() => {
+          this.props.controller.state.showing_form = false;
+        }),
+      );
   };
 }

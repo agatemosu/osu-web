@@ -49,7 +49,7 @@ const files = [
 const preprocessors = {};
 preprocessors[testIndex] = ['webpack', 'sourcemap'];
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     autoWatch: true,
     basePath: '.',

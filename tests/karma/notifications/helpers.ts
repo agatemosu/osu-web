@@ -1,7 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import NotificationJson, { NotificationStackJson, NotificationTypeJson } from 'interfaces/notification-json';
+import NotificationJson, {
+  NotificationStackJson,
+  NotificationTypeJson,
+} from 'interfaces/notification-json';
 import { NotificationIdentity } from 'notifications/notification-identity';
 
 export function makeNotificationJson(overrides: Record<string, unknown>) {
@@ -20,7 +23,12 @@ export function makeNotificationJson(overrides: Record<string, unknown>) {
   return Object.assign({}, base, overrides) as NotificationJson;
 }
 
-export function makeStackJson(identity: NotificationIdentity, total: number, name: string, cursorId?: number) {
+export function makeStackJson(
+  identity: NotificationIdentity,
+  total: number,
+  name: string,
+  cursorId?: number,
+) {
   return {
     category: identity.category,
     cursor: cursorId != null ? { id: cursorId } : null,
@@ -31,7 +39,11 @@ export function makeStackJson(identity: NotificationIdentity, total: number, nam
   } as NotificationStackJson;
 }
 
-export function makeTypeJson(total: number, name: string | null, cursorId?: number) {
+export function makeTypeJson(
+  total: number,
+  name: string | null,
+  cursorId?: number,
+) {
   return {
     cursor: cursorId != null ? { id: cursorId } : null,
     name,

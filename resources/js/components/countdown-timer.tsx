@@ -25,7 +25,7 @@ export default class CountdownTimer extends React.Component<Props> {
   }
 
   private get diff() {
-    return Math.max(this.deadline - (new Date()).valueOf(), 0) / 1000;
+    return Math.max(this.deadline - new Date().valueOf(), 0) / 1000;
   }
 
   constructor(props: Props) {
@@ -41,8 +41,8 @@ export default class CountdownTimer extends React.Component<Props> {
   render() {
     const diff = this.diff;
     const fields = {
-      days: Math.floor(diff / (secondsPerDay)),
-      hours: Math.floor((diff / (secondsPerHour)) % 24),
+      days: Math.floor(diff / secondsPerDay),
+      hours: Math.floor((diff / secondsPerHour) % 24),
       minutes: Math.floor((diff / 60) % 60),
       seconds: Math.floor(diff % 60),
     };
@@ -52,13 +52,17 @@ export default class CountdownTimer extends React.Component<Props> {
 
     return (
       <div className={bn}>
-        <div className={`${bn}__header`}>{`${trans('common.time.remaining')}:`}</div>
+        <div
+          className={`${bn}__header`}
+        >{`${trans('common.time.remaining')}:`}</div>
         {Object.entries(fields).map(([field, value]) => (
           <div key={field} className={`${bn}__field`}>
             <div className={`${bn}__digit`}>
               {value < 10 ? `0${value}` : value}
             </div>
-            <div className={`${bn}__label`}>{trans(`common.countdown.${field}`)}</div>
+            <div className={`${bn}__label`}>
+              {trans(`common.countdown.${field}`)}
+            </div>
           </div>
         ))}
       </div>

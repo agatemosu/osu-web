@@ -8,5 +8,9 @@ import React from 'react';
 import { parseJson } from 'utils/json';
 
 core.reactTurbolinks.register('modding-profile', () => (
-  <Main {...parseJson<BeatmapsetDiscussionsBundleJsonForModdingProfile>('json-bundle')} />
+  <Main
+    {...parseJson<BeatmapsetDiscussionsBundleJsonForModdingProfile>(
+      'json-bundle',
+    )}
+  />
 ));

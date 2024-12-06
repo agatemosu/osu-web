@@ -9,15 +9,27 @@ import EventJson from 'interfaces/event-json';
 import KudosuHistoryJson from 'interfaces/kudosu-history-json';
 import Ruleset from 'interfaces/ruleset';
 import { ScoreCurrentUserPinJson } from 'interfaces/score-json';
-import SoloScoreJson, { isSoloScoreJsonForUser, SoloScoreJsonForUser } from 'interfaces/solo-score-json';
+import SoloScoreJson, {
+  isSoloScoreJsonForUser,
+  SoloScoreJsonForUser,
+} from 'interfaces/solo-score-json';
 import UserCoverJson from 'interfaces/user-cover-json';
 import UserCoverPresetJson from 'interfaces/user-cover-preset-json';
-import { ProfileExtraPage, profileExtraPages } from 'interfaces/user-extended-json';
+import {
+  ProfileExtraPage,
+  profileExtraPages,
+} from 'interfaces/user-extended-json';
 import UserMonthlyPlaycountJson from 'interfaces/user-monthly-playcount-json';
 import UserReplaysWatchedCountJson from 'interfaces/user-replays-watched-count-json';
 import { route } from 'laroute';
 import { debounce, pullAt } from 'lodash';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 import core from 'osu-core-singleton';
 import { error, onErrorWithCallback } from 'utils/ajax';
 import { jsonClone } from 'utils/json';
@@ -25,7 +37,10 @@ import { hideLoadingOverlay, showLoadingOverlay } from 'utils/loading-overlay';
 import { getInt } from 'utils/math';
 import { apiShowMore } from 'utils/offset-paginator';
 import { switchNever } from 'utils/switch-never';
-import getPage, { PageSectionJson, PageSectionWithoutCountJson } from './extra-page';
+import getPage, {
+  PageSectionJson,
+  PageSectionWithoutCountJson,
+} from './extra-page';
 import { ProfilePageSection, ProfilePageUserJson } from './extra-page-props';
 
 const sectionToUrlType = {
@@ -43,8 +58,18 @@ const sectionToUrlType = {
 } as const;
 
 // #region lazy loaded extra pages
-type BeatmapsetsExtraPageKeys = 'favourite' | 'graveyard' | 'guest' | 'loved' | 'nominated' | 'pending' | 'ranked';
-type BeatmapsetsJson = Record<BeatmapsetsExtraPageKeys, PageSectionJson<BeatmapsetExtendedJson>>;
+type BeatmapsetsExtraPageKeys =
+  | 'favourite'
+  | 'graveyard'
+  | 'guest'
+  | 'loved'
+  | 'nominated'
+  | 'pending'
+  | 'ranked';
+type BeatmapsetsJson = Record<
+  BeatmapsetsExtraPageKeys,
+  PageSectionJson<BeatmapsetExtendedJson>
+>;
 
 interface HistoricalJson {
   beatmap_playcounts: PageSectionJson<BeatmapPlaycountJson>;
@@ -54,11 +79,17 @@ interface HistoricalJson {
 }
 
 type TopScoresKeys = 'best' | 'firsts' | 'pinned';
-type TopScoresJson = Record<TopScoresKeys, PageSectionJson<SoloScoreJsonForUser>>;
+type TopScoresJson = Record<
+  TopScoresKeys,
+  PageSectionJson<SoloScoreJsonForUser>
+>;
 // #endregion
 
 export function validPage(page: unknown) {
-  if (typeof page === 'string' && (page === 'main' || profileExtraPages.includes(page as ProfileExtraPage))) {
+  if (
+    typeof page === 'string' &&
+    (page === 'main' || profileExtraPages.includes(page as ProfileExtraPage))
+  ) {
     return page as Page;
   }
 
@@ -101,7 +132,10 @@ export default class Controller {
   readonly achievements: Map<number, AchievementJson>;
   readonly currentMode: Ruleset;
   @observable currentPage: Page = 'main';
-  readonly debouncedSetDisplayCoverUrl = debounce((url: string | null) => this.setDisplayCoverUrl(url), 300);
+  readonly debouncedSetDisplayCoverUrl = debounce(
+    (url: string | null) => this.setDisplayCoverUrl(url),
+    300,
+  );
   @observable displayCoverUrl: string | null;
   readonly hasSavedState: boolean;
   @observable isUpdatingCover = false;
@@ -130,10 +164,10 @@ export default class Controller {
     return isActive
       ? null
       : {
-        active: false,
-        id,
-        url: this.state.user.cover.url,
-      };
+          active: false,
+          id,
+          url: this.state.user.cover.url,
+        };
   }
 
   get withEdit() {
@@ -141,7 +175,9 @@ export default class Controller {
   }
 
   constructor(private readonly container: HTMLElement) {
-    const initialData = JSON.parse(this.container.dataset.initialData ?? 'null') as InitialData;
+    const initialData = JSON.parse(
+      this.container.dataset.initialData ?? 'null',
+    ) as InitialData;
 
     const savedStateJson = container.dataset.savedState;
     this.hasSavedState = savedStateJson != null;
@@ -211,12 +247,16 @@ export default class Controller {
       data: params,
       dataType: 'json',
       method: 'PUT',
-    }).fail(action((xhr: JQuery.jqXHR, status: string) => {
-      error(xhr, status);
-      if (this.state.lazy.top_ranks != null) {
-        this.state.lazy.top_ranks.pinned.items = origItems;
-      }
-    })).always(hideLoadingOverlay);
+    })
+      .fail(
+        action((xhr: JQuery.jqXHR, status: string) => {
+          error(xhr, status);
+          if (this.state.lazy.top_ranks != null) {
+            this.state.lazy.top_ranks.pinned.items = origItems;
+          }
+        }),
+      )
+      .always(hideLoadingOverlay);
   }
 
   @action
@@ -231,14 +271,23 @@ export default class Controller {
       },
       dataType: 'json',
       method: 'POST',
-    }).always(action(() => {
-      this.isUpdatingCover = false;
-    })).done(action((userData: CurrentUserJson) => {
-      this.setCover(userData.cover);
-      this.saveState();
-    })).fail(onErrorWithCallback(() => {
-      this.apiSetCover(id);
-    })) as JQuery.jqXHR<CurrentUserJson>;
+    })
+      .always(
+        action(() => {
+          this.isUpdatingCover = false;
+        }),
+      )
+      .done(
+        action((userData: CurrentUserJson) => {
+          this.setCover(userData.cover);
+          this.saveState();
+        }),
+      )
+      .fail(
+        onErrorWithCallback(() => {
+          this.apiSetCover(id);
+        }),
+      ) as JQuery.jqXHR<CurrentUserJson>;
 
     this.xhr.setCover = xhr;
 
@@ -256,10 +305,12 @@ export default class Controller {
         },
       },
       method: 'PUT',
-    }).done(action(() => {
-      this.state.user.playmode = this.currentMode;
-      this.saveState();
-    })) as JQuery.jqXHR<CurrentUserJson>;
+    }).done(
+      action(() => {
+        this.state.user.playmode = this.currentMode;
+        this.saveState();
+      }),
+    ) as JQuery.jqXHR<CurrentUserJson>;
 
     this.xhr.setDefaultGameMode = xhr;
 
@@ -267,7 +318,9 @@ export default class Controller {
   }
 
   @action
-  apiSetExtraPageOrder(newOrder: ProfileExtraPage[]): JQuery.jqXHR<CurrentUserJson> {
+  apiSetExtraPageOrder(
+    newOrder: ProfileExtraPage[],
+  ): JQuery.jqXHR<CurrentUserJson> {
     this.state.user.profile_order = newOrder;
 
     this.xhr.setExtraPageOrder?.abort();
@@ -295,10 +348,12 @@ export default class Controller {
         user: { user_style: value },
       },
       method: 'PUT',
-    }).done(action(() => {
-      this.setHue(value);
-      this.saveState();
-    })) as JQuery.jqXHR<unknown>;
+    }).done(
+      action(() => {
+        this.setHue(value);
+        this.saveState();
+      }),
+    ) as JQuery.jqXHR<unknown>;
 
     this.xhr.setHue = xhr;
 
@@ -314,11 +369,13 @@ export default class Controller {
       },
       dataType: 'json',
       method: 'PUT',
-    }).done(action((data: { html: string }) => {
-      this.state.user.page.html = data.html;
-      this.state.user.page.raw = newRaw;
-      this.saveState();
-    })) as JQuery.jqXHR<{ html: string }>;
+    }).done(
+      action((data: { html: string }) => {
+        this.state.user.page.html = data.html;
+        this.state.user.page.raw = newRaw;
+        this.saveState();
+      }),
+    ) as JQuery.jqXHR<{ html: string }>;
 
     this.xhr.setUserPage = xhr;
 
@@ -334,11 +391,10 @@ export default class Controller {
         if (this.state.lazy.historical != null) {
           const json = this.state.lazy.historical.beatmap_playcounts;
 
-          this.xhr[section] = apiShowMore(
-            json,
-            'users.beatmapsets',
-            { ...baseParams, type: 'most_played' },
-          );
+          this.xhr[section] = apiShowMore(json, 'users.beatmapsets', {
+            ...baseParams,
+            type: 'most_played',
+          });
         }
 
         break;
@@ -355,11 +411,10 @@ export default class Controller {
           const type = sectionToUrlType[section];
           const json = this.state.lazy.beatmaps[type];
 
-          this.xhr[section] = apiShowMore(
-            json,
-            'users.beatmapsets',
-            { ...baseParams, type: sectionToUrlType[section] },
-          );
+          this.xhr[section] = apiShowMore(json, 'users.beatmapsets', {
+            ...baseParams,
+            type: sectionToUrlType[section],
+          });
         }
 
         break;
@@ -385,14 +440,17 @@ export default class Controller {
       case 'scoresPinned':
       case 'scoresRecent': {
         const type = sectionToUrlType[section];
-        const json = type === 'recent' ? this.state.lazy.historical?.recent : this.state.lazy.top_ranks?.[type];
+        const json =
+          type === 'recent'
+            ? this.state.lazy.historical?.recent
+            : this.state.lazy.top_ranks?.[type];
 
         if (json != null) {
-          this.xhr[section] = apiShowMore(
-            json,
-            'users.scores',
-            { ...baseParams, mode: this.currentMode, type },
-          );
+          this.xhr[section] = apiShowMore(json, 'users.scores', {
+            ...baseParams,
+            mode: this.currentMode,
+            type,
+          });
         }
 
         break;
@@ -416,10 +474,15 @@ export default class Controller {
 
   @action
   get<T extends keyof LazyPages>(page: T) {
-    const xhr = getPage<LazyPages[T]>(this.state.user, page, this.currentMode)
-      .done((json) => runInAction(() => {
+    const xhr = getPage<LazyPages[T]>(
+      this.state.user,
+      page,
+      this.currentMode,
+    ).done((json) =>
+      runInAction(() => {
         this.state.lazy[page] = json;
-      }));
+      }),
+    );
 
     this.xhr[page] = xhr;
 
@@ -449,12 +512,19 @@ export default class Controller {
     if (this.selectedHue == null) {
       window.newBody?.style.removeProperty('--base-hue-override');
     } else {
-      window.newBody?.style.setProperty('--base-hue-override', this.selectedHue.toString());
+      window.newBody?.style.setProperty(
+        '--base-hue-override',
+        this.selectedHue.toString(),
+      );
     }
   }
 
   @action
-  private readonly onScorePinUpdate = (event: unknown, isPinned: boolean, score: SoloScoreJson) => {
+  private readonly onScorePinUpdate = (
+    event: unknown,
+    isPinned: boolean,
+    score: SoloScoreJson,
+  ) => {
     if (this.state.lazy.top_ranks == null) return;
     // make sure the typing is correct
     if (!isSoloScoreJsonForUser(score)) {
@@ -470,7 +540,9 @@ export default class Controller {
     const newScore = jsonClone(score);
     newScore.id = scorePinData.score_id;
 
-    const arrayIndex = this.state.lazy.top_ranks.pinned.items.findIndex((s) => s.id === newScore.id);
+    const arrayIndex = this.state.lazy.top_ranks.pinned.items.findIndex(
+      (s) => s.id === newScore.id,
+    );
     this.state.lazy.top_ranks.pinned.count += isPinned ? 1 : -1;
 
     if (isPinned) {

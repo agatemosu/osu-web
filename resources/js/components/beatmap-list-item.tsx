@@ -20,23 +20,33 @@ interface BaseProps {
   modifiers?: Modifiers;
 }
 
-type MapperProps = {
-  beatmapset: BeatmapsetJson;
-  showNonGuestOwner: boolean;
-  showOwners: true;
-} | {
-  showOwners: false;
-};
+type MapperProps =
+  | {
+      beatmapset: BeatmapsetJson;
+      showNonGuestOwner: boolean;
+      showOwners: true;
+    }
+  | {
+      showOwners: false;
+    };
 
 type Props = BaseProps & MapperProps;
 
 export default class BeatmapListItem extends React.PureComponent<Props> {
   render() {
-    const deleted = 'deleted_at' in this.props.beatmap && this.props.beatmap.deleted_at !== null;
+    const deleted =
+      'deleted_at' in this.props.beatmap &&
+      this.props.beatmap.deleted_at !== null;
     const version = `${this.props.beatmap.version}${deleted ? ` [${trans('beatmap_discussions.index.deleted_beatmap')}]` : ''}`;
 
     return (
-      <div className={classWithModifiers('beatmap-list-item', { deleted, inline: this.props.inline }, this.props.modifiers)}>
+      <div
+        className={classWithModifiers(
+          'beatmap-list-item',
+          { deleted, inline: this.props.inline },
+          this.props.modifiers,
+        )}
+      >
         <div className='beatmap-list-item__col beatmap-list-item__col--icon'>
           <span className={`fal fa-extra-mode-${this.props.beatmap.mode}`} />
         </div>
@@ -46,11 +56,19 @@ export default class BeatmapListItem extends React.PureComponent<Props> {
         </div>
 
         <div className='beatmap-list-item__col beatmap-list-item__col--main'>
-          <div className={`beatmap-list-item__version ${this.props.inline ? '' : 'u-ellipsis-overflow'}`}>
-            {this.props.beatmapUrl != null
-              ? <a className='beatmap-list-item__version-link' href={this.props.beatmapUrl}>{version}</a>
-              : version}
-            {' '}
+          <div
+            className={`beatmap-list-item__version ${this.props.inline ? '' : 'u-ellipsis-overflow'}`}
+          >
+            {this.props.beatmapUrl != null ? (
+              <a
+                className='beatmap-list-item__version-link'
+                href={this.props.beatmapUrl}
+              >
+                {version}
+              </a>
+            ) : (
+              version
+            )}{' '}
             <span className='beatmap-list-item__mapper'>
               {this.renderOwners()}
             </span>
@@ -77,9 +95,11 @@ export default class BeatmapListItem extends React.PureComponent<Props> {
       return null;
     }
 
-    const translationKey = hasOwners(this.props.beatmap) && hasGuestOwners(this.props.beatmap, this.props.beatmapset)
-      ? 'mapped_by_guest'
-      : 'mapped_by';
+    const translationKey =
+      hasOwners(this.props.beatmap) &&
+      hasGuestOwners(this.props.beatmap, this.props.beatmapset)
+        ? 'mapped_by_guest'
+        : 'mapped_by';
 
     return (
       <StringWithComponent

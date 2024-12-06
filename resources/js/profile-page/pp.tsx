@@ -37,7 +37,7 @@ export default function Pp({ stats }: { stats: UserStatisticsJson }) {
     <ValueDisplay
       label='pp'
       modifiers='plain'
-      value={(
+      value={
         <div
           data-html-title={extraTooltip}
           data-tooltip-hoverable={extraTooltipHoverable}
@@ -45,7 +45,7 @@ export default function Pp({ stats }: { stats: UserStatisticsJson }) {
         >
           {formatNumberRounded(stats.pp)}
         </div>
-      )}
+      }
     />
   );
 }

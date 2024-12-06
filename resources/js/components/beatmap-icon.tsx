@@ -26,7 +26,10 @@ export class BeatmapIcon extends React.Component<Props> {
 
   render() {
     this.tooltipId = `beatmap-icon-${this.props.beatmap.id}-${nextVal()}`;
-    const mode = this.props.beatmap.convert && !this.props.showConvertMode ? 'osu' : this.props.beatmap.mode;
+    const mode =
+      this.props.beatmap.convert && !this.props.showConvertMode
+        ? 'osu'
+        : this.props.beatmap.mode;
 
     const className = classWithModifiers('beatmap-icon', this.props.modifiers, {
       'with-hover': this.props.withTooltip,
@@ -48,7 +51,9 @@ export class BeatmapIcon extends React.Component<Props> {
     );
   }
 
-  private readonly handleMouseOver = (event: React.SyntheticEvent<HTMLElement>) => {
+  private readonly handleMouseOver = (
+    event: React.SyntheticEvent<HTMLElement>,
+  ) => {
     if (!this.props.withTooltip) return;
 
     const el = event.currentTarget;
@@ -57,14 +62,16 @@ export class BeatmapIcon extends React.Component<Props> {
     // the following mouseover should be ignored in that case.
     if (el._tooltip === this.tooltipId) return;
 
-    const $content = $(renderToStaticMarkup(
-      <div className='tooltip-beatmap'>
-        <div className='tooltip-beatmap__content'>
-          <div>{this.props.beatmap.version}</div>
-          <DifficultyBadge rating={this.props.beatmap.difficulty_rating} />
-        </div>
-      </div>,
-    ));
+    const $content = $(
+      renderToStaticMarkup(
+        <div className='tooltip-beatmap'>
+          <div className='tooltip-beatmap__content'>
+            <div>{this.props.beatmap.version}</div>
+            <DifficultyBadge rating={this.props.beatmap.difficulty_rating} />
+          </div>
+        </div>,
+      ),
+    );
 
     if (el._tooltip != null) {
       el._tooltip = this.tooltipId;
@@ -76,12 +83,15 @@ export class BeatmapIcon extends React.Component<Props> {
 
     const options = {
       content: $content,
-      hide: event.type === 'touchstart' ? {
-        event: 'touchstart unfocus',
-        inactive: 3000,
-      } : {
-        event: 'click mouseleave',
-      },
+      hide:
+        event.type === 'touchstart'
+          ? {
+              event: 'touchstart unfocus',
+              inactive: 3000,
+            }
+          : {
+              event: 'click mouseleave',
+            },
       overwrite: false,
       position: {
         at: 'top center',

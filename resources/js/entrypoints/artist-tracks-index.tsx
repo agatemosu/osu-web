@@ -5,6 +5,7 @@ import Main from 'artist-tracks-index/main';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 
-core.reactTurbolinks.register('artist-tracks-index', (container: HTMLElement) => (
-  <Main container={container} />
-));
+core.reactTurbolinks.register(
+  'artist-tracks-index',
+  (container: HTMLElement) => <Main container={container} />,
+);

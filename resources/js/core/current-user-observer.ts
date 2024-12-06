@@ -6,8 +6,12 @@ import OsuCore from 'osu-core';
 import { urlPresence } from 'utils/css';
 
 export default class CurrentUserObserver {
-  private readonly avatars = document.getElementsByClassName('js-current-user-avatar');
-  private readonly covers = document.getElementsByClassName('js-current-user-cover');
+  private readonly avatars = document.getElementsByClassName(
+    'js-current-user-avatar',
+  );
+  private readonly covers = document.getElementsByClassName(
+    'js-current-user-cover',
+  );
 
   constructor(private readonly core: OsuCore) {
     $(document).on('turbo:load', this.setAvatars);

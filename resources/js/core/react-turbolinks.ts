@@ -20,7 +20,10 @@ export default class ReactTurbolinks {
   private scrolled = false;
   private timeoutScroll?: number;
 
-  constructor(private readonly core: OsuCore, private readonly turbolinksReload: TurbolinksReload) {
+  constructor(
+    private readonly core: OsuCore,
+    private readonly turbolinksReload: TurbolinksReload,
+  ) {
     $(document).on('turbo:before-cache', this.handleBeforeCache);
     $(document).on('turbo:before-visit', this.handleBeforeVisit);
     $(document).on('turbo:load', this.handleLoad);
@@ -34,7 +37,10 @@ export default class ReactTurbolinks {
       const containers = window.newBody.querySelectorAll(`.js-react--${name}`);
 
       for (const container of containers) {
-        if (!(container instanceof HTMLElement) || this.renderedContainers.has(container)) {
+        if (
+          !(container instanceof HTMLElement) ||
+          this.renderedContainers.has(container)
+        ) {
           continue;
         }
 
@@ -118,21 +124,24 @@ export default class ReactTurbolinks {
   };
 
   private readonly handleWindowScroll = () => {
-    this.scrolled = this.scrolled || window.scrollX !== 0 || window.scrollY !== 0;
+    this.scrolled =
+      this.scrolled || window.scrollX !== 0 || window.scrollY !== 0;
   };
 
   private loadScripts() {
     const promises: Promise<unknown>[] = [];
 
     if (window.newBody != null) {
-      window.newBody.querySelectorAll('.js-react-turbolinks--script').forEach((script) => {
-        if (script instanceof HTMLDivElement) {
-          const src = script.dataset.src;
-          if (src != null) {
-            promises.push(this.turbolinksReload.load(src));
+      window.newBody
+        .querySelectorAll('.js-react-turbolinks--script')
+        .forEach((script) => {
+          if (script instanceof HTMLDivElement) {
+            const src = script.dataset.src;
+            if (src != null) {
+              promises.push(this.turbolinksReload.load(src));
+            }
           }
-        }
-      });
+        });
     }
 
     return Promise.all(promises);
@@ -153,8 +162,9 @@ export default class ReactTurbolinks {
   };
 
   private setNewUrl() {
-    window.newUrl = Turbo.session.navigator.currentVisit?.redirectedToLocation
-      ?? Turbo.session.navigator.currentVisit?.location
-      ?? document.location;
+    window.newUrl =
+      Turbo.session.navigator.currentVisit?.redirectedToLocation ??
+      Turbo.session.navigator.currentVisit?.location ??
+      document.location;
   }
 }

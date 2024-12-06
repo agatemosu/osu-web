@@ -43,13 +43,15 @@ interface QualifyEvent extends BaseBeatmapsetEvent {
 }
 
 interface DisqualifyEvent extends BaseBeatmapsetEvent {
-  comment: {
-    beatmap_discussion_id: number;
-    // newer events don't have this field
-    beatmap_discussion_post_id?: number;
-    // older events don't have this field
-    nominator_ids?: number[];
-  } | string; // reason string text for older events
+  comment:
+    | {
+        beatmap_discussion_id: number;
+        // newer events don't have this field
+        beatmap_discussion_post_id?: number;
+        // older events don't have this field
+        nominator_ids?: number[];
+      }
+    | string; // reason string text for older events
   type: 'disqualify';
 }
 
@@ -238,33 +240,25 @@ type BeatmapsetEventJson =
   | DisqualifyEvent
   | ApproveEvent
   | RankEvent
-
   | KudosuAllowEvent
   | KudosuDenyEvent
   | KudosuGainEvent
   | KudosuLostEvent
   | KudosuRecalculateEvent
-
   | IssueResolveEvent
   | IssueReopenEvent
-
   | DiscussionLockEvent
   | DiscussionUnlockEvent
-
   | DiscussionDeleteEvent
   | DiscussionRestoreEvent
-
   | DiscussionPostDeleteEvent
   | DiscussionPostRestoreEvent
-
   | NominationResetEvent
   | NominationResetReceivedEvent
-
   | GenreEditEvent
   | LanguageEditEvent
   | NsfwToggleEvent
   | OffsetEditEvent
-
   | BeatmapOwnerChangeEvent;
 
 export default BeatmapsetEventJson;

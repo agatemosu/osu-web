@@ -26,16 +26,19 @@ export default function Chart(props: Props) {
       if (discussion == null || discussion.timestamp == null) return;
 
       let className = classWithModifiers('beatmapset-discussions-chart__item', [
-        (discussion.resolved ? 'resolved' : messageTypeCss[discussion.message_type]),
-        (discussion.deleted_at == null ? null : 'deleted'),
+        discussion.resolved
+          ? 'resolved'
+          : messageTypeCss[discussion.message_type],
+        discussion.deleted_at == null ? null : 'deleted',
       ]);
       className += ' js-beatmap-discussion--jump';
 
-      const relativeTimestamp = discussion.timestamp < props.duration
-        ? discussion.timestamp / props.duration
-        : 1;
+      const relativeTimestamp =
+        discussion.timestamp < props.duration
+          ? discussion.timestamp / props.duration
+          : 1;
 
-      items.push((
+      items.push(
         <a
           key={discussion.id}
           className={className}
@@ -46,16 +49,14 @@ export default function Chart(props: Props) {
             left: `${100 * relativeTimestamp}%`,
           }}
           title={formatTimestamp(discussion.timestamp)}
-        />
-      ));
+        />,
+      );
     });
   }
 
   return (
     <div className='beatmapset-discussions-chart'>
-      <div className='beatmapset-discussions-chart__container'>
-        {items}
-      </div>
+      <div className='beatmapset-discussions-chart__container'>{items}</div>
     </div>
   );
 }

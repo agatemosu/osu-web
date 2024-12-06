@@ -66,29 +66,42 @@ export class Header extends React.Component<Props> {
       <>
         <HeaderV4
           links={headerLinks('discussions', this.beatmapset)}
-          linksAppend={(
+          linksAppend={
             <PlaymodeTabs
               currentMode={this.currentBeatmap.mode}
               entries={rulesets.map((mode) => ({
-                count: this.discussionsState.unresolvedDiscussionCounts.byMode[mode],
-                countTooltip: transChoice('beatmaps.discussions.unresolved_count', this.discussionsState.unresolvedDiscussionCounts.byMode[mode] ?? 0),
-                disabled: (this.discussionsState.groupedBeatmaps.get(mode)?.length ?? 0) === 0,
+                count:
+                  this.discussionsState.unresolvedDiscussionCounts.byMode[mode],
+                countTooltip: transChoice(
+                  'beatmaps.discussions.unresolved_count',
+                  this.discussionsState.unresolvedDiscussionCounts.byMode[
+                    mode
+                  ] ?? 0,
+                ),
+                disabled:
+                  (this.discussionsState.groupedBeatmaps.get(mode)?.length ??
+                    0) === 0,
                 mode,
               }))}
               modifiers='beatmapset'
               onClick={this.onClickMode}
             />
-          )}
+          }
           theme='beatmapset'
         />
         <div className='osu-page'>{this.renderHeaderTop()}</div>
-        <div className='osu-page osu-page--small'>{this.renderHeaderBottom()}</div>
+        <div className='osu-page osu-page--small'>
+          {this.renderHeaderBottom()}
+        </div>
       </>
     );
   }
 
   @action
-  private readonly onClickMode = (event: React.MouseEvent<HTMLAnchorElement>, mode: Ruleset) => {
+  private readonly onClickMode = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    mode: Ruleset,
+  ) => {
     event.preventDefault();
     this.discussionsState.changeGameMode(mode);
   };
@@ -106,11 +119,16 @@ export class Header extends React.Component<Props> {
             />
           </div>
           <div className={`${bn}__details`}>
-            <Subscribe beatmapset={this.beatmapset} discussionsState={this.discussionsState} />
+            <Subscribe
+              beatmapset={this.beatmapset}
+              discussionsState={this.discussionsState}
+            />
           </div>
           <div className={`${bn}__details`}>
             <BigButton
-              href={route('beatmapsets.show', { beatmapset: this.beatmapset.id })}
+              href={route('beatmapsets.show', {
+                beatmapset: this.beatmapset.id,
+              })}
               icon='fas fa-info'
               modifiers='full'
               text={trans('beatmaps.discussions.beatmap_information')}
@@ -126,7 +144,6 @@ export class Header extends React.Component<Props> {
       </div>
     );
   }
-
 
   private renderHeaderTop() {
     const bn = 'beatmap-discussions-header-top';
@@ -145,7 +162,9 @@ export class Header extends React.Component<Props> {
             <h1 className={`${bn}__title`}>
               <a
                 className='link link--white link--no-underline'
-                href={route('beatmapsets.show', { beatmapset: this.beatmapset.id })}
+                href={route('beatmapsets.show', {
+                  beatmapset: this.beatmapset.id,
+                })}
               >
                 {getTitle(this.beatmapset)}
               </a>
@@ -154,7 +173,10 @@ export class Header extends React.Component<Props> {
             </h1>
             <h2 className={`${bn}__title ${bn}__title--artist`}>
               {getArtist(this.beatmapset)}
-              <BeatmapsetBadge beatmapset={this.beatmapset} type='featured_artist' />
+              <BeatmapsetBadge
+                beatmapset={this.beatmapset}
+                type='featured_artist'
+              />
             </h2>
           </div>
           <div className={`${bn}__filters`}>
@@ -185,14 +207,21 @@ export class Header extends React.Component<Props> {
                   <span>
                     <StringWithComponent
                       mappings={{
-                        user: <UserLinkList users={this.currentBeatmap.owners ?? []} />,
+                        user: (
+                          <UserLinkList
+                            users={this.currentBeatmap.owners ?? []}
+                          />
+                        ),
                       }}
                       pattern={trans('beatmaps.discussions.guest')}
                     />
                   </span>
                 )}
               </div>
-              <BeatmapBasicStats beatmap={this.currentBeatmap} beatmapset={this.beatmapset} />
+              <BeatmapBasicStats
+                beatmap={this.currentBeatmap}
+                beatmapset={this.beatmapset}
+              />
             </div>
           </div>
         </div>

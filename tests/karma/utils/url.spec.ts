@@ -32,7 +32,8 @@ describe('utils/url', () => {
         more: '3',
       };
 
-      const expected = new URL('/nowhere?something=1&more=3', location.origin).href;
+      const expected = new URL('/nowhere?something=1&more=3', location.origin)
+        .href;
       const result = updateQueryString('/nowhere?something=1', params);
 
       expect(result).toBe(expected);
@@ -44,7 +45,8 @@ describe('utils/url', () => {
         something: '5',
       };
 
-      const expected = new URL('/nowhere?something=5&more=3', location.origin).href;
+      const expected = new URL('/nowhere?something=5&more=3', location.origin)
+        .href;
       const result = updateQueryString('/nowhere?something=1', params);
 
       expect(result).toBe(expected);

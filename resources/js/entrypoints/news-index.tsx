@@ -6,8 +6,5 @@ import core from 'osu-core-singleton';
 import * as React from 'react';
 
 core.reactTurbolinks.register('news-index', (container: HTMLElement) => (
-  <Main
-    {...JSON.parse(container.dataset.props ?? '')}
-    container={container}
-  />
+  <Main {...JSON.parse(container.dataset.props ?? '')} container={container} />
 ));

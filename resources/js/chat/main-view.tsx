@@ -6,7 +6,10 @@ import { action, autorun, makeObservable, runInAction } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { hideLoadingOverlay, showImmediateLoadingOverlay } from 'utils/loading-overlay';
+import {
+  hideLoadingOverlay,
+  showImmediateLoadingOverlay,
+} from 'utils/loading-overlay';
 import ConversationList from './conversation-list';
 import ConversationPanel from './conversation-panel';
 
@@ -58,7 +61,9 @@ export default class MainView extends React.Component<Record<string, never>> {
       <>
         <HeaderV4 theme='chat' />
         <div className='chat osu-page osu-page--chat'>
-          {core.dataStore.channelStore.channels.size > 0 && <ConversationList />}
+          {core.dataStore.channelStore.channels.size > 0 && (
+            <ConversationList />
+          )}
           <ConversationPanel />
         </div>
       </>

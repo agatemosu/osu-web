@@ -8,20 +8,24 @@ function expand(e: JQuery.ClickEvent) {
   e.stopPropagation();
   e.preventDefault();
 
-  const container = htmlElementOrNull(e.target)?.closest('.js-spoilerbox')
-    ?? fail('spoiler container is missing');
-  const body = container.querySelector(':scope > .js-spoilerbox__body')
-    ?? fail('spoiler body is missing');
+  const container =
+    htmlElementOrNull(e.target)?.closest('.js-spoilerbox') ??
+    fail('spoiler container is missing');
+  const body =
+    container.querySelector(':scope > .js-spoilerbox__body') ??
+    fail('spoiler body is missing');
 
   const toggle = container.classList.toggle('js-spoilerbox--open')
     ? 'slideDown'
     : 'slideUp';
 
-  $(body).stop()[toggle]({
-    complete(this: void) {
-      $.publish('sync-height:force');
-    },
-  });
+  $(body)
+    .stop()
+    [toggle]({
+      complete(this: void) {
+        $.publish('sync-height:force');
+      },
+    });
 }
 
 export default class Spoilerbox {

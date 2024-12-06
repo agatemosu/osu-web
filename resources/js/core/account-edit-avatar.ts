@@ -50,9 +50,11 @@ export default class AccountEditAvatar {
     $('.js-account-edit-avatar--reset')
       .on('ajax:send', () => {
         element.classList.add(savingClass);
-      }).on('ajax:complete', () => {
+      })
+      .on('ajax:complete', () => {
         element.classList.remove(savingClass);
-      }).on('ajax:success', (_e: unknown, data: CurrentUserJson) => {
+      })
+      .on('ajax:success', (_e: unknown, data: CurrentUserJson) => {
         this.core.setCurrentUser(data);
       });
   };

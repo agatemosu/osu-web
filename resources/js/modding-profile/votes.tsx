@@ -29,7 +29,9 @@ export default class Votes extends React.Component<Props> {
   render() {
     return (
       <div className='page-extra'>
-        <h1 className='title title--page-extra'>{trans('users.show.extra.votes.title_longer')}</h1>
+        <h1 className='title title--page-extra'>
+          {trans('users.show.extra.votes.title_longer')}
+        </h1>
         {directions.map((direction) => (
           <React.Fragment key={direction}>
             <ProfilePageExtraSectionTitle
@@ -38,7 +40,13 @@ export default class Votes extends React.Component<Props> {
             />
             {this.props.votes[direction].length > 0 && (
               <div className='modding-profile-list modding-profile-list--votes'>
-                {this.props.votes[direction].map((vote) => this.renderUser(vote.score, vote.count, this.props.users.get(vote.user_id)))}
+                {this.props.votes[direction].map((vote) =>
+                  this.renderUser(
+                    vote.score,
+                    vote.count,
+                    this.props.users.get(vote.user_id),
+                  ),
+                )}
               </div>
             )}
           </React.Fragment>
@@ -55,25 +63,15 @@ export default class Votes extends React.Component<Props> {
     const href = route('users.modding.index', { user: user.id }) + '#votes';
 
     return (
-      <div
-        key={user.id}
-        className={bn}
-        style={style}
-      >
+      <div key={user.id} className={bn} style={style}>
         <div className={`${bn}__avatar`}>
-          <a
-            className={`${bn}__user-link`}
-            href={href}
-          >
+          <a className={`${bn}__user-link`} href={href}>
             <UserAvatar modifiers='full-rounded' user={user} />
           </a>
         </div>
         <div className={`${bn}__user`}>
           <div className={`${bn}__user-row`}>
-            <a
-              className={`${bn}__user-link`}
-              href={href}
-            >
+            <a className={`${bn}__user-link`} href={href}>
               <span className={`${bn}__user-text u-ellipsis-overflow`}>
                 {user.username}
               </span>
@@ -85,8 +83,13 @@ export default class Votes extends React.Component<Props> {
         </div>
         <div className={`${bn}__user-stripe`} />
         <div className={`${bn}__votes-container`}>
-          <div className={`${bn}__score`}>{score > 0 && '+'}{score}</div>
-          <div className={`${bn}__count`}>{transChoice('users.show.extra.votes.vote_count', count)}</div>
+          <div className={`${bn}__score`}>
+            {score > 0 && '+'}
+            {score}
+          </div>
+          <div className={`${bn}__count`}>
+            {transChoice('users.show.extra.votes.vote_count', count)}
+          </div>
         </div>
       </div>
     );

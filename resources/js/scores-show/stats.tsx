@@ -10,7 +10,11 @@ import { rulesetName, shouldShowPp } from 'utils/beatmap-helper';
 import { classWithModifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
-import { accuracy, isPerfectCombo, attributeDisplayTotals } from 'utils/score-helper';
+import {
+  accuracy,
+  isPerfectCombo,
+  attributeDisplayTotals,
+} from 'utils/score-helper';
 
 interface Props {
   beatmap: BeatmapJson;
@@ -32,7 +36,11 @@ export default function Stats(props: Props) {
             <div className='score-stats__stat-row score-stats__stat-row--label'>
               {trans('beatmapsets.show.scoreboard.headers.accuracy')}
             </div>
-            <div className={classWithModifiers('score-stats__stat-row', { perfect: scoreAccuracy === 1 })}>
+            <div
+              className={classWithModifiers('score-stats__stat-row', {
+                perfect: scoreAccuracy === 1,
+              })}
+            >
               {formatNumber(scoreAccuracy * 100, 2)}%
             </div>
           </div>
@@ -41,7 +49,11 @@ export default function Stats(props: Props) {
             <div className='score-stats__stat-row score-stats__stat-row--label'>
               {trans('beatmapsets.show.scoreboard.headers.combo')}
             </div>
-            <div className={classWithModifiers('score-stats__stat-row', { perfect: isPerfectCombo(props.score) })}>
+            <div
+              className={classWithModifiers('score-stats__stat-row', {
+                perfect: isPerfectCombo(props.score),
+              })}
+            >
               {formatNumber(props.score.max_combo)}x
             </div>
           </div>
@@ -58,7 +70,10 @@ export default function Stats(props: Props) {
           )}
         </div>
         <div className='score-stats__group-row'>
-          {attributeDisplayTotals(rulesetName(props.score.ruleset_id), props.score).map((attr) => (
+          {attributeDisplayTotals(
+            rulesetName(props.score.ruleset_id),
+            props.score,
+          ).map((attr) => (
             <div key={attr.key} className='score-stats__stat'>
               <div className='score-stats__stat-row score-stats__stat-row--label'>
                 {attr.label}

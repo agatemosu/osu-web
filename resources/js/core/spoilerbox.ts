@@ -19,13 +19,12 @@ function expand(e: JQuery.ClickEvent) {
     ? 'slideDown'
     : 'slideUp';
 
-  $(body)
-    .stop()
-    [toggle]({
-      complete(this: void) {
-        $.publish('sync-height:force');
-      },
-    });
+  $(body).stop();
+  $(body)[toggle]({
+    complete(this: void) {
+      $.publish('sync-height:force');
+    },
+  });
 }
 
 export default class Spoilerbox {

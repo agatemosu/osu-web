@@ -25,8 +25,6 @@ module.exports = {
         'typescript-sort-keys',
       ],
       rules: {
-        '@stylistic/member-delimiter-style': 'error',
-        '@stylistic/type-annotation-spacing': 'error',
         '@typescript-eslint/array-type': [
           'error',
           {
@@ -174,50 +172,10 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [
-    '@stylistic',
     'eslint-plugin-jsdoc',
     'eslint-plugin-import',
   ],
   rules: {
-    '@stylistic/arrow-parens': 'error',
-    '@stylistic/arrow-spacing': 'error',
-    '@stylistic/brace-style': 'error',
-    '@stylistic/comma-dangle': ['error', 'always-multiline'],
-    '@stylistic/eol-last': 'error',
-    '@stylistic/indent': [
-      'error',
-      2,
-      {
-        FunctionDeclaration: {
-          parameters: 'first',
-        },
-        FunctionExpression: {
-          parameters: 'first',
-        },
-        SwitchCase: 1,
-      },
-    ],
-    '@stylistic/max-len': 'off',
-    '@stylistic/new-parens': 'error',
-    '@stylistic/no-multiple-empty-lines': 'error',
-    '@stylistic/no-trailing-spaces': 'error',
-    '@stylistic/object-curly-spacing': ['error', 'always'],
-    '@stylistic/quote-props': ['error', 'as-needed'],
-    '@stylistic/quotes': [
-      'error',
-      'single',
-      { avoidEscape: true },
-    ],
-    '@stylistic/semi': ['error', 'always'],
-    '@stylistic/space-before-function-paren': [
-      'error',
-      {
-        anonymous: 'never',
-        asyncArrow: 'always',
-        named: 'never',
-      },
-    ],
-    '@stylistic/spaced-comment': 'error',
     'arrow-body-style': 'error',
     complexity: 'off',
     curly: ['error', 'multi-line'],

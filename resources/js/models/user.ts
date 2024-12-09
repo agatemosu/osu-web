@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type UserGroupJson from 'interfaces/user-group-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { action, makeObservable, observable } from 'mobx';
 import { trans } from 'utils/lang';
 

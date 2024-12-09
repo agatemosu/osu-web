@@ -3,8 +3,8 @@
 
 import BeatmapListItem from 'components/beatmap-list-item';
 import Portal from 'components/portal';
-import type BeatmapJson from 'interfaces/beatmap-json';
-import type Ruleset from 'interfaces/ruleset';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
+import type { Ruleset } from 'interfaces/ruleset';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';

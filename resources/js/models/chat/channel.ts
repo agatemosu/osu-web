@@ -5,7 +5,7 @@ import { markAsRead, getChannel, getChannelUsers, getMessages } from 'chat/chat-
 import type ChannelJson from 'interfaces/chat/channel-json';
 import { type ChannelType, type SupportedChannelType, supportedTypeLookup } from 'interfaces/chat/channel-json'
 import type MessageJson from 'interfaces/chat/message-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { sortBy, throttle } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import type User from 'models/user';

@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type Ruleset from 'interfaces/ruleset';
-import type UserJson from 'interfaces/user-json';
+import type { Ruleset } from 'interfaces/ruleset';
+import type { UserJson } from 'interfaces/user-json';
 
 export const profileExtraPages = [
   'beatmaps',
@@ -54,6 +54,4 @@ interface UserExtendedAdditionalAttributes {
   website: string | null;
 }
 
-type UserExtendedJson = UserJson & Required<Pick<UserJson, UserExtendedDefaultIncludes>> & UserExtendedAdditionalAttributes;
-
-export default UserExtendedJson;
+export type UserExtendedJson = UserJson & Required<Pick<UserJson, UserExtendedDefaultIncludes>> & UserExtendedAdditionalAttributes;

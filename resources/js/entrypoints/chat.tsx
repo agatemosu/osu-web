@@ -3,7 +3,7 @@
 
 import MainView from 'chat/main-view';
 import type ChannelJson from 'interfaces/chat/channel-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { action } from 'mobx';
 import Channel from 'models/chat/channel';
 import core from 'osu-core-singleton';

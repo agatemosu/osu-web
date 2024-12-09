@@ -5,7 +5,7 @@ import BigButton from 'components/big-button';
 import InputContainer from 'components/input-container';
 import UserCardBrick from 'components/user-card-brick';
 import UsernameInput from 'components/username-input';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { action, computed, makeObservable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import { isInputKey } from 'models/chat/create-announcement';

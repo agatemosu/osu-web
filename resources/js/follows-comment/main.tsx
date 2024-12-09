@@ -7,7 +7,7 @@ import HeaderV4 from 'components/header-v4';
 import StringWithComponent from 'components/string-with-component';
 import TimeWithTooltip from 'components/time-with-tooltip';
 import homeLinks from 'home-links';
-import type CurrentUserJson from 'interfaces/current-user-json';
+import type { CurrentUserJson } from 'interfaces/current-user-json';
 import type FollowCommentJson from 'interfaces/follow-comment-json';
 import { route } from 'laroute';
 import * as React from 'react';

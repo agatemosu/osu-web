@@ -3,7 +3,7 @@
 
 import type DispatcherAction from 'actions/dispatcher-action';
 import { UserLoginAction } from 'actions/user-login-actions';
-import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import type { BeatmapsetExtendedJson } from 'interfaces/beatmapset-extended-json';
 import { action, makeObservable, observable } from 'mobx';
 
 export class BeatmapsetStore {

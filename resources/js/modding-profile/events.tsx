@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapsetEvents from 'components/beatmapset-events';
-import type BeatmapsetEventJson from 'interfaces/beatmapset-event-json';
-import type UserJson from 'interfaces/user-json';
+import type { BeatmapsetEventJson } from 'interfaces/beatmapset-event-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as React from 'react';
 import { trans } from 'utils/lang';

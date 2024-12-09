@@ -5,7 +5,7 @@ import { Discussion } from 'beatmap-discussions/discussion';
 import BeatmapsetCover from 'components/beatmapset-cover';
 import type { BeatmapsetDiscussionJsonForBundle } from 'interfaces/beatmapset-discussion-json';
 import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import { observer } from 'mobx-react';
 import React from 'react';

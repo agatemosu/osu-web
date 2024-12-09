@@ -5,7 +5,7 @@ import BeatmapsetCover from 'components/beatmapset-cover';
 import StringWithComponent from 'components/string-with-component';
 import UserLink from 'components/user-link';
 import type BeatmapPlaycountJson from 'interfaces/beatmap-playcount-json';
-import type Ruleset from 'interfaces/ruleset';
+import type { Ruleset } from 'interfaces/ruleset';
 import * as React from 'react';
 import { getArtist, getTitle } from 'utils/beatmapset-helper';
 import { formatNumber } from 'utils/html';

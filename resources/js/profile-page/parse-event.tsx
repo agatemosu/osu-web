@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import StringWithComponent from 'components/string-with-component';
-import type EventJson from 'interfaces/event-json';
+import type { EventJson } from 'interfaces/event-json';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import type { Modifiers } from 'utils/css';

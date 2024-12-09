@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import StringWithComponent from 'components/string-with-component';
-import type UserExtendedJson from 'interfaces/user-extended-json';
+import type { UserExtendedJson } from 'interfaces/user-extended-json';
 import { route } from 'laroute';
 import { action, computed } from 'mobx';
 import { observer } from 'mobx-react';

@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type Ruleset from 'interfaces/ruleset';
-import type SoloScoreJson from 'interfaces/solo-score-json';
+import type { Ruleset } from 'interfaces/ruleset';
+import type { SoloScoreJson } from 'interfaces/solo-score-json';
 import type { SoloScoreStatisticsAttribute } from 'interfaces/solo-score-json';
 import { route } from 'laroute';
 import core from 'osu-core-singleton';

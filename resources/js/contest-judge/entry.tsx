@@ -4,7 +4,7 @@
 import BigButton from 'components/big-button';
 import InputContainer from 'components/input-container';
 import TextareaAutosize from 'components/textarea-autosize';
-import type ContestEntryJson from 'interfaces/contest-entry-json';
+import type { ContestEntryJson } from 'interfaces/contest-entry-json';
 import type ContestScoringCategoryJson from 'interfaces/contest-scoring-category-json';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';

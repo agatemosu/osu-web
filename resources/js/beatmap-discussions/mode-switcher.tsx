@@ -9,7 +9,7 @@ import * as React from 'react';
 import { makeUrl } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import type DiscussionPage from './discussion-page';
+import type { DiscussionPage } from './discussion-page';
 import { discussionPages } from './discussion-page';
 import type DiscussionsState from './discussions-state';
 

@@ -6,7 +6,7 @@ import FollowToggle from 'components/follow-toggle';
 import FollowsSubtypes from 'components/follows-subtypes';
 import HeaderV4 from 'components/header-v4';
 import homeLinks from 'home-links';
-import type CurrentUserJson from 'interfaces/current-user-json';
+import type { CurrentUserJson } from 'interfaces/current-user-json';
 import type FollowMappingJson from 'interfaces/follow-mapping-json';
 import { route } from 'laroute';
 import * as React from 'react';

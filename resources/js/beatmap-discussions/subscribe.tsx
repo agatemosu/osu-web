@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BigButton from 'components/big-button';
-import type BeatmapsetJson from 'interfaces/beatmapset-json';
+import type { BeatmapsetJson } from 'interfaces/beatmapset-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';

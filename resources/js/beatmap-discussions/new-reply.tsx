@@ -4,7 +4,7 @@
 import BigButton from 'components/big-button';
 import TextareaAutosize from 'components/textarea-autosize';
 import UserAvatar from 'components/user-avatar';
-import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetDiscussionJson } from 'interfaces/beatmapset-discussion-json';
 import type { BeatmapsetDiscussionPostStoreResponseJson } from 'interfaces/beatmapset-discussion-post-responses';
 import { route } from 'laroute';
 import { action, makeObservable, observable, runInAction } from 'mobx';

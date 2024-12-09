@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { UserCard } from 'components/user-card';
-import type BeatmapJson from 'interfaces/beatmap-json';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
 import type { SoloScoreJsonForShow } from 'interfaces/solo-score-json';
 import * as React from 'react';
 import PpValue from 'scores/pp-value';

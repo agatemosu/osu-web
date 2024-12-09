@@ -8,7 +8,7 @@ import ResultSet from 'beatmaps/result-set';
 import type SearchResults from 'beatmaps/search-results';
 import type { BeatmapsetSearchFilters } from 'beatmapset-search-filters';
 import type DispatchListener from 'dispatch-listener';
-import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import type { BeatmapsetExtendedJson } from 'interfaces/beatmapset-extended-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import type { BeatmapsetStore } from 'stores/beatmapset-store';

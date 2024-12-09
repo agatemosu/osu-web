@@ -3,7 +3,7 @@
 
 import StringWithComponent from 'components/string-with-component';
 import type { BeatmapsetDiscussionSystemPostJson } from 'interfaces/beatmapset-discussion-post-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';

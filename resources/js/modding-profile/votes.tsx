@@ -4,7 +4,7 @@
 import ProfilePageExtraSectionTitle from 'components/profile-page-extra-section-title';
 import UserAvatar from 'components/user-avatar';
 import UserGroupBadge from 'components/user-group-badge';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as React from 'react';
 import { groupColour } from 'utils/css';

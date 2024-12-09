@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ValueDisplay from 'components/value-display';
-import type UserStatisticsJson from 'interfaces/user-statistics-json';
+import type { UserStatisticsJson } from 'interfaces/user-statistics-json';
 import moment from 'moment';
 import * as React from 'react';
 import { formatNumber } from 'utils/html';

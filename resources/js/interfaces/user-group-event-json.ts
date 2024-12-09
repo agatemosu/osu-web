@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type Ruleset from './ruleset';
+import type { Ruleset } from 'interfaces/ruleset';
 
 interface UserGroupEventBase {
   actor?: {
@@ -51,11 +51,9 @@ interface UserRemoveOrSetDefaultEvent extends UserGroupEventBase {
   user_name: string;
 }
 
-type UserGroupEventJson =
+export type UserGroupEventJson =
   | GroupAddOrRemoveEvent
   | GroupRenameEvent
   | UserAddEvent
   | UserAddOrRemovePlaymodesEvent
   | UserRemoveOrSetDefaultEvent;
-
-export default UserGroupEventJson;

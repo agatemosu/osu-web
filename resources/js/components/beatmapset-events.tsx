@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapsetEvent, { type EventViewMode } from 'components/beatmapset-event';
-import type BeatmapsetEventJson from 'interfaces/beatmapset-event-json';
-import type UserJson from 'interfaces/user-json';
+import type { BeatmapsetEventJson } from 'interfaces/beatmapset-event-json';
+import type { UserJson } from 'interfaces/user-json';
 import * as React from 'react';
 
 export interface Props {

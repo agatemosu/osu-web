@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { keyBy } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { deletedUserJson } from 'models/user';

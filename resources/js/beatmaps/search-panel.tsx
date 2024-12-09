@@ -4,7 +4,7 @@
 import type { FilterKey } from 'beatmapset-search-filters';
 import BeatmapsetCover from 'components/beatmapset-cover';
 import Portal from 'components/portal';
-import type BeatmapsetJson from 'interfaces/beatmapset-json';
+import type { BeatmapsetJson } from 'interfaces/beatmapset-json';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

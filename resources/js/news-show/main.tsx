@@ -5,7 +5,7 @@ import AdminMenu from 'components/admin-menu';
 import Comments from 'components/comments';
 import NewsHeader from 'components/news-header';
 import StringWithComponent from 'components/string-with-component';
-import type NewsPostJson from 'interfaces/news-post-json';
+import type { NewsPostJson } from 'interfaces/news-post-json';
 import type NewsSidebarMetaJson from 'interfaces/news-sidebar-meta-json';
 import { route } from 'laroute';
 import PostItem from 'news-index/post-item';

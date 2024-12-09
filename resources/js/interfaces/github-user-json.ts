@@ -26,5 +26,5 @@ type GithubUserJson = CommonProps & GithubProps       & IdProps       & (OsuProp
 type Legacy         = CommonProps & Null<GithubProps> & Null<IdProps> & OsuProps;
 type Placeholder    = CommonProps & GithubProps       & Null<IdProps> & Null<OsuProps>;
 
-export default GithubUserJson;
+export type { GithubUserJson };
 export type GithubUserJsonForChangelog = GithubUserJson | Legacy | Placeholder;

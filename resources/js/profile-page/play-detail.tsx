@@ -5,7 +5,7 @@ import Mod from 'components/mod';
 import { PlayDetailMenu } from 'components/play-detail-menu';
 import TimeWithTooltip from 'components/time-with-tooltip';
 import type { SoloScoreJsonForUser } from 'interfaces/solo-score-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import * as React from 'react';
 import PpValue from 'scores/pp-value';
 import { rulesetName, shouldShowPp } from 'utils/beatmap-helper';

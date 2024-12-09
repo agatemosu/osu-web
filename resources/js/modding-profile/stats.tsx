@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type UserJson from 'interfaces/user-extended-json';
+import type { UserExtendedJson } from 'interfaces/user-extended-json';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
@@ -17,7 +17,7 @@ type UserBeatmapsetCount = typeof entries[number];
 
 interface Props {
   // TODO: add actual typing for modding profile user json
-  user: UserJson & Required<Pick<UserJson, UserBeatmapsetCount>>;
+  user: UserExtendedJson & Required<Pick<UserExtendedJson, UserBeatmapsetCount>>;
 }
 
 export default class Stats extends React.PureComponent<Props> {

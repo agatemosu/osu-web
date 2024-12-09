@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetDiscussionJson } from 'interfaces/beatmapset-discussion-json';
 import type { BeatmapsetDiscussionJsonForBundle, BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
-import type BeatmapsetDiscussionPostJson from 'interfaces/beatmapset-discussion-post-json';
+import type { BeatmapsetDiscussionPostJson } from 'interfaces/beatmapset-discussion-post-json';
 import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
 import { findLast } from 'lodash';
 import { action, computed, makeObservable } from 'mobx';

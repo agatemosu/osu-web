@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type { ClientJson } from 'interfaces/client-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 

@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type UserExtendedJson from './user-extended-json';
-import type { ProfileHeaderIncludes } from './user-json';
+import type { UserExtendedJson } from 'interfaces/user-extended-json';
+import type { ProfileHeaderIncludes } from 'interfaces/user-json';
 
 type ModdingProfileIncludes =
   ProfileHeaderIncludes
@@ -12,6 +12,4 @@ type ModdingProfileIncludes =
   | 'ranked_beatmapset_count'
   | 'statistics';
 
-type UserModdingProfileJson = UserExtendedJson & Required<Pick<UserExtendedJson, ModdingProfileIncludes>>;
-
-export default UserModdingProfileJson;
+export type UserModdingProfileJson = UserExtendedJson & Required<Pick<UserExtendedJson, ModdingProfileIncludes>>;

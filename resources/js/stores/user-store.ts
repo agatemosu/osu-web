@@ -5,7 +5,7 @@ import type DispatcherAction from 'actions/dispatcher-action';
 import { dispatchListener } from 'app-dispatcher';
 import MessageNewEvent from 'chat/message-new-event';
 import type DispatchListener from 'dispatch-listener';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { action, makeObservable, observable } from 'mobx';
 import User from 'models/user';
 

@@ -4,9 +4,9 @@
 import BigButton from 'components/big-button';
 import Modal from 'components/modal';
 import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import type BeatmapsetEventJson from 'interfaces/beatmapset-event-json';
-import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import type Ruleset from 'interfaces/ruleset';
+import type { BeatmapsetEventJson } from 'interfaces/beatmapset-event-json';
+import type { BeatmapsetWithDiscussionsJson } from 'interfaces/beatmapset-with-discussions-json';
+import type { Ruleset } from 'interfaces/ruleset';
 import { route } from 'laroute';
 import { forEachRight, map, uniq } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';

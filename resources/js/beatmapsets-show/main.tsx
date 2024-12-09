@@ -5,7 +5,7 @@ import Comments from 'components/comments';
 import HeaderV4 from 'components/header-v4';
 import NotificationBanner from 'components/notification-banner';
 import PlaymodeTabs from 'components/playmode-tabs';
-import type Ruleset from 'interfaces/ruleset';
+import type { Ruleset } from 'interfaces/ruleset';
 import { rulesets } from 'interfaces/ruleset';
 import { action, autorun, computed, type IReactionDisposer, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';

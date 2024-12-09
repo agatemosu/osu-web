@@ -6,7 +6,7 @@ import Mod from 'components/mod';
 import { PlayDetailMenu } from 'components/play-detail-menu';
 import ScoreValue from 'components/score-value';
 import ScoreboardTime from 'components/scoreboard-time';
-import type BeatmapJson from 'interfaces/beatmap-json';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
 import type { SoloScoreJsonForBeatmap } from 'interfaces/solo-score-json';
 import { route } from 'laroute';
 import { computed, makeObservable } from 'mobx';

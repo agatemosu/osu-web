@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type BeatmapsetDiscussionJson from './beatmapset-discussion-json';
+import type { BeatmapsetDiscussionJson } from 'interfaces/beatmapset-discussion-json';
 
 interface BeatmapsetDiscussionPostAvailableIncludes {
   beatmap_discussion: BeatmapsetDiscussionJson;
@@ -33,5 +33,4 @@ export type BeatmapsetDiscussionSystemPostJson = BeatmapsetDiscussionPostBase & 
   system: true;
 };
 
-type BeatmapsetDiscussionPostJson = BeatmapsetDiscussionMessagePostJson | BeatmapsetDiscussionSystemPostJson;
-export default BeatmapsetDiscussionPostJson;
+export type BeatmapsetDiscussionPostJson = BeatmapsetDiscussionMessagePostJson | BeatmapsetDiscussionSystemPostJson;

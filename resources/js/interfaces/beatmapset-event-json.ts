@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type BeatmapsetDiscussionJson from './beatmapset-discussion-json';
-import type BeatmapsetJson from './beatmapset-json';
-import type Ruleset from './ruleset';
+import type { BeatmapsetDiscussionJson } from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetJson } from 'interfaces/beatmapset-json';
+import type { Ruleset } from 'interfaces/ruleset';
 
 interface VoteEventJson {
   score: number;
@@ -230,7 +230,7 @@ interface BeatmapOwnerChangeEvent extends BaseBeatmapsetEvent {
   type: 'beatmap_owner_change';
 }
 
-type BeatmapsetEventJson =
+export type BeatmapsetEventJson =
   | NominateEvent
   | LoveEvent
   | RemoveFromLovedEvent
@@ -266,5 +266,3 @@ type BeatmapsetEventJson =
   | OffsetEditEvent
 
   | BeatmapOwnerChangeEvent;
-
-export default BeatmapsetEventJson;

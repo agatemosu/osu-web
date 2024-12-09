@@ -3,8 +3,8 @@
 
 import { createTooltip } from 'components/user-list-popup';
 import type { BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
-import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import type UserJson from 'interfaces/user-json';
+import type { BeatmapsetWithDiscussionsJson } from 'interfaces/beatmapset-with-discussions-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';

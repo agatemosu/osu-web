@@ -4,7 +4,7 @@
 import mapperGroup from 'beatmap-discussions/mapper-group';
 import SelectOptions, { type OptionRenderProps } from 'components/select-options';
 import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { action, computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import { usernameSortAscending } from 'models/user';

@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type BeatmapsetJson from './beatmapset-json';
-import type FollowJson from './follow-json';
-import type UserJson from './user-json';
+import type { BeatmapsetJson } from 'interfaces/beatmapset-json';
+import type FollowJson from 'interfaces/follow-json';
+import type { UserJson } from 'interfaces/user-json';
 
 export default interface FollowMappingJson extends FollowJson {
   latest_beatmapset?: BeatmapsetJson;

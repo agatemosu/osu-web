@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type Reportable from 'interfaces/reportable';
-import type Ruleset from 'interfaces/ruleset';
-import type UserJson from 'interfaces/user-json';
+import type { Ruleset } from 'interfaces/ruleset';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as React from 'react';
 

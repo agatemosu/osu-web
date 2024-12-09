@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type ContestJudgeVoteJson from './contest-judge-vote-json';
-import type { ContestJudgeVoteJsonForResults } from './contest-judge-vote-json';
+import type ContestJudgeVoteJson from 'interfaces/contest-judge-vote-json';
+import type { ContestJudgeVoteJsonForResults } from 'interfaces/contest-judge-vote-json';
 
 interface ContestEntryJsonAvailableIncludes {
   current_user_judge_vote: ContestJudgeVoteJson;
@@ -23,9 +23,8 @@ interface ContestEntryJsonDefaultAttributes {
   title: string;
 }
 
-type ContestEntryJson = ContestEntryJsonDefaultAttributes
+export type ContestEntryJson = ContestEntryJsonDefaultAttributes
 & Partial<ContestEntryJsonAvailableIncludes>;
-export default ContestEntryJson;
 
 export type ContestEntryJsonForResults = ContestEntryJsonDefaultAttributes
 & Required<Pick<ContestEntryJsonAvailableIncludes, 'results' | 'user'>>

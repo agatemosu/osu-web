@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { UserCard } from 'components/user-card';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { debounce } from 'lodash';
 import { action, autorun, computed, makeObservable, observable, runInAction } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';

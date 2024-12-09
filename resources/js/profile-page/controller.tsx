@@ -3,14 +3,14 @@
 
 import type AchievementJson from 'interfaces/achievement-json';
 import type BeatmapPlaycountJson from 'interfaces/beatmap-playcount-json';
-import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
-import type CurrentUserJson from 'interfaces/current-user-json';
-import type EventJson from 'interfaces/event-json';
+import type { BeatmapsetExtendedJson } from 'interfaces/beatmapset-extended-json';
+import type { CurrentUserJson } from 'interfaces/current-user-json';
+import type { EventJson } from 'interfaces/event-json';
 import type KudosuHistoryJson from 'interfaces/kudosu-history-json';
-import type Ruleset from 'interfaces/ruleset';
+import type { Ruleset } from 'interfaces/ruleset';
 import type { ScoreCurrentUserPinJson } from 'interfaces/score-json';
-import type SoloScoreJson from 'interfaces/solo-score-json';
-import { isSoloScoreJsonForUser, type SoloScoreJsonForUser } from 'interfaces/solo-score-json'
+import type { SoloScoreJson } from 'interfaces/solo-score-json';
+import { isSoloScoreJsonForUser, type SoloScoreJsonForUser } from 'interfaces/solo-score-json';
 import type UserCoverJson from 'interfaces/user-cover-json';
 import type UserCoverPresetJson from 'interfaces/user-cover-preset-json';
 import { type ProfileExtraPage, profileExtraPages } from 'interfaces/user-extended-json';

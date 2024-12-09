@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type { EmbedElement } from 'editor';
-import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetDiscussionJson } from 'interfaces/beatmapset-discussion-json';
 import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
 import { Observer, observer } from 'mobx-react';
 import * as React from 'react';

@@ -1,16 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type BeatmapExtendedJson from './beatmap-extended-json';
-import type BeatmapJson from './beatmap-json';
-import type BeatmapsetDiscussionJson from './beatmapset-discussion-json';
-import type BeatmapsetEventJson from './beatmapset-event-json';
-import type BeatmapsetNominationJson from './beatmapset-nomination-json';
-import type GenreJson from './genre-json';
-import type LanguageJson from './language-json';
-import type Ruleset from './ruleset';
-import type UserJson from './user-json';
-import type { UserJsonDeleted } from './user-json';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
+import type { BeatmapsetDiscussionJson } from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetEventJson } from 'interfaces/beatmapset-event-json';
+import type BeatmapsetNominationJson from 'interfaces/beatmapset-nomination-json';
+import type GenreJson from 'interfaces/genre-json';
+import type LanguageJson from 'interfaces/language-json';
+import type { Ruleset } from 'interfaces/ruleset';
+import type { UserJson } from 'interfaces/user-json';
+import type { UserJsonDeleted } from 'interfaces/user-json';
 
 export interface Availability {
   download_disabled: boolean;
@@ -124,5 +124,4 @@ interface BeatmapsetJsonDefaultAttributes {
   video: boolean;
 }
 
-type BeatmapsetJson = BeatmapsetJsonDefaultAttributes & Partial<BeatmapsetJsonAvailableIncludes>;
-export default BeatmapsetJson;
+export type BeatmapsetJson = BeatmapsetJsonDefaultAttributes & Partial<BeatmapsetJsonAvailableIncludes>;

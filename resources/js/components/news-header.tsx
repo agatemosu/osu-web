@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type NewsPostJson from 'interfaces/news-post-json';
+import type { NewsPostJson } from 'interfaces/news-post-json';
 import { route } from 'laroute';
 import * as React from 'react';
 import { trans } from 'utils/lang';

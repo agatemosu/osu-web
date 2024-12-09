@@ -6,7 +6,7 @@ import BbcodeEditor, { type OnChangeProps } from 'components/bbcode-editor';
 import Modal from 'components/modal';
 import UserLink from 'components/user-link';
 import type { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import { sum } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';

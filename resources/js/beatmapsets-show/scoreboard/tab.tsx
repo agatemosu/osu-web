@@ -6,7 +6,7 @@ import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import type Controller from './controller';
-import type ScoreboardType from './scoreboard-type';
+import type { ScoreboardType } from './scoreboard-type';
 
 interface Props {
   controller: Controller;

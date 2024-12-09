@@ -4,7 +4,7 @@
 import BlockButton from 'components/block-button';
 import PopupMenu from 'components/popup-menu';
 import { ReportReportable } from 'components/report-reportable';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { trans } from 'utils/lang';

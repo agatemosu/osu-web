@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type Reportable from 'interfaces/reportable';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { find } from 'lodash';
 import { userNotFoundJson } from 'models/user';
 import core from 'osu-core-singleton';

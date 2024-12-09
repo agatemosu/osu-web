@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import Img2x from 'components/img2x';
-import type ProfileBannerJson from 'interfaces/profile-banner';
+import type { ProfileBannerJson } from 'interfaces/profile-banner';
 import { route } from 'laroute';
 import * as React from 'react';
 

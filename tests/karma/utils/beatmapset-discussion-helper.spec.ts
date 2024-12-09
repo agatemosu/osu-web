@@ -8,7 +8,7 @@ import UserJson from 'interfaces/user-json';
 import * as moment from 'moment';
 import core from 'osu-core-singleton';
 import { discussionMode, isUserFullNominator, maxLengthTimeline, nearbyDiscussions, validMessageLength } from 'utils/beatmapset-discussion-helper';
-import testCurrentUserJson from '../test-current-user-json';
+import test{ CurrentUserJson } from '../test-current-user-json';
 
 interface TestCase<T> {
   description: string;

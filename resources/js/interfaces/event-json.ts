@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type AchievementJson from './achievement-json';
-import type Rank from './rank';
-import type Ruleset from './ruleset';
+import type AchievementJson from 'interfaces/achievement-json';
+import type { Rank } from 'interfaces/rank';
+import type { Ruleset } from 'interfaces/ruleset';
 
 const eventTypes = [
   'achievement',
@@ -125,7 +125,7 @@ interface UserSupportGiftEvent extends EventBase {
   user: EventUser;
 }
 
-type EventJson =
+export type EventJson =
   AchievementEvent
   | BeatmapPlaycountEvent
   | BeatmapsetApproveEvent
@@ -139,5 +139,3 @@ type EventJson =
   | UserSupportFirstEvent
   | UserSupportGiftEvent
   | UsernameChangeEvent;
-
-export default EventJson;

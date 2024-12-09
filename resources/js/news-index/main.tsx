@@ -4,7 +4,7 @@
 import AdminMenu from 'components/admin-menu';
 import NewsHeader from 'components/news-header';
 import ShowMoreLink from 'components/show-more-link';
-import type PostJson from 'interfaces/news-post-json';
+import type { NewsPostJson } from 'interfaces/news-post-json';
 import type NewsSidebarMetaJson from 'interfaces/news-sidebar-meta-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
@@ -22,7 +22,7 @@ interface NewsSearch {
 
 interface NewsIndexJson {
   cursor_string: string | null;
-  news_posts: PostJson[];
+  news_posts: NewsPostJson[];
   news_sidebar: NewsSidebarMetaJson;
   search: NewsSearch;
 }

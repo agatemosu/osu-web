@@ -4,8 +4,8 @@
 import HeaderV4 from 'components/header-v4';
 import { UserList } from 'components/user-list';
 import homeLinks from 'home-links';
-import type CurrentUserJson from 'interfaces/current-user-json';
-import type UserJson from 'interfaces/user-json';
+import type { CurrentUserJson } from 'interfaces/current-user-json';
+import type { UserJson } from 'interfaces/user-json';
 import * as React from 'react';
 import UserCardTypeContext from 'user-card-type-context';
 

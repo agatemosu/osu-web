@@ -4,7 +4,7 @@
 import ClickToCopy from 'components/click-to-copy';
 import StringWithComponent, { type Props as StringWithComponentProps } from 'components/string-with-component';
 import TimeWithTooltip from 'components/time-with-tooltip';
-import type UserExtendedJson from 'interfaces/user-extended-json';
+import type { UserExtendedJson } from 'interfaces/user-extended-json';
 import { route } from 'laroute';
 import { compact } from 'lodash';
 import moment from 'moment';

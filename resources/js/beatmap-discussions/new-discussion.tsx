@@ -8,7 +8,7 @@ import TextareaAutosize from 'components/textarea-autosize';
 import TimeWithTooltip from 'components/time-with-tooltip';
 import UserAvatar from 'components/user-avatar';
 import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetDiscussionJson } from 'interfaces/beatmapset-discussion-json';
 import type { BeatmapsetDiscussionPostStoreResponseJson } from 'interfaces/beatmapset-discussion-post-responses';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';

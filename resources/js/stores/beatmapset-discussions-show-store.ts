@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
-import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
+import type { BeatmapsetExtendedJson } from 'interfaces/beatmapset-extended-json';
+import type { BeatmapsetWithDiscussionsJson } from 'interfaces/beatmapset-with-discussions-json';
 import { computed, makeObservable, observable } from 'mobx';
 import { mapBy, mapByWithNulls } from 'utils/map';
 

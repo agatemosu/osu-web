@@ -3,7 +3,7 @@
 
 import User from 'models/user';
 import OsuCore from 'osu-core';
-import testCurrentUserJson from './test-current-user-json';
+import test{ CurrentUserJson } from './test-current-user-json';
 
 const expectedUser = new User(1);
 expectedUser.updateWithJson(testCurrentUserJson);

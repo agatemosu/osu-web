@@ -3,12 +3,10 @@
 
 // In display order on discussion page tabs
 export const discussionPages = ['reviews', 'generalAll', 'general', 'timeline', 'events'] as const;
-type DiscussionPage = (typeof discussionPages)[number];
+export type DiscussionPage = (typeof discussionPages)[number];
 
 const discussionPageSet = new Set<unknown>(discussionPages);
 
 export function isDiscussionPage(value: unknown): value is DiscussionPage {
   return discussionPageSet.has(value);
 }
-
-export default DiscussionPage;

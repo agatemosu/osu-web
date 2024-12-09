@@ -6,7 +6,7 @@ import type { SoloScoreJsonForBeatmap } from 'interfaces/solo-score-json';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
 import core from 'osu-core-singleton';
-import type ScoreboardType from './scoreboard-type';
+import type { ScoreboardType } from './scoreboard-type';
 
 interface SetOptions {
   forceReload?: boolean;

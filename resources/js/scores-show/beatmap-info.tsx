@@ -3,8 +3,8 @@
 
 import BeatmapListItem from 'components/beatmap-list-item';
 import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import type BeatmapsetJson from 'interfaces/beatmapset-json';
-import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
+import type { BeatmapsetJson } from 'interfaces/beatmapset-json';
+import type { WithBeatmapOwners } from 'interfaces/with-beatmap-owners';
 import { route } from 'laroute';
 import * as React from 'react';
 import { getArtist, getTitle } from 'utils/beatmapset-helper';

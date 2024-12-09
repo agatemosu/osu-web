@@ -4,7 +4,7 @@
 import NewReview from 'beatmap-discussions/new-review';
 import { ReviewEditorConfigContext } from 'beatmap-discussions/review-editor-config-context';
 import BackToTop from 'components/back-to-top';
-import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
+import type { BeatmapsetWithDiscussionsJson } from 'interfaces/beatmapset-with-discussions-json';
 import { action, makeObservable, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

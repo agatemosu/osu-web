@@ -16,7 +16,7 @@ interface HasNoFirstImage {
   'first_image@2x': null;
 }
 
-type NewsPostJson = {
+export type NewsPostJson = {
   author: string;
   content?: string;
   edit_url: string;
@@ -27,5 +27,3 @@ type NewsPostJson = {
   slug: string;
   title: string;
 } & (HasFirstImage | HasNoFirstImage);
-
-export default NewsPostJson;

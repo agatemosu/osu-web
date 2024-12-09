@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ScorePin from 'components/score-pin';
-import type SoloScoreJson from 'interfaces/solo-score-json';
-import type UserJson from 'interfaces/user-json';
+import type { SoloScoreJson } from 'interfaces/solo-score-json';
+import type { UserJson } from 'interfaces/user-json';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';

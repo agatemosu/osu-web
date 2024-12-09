@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type Ruleset from './ruleset';
+import type { Ruleset } from 'interfaces/ruleset';
 
 export const grades = ['ssh', 'ss', 'sh', 's', 'a'] as const;
 export type Grade = (typeof grades)[number];
@@ -55,6 +55,4 @@ interface UserStatisticsUnrankedJson extends UserStatisticsBaseJson {
   is_ranked: false;
 }
 
-type UserStatisticsJson = UserStatisticsRankedJson | UserStatisticsUnrankedJson;
-
-export default UserStatisticsJson;
+export type UserStatisticsJson = UserStatisticsRankedJson | UserStatisticsUnrankedJson;

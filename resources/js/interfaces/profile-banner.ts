@@ -6,7 +6,7 @@ interface ProfileBannerJsonBase {
   tournament_id: number;
 }
 
-type ProfileBannerJson = ProfileBannerJsonBase & (
+export type ProfileBannerJson = ProfileBannerJsonBase & (
   {
     image: string;
     'image@2x': string;
@@ -15,5 +15,3 @@ type ProfileBannerJson = ProfileBannerJsonBase & (
     'image@2x': null;
   }
 );
-
-export default ProfileBannerJson;

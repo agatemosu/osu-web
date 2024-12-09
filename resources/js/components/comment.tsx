@@ -3,7 +3,7 @@
 
 import type CommentsController from 'components/comments-controller';
 import type { CommentEditMode } from 'components/comments-controller';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import { truncate } from 'lodash';
 import { action, computed, makeObservable, observable } from 'mobx';

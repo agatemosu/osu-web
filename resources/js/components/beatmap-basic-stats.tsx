@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import type BeatmapsetJson from 'interfaces/beatmapset-json';
+import type { BeatmapsetJson } from 'interfaces/beatmapset-json';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { formatDuration, formatNumber } from 'utils/html';

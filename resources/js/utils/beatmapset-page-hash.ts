@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type BeatmapJson from 'interfaces/beatmap-json';
-import type Ruleset from 'interfaces/ruleset';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
+import type { Ruleset } from 'interfaces/ruleset';
 import { ensureRuleset } from 'interfaces/ruleset';
 import { getInt } from './math';
 import { currentUrl } from './turbolinks';

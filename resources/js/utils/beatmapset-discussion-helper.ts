@@ -2,19 +2,19 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { type Filter, filters } from 'beatmap-discussions/current-discussions';
-import type DiscussionMode from 'beatmap-discussions/discussion-mode';
-import type DiscussionPage from 'beatmap-discussions/discussion-page';
+import type { DiscussionMode } from 'beatmap-discussions/discussion-mode';
+import type { DiscussionPage } from 'beatmap-discussions/discussion-page';
 import { isDiscussionPage } from 'beatmap-discussions/discussion-page';
 import guestGroup from 'beatmap-discussions/guest-group';
 import mapperGroup from 'beatmap-discussions/mapper-group';
-import type BeatmapJson from 'interfaces/beatmap-json';
-import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import type BeatmapsetDiscussionPostJson from 'interfaces/beatmapset-discussion-post-json';
-import type BeatmapsetJson from 'interfaces/beatmapset-json';
-import type Ruleset from 'interfaces/ruleset';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
+import type { BeatmapsetDiscussionJson } from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetDiscussionPostJson } from 'interfaces/beatmapset-discussion-post-json';
+import type { BeatmapsetJson } from 'interfaces/beatmapset-json';
+import type { Ruleset } from 'interfaces/ruleset';
 import { rulesets } from 'interfaces/ruleset';
-import type UserJson from 'interfaces/user-json';
-import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
+import type { UserJson } from 'interfaces/user-json';
+import type { WithBeatmapOwners } from 'interfaces/with-beatmap-owners';
 import { route } from 'laroute';
 import { assign, padStart, sortBy } from 'lodash';
 import moment from 'moment';

@@ -4,7 +4,7 @@
 import BeatmapsetCover from 'components/beatmapset-cover';
 import type { BeatmapsetDiscussionMessagePostJson } from 'interfaces/beatmapset-discussion-post-json';
 import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import { deletedUserJson } from 'models/user';
 import * as React from 'react';

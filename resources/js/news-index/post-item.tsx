@@ -3,14 +3,14 @@
 
 import Img2x from 'components/img2x';
 import StringWithComponent from 'components/string-with-component';
-import type PostJson from 'interfaces/news-post-json';
+import type { NewsPostJson } from 'interfaces/news-post-json';
 import { route } from 'laroute';
 import moment from 'moment';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 
-export default function PostItem({ modifiers, post }: { modifiers?: string[]; post: PostJson }) {
+export default function PostItem({ modifiers, post }: { modifiers?: string[]; post: NewsPostJson }) {
   let cover;
 
   if (post.first_image != null) {

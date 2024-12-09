@@ -11,7 +11,7 @@ import HeaderV4 from 'components/header-v4';
 import PlaymodeTabs from 'components/playmode-tabs';
 import StringWithComponent from 'components/string-with-component';
 import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import type Ruleset from 'interfaces/ruleset';
+import type { Ruleset } from 'interfaces/ruleset';
 import { rulesets } from 'interfaces/ruleset';
 import { route } from 'laroute';
 import { action, computed, makeObservable } from 'mobx';

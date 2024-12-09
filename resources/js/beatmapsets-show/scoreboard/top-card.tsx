@@ -10,7 +10,7 @@ import StringWithComponent from 'components/string-with-component';
 import TimeWithTooltip from 'components/time-with-tooltip';
 import UserAvatar from 'components/user-avatar';
 import UserLink from 'components/user-link';
-import type BeatmapJson from 'interfaces/beatmap-json';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
 import type { SoloScoreJsonForBeatmap } from 'interfaces/solo-score-json';
 import { route } from 'laroute';
 import core from 'osu-core-singleton';

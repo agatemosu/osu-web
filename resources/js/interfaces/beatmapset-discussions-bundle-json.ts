@@ -2,14 +2,14 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type { Direction, VoteSummary } from 'modding-profile/votes';
-import type BeatmapExtendedJson from './beatmap-extended-json';
-import type { BeatmapsetDiscussionJsonForBundle } from './beatmapset-discussion-json';
-import type { BeatmapsetDiscussionMessagePostJson } from './beatmapset-discussion-post-json';
-import type BeatmapsetEventJson from './beatmapset-event-json';
-import type BeatmapsetExtendedJson from './beatmapset-extended-json';
-import type KudosuHistoryJson from './kudosu-history-json';
-import type UserJson from './user-json';
-import type UserModdingProfileJson from './user-modding-profile-json';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type { BeatmapsetDiscussionJsonForBundle } from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetDiscussionMessagePostJson } from 'interfaces/beatmapset-discussion-post-json';
+import type { BeatmapsetEventJson } from 'interfaces/beatmapset-event-json';
+import type { BeatmapsetExtendedJson } from 'interfaces/beatmapset-extended-json';
+import type KudosuHistoryJson from 'interfaces/kudosu-history-json';
+import type { UserJson } from 'interfaces/user-json';
+import type { UserModdingProfileJson } from 'interfaces/user-modding-profile-json';
 
 export default interface BeatmapsetDiscussionsBundleJson {
   beatmaps: BeatmapExtendedJson[];

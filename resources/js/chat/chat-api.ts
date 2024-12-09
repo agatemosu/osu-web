@@ -5,7 +5,7 @@ import type AckResponseJson from 'interfaces/chat/ack-response-json';
 import type ChannelJson from 'interfaces/chat/channel-json';
 import type ChatUpdatesJson from 'interfaces/chat/chat-updates-json';
 import type MessageJson from 'interfaces/chat/message-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import { action } from 'mobx';
 import Message from 'models/chat/message';

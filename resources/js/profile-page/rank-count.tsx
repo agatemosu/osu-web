@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type UserStatisticsJson from 'interfaces/user-statistics-json';
+import type { UserStatisticsJson } from 'interfaces/user-statistics-json';
 import { type Grade, grades } from 'interfaces/user-statistics-json'
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';

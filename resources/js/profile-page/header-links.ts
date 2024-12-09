@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type HeaderLink from 'interfaces/header-link';
-import type UserExtendedJson from 'interfaces/user-extended-json';
+import type { UserExtendedJson } from 'interfaces/user-extended-json';
 import type { MultiplayerTypeGroup } from 'interfaces/user-multiplayer-history-json';
 import { route } from 'laroute';
 import { trans } from 'utils/lang';

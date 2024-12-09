@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type Captcha from 'core/captcha';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import core from 'osu-core-singleton';
 import { xhrErrorMessage } from 'utils/ajax';
 import { createClickCallback } from 'utils/html';

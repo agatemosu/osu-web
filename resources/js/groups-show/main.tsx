@@ -4,7 +4,7 @@
 import HeaderV4 from 'components/header-v4';
 import { UserList } from 'components/user-list';
 import type GroupJson from 'interfaces/group-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import * as React from 'react';
 
 interface Props {

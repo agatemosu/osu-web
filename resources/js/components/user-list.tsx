@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type GroupJson from 'interfaces/group-json';
-import type Ruleset from 'interfaces/ruleset';
-import type UserJson from 'interfaces/user-json';
+import type { Ruleset } from 'interfaces/ruleset';
+import type { UserJson } from 'interfaces/user-json';
 import { usernameSortAscending } from 'models/user';
 import moment from 'moment';
 import core from 'osu-core-singleton';

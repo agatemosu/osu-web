@@ -2,9 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type { DiscussionType } from 'beatmap-discussions/discussion-type';
-import type BeatmapJson from './beatmap-json';
-import type BeatmapsetDiscussionPostJson from './beatmapset-discussion-post-json';
-import type BeatmapsetJson from './beatmapset-json';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
+import type { BeatmapsetDiscussionPostJson } from 'interfaces/beatmapset-discussion-post-json';
+import type { BeatmapsetJson } from 'interfaces/beatmapset-json';
 
 interface BeatmapsetDiscussionAvailableIncludes {
   beatmap: BeatmapJson;
@@ -47,8 +47,7 @@ interface BeatmapsetDiscussionDefaultAttributes {
   user_id: number;
 }
 
-type BeatmapsetDiscussionJson = BeatmapsetDiscussionDefaultAttributes & Partial<BeatmapsetDiscussionAvailableIncludes>;
-export default BeatmapsetDiscussionJson;
+export type BeatmapsetDiscussionJson = BeatmapsetDiscussionDefaultAttributes & Partial<BeatmapsetDiscussionAvailableIncludes>;
 
 // bundle versions; beatmap is only on modding history events version
 export type BeatmapsetDiscussionJsonForBundle =

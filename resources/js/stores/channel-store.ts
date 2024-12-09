@@ -10,7 +10,7 @@ import { getChannel, newConversation, partChannel as apiPartChannel, sendMessage
 import MessageNewEvent from 'chat/message-new-event';
 import type DispatchListener from 'dispatch-listener';
 import type ChannelJson from 'interfaces/chat/channel-json';
-import { filterSupportedChannelTypes, type SupportedChannelType, supportedChannelTypes } from 'interfaces/chat/channel-json'
+import { filterSupportedChannelTypes, type SupportedChannelType, supportedChannelTypes } from 'interfaces/chat/channel-json';
 import type ChatUpdatesJson from 'interfaces/chat/chat-updates-json';
 import type MessageJson from 'interfaces/chat/message-json';
 import { groupBy, maxBy } from 'lodash';

@@ -4,11 +4,11 @@
 import InputContainer from 'components/input-container';
 import { Spinner } from 'components/spinner';
 import UsernameInput from 'components/username-input';
-import type BeatmapJson from 'interfaces/beatmap-json';
-import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
-import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import type UserJson from 'interfaces/user-json';
-import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
+import type { BeatmapsetExtendedJson } from 'interfaces/beatmapset-extended-json';
+import type { BeatmapsetWithDiscussionsJson } from 'interfaces/beatmapset-with-discussions-json';
+import type { UserJson } from 'interfaces/user-json';
+import type { WithBeatmapOwners } from 'interfaces/with-beatmap-owners';
 import { route } from 'laroute';
 import { xor } from 'lodash';
 import { action, makeObservable, observable, runInAction } from 'mobx';

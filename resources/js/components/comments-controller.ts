@@ -3,7 +3,7 @@
 
 import type CommentJson from 'interfaces/comment-json';
 import type { CommentableMetaJson, CommentBundleJson } from 'interfaces/comment-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import { isEqual, last } from 'lodash';
 import { action, makeObservable, observable, runInAction } from 'mobx';

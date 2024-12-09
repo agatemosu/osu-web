@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type ContestEntryJson from './contest-entry-json';
-import type { ContestEntryJsonForResults } from './contest-entry-json';
-import type ContestScoringCategoryJson from './contest-scoring-category-json';
+import type { ContestEntryJson } from 'interfaces/contest-entry-json';
+import type { ContestEntryJsonForResults } from 'interfaces/contest-entry-json';
+import type ContestScoringCategoryJson from 'interfaces/contest-scoring-category-json';
 
 interface ContestJsonAvailableIncludes {
   entries: ContestEntryJson[];
@@ -17,8 +17,7 @@ interface ContestJsonDefaultAttributes {
   name: string;
 }
 
-type ContestJson = ContestJsonDefaultAttributes & Partial<ContestJsonAvailableIncludes>;
-export default ContestJson;
+export type ContestJson = ContestJsonDefaultAttributes & Partial<ContestJsonAvailableIncludes>;
 
 export type ContestJsonForResults = ContestJsonDefaultAttributes
 & Required<Pick<ContestJsonAvailableIncludes, 'max_judging_score' | 'max_total_score' | 'scoring_categories'>>

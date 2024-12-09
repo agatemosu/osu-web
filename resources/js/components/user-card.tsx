@@ -4,7 +4,7 @@
 import BlockButton from 'components/block-button';
 import FriendButton from 'components/friend-button';
 import type Reportable from 'interfaces/reportable';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { route } from 'laroute';
 import { find } from 'lodash';
 import core from 'osu-core-singleton';

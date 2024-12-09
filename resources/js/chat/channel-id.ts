@@ -2,6 +2,4 @@
 // See the LICENCE file in the repository root for full licence text.
 
 export type AddChannelType = 'create' | 'join';
-type ChannelId = number | AddChannelType | null;
-
-export default ChannelId;
+export type ChannelId = number | AddChannelType | null;

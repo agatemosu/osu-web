@@ -2,6 +2,4 @@
 // See the LICENCE file in the repository root for full licence text.
 
 export const scoreboardTypes = ['global', 'country', 'friend'] as const;
-
-type ScoreboardType = typeof scoreboardTypes[number];
-export default ScoreboardType;
+export type ScoreboardType = typeof scoreboardTypes[number];

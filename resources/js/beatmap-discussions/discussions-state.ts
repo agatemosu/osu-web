@@ -1,13 +1,13 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type BeatmapJson from 'interfaces/beatmap-json';
-import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapJson } from 'interfaces/beatmap-json';
+import type { BeatmapsetDiscussionJson } from 'interfaces/beatmapset-discussion-json';
 import type { BeatmapsetStatus } from 'interfaces/beatmapset-json';
-import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import type Ruleset from 'interfaces/ruleset';
-import type UserJson from 'interfaces/user-json';
-import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
+import type { BeatmapsetWithDiscussionsJson } from 'interfaces/beatmapset-with-discussions-json';
+import type { Ruleset } from 'interfaces/ruleset';
+import type { UserJson } from 'interfaces/user-json';
+import type { WithBeatmapOwners } from 'interfaces/with-beatmap-owners';
 import { intersectionWith, maxBy, sum } from 'lodash';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { deletedUserJson } from 'models/user';
@@ -16,11 +16,9 @@ import type BeatmapsetDiscussionsShowStore from 'stores/beatmapset-discussions-s
 import { findDefault, group, sortWithMode } from 'utils/beatmap-helper';
 import { canModeratePosts, makeUrl, parseUrl, stateFromDiscussion } from 'utils/beatmapset-discussion-helper';
 import { parseJsonNullable, storeJson } from 'utils/json';
-import { type Filter, filters } from './current-discussions';
-import type DiscussionMode from './discussion-mode';
-import { discussionModes } from './discussion-mode';
-import type DiscussionPage from './discussion-page';
-import { isDiscussionPage } from './discussion-page';
+import { filters, type Filter } from './current-discussions';
+import { discussionModes, type DiscussionMode } from './discussion-mode';
+import { isDiscussionPage, type DiscussionPage } from './discussion-page';
 
 const defaultFilterPraise = new Set<BeatmapsetStatus>(['approved', 'ranked']);
 const jsonId = 'json-discussions-state';

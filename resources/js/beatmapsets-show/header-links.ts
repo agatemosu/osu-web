@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import type { BeatmapsetExtendedJson } from 'interfaces/beatmapset-extended-json';
 import type HeaderLink from 'interfaces/header-link';
 import { route } from 'laroute';
 import { trans } from 'utils/lang';

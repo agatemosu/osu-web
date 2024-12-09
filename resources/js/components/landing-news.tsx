@@ -1,6 +1,6 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
-import type PostJson from 'interfaces/news-post-json';
+import type { NewsPostJson } from 'interfaces/news-post-json';
 import { route } from 'laroute';
 import { slice } from 'lodash';
 import PostItem from 'news-index/post-item';
@@ -8,7 +8,7 @@ import * as React from 'react';
 import { trans } from 'utils/lang';
 import ShowMoreLink from './show-more-link';
 
-export function LandingNews({ posts }: { posts: PostJson[] }) {
+export function LandingNews({ posts }: { posts: NewsPostJson[] }) {
   return (
     <div className='landing-news'>
       {posts.length > 0 &&
@@ -17,7 +17,7 @@ export function LandingNews({ posts }: { posts: PostJson[] }) {
             {<PostItem modifiers={['landing', 'hover']} post={posts[0]} />}
           </div>
           <div className='landing-news__posts'>
-            {slice(posts, 1).map((post: PostJson, i: number) => <PostItem key={i} modifiers={['landing', 'hover']} post={post} />)}
+            {slice(posts, 1).map((post: NewsPostJson, i: number) => <PostItem key={i} modifiers={['landing', 'hover']} post={post} />)}
           </div>
           <div className='landing-news__link'>
             <ShowMoreLink

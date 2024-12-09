@@ -19,7 +19,7 @@ import { isJqXHR, onError } from 'utils/ajax';
 import { hideLoadingOverlay } from 'utils/loading-overlay';
 import { updateHistory } from 'utils/turbolinks';
 import { updateQueryString } from 'utils/url';
-import type ChannelId from './channel-id';
+import type { ChannelId } from './channel-id';
 import type { AddChannelType } from './channel-id';
 import ChannelJoinEvent from './channel-join-event';
 import ChannelPartEvent from './channel-part-event';

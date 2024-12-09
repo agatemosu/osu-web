@@ -5,7 +5,7 @@ import HeaderV4 from 'components/header-v4';
 import ProfileTournamentBanner from 'components/profile-tournament-banner';
 import RoomList from 'components/room-list';
 import UserProfileContainer from 'components/user-profile-container';
-import type UserExtendedJson from 'interfaces/user-extended-json';
+import type { UserExtendedJson } from 'interfaces/user-extended-json';
 import type { ProfileHeaderIncludes } from 'interfaces/user-json';
 import type { MultiplayerTypeGroup } from 'interfaces/user-multiplayer-history-json';
 import { route } from 'laroute';

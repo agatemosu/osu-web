@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import type BeatmapExtendedJson from './beatmap-extended-json';
-import type Rank from './rank';
-import type Ruleset from './ruleset';
-import type { ScoreJsonAvailableIncludes, ScoreJsonDefaultIncludes } from './score-json';
-import type ScoreModJson from './score-mod-json';
-import type WithBeatmapOwners from './with-beatmap-owners';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type { Rank } from 'interfaces/rank';
+import type { Ruleset } from 'interfaces/ruleset';
+import type { ScoreJsonAvailableIncludes, ScoreJsonDefaultIncludes } from 'interfaces/score-json';
+import type ScoreModJson from 'interfaces/score-mod-json';
+import type { WithBeatmapOwners } from 'interfaces/with-beatmap-owners';
 
 export type SoloScoreStatisticsAttribute =
   | 'good'
@@ -71,9 +71,7 @@ interface SoloScoreJsonAttributesMultiplayer extends SoloScoreJsonAttributesSolo
 
 type SoloScoreJsonAttributes = SoloScoreJsonAttributesLegacy | SoloScoreJsonAttributesMultiplayer | SoloScoreJsonAttributesSoloScore;
 
-type SoloScoreJson = SoloScoreJsonAttributes & ScoreJsonDefaultIncludes & Partial<ScoreJsonAvailableIncludes>;
-
-export default SoloScoreJson;
+export type SoloScoreJson = SoloScoreJsonAttributes & ScoreJsonDefaultIncludes & Partial<ScoreJsonAvailableIncludes>;
 
 export type SoloScoreJsonForBeatmap = SoloScoreJson & Required<Pick<SoloScoreJson, 'user'>>;
 

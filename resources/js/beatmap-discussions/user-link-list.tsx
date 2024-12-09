@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import UserLink from 'components/user-link';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import React from 'react';
 import { joinComponents } from 'utils/lang';
 

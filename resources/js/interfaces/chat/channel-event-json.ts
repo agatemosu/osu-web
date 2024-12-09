@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
+import type ChannelJson from 'interfaces/chat/channel-json';
 import type { SocketEventData } from 'socket-message-event';
-import type ChannelJson from './channel-json';
 
 const channelEvents = ['chat.channel.join', 'chat.channel.part'] as const;
 type ChannelEvent = (typeof channelEvents)[number];

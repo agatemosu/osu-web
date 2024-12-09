@@ -3,7 +3,7 @@
 
 import BeatmapListItem from 'components/beatmap-list-item';
 import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import type UserJson from 'interfaces/user-json';
+import type { UserJson } from 'interfaces/user-json';
 import { action, autorun, computed, makeObservable, observable } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import * as React from 'react';

@@ -5,7 +5,7 @@ import LazyLoad from 'components/lazy-load';
 import ShowMoreLink from 'components/show-more-link';
 import StringWithComponent from 'components/string-with-component';
 import TimeWithTooltip from 'components/time-with-tooltip';
-import EventJson from 'interfaces/event-json';
+import type EventJson from 'interfaces/event-json';
 import { snakeCase } from 'lodash';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -14,7 +14,7 @@ import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { stripTags } from 'utils/html';
 import { trans } from 'utils/lang';
-import ExtraPageProps from './extra-page-props';
+import type ExtraPageProps from './extra-page-props';
 import parseEvent from './parse-event';
 
 @observer

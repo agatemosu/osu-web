@@ -2,28 +2,29 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { ChatNewConversationAdded } from 'actions/chat-new-conversation-added';
-import DispatcherAction from 'actions/dispatcher-action';
+import type DispatcherAction from 'actions/dispatcher-action';
 import FriendUpdated from 'actions/friend-updated';
 import SocketMessageSendAction from 'actions/socket-message-send-action';
 import SocketStateChangedAction from 'actions/socket-state-changed-action';
 import { dispatch, dispatchListener } from 'app-dispatcher';
-import DispatchListener from 'dispatch-listener';
+import type DispatchListener from 'dispatch-listener';
 import { supportedChannelTypes } from 'interfaces/chat/channel-json';
 import { clamp, maxBy } from 'lodash';
 import { action, autorun, computed, makeObservable, observable, observe, runInAction } from 'mobx';
-import Channel from 'models/chat/channel';
+import type Channel from 'models/chat/channel';
 import CreateAnnouncement from 'models/chat/create-announcement';
 import core from 'osu-core-singleton';
-import ChannelStore from 'stores/channel-store';
+import type ChannelStore from 'stores/channel-store';
 import { isJqXHR, onError } from 'utils/ajax';
 import { hideLoadingOverlay } from 'utils/loading-overlay';
 import { updateHistory } from 'utils/turbolinks';
 import { updateQueryString } from 'utils/url';
-import ChannelId, { AddChannelType } from './channel-id';
+import type ChannelId from './channel-id';
+import type { AddChannelType } from './channel-id';
 import ChannelJoinEvent from './channel-join-event';
 import ChannelPartEvent from './channel-part-event';
 import { createAnnouncement, getUpdates, joinChannel } from './chat-api';
-import MainView from './main-view';
+import type MainView from './main-view';
 import PingService from './ping-service';
 import PublicChannels from './public-channels';
 

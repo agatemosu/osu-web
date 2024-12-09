@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { padStart } from 'lodash';
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
 import { urlPresence } from './css';
 
 const byteSuffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];

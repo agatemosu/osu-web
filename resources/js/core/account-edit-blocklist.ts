@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { reaction } from 'mobx';
-import OsuCore from 'osu-core';
+import type OsuCore from 'osu-core';
 import { trans } from 'utils/lang';
 
 const contentClass = '.js-account-edit-blocklist-content';

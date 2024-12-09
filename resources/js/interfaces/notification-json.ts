@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { Name } from 'models/notification-type';
-import { NotificationCursor } from 'notifications/notification-cursor';
-import { NotificationIdentityJson } from 'notifications/notification-identity';
+import type { Name } from 'models/notification-type';
+import type { NotificationCursor } from 'notifications/notification-cursor';
+import type { NotificationIdentityJson } from 'notifications/notification-identity';
 
 export default interface NotificationJson {
   created_at?: string;

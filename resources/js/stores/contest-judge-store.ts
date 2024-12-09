@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import ContestEntryJson from 'interfaces/contest-entry-json';
-import { ContestJsonForStore } from 'interfaces/contest-json';
-import ContestScoringCategoryJson from 'interfaces/contest-scoring-category-json';
+import type ContestEntryJson from 'interfaces/contest-entry-json';
+import type { ContestJsonForStore } from 'interfaces/contest-json';
+import type ContestScoringCategoryJson from 'interfaces/contest-scoring-category-json';
 import { action, makeObservable, observable } from 'mobx';
 import { ContestEntry } from 'models/contest-entry';
 

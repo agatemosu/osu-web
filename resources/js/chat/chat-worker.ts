@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
+import type DispatcherAction from 'actions/dispatcher-action';
 import { dispatch, dispatchListener } from 'app-dispatcher';
-import DispatchListener from 'dispatch-listener';
+import type DispatchListener from 'dispatch-listener';
 import { isChannelEvent } from 'interfaces/chat/channel-event-json';
 import { isMessageNewEvent } from 'interfaces/chat/messages-new-event-json';
-import SocketMessageEvent, { SocketEventData } from 'socket-message-event';
+import SocketMessageEvent, { type SocketEventData } from 'socket-message-event';
 import ChannelJoinEvent from './channel-join-event';
 import ChannelPartEvent from './channel-part-event';
 import MessageNewEvent from './message-new-event';

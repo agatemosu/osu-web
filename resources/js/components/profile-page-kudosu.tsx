@@ -1,16 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import KudosuHistoryJson from 'interfaces/kudosu-history-json';
+import type KudosuHistoryJson from 'interfaces/kudosu-history-json';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import ExtraHeader from 'profile-page/extra-header';
-import getPage, { PageSectionWithoutCountJson } from 'profile-page/extra-page';
+import getPage, { type PageSectionWithoutCountJson } from 'profile-page/extra-page';
 import * as React from 'react';
 import { formatNumber } from 'utils/html';
 import { parseJsonNullable, storeJson } from 'utils/json';
 import { trans } from 'utils/lang';
-import { apiShowMoreRecentlyReceivedKudosu, OffsetPaginatorJson } from 'utils/offset-paginator';
+import { apiShowMoreRecentlyReceivedKudosu, type OffsetPaginatorJson } from 'utils/offset-paginator';
 import { wikiUrl } from 'utils/url';
 import LazyLoad from './lazy-load';
 import ShowMoreLink from './show-more-link';

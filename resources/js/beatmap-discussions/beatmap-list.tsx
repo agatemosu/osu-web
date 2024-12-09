@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapListItem from 'components/beatmap-list-item';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import UserJson from 'interfaces/user-json';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type UserJson from 'interfaces/user-json';
 import { action, autorun, computed, makeObservable, observable } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import * as React from 'react';
@@ -12,7 +12,7 @@ import { blackoutToggle } from 'utils/blackout';
 import { classWithModifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 import { nextVal } from 'utils/seq';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 
 interface Props {
   discussionsState: DiscussionsState;

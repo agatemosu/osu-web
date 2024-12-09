@@ -3,7 +3,7 @@
 
 import StringWithComponent from 'components/string-with-component';
 import TimeWithTooltip from 'components/time-with-tooltip';
-import AchievementJson from 'interfaces/achievement-json';
+import type AchievementJson from 'interfaces/achievement-json';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';

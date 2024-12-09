@@ -5,13 +5,13 @@ import AdminMenu from 'components/admin-menu';
 import Comments from 'components/comments';
 import NewsHeader from 'components/news-header';
 import StringWithComponent from 'components/string-with-component';
-import NewsPostJson from 'interfaces/news-post-json';
-import NewsSidebarMetaJson from 'interfaces/news-sidebar-meta-json';
+import type NewsPostJson from 'interfaces/news-post-json';
+import type NewsSidebarMetaJson from 'interfaces/news-sidebar-meta-json';
 import { route } from 'laroute';
 import PostItem from 'news-index/post-item';
 import NewsSidebar from 'news-sidebar/main';
 import * as React from 'react';
-import { classWithModifiers, Modifiers, urlPresence } from 'utils/css';
+import { classWithModifiers, type Modifiers, urlPresence } from 'utils/css';
 import { trans } from 'utils/lang';
 
 interface Props {

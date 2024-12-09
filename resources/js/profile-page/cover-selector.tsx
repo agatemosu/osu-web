@@ -7,7 +7,7 @@ import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import { nextVal } from 'utils/seq';
-import Controller from './controller';
+import type Controller from './controller';
 import CoverSelection from './cover-selection';
 import CoverUploader from './cover-uploader';
 

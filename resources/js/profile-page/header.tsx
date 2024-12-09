@@ -4,7 +4,7 @@
 import HeaderV4 from 'components/header-v4';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import Controller from './controller';
+import type Controller from './controller';
 import GameModeSwitcher from './game-mode-switcher';
 import headerLinks from './header-links';
 

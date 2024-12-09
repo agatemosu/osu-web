@@ -3,10 +3,10 @@
 
 import BigButton from 'components/big-button';
 import Modal from 'components/modal';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import BeatmapsetEventJson from 'interfaces/beatmapset-event-json';
-import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import Ruleset from 'interfaces/ruleset';
+import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
+import type BeatmapsetEventJson from 'interfaces/beatmapset-event-json';
+import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
+import type Ruleset from 'interfaces/ruleset';
 import { route } from 'laroute';
 import { forEachRight, map, uniq } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
@@ -18,7 +18,7 @@ import { isOwner } from 'utils/beatmap-helper';
 import { isUserFullNominator } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 
 interface Props {
   discussionsState: DiscussionsState;

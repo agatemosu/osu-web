@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BigButton from 'components/big-button';
-import GithubUserJson from 'interfaces/github-user-json';
+import type GithubUserJson from 'interfaces/github-user-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';

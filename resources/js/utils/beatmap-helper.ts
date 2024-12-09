@@ -3,10 +3,11 @@
 
 import * as d3 from 'd3';
 import { isValid as isBeatmapExtendedJson } from 'interfaces/beatmap-extended-json';
-import BeatmapJson from 'interfaces/beatmap-json';
-import BeatmapsetJson from 'interfaces/beatmapset-json';
-import Ruleset, { rulesets } from 'interfaces/ruleset';
-import WithBeatmapOwners from 'interfaces/with-beatmap-owners';
+import type BeatmapJson from 'interfaces/beatmap-json';
+import type BeatmapsetJson from 'interfaces/beatmapset-json';
+import type Ruleset from 'interfaces/ruleset';
+import { rulesets } from 'interfaces/ruleset';
+import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
 import * as _ from 'lodash';
 import core from 'osu-core-singleton';
 import { parseJsonNullable } from 'utils/json';

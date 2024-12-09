@@ -2,9 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ClickToCopy from 'components/click-to-copy';
-import StringWithComponent, { Props as StringWithComponentProps } from 'components/string-with-component';
+import StringWithComponent, { type Props as StringWithComponentProps } from 'components/string-with-component';
 import TimeWithTooltip from 'components/time-with-tooltip';
-import UserExtendedJson from 'interfaces/user-extended-json';
+import type UserExtendedJson from 'interfaces/user-extended-json';
 import { route } from 'laroute';
 import { compact } from 'lodash';
 import * as moment from 'moment';

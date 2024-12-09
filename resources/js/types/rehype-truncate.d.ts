@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 declare module 'rehype-truncate' {
-  import { Plugin } from 'unified';
+  import type { Plugin } from 'unified';
 
   const rehypeTruncate: Plugin;
   export default rehypeTruncate;

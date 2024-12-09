@@ -2,7 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 declare module 'ziggy' {
-  import route, { RouteList } from 'ziggy-js';
+  import type route from 'ziggy-js';
+import type { RouteList } from 'ziggy-js';
 
   export const Ziggy: NonNullable<Parameters<typeof route<keyof RouteList>>[3]>;
 }

@@ -5,7 +5,7 @@ import { route } from 'laroute';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import QuickSearch from 'quick-search/main';
-import Worker from 'quick-search/worker';
+import type Worker from 'quick-search/worker';
 import * as React from 'react';
 import { currentUrl } from 'utils/turbolinks';
 import Modal from './modal';

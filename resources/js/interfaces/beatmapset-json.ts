@@ -1,15 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapExtendedJson from './beatmap-extended-json';
-import BeatmapJson from './beatmap-json';
-import BeatmapsetDiscussionJson from './beatmapset-discussion-json';
-import BeatmapsetEventJson from './beatmapset-event-json';
-import BeatmapsetNominationJson from './beatmapset-nomination-json';
-import GenreJson from './genre-json';
-import LanguageJson from './language-json';
-import Ruleset from './ruleset';
-import UserJson, { UserJsonDeleted } from './user-json';
+import type BeatmapExtendedJson from './beatmap-extended-json';
+import type BeatmapJson from './beatmap-json';
+import type BeatmapsetDiscussionJson from './beatmapset-discussion-json';
+import type BeatmapsetEventJson from './beatmapset-event-json';
+import type BeatmapsetNominationJson from './beatmapset-nomination-json';
+import type GenreJson from './genre-json';
+import type LanguageJson from './language-json';
+import type Ruleset from './ruleset';
+import type UserJson from './user-json';
+import type { UserJsonDeleted } from './user-json';
 
 export interface Availability {
   download_disabled: boolean;

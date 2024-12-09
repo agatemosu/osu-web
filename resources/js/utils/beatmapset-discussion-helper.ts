@@ -1,18 +1,20 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { Filter, filters } from 'beatmap-discussions/current-discussions';
-import DiscussionMode from 'beatmap-discussions/discussion-mode';
-import DiscussionPage, { isDiscussionPage } from 'beatmap-discussions/discussion-page';
+import { type Filter, filters } from 'beatmap-discussions/current-discussions';
+import type DiscussionMode from 'beatmap-discussions/discussion-mode';
+import type DiscussionPage from 'beatmap-discussions/discussion-page';
+import { isDiscussionPage } from 'beatmap-discussions/discussion-page';
 import guestGroup from 'beatmap-discussions/guest-group';
 import mapperGroup from 'beatmap-discussions/mapper-group';
-import BeatmapJson from 'interfaces/beatmap-json';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetDiscussionPostJson from 'interfaces/beatmapset-discussion-post-json';
-import BeatmapsetJson from 'interfaces/beatmapset-json';
-import Ruleset, { rulesets } from 'interfaces/ruleset';
-import UserJson from 'interfaces/user-json';
-import WithBeatmapOwners from 'interfaces/with-beatmap-owners';
+import type BeatmapJson from 'interfaces/beatmap-json';
+import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type BeatmapsetDiscussionPostJson from 'interfaces/beatmapset-discussion-post-json';
+import type BeatmapsetJson from 'interfaces/beatmapset-json';
+import type Ruleset from 'interfaces/ruleset';
+import { rulesets } from 'interfaces/ruleset';
+import type UserJson from 'interfaces/user-json';
+import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
 import { route } from 'laroute';
 import { assign, padStart, sortBy } from 'lodash';
 import * as moment from 'moment';

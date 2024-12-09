@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import Main from 'beatmap-discussions-history/main';
-import BeatmapsetDiscussionsBundleJson from 'interfaces/beatmapset-discussions-bundle-json';
+import type BeatmapsetDiscussionsBundleJson from 'interfaces/beatmapset-discussions-bundle-json';
 import core from 'osu-core-singleton';
 import React from 'react';
 import { parseJson } from 'utils/json';

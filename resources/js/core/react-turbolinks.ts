@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { TurboBeforeRenderEvent } from '@hotwired/turbo';
+import type { TurboBeforeRenderEvent } from '@hotwired/turbo';
 import { removeLeftoverPortalContainers } from 'components/portal';
-import TurbolinksReload from 'core/turbolinks-reload';
+import type TurbolinksReload from 'core/turbolinks-reload';
 import { runInAction } from 'mobx';
-import OsuCore from 'osu-core';
-import * as React from 'react';
+import type OsuCore from 'osu-core';
+import type * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { currentUrl } from 'utils/turbolinks';
 

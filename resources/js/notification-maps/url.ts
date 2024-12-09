@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { route } from 'laroute';
-import Notification from 'models/notification';
+import type Notification from 'models/notification';
 import { isBeatmapOwnerChangeNotification } from 'models/notification/beatmap-owner-change-notification';
 import { makeUrl } from 'utils/beatmapset-discussion-helper';
 

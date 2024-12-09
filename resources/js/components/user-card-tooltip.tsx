@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Reportable from 'interfaces/reportable';
-import UserJson from 'interfaces/user-json';
+import type Reportable from 'interfaces/reportable';
+import type UserJson from 'interfaces/user-json';
 import * as _ from 'lodash';
 import { userNotFoundJson } from 'models/user';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { unmountComponentAtNode } from 'react-dom';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { activeKeyDidChange as contextActiveKeyDidChange, ContainerContext, KeyContext, State as ActiveKeyState } from 'stateful-activation-context';
+import { activeKeyDidChange as contextActiveKeyDidChange, ContainerContext, KeyContext, type State as ActiveKeyState } from 'stateful-activation-context';
 import { TooltipContext } from 'tooltip-context';
 import { presence } from 'utils/string';
 import { apiLookupUsers } from 'utils/user';

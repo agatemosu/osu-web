@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ProfilePageKudosu from 'components/profile-page-kudosu';
-import KudosuHistoryJson from 'interfaces/kudosu-history-json';
+import type KudosuHistoryJson from 'interfaces/kudosu-history-json';
 import * as React from 'react';
 import { jsonClone } from 'utils/json';
 import { hasMoreCheck } from 'utils/offset-paginator';

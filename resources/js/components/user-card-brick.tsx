@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserJson from 'interfaces/user-json';
-import UserRelationJson from 'interfaces/user-relation-json';
+import type UserJson from 'interfaces/user-json';
+import type UserRelationJson from 'interfaces/user-relation-json';
 import { route } from 'laroute';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import UserCardTypeContext from 'user-card-type-context';
-import { classWithModifiers, groupColour, Modifiers } from 'utils/css';
+import { classWithModifiers, groupColour, type Modifiers } from 'utils/css';
 
 interface Props {
   modifiers?: Modifiers;

@@ -2,10 +2,10 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import StringWithComponent from 'components/string-with-component';
-import EventJson from 'interfaces/event-json';
+import type EventJson from 'interfaces/event-json';
 import core from 'osu-core-singleton';
-import * as React from 'react';
-import { Modifiers } from 'utils/css';
+import type * as React from 'react';
+import type { Modifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 import { trans, transExists } from 'utils/lang';
 import { switchNever } from 'utils/switch-never';

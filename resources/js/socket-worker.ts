@@ -1,16 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
+import type DispatcherAction from 'actions/dispatcher-action';
 import SocketMessageSendAction from 'actions/socket-message-send-action';
 import SocketStateChangedAction from 'actions/socket-state-changed-action';
 import { dispatch, dispatchListener } from 'app-dispatcher';
 import { route } from 'laroute';
 import { forEach } from 'lodash';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { NotificationEventLogoutJson, NotificationEventVerifiedJson } from 'notifications/notification-events';
+import type { NotificationEventLogoutJson, NotificationEventVerifiedJson } from 'notifications/notification-events';
 import core from 'osu-core-singleton';
-import SocketMessageEvent, { isSocketEventData, SocketEventData } from 'socket-message-event';
+import SocketMessageEvent, { isSocketEventData, type SocketEventData } from 'socket-message-event';
 import RetryDelay from 'utils/retry-delay';
 
 const isNotificationEventLogoutJson = (arg: SocketEventData): arg is NotificationEventLogoutJson => arg.event === 'logout';

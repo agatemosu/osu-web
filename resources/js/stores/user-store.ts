@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
+import type DispatcherAction from 'actions/dispatcher-action';
 import { dispatchListener } from 'app-dispatcher';
 import MessageNewEvent from 'chat/message-new-event';
-import DispatchListener from 'dispatch-listener';
-import UserJson from 'interfaces/user-json';
+import type DispatchListener from 'dispatch-listener';
+import type UserJson from 'interfaces/user-json';
 import { action, makeObservable, observable } from 'mobx';
 import User from 'models/user';
 

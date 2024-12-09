@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Notification from 'models/notification';
+import type Notification from 'models/notification';
 
 export function categoryGroupKey(item: Notification) {
   if (item.objectId == null || item.name == null || item.category == null) {

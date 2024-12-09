@@ -5,7 +5,7 @@ import ShowMoreLink from 'components/show-more-link';
 import { route } from 'laroute';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
-import { Name, typeNames } from 'models/notification-type';
+import { type Name, typeNames } from 'models/notification-type';
 import { NotificationContext } from 'notifications-context';
 import NotificationController from 'notifications/notification-controller';
 import NotificationReadButton from 'notifications/notification-read-button';

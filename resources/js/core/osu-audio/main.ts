@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserPreferences from 'core/user/user-preferences';
+import type UserPreferences from 'core/user/user-preferences';
 import { action, autorun, makeObservable } from 'mobx';
 import { trans } from 'utils/lang';
 import { presence } from 'utils/string';
 import Slider from './slider';
-import { format, TimeFormat } from './time-format';
+import { format, type TimeFormat } from './time-format';
 
 type PlayState = 'loading' | 'playing' | 'paused';
 

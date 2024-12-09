@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapsetSearch, SearchResponse } from 'beatmaps/beatmapset-search';
+import type { BeatmapsetSearch, SearchResponse } from 'beatmaps/beatmapset-search';
 import ResultSet from 'beatmaps/result-set';
-import { BeatmapsetSearchFilters, FilterKey, filtersFromUrl } from 'beatmapset-search-filters';
+import { BeatmapsetSearchFilters, type FilterKey, filtersFromUrl } from 'beatmapset-search-filters';
 import { route } from 'laroute';
 import { debounce, intersection } from 'lodash';
-import { action, computed, IObjectDidChange, Lambda, makeObservable, observable, observe, runInAction } from 'mobx';
+import { action, computed, type IObjectDidChange, type Lambda, makeObservable, observable, observe, runInAction } from 'mobx';
 import core from 'osu-core-singleton';
 import { trans, transArray } from 'utils/lang';
 import { popup } from 'utils/popup';

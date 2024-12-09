@@ -3,14 +3,14 @@
 
 import BeatmapListItem from 'components/beatmap-list-item';
 import Portal from 'components/portal';
-import BeatmapJson from 'interfaces/beatmap-json';
-import Ruleset from 'interfaces/ruleset';
+import type BeatmapJson from 'interfaces/beatmap-json';
+import type Ruleset from 'interfaces/ruleset';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { TransitionStatus } from 'react-transition-group';
+import type { TransitionStatus } from 'react-transition-group';
 import { classWithModifiers } from 'utils/css';
 
 interface Props {

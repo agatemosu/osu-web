@@ -4,11 +4,11 @@
 import BasicSelectOptions from 'components/basic-select-options';
 import RoomList from 'components/room-list';
 import TimeWithTooltip from 'components/time-with-tooltip';
-import SeasonJson from 'interfaces/season-json';
-import SelectOptionJson from 'interfaces/select-option-json';
+import type SeasonJson from 'interfaces/season-json';
+import type SelectOptionJson from 'interfaces/select-option-json';
 import { route } from 'laroute';
 import * as React from 'react';
-import RoomListStore from 'stores/room-list-store';
+import type RoomListStore from 'stores/room-list-store';
 import { trans } from 'utils/lang';
 
 interface Props {

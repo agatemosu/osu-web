@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import LegacyIrcKeyJson from 'interfaces/legacy-irc-key-json';
+import type LegacyIrcKeyJson from 'interfaces/legacy-irc-key-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable, reaction, runInAction } from 'mobx';
 import { onError } from 'utils/ajax';

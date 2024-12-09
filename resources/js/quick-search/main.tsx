@@ -12,8 +12,8 @@ import { trans, transArray } from 'utils/lang';
 import { navigate } from 'utils/turbolinks';
 import Beatmapset from './beatmapset';
 import User from './user';
-import { ResultMode, Section } from './worker';
-import Worker from './worker';
+import type { ResultMode, Section } from './worker';
+import type Worker from './worker';
 
 
 interface Props {

@@ -10,7 +10,7 @@ import UserLink from 'components/user-link';
 import { each, isEmpty, last, throttle } from 'lodash';
 import { action, computed, makeObservable, reaction } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
-import Message from 'models/chat/message';
+import type Message from 'models/chat/message';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';

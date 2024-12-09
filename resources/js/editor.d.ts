@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapReviewDiscussionType } from 'interfaces/beatmap-discussion-review';
-import { BaseEditor } from 'slate';
-import { HistoryEditor } from 'slate-history';
-import { ReactEditor } from 'slate-react';
+import type { BeatmapReviewDiscussionType } from 'interfaces/beatmap-discussion-review';
+import type { BaseEditor } from 'slate';
+import type { HistoryEditor } from 'slate-history';
+import type { ReactEditor } from 'slate-react';
 
 interface CustomText {
   bold?: boolean;

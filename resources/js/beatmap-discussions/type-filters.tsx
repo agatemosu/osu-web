@@ -9,8 +9,8 @@ import * as React from 'react';
 import { makeUrl } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import { Filter } from './current-discussions';
-import DiscussionsState from './discussions-state';
+import type { Filter } from './current-discussions';
+import type DiscussionsState from './discussions-state';
 
 interface Props {
   discussionsState: DiscussionsState;

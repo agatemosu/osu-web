@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { OwnClientJson } from 'interfaces/own-client-json';
+import type { OwnClientJson } from 'interfaces/own-client-json';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { Client } from 'models/oauth/client';

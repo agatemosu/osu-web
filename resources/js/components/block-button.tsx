@@ -1,14 +1,14 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserRelationJson from 'interfaces/user-relation-json';
+import type UserRelationJson from 'interfaces/user-relation-json';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { onErrorWithCallback } from 'utils/ajax';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import { Spinner } from './spinner';
 

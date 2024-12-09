@@ -3,7 +3,7 @@
 
 import Img2x from 'components/img2x';
 import StringWithComponent from 'components/string-with-component';
-import PostJson from 'interfaces/news-post-json';
+import type PostJson from 'interfaces/news-post-json';
 import { route } from 'laroute';
 import * as moment from 'moment';
 import * as React from 'react';

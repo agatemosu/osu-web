@@ -3,7 +3,7 @@
 
 import ProfilePageKudosu from 'components/profile-page-kudosu';
 import * as React from 'react';
-import ExtraPageProps from './extra-page-props';
+import type ExtraPageProps from './extra-page-props';
 
 export default class Kudosu extends React.Component<ExtraPageProps> {
   render() {

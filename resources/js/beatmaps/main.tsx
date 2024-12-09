@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import AvailableFilters from 'beatmaps/available-filters';
+import type AvailableFilters from 'beatmaps/available-filters';
 import { SearchContent } from 'beatmaps/search-content';
 import BackToTop from 'components/back-to-top';
 import HeaderV4 from 'components/header-v4';
@@ -12,7 +12,7 @@ import core from 'osu-core-singleton';
 import * as React from 'react';
 import { onError } from 'utils/ajax';
 import { nextVal } from 'utils/seq';
-import { SearchStatus } from './beatmapset-search-controller';
+import type { SearchStatus } from './beatmapset-search-controller';
 
 const controller = core.beatmapsetSearchController;
 

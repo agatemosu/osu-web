@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { FilterKey } from 'beatmapset-search-filters';
+import type { FilterKey } from 'beatmapset-search-filters';
 import BeatmapsetCover from 'components/beatmapset-cover';
 import Portal from 'components/portal';
-import BeatmapsetJson from 'interfaces/beatmapset-json';
+import type BeatmapsetJson from 'interfaces/beatmapset-json';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
@@ -12,7 +12,8 @@ import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { htmlElementOrNull } from 'utils/html';
 import { trans } from 'utils/lang';
-import AvailableFilters, { FilterOption } from './available-filters';
+import type AvailableFilters from './available-filters';
+import type { FilterOption } from './available-filters';
 import { SearchFilter } from './search-filter';
 
 interface Props {

@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import KudosuHistoryJson from 'interfaces/kudosu-history-json';
+import type KudosuHistoryJson from 'interfaces/kudosu-history-json';
 import { route } from 'laroute';
 import { action } from 'mobx';
-import { RouteList } from 'ziggy-js';
+import type { RouteList } from 'ziggy-js';
 import { getInt } from './math';
 
 type RouteParams = Partial<Record<string, string | number>>;

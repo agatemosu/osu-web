@@ -3,8 +3,8 @@
 
 import ShowMoreLink from 'components/show-more-link';
 import { observer } from 'mobx-react';
-import Notification from 'models/notification';
-import NotificationStack from 'models/notification-stack';
+import type Notification from 'models/notification';
+import type NotificationStack from 'models/notification-stack';
 import { categoryToIcons } from 'notification-maps/icons';
 import { formatMessageGroup } from 'notification-maps/message';
 import { urlGroup } from 'notification-maps/url';

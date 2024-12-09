@@ -4,8 +4,8 @@
 import UserAvatar from 'components/user-avatar';
 import UserLink from 'components/user-link';
 import ValueDisplay from 'components/value-display';
-import { ContestJsonForResults } from 'interfaces/contest-json';
-import { ContestJudgeVoteJsonForResults } from 'interfaces/contest-judge-vote-json';
+import type { ContestJsonForResults } from 'interfaces/contest-json';
+import type { ContestJudgeVoteJsonForResults } from 'interfaces/contest-judge-vote-json';
 import * as React from 'react';
 import { trans } from 'utils/lang';
 

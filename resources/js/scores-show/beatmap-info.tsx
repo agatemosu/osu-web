@@ -2,9 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapListItem from 'components/beatmap-list-item';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import BeatmapsetJson from 'interfaces/beatmapset-json';
-import WithBeatmapOwners from 'interfaces/with-beatmap-owners';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type BeatmapsetJson from 'interfaces/beatmapset-json';
+import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
 import { route } from 'laroute';
 import * as React from 'react';
 import { getArtist, getTitle } from 'utils/beatmapset-helper';

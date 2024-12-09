@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapsetCover from 'components/beatmapset-cover';
-import { SoloScoreJsonForShow } from 'interfaces/solo-score-json';
+import type { SoloScoreJsonForShow } from 'interfaces/solo-score-json';
 import * as React from 'react';
 import { accuracy, rank, rankCutoffs } from 'utils/score-helper';
 import Buttons from './buttons';

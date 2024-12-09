@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import { SoloScoreJsonForBeatmap } from 'interfaces/solo-score-json';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type { SoloScoreJsonForBeatmap } from 'interfaces/solo-score-json';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
 import core from 'osu-core-singleton';
-import ScoreboardType from './scoreboard-type';
+import type ScoreboardType from './scoreboard-type';
 
 interface SetOptions {
   forceReload?: boolean;

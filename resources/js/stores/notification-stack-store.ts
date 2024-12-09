@@ -1,20 +1,21 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
+import type DispatcherAction from 'actions/dispatcher-action';
 import { UserLoginAction } from 'actions/user-login-actions';
 import { dispatchListener } from 'app-dispatcher';
-import DispatchListener from 'dispatch-listener';
-import NotificationJson, { NotificationBundleJson, NotificationStackJson, NotificationTypeJson } from 'interfaces/notification-json';
+import type DispatchListener from 'dispatch-listener';
+import type NotificationJson from 'interfaces/notification-json';
+import type { NotificationBundleJson, NotificationStackJson, NotificationTypeJson } from 'interfaces/notification-json';
 import { action, computed, makeObservable, observable } from 'mobx';
 import Notification from 'models/notification';
 import NotificationStack, { idFromJson } from 'models/notification-stack';
-import NotificationType, { Name as NotificationTypeName  } from 'models/notification-type';
+import NotificationType, { type Name as NotificationTypeName  } from 'models/notification-type';
 import { categoryFromName } from 'notification-maps/category';
 import { NotificationEventDelete, NotificationEventMoreLoaded, NotificationEventNew, NotificationEventRead } from 'notifications/notification-events';
-import { fromJson, NotificationIdentity, resolveIdentityType, resolveStackId } from 'notifications/notification-identity';
+import { fromJson, type NotificationIdentity, resolveIdentityType, resolveStackId } from 'notifications/notification-identity';
 import { NotificationResolver } from 'notifications/notification-resolver';
-import NotificationStore from './notification-store';
+import type NotificationStore from './notification-store';
 
 @dispatchListener
 export default class NotificationStackStore implements DispatchListener {

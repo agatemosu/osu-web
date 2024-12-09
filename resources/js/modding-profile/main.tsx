@@ -5,7 +5,7 @@ import HeaderV4 from 'components/header-v4';
 import ProfilePageExtraTab from 'components/profile-page-extra-tab';
 import ProfileTournamentBanner from 'components/profile-tournament-banner';
 import UserProfileContainer from 'components/user-profile-container';
-import { BeatmapsetDiscussionsBundleJsonForModdingProfile } from 'interfaces/beatmapset-discussions-bundle-json';
+import type { BeatmapsetDiscussionsBundleJsonForModdingProfile } from 'interfaces/beatmapset-discussions-bundle-json';
 import { first, last, throttle } from 'lodash';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';

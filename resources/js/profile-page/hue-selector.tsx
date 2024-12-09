@@ -8,7 +8,7 @@ import { disposeOnUnmount, observer } from 'mobx-react';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import Controller from './controller';
+import type Controller from './controller';
 
 function getDefaultHue() {
   // always cast and hope for the best

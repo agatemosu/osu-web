@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import AckResponseJson from 'interfaces/chat/ack-response-json';
-import ChannelJson from 'interfaces/chat/channel-json';
-import ChatUpdatesJson from 'interfaces/chat/chat-updates-json';
-import MessageJson from 'interfaces/chat/message-json';
-import UserJson from 'interfaces/user-json';
+import type AckResponseJson from 'interfaces/chat/ack-response-json';
+import type ChannelJson from 'interfaces/chat/channel-json';
+import type ChatUpdatesJson from 'interfaces/chat/chat-updates-json';
+import type MessageJson from 'interfaces/chat/message-json';
+import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import { action } from 'mobx';
 import Message from 'models/chat/message';

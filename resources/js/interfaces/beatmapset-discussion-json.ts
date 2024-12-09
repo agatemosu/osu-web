@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { DiscussionType } from 'beatmap-discussions/discussion-type';
-import BeatmapJson from './beatmap-json';
-import BeatmapsetDiscussionPostJson from './beatmapset-discussion-post-json';
-import BeatmapsetJson from './beatmapset-json';
+import type { DiscussionType } from 'beatmap-discussions/discussion-type';
+import type BeatmapJson from './beatmap-json';
+import type BeatmapsetDiscussionPostJson from './beatmapset-discussion-post-json';
+import type BeatmapsetJson from './beatmapset-json';
 
 interface BeatmapsetDiscussionAvailableIncludes {
   beatmap: BeatmapJson;

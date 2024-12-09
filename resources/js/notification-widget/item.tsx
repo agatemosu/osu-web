@@ -3,7 +3,7 @@
 
 import TimeWithTooltip from 'components/time-with-tooltip';
 import { observer } from 'mobx-react';
-import Notification from 'models/notification';
+import type Notification from 'models/notification';
 import { NotificationContext } from 'notifications-context';
 import NotificationDeleteButton from 'notifications/notification-delete-button';
 import NotificationReadButton from 'notifications/notification-read-button';

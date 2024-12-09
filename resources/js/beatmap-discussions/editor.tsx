@@ -3,25 +3,25 @@
 
 import { CircularProgress } from 'components/circular-progress';
 import { Spinner } from 'components/spinner';
-import { EmbedElement } from 'editor';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
+import type { EmbedElement } from 'editor';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
+import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
 import isHotkey from 'is-hotkey';
 import { route } from 'laroute';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { createEditor, Editor as SlateEditor, Element as SlateElement, Node as SlateNode, NodeEntry, Range, Text, Transforms } from 'slate';
+import { createEditor, type Editor as SlateEditor, Element as SlateElement, Node as SlateNode, type NodeEntry, type Range, Text, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
-import { Editable, ReactEditor, RenderElementProps, RenderLeafProps, Slate, withReact } from 'slate-react';
-import { DOMRange } from 'slate-react/dist/utils/dom';
+import { Editable, ReactEditor, type RenderElementProps, type RenderLeafProps, Slate, withReact } from 'slate-react';
+import type { DOMRange } from 'slate-react/dist/utils/dom';
 import { onError } from 'utils/ajax';
 import { timestampRegex } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 import { DraftsContext } from './drafts-context';
 import EditorDiscussionComponent from './editor-discussion-component';
 import {

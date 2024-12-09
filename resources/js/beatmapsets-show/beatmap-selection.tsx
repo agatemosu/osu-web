@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { generate as generateHash } from 'utils/beatmapset-page-hash';
 import { classWithModifiers } from 'utils/css';
-import Controller from './controller';
+import type Controller from './controller';
 
 interface Props {
   beatmap: Controller['currentBeatmap'];

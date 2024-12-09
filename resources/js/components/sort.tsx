@@ -3,7 +3,7 @@
 
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 
 interface Props {

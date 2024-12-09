@@ -4,7 +4,7 @@
 import UserAvatar from 'components/user-avatar';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
-import Channel from 'models/chat/channel';
+import type Channel from 'models/chat/channel';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';

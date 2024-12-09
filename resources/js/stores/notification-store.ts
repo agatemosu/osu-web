@@ -1,14 +1,14 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
+import type DispatcherAction from 'actions/dispatcher-action';
 import { UserLoginAction } from 'actions/user-login-actions';
 import { dispatchListener } from 'app-dispatcher';
-import DispatchListener from 'dispatch-listener';
+import type DispatchListener from 'dispatch-listener';
 import { action, makeObservable, observable } from 'mobx';
-import Notification from 'models/notification';
+import type Notification from 'models/notification';
 import { NotificationEventDelete, NotificationEventRead } from 'notifications/notification-events';
-import { NotificationIdentity, resolveIdentityType, resolveStackId } from 'notifications/notification-identity';
+import { type NotificationIdentity, resolveIdentityType, resolveStackId } from 'notifications/notification-identity';
 import NotificationStackStore from './notification-stack-store';
 import WidgetNotificationStackStore from './widget-notification-stack-store';
 

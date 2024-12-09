@@ -2,11 +2,11 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import Bar from 'components/bar';
-import BbcodeEditor, { OnChangeProps } from 'components/bbcode-editor';
+import BbcodeEditor, { type OnChangeProps } from 'components/bbcode-editor';
 import Modal from 'components/modal';
 import UserLink from 'components/user-link';
-import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
-import UserJson from 'interfaces/user-json';
+import type { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
+import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import { sum } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
@@ -16,7 +16,7 @@ import { onErrorWithClick } from 'utils/ajax';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
 import { present } from 'utils/string';
-import Controller from './controller';
+import type Controller from './controller';
 import MetadataEditor from './metadata-editor';
 
 interface Props {

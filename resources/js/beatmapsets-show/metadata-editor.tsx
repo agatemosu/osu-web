@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
-import GenreJson from 'interfaces/genre-json';
-import LanguageJson from 'interfaces/language-json';
+import type { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
+import type GenreJson from 'interfaces/genre-json';
+import type LanguageJson from 'interfaces/language-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
@@ -12,7 +12,7 @@ import { onError } from 'utils/ajax';
 import { parseJson } from 'utils/json';
 import { trans } from 'utils/lang';
 import { getInt } from 'utils/math';
-import Controller from './controller';
+import type Controller from './controller';
 
 interface Props {
   controller: Controller;

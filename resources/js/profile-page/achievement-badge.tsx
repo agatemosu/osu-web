@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import AchievementJson from 'interfaces/achievement-json';
+import type AchievementJson from 'interfaces/achievement-json';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { mergeModifiers, Modifiers } from 'utils/css';
+import { mergeModifiers, type Modifiers } from 'utils/css';
 import { nextVal } from 'utils/seq';
 import AchievementBadgeIcon from './achievement-badge-icon';
 import AchievementBadgePopup from './achievement-badge-popup';

@@ -2,17 +2,17 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { dispatch } from 'app-dispatcher';
-import { NotificationBundleJson } from 'interfaces/notification-json';
+import type { NotificationBundleJson } from 'interfaces/notification-json';
 import { route } from 'laroute';
 import { debounce } from 'lodash';
 import { action, makeObservable } from 'mobx';
 import Notification from 'models/notification';
-import { NotificationContextData } from 'notifications-context';
-import NotificationDeletable from 'notifications/notification-deletable';
-import { NotificationIdentity, resolveIdentityType, toJson, toString } from 'notifications/notification-identity';
-import NotificationReadable from 'notifications/notification-readable';
+import type { NotificationContextData } from 'notifications-context';
+import type NotificationDeletable from 'notifications/notification-deletable';
+import { type NotificationIdentity, resolveIdentityType, toJson, toString } from 'notifications/notification-identity';
+import type NotificationReadable from 'notifications/notification-readable';
 import { onError } from 'utils/ajax';
-import { NotificationCursor } from './notification-cursor';
+import type { NotificationCursor } from './notification-cursor';
 import { NotificationEventDelete, NotificationEventMoreLoaded, NotificationEventRead } from './notification-events';
 
 // I don't know what to name this

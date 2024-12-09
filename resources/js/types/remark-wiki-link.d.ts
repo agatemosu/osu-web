@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 declare module 'remark-wiki-link' {
-  import { Plugin } from 'unified';
+  import type { Plugin } from 'unified';
 
   interface WikiLinkOptions {
     hrefTemplate(url: string): string;

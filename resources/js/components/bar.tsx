@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { clamp } from 'lodash';
-import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import type * as React from 'react';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 
 interface Props {

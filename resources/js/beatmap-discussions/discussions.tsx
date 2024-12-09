@@ -2,8 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import IconExpand from 'components/icon-expand';
-import BeatmapsetDiscussionJson, { BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
+import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
+import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -11,8 +12,8 @@ import { canModeratePosts } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import { Discussion } from './discussion';
-import DiscussionMode from './discussion-mode';
-import DiscussionsState from './discussions-state';
+import type DiscussionMode from './discussion-mode';
+import type DiscussionsState from './discussions-state';
 
 const bn = 'beatmap-discussions';
 

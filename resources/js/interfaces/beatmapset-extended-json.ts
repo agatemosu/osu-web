@@ -1,10 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapExtendedJson from './beatmap-extended-json';
-import BeatmapsetJson, { Availability } from './beatmapset-json';
-import Ruleset from './ruleset';
-import WithBeatmapOwners from './with-beatmap-owners';
+import type BeatmapExtendedJson from './beatmap-extended-json';
+import type BeatmapsetJson from './beatmapset-json';
+import type { Availability } from './beatmapset-json';
+import type Ruleset from './ruleset';
+import type WithBeatmapOwners from './with-beatmap-owners';
 
 interface NominationsSummary {
   current: number;

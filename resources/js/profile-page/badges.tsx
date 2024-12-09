@@ -2,10 +2,10 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import Img2x from 'components/img2x';
-import UserBadgeJson from 'interfaces/user-badge-json';
+import type UserBadgeJson from 'interfaces/user-badge-json';
 import * as moment from 'moment';
 import * as React from 'react';
-import { Modifiers, classWithModifiers } from 'utils/css';
+import { type Modifiers, classWithModifiers } from 'utils/css';
 import { present } from 'utils/string';
 
 interface Props {

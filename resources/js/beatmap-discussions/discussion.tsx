@@ -1,9 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetDiscussionJson, { BeatmapsetDiscussionJsonForBundle, BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetDiscussionPostJson from 'interfaces/beatmapset-discussion-post-json';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
+import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetDiscussionJsonForBundle, BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
+import type BeatmapsetDiscussionPostJson from 'interfaces/beatmapset-discussion-post-json';
+import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
 import { findLast } from 'lodash';
 import { action, computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -14,9 +15,9 @@ import { badgeGroup, canModeratePosts, formatTimestamp, makeUrl, startingPost } 
 import { downloadLimited } from 'utils/beatmapset-helper';
 import { classWithModifiers, groupColour } from 'utils/css';
 import { trans } from 'utils/lang';
-import { DiscussionType, discussionTypeIcons } from './discussion-type';
+import { type DiscussionType, discussionTypeIcons } from './discussion-type';
 import DiscussionVoteButtons from './discussion-vote-buttons';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 import { NewReply } from './new-reply';
 import Post from './post';
 import SystemPost from './system-post';

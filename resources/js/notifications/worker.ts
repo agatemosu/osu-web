@@ -1,24 +1,24 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
+import type DispatcherAction from 'actions/dispatcher-action';
 import { dispatch, dispatchListener } from 'app-dispatcher';
 import { isUserVerificationXhr } from 'core/user/user-verification';
-import DispatchListener from 'dispatch-listener';
-import { NotificationBundleJson } from 'interfaces/notification-json';
+import type DispatchListener from 'dispatch-listener';
+import type { NotificationBundleJson } from 'interfaces/notification-json';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable, observe, runInAction } from 'mobx';
-import SocketMessageEvent, { SocketEventData } from 'socket-message-event';
-import SocketWorker from 'socket-worker';
+import SocketMessageEvent, { type SocketEventData } from 'socket-message-event';
+import type SocketWorker from 'socket-worker';
 import RetryDelay from 'utils/retry-delay';
 import {
   NotificationEventDelete,
-  NotificationEventDeleteJson,
+  type NotificationEventDeleteJson,
   NotificationEventMoreLoaded,
   NotificationEventNew,
-  NotificationEventNewJson,
+  type NotificationEventNewJson,
   NotificationEventRead,
-  NotificationEventReadJson,
+  type NotificationEventReadJson,
 } from './notification-events';
 
 interface NotificationBootJson extends NotificationBundleJson {

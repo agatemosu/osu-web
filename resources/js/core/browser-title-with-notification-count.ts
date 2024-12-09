@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { action, autorun, makeObservable, observable, runInAction } from 'mobx';
-import OsuCore from 'osu-core';
+import type OsuCore from 'osu-core';
 import { formatNumber } from 'utils/html';
 
 export default class BrowserTitleWithNotificationCount {

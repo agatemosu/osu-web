@@ -3,7 +3,7 @@
 
 import type TwitchEmbedPlayer from 'twitch-embed-player';
 import { fadeOut } from 'utils/fade';
-import TurbolinksReload from './turbolinks-reload';
+import type TurbolinksReload from './turbolinks-reload';
 
 declare global {
   interface Window {

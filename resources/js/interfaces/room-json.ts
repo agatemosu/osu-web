@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserJson from 'interfaces/user-json';
-import PlaylistItemJson from './playlist-item-json';
+import type UserJson from 'interfaces/user-json';
+import type PlaylistItemJson from './playlist-item-json';
 
 const roomCategories = ['normal', 'spotlight'] as const;
 export type RoomCategory = (typeof roomCategories)[number];

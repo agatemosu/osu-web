@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserExtendedJson from './user-extended-json';
-import { ProfileHeaderIncludes } from './user-json';
+import type UserExtendedJson from './user-extended-json';
+import type { ProfileHeaderIncludes } from './user-json';
 
 type ModdingProfileIncludes =
   ProfileHeaderIncludes

@@ -36,7 +36,7 @@ import UserVerification from 'core/user/user-verification';
 import ReferenceLinkTooltip from 'core/wiki/reference-link-tooltip';
 import WindowFocusObserver from 'core/window-focus-observer';
 import WindowSize from 'core/window-size';
-import CurrentUserJson from 'interfaces/current-user-json';
+import type CurrentUserJson from 'interfaces/current-user-json';
 import { action, computed, makeObservable, observable } from 'mobx';
 import NotificationsWorker from 'notifications/worker';
 import SocketWorker from 'socket-worker';

@@ -5,15 +5,15 @@ import FlagCountry from 'components/flag-country';
 import { Spinner } from 'components/spinner';
 import UserAvatar from 'components/user-avatar';
 import UserGroupBadges from 'components/user-group-badges';
-import Ruleset from 'interfaces/ruleset';
-import UserExtendedJson from 'interfaces/user-extended-json';
+import type Ruleset from 'interfaces/ruleset';
+import type UserExtendedJson from 'interfaces/user-extended-json';
 import { route } from 'laroute';
 import { times } from 'lodash';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { classWithModifiers, Modifiers, urlPresence } from 'utils/css';
+import { classWithModifiers, type Modifiers, urlPresence } from 'utils/css';
 import { trans } from 'utils/lang';
 
 interface Props {

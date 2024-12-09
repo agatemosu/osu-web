@@ -4,7 +4,7 @@
 import HeaderV4 from 'components/header-v4';
 import ShowMoreLink from 'components/show-more-link';
 import TracklistTrack from 'components/tracklist-track';
-import { ArtistTrackWithArtistJson } from 'interfaces/artist-track-json';
+import type { ArtistTrackWithArtistJson } from 'interfaces/artist-track-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable, reaction, runInAction } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
@@ -13,7 +13,7 @@ import { onError } from 'utils/ajax';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import { navigate } from 'utils/turbolinks';
-import SearchForm, { ArtistTrackSearch } from './search-form';
+import SearchForm, { type ArtistTrackSearch } from './search-form';
 import Sort from './sort-bar';
 
 export interface ArtistTracksIndex {

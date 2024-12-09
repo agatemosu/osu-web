@@ -10,7 +10,7 @@ import * as React from 'react';
 import { trans } from 'utils/lang';
 import { present } from 'utils/string';
 import ExtraHeader from './extra-header';
-import ExtraPageProps from './extra-page-props';
+import type ExtraPageProps from './extra-page-props';
 import UserPageEditor from './user-page-editor';
 
 @observer

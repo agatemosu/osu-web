@@ -1,19 +1,19 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { EmbedElement } from 'editor';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
+import type { EmbedElement } from 'editor';
+import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
 import { Observer, observer } from 'mobx-react';
 import * as React from 'react';
 import { Transforms } from 'slate';
-import { RenderElementProps } from 'slate-react';
+import type { RenderElementProps } from 'slate-react';
 import { ReactEditor } from 'slate-react';
 import { formatTimestamp, makeUrl, nearbyDiscussions, parseTimestamp, timestampRegex } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans, transArray } from 'utils/lang';
 import { linkHtml } from 'utils/url';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 import { DraftsContext } from './drafts-context';
 import EditorBeatmapSelector from './editor-beatmap-selector';
 import EditorIssueTypeSelector from './editor-issue-type-selector';

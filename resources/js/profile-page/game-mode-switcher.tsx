@@ -10,7 +10,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { onErrorWithCallback } from 'utils/ajax';
 import { trans } from 'utils/lang';
-import Controller from './controller';
+import type Controller from './controller';
 
 interface Props {
   controller: Controller;

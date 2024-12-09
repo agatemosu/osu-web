@@ -5,7 +5,7 @@ import { action, autorun, makeObservable, observable } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import * as React from 'react';
 import { blackoutToggle } from 'utils/blackout';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 
 const bn = 'select-options';
 

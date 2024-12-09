@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { EmbedElement, ParagraphElement } from 'editor';
-import {
+import type { EmbedElement, ParagraphElement } from 'editor';
+import type {
   BeatmapDiscussionReview,
   DocumentIssueEmbed,
 } from 'interfaces/beatmap-discussion-review';
-import { Editor, Element as SlateElement, Node as SlateNode, Range as SlateRange, Text, Transforms } from 'slate';
+import { Editor, type Element as SlateElement, Node as SlateNode, Range as SlateRange, Text, Transforms } from 'slate';
 import { parseTimestamp } from 'utils/beatmapset-discussion-helper';
 import { present } from 'utils/string';
 

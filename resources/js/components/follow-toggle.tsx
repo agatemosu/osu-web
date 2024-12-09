@@ -1,13 +1,13 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import FollowJson from 'interfaces/follow-json';
+import type FollowJson from 'interfaces/follow-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { parseJsonNullable, storeJson } from 'utils/json';
 import { Spinner } from './spinner';
 

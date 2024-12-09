@@ -7,7 +7,7 @@ import * as React from 'react';
 import { trans } from 'utils/lang';
 import { isModalShowing } from 'utils/modal-helper';
 import { nextVal } from 'utils/seq';
-import Controller from './controller';
+import type Controller from './controller';
 import ProfileEditPopup from './profile-edit-popup';
 
 interface Props {

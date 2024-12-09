@@ -2,17 +2,17 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { observer } from 'mobx-react';
-import CommentModel from 'models/comment';
+import type CommentModel from 'models/comment';
 import { canModerateComments } from 'models/comment';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { classWithModifiers, mergeModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, mergeModifiers, type Modifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
 import Comment from './comment';
 import CommentEditor from './comment-editor';
 import CommentShowMore from './comment-show-more';
-import CommentsController, { BaseCommentableMeta } from './comments-controller';
+import CommentsController, { type BaseCommentableMeta } from './comments-controller';
 import CommentsSort from './comments-sort';
 import DeletedCommentsCount from './deleted-comments-count';
 import { Spinner } from './spinner';

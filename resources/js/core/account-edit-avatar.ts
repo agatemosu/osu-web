@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CurrentUserJson from 'interfaces/current-user-json';
+import type CurrentUserJson from 'interfaces/current-user-json';
 import { route } from 'laroute';
-import OsuCore from 'osu-core';
+import type OsuCore from 'osu-core';
 import { fileuploadFailCallback } from 'utils/ajax';
 
 const hoverClass = 'js-account-edit-avatar--hover';

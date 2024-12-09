@@ -6,7 +6,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import autolink from 'remark-plugins/autolink';
-import disableConstructs, { DisabledType } from 'remark-plugins/disable-constructs';
+import disableConstructs, { type DisabledType } from 'remark-plugins/disable-constructs';
 import ImageLink from './image-link';
 
 const components = Object.freeze({

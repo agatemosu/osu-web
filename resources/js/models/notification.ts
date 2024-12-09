@@ -1,16 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import NotificationJson from 'interfaces/notification-json';
+import type NotificationJson from 'interfaces/notification-json';
 import { camelCase, forEach } from 'lodash';
 import { computed, makeObservable, observable } from 'mobx';
-import NotificationDetails, { newEmptyNotificationDetails } from 'models/notification-details';
-import { Name } from 'models/notification-type';
+import type NotificationDetails from 'models/notification-details';
+import { newEmptyNotificationDetails } from 'models/notification-details';
+import type { Name } from 'models/notification-type';
 import { categoryFromName, categoryGroupKey } from 'notification-maps/category';
 import { displayType } from 'notification-maps/type';
-import NotificationDeletable from 'notifications/notification-deletable';
-import { NotificationIdentity } from 'notifications/notification-identity';
-import NotificationReadable from 'notifications/notification-readable';
+import type NotificationDeletable from 'notifications/notification-deletable';
+import type { NotificationIdentity } from 'notifications/notification-identity';
+import type NotificationReadable from 'notifications/notification-readable';
 import core from 'osu-core-singleton';
 import { presence } from 'utils/string';
 

@@ -3,13 +3,13 @@
 
 import BlockButton from 'components/block-button';
 import FriendButton from 'components/friend-button';
-import Reportable from 'interfaces/reportable';
-import UserJson from 'interfaces/user-json';
+import type Reportable from 'interfaces/reportable';
+import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as _ from 'lodash';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import { present } from 'utils/string';
 import { giftSupporterTagUrl } from 'utils/url';

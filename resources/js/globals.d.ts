@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 declare module 'mod-names.json' {
-  import ModJson from 'interfaces/mod-json';
+  import type ModJson from 'interfaces/mod-json';
 
   const modNames: Partial<Record<string, ModJson>>;
 

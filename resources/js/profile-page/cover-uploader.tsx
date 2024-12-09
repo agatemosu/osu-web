@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import StringWithComponent from 'components/string-with-component';
-import UserExtendedJson from 'interfaces/user-extended-json';
+import type UserExtendedJson from 'interfaces/user-extended-json';
 import { route } from 'laroute';
 import { action, computed } from 'mobx';
 import { observer } from 'mobx-react';
@@ -10,7 +10,7 @@ import * as React from 'react';
 import { fileuploadFailCallback } from 'utils/ajax';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import Controller from './controller';
+import type Controller from './controller';
 import CoverSelection from './cover-selection';
 
 interface Props {

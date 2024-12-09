@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetPanel, { Props as BeatmapsetPanelProps } from 'beatmapset-panel';
+import BeatmapsetPanel, { type Props as BeatmapsetPanelProps } from 'beatmapset-panel';
 import BasicSelectOptions from 'components/basic-select-options';
-import BeatmapsetEvents, { Props as BeatmapsetEventsProps } from 'components/beatmapset-events';
+import BeatmapsetEvents, { type Props as BeatmapsetEventsProps } from 'components/beatmapset-events';
 import BlockButton from 'components/block-button';
 import ChatIcon from 'components/chat-icon';
 import CountdownTimer from 'components/countdown-timer';

@@ -4,7 +4,7 @@
 import { Spinner } from 'components/spinner';
 import { linkRenderer } from 'markdown/renderers';
 import { observer } from 'mobx-react';
-import Message from 'models/chat/message';
+import type Message from 'models/chat/message';
 import * as React from 'react';
 import ReactMarkdown from 'react-markdown';
 import autolink from 'remark-plugins/autolink';

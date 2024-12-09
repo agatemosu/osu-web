@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ValueDisplay from 'components/value-display';
-import UserAchievementJson from 'interfaces/user-achievement-json';
+import type UserAchievementJson from 'interfaces/user-achievement-json';
 import * as React from 'react';
 import { trans } from 'utils/lang';
 

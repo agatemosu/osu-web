@@ -4,11 +4,11 @@
 import InputContainer from 'components/input-container';
 import { Spinner } from 'components/spinner';
 import UsernameInput from 'components/username-input';
-import BeatmapJson from 'interfaces/beatmap-json';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
-import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import UserJson from 'interfaces/user-json';
-import WithBeatmapOwners from 'interfaces/with-beatmap-owners';
+import type BeatmapJson from 'interfaces/beatmap-json';
+import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
+import type UserJson from 'interfaces/user-json';
+import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
 import { route } from 'laroute';
 import { xor } from 'lodash';
 import { action, makeObservable, observable, runInAction } from 'mobx';
@@ -20,7 +20,7 @@ import { hasGuestOwners } from 'utils/beatmap-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import BeatmapOwner from './beatmap-owner';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 
 interface Props {
   beatmap: WithBeatmapOwners<BeatmapJson>;

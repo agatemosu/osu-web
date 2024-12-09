@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import * as React from 'react';
-import Controller from './controller';
+import type Controller from './controller';
 import CoverSelector from './cover-selector';
 import HueSelector from './hue-selector';
 

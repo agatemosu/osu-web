@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import SelectOptions from 'components/select-options';
-import { ReportableType } from 'interfaces/reportable';
+import type { ReportableType } from 'interfaces/reportable';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';

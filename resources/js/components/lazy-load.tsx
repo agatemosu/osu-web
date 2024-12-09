@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import LazyLoadContext, { Snapshot } from './lazy-load-context';
+import LazyLoadContext, { type Snapshot } from './lazy-load-context';
 
 interface Props {
   // For allowing lazy loading to be completely skipped if data is alrealy available.

@@ -2,9 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import mapperGroup from 'beatmap-discussions/mapper-group';
-import SelectOptions, { OptionRenderProps } from 'components/select-options';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import UserJson from 'interfaces/user-json';
+import SelectOptions, { type OptionRenderProps } from 'components/select-options';
+import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
+import type UserJson from 'interfaces/user-json';
 import { action, computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import { usernameSortAscending } from 'models/user';
@@ -13,7 +13,7 @@ import { mobxArrayGet } from 'utils/array';
 import { makeUrl, parseUrl } from 'utils/beatmapset-discussion-helper';
 import { groupColour } from 'utils/css';
 import { trans } from 'utils/lang';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 
 const allUsers = Object.freeze({
   id: null,

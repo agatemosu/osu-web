@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetJson from 'interfaces/beatmapset-json';
+import type BeatmapsetJson from 'interfaces/beatmapset-json';
 import * as React from 'react';
 import { showVisual } from 'utils/beatmapset-helper';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { cssVar2x } from 'utils/html';
 import { trans } from 'utils/lang';
 

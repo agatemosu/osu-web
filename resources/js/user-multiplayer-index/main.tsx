@@ -5,9 +5,9 @@ import HeaderV4 from 'components/header-v4';
 import ProfileTournamentBanner from 'components/profile-tournament-banner';
 import RoomList from 'components/room-list';
 import UserProfileContainer from 'components/user-profile-container';
-import UserExtendedJson from 'interfaces/user-extended-json';
-import { ProfileHeaderIncludes } from 'interfaces/user-json';
-import { MultiplayerTypeGroup } from 'interfaces/user-multiplayer-history-json';
+import type UserExtendedJson from 'interfaces/user-extended-json';
+import type { ProfileHeaderIncludes } from 'interfaces/user-json';
+import type { MultiplayerTypeGroup } from 'interfaces/user-multiplayer-history-json';
 import { route } from 'laroute';
 import core from 'osu-core-singleton';
 import Badges from 'profile-page/badges';
@@ -15,7 +15,7 @@ import Cover from 'profile-page/cover';
 import DetailBar from 'profile-page/detail-bar';
 import headerLinks from 'profile-page/header-links';
 import * as React from 'react';
-import RoomListStore from 'stores/room-list-store';
+import type RoomListStore from 'stores/room-list-store';
 import { trans } from 'utils/lang';
 
 interface Props {

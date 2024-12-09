@@ -1,13 +1,13 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserCoverPresetJson from 'interfaces/user-cover-preset-json';
+import type UserCoverPresetJson from 'interfaces/user-cover-preset-json';
 import { action, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { urlPresence } from 'utils/css';
 import { trans } from 'utils/lang';
-import Controller from './controller';
+import type Controller from './controller';
 
 const bn = 'profile-cover-selection';
 

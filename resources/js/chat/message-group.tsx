@@ -3,10 +3,10 @@
 
 import UserAvatar from 'components/user-avatar';
 import UserLink from 'components/user-link';
-import Reportable from 'interfaces/reportable';
+import type Reportable from 'interfaces/reportable';
 import { last } from 'lodash';
 import { observer } from 'mobx-react';
-import Message from 'models/chat/message';
+import type Message from 'models/chat/message';
 import * as moment from 'moment';
 import core from 'osu-core-singleton';
 import * as React from 'react';

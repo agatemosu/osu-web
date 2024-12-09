@@ -6,7 +6,7 @@ import StringWithComponent from 'components/string-with-component';
 import TextareaAutosize from 'components/textarea-autosize';
 import { ValidatingInput } from 'components/validating-input';
 import { FormErrors } from 'form-errors';
-import { OwnClientJson } from 'interfaces/own-client-json';
+import type { OwnClientJson } from 'interfaces/own-client-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';

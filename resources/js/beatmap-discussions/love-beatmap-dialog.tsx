@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapJson from 'interfaces/beatmap-json';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
-import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import Ruleset from 'interfaces/ruleset';
+import type BeatmapJson from 'interfaces/beatmap-json';
+import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
+import type Ruleset from 'interfaces/ruleset';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -13,7 +13,7 @@ import { onError } from 'utils/ajax';
 import { group as groupBeatmaps } from 'utils/beatmap-helper';
 import { trans } from 'utils/lang';
 import { hideLoadingOverlay, showImmediateLoadingOverlay } from 'utils/loading-overlay';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 
 interface Props {
   beatmapset: BeatmapsetExtendedJson & Required<Pick<BeatmapsetExtendedJson, 'beatmaps'>>;

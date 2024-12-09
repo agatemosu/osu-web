@@ -3,7 +3,7 @@
 
 import BlockButton from 'components/block-button';
 import NotificationBanner from 'components/notification-banner';
-import UserJson from 'interfaces/user-json';
+import type UserJson from 'interfaces/user-json';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

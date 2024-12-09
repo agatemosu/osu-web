@@ -4,9 +4,9 @@
 import BasicSelectOptions from 'components/basic-select-options';
 import UserLink from 'components/user-link';
 import ValueDisplay from 'components/value-display';
-import { ContestEntryJsonForResults } from 'interfaces/contest-entry-json';
-import { ContestJsonForResults } from 'interfaces/contest-json';
-import SelectOptionJson from 'interfaces/select-option-json';
+import type { ContestEntryJsonForResults } from 'interfaces/contest-entry-json';
+import type { ContestJsonForResults } from 'interfaces/contest-json';
+import type SelectOptionJson from 'interfaces/select-option-json';
 import * as React from 'react';
 import { trans } from 'utils/lang';
 

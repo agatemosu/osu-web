@@ -2,14 +2,14 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { discussionTypeIcons } from 'beatmap-discussions/discussion-type';
-import { EmbedElement } from 'editor';
-import { BeatmapReviewDiscussionType, beatmapReviewDiscussionTypes } from 'interfaces/beatmap-discussion-review';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type { EmbedElement } from 'editor';
+import { type BeatmapReviewDiscussionType, beatmapReviewDiscussionTypes } from 'interfaces/beatmap-discussion-review';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
 import * as React from 'react';
 import { Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { trans } from 'utils/lang';
-import IconDropdownMenu, { MenuItem } from './icon-dropdown-menu';
+import IconDropdownMenu, { type MenuItem } from './icon-dropdown-menu';
 import { SlateContext } from './slate-context';
 
 interface Props {

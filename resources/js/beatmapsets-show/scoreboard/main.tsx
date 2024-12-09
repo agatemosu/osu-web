@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import StringWithComponent from 'components/string-with-component';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
 import { route } from 'laroute';
 import { computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';

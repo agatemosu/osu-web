@@ -5,7 +5,7 @@ import ProfilePageExtraSectionTitle from 'components/profile-page-extra-section-
 import StringWithComponent from 'components/string-with-component';
 import TimeWithTooltip from 'components/time-with-tooltip';
 import UserLink from 'components/user-link';
-import UserAccountHistoryJson from 'interfaces/user-account-history-json';
+import type UserAccountHistoryJson from 'interfaces/user-account-history-json';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react';
 import * as moment from 'moment';
@@ -14,7 +14,7 @@ import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { stripTags } from 'utils/html';
 import { trans } from 'utils/lang';
-import ExtraPageProps from './extra-page-props';
+import type ExtraPageProps from './extra-page-props';
 
 const bn = 'profile-extra-recent-infringements';
 const columns = ['date', 'action', 'length', 'description'] as const;

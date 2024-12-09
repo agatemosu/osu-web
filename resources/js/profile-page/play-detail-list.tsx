@@ -3,15 +3,15 @@
 
 import ProfilePageExtraSectionTitle from 'components/profile-page-extra-section-title';
 import ShowMoreLink from 'components/show-more-link';
-import { ScoreCurrentUserPinJson } from 'interfaces/score-json';
-import { SoloScoreJsonForUser } from 'interfaces/solo-score-json';
+import type { ScoreCurrentUserPinJson } from 'interfaces/score-json';
+import type { SoloScoreJsonForUser } from 'interfaces/solo-score-json';
 import { action, autorun, computed, makeObservable, observable } from 'mobx';
 import { disposeOnUnmount, observer } from 'mobx-react';
 import * as React from 'react';
 import { ContainerContext, KeyContext } from 'stateful-activation-context';
 import { classWithModifiers } from 'utils/css';
-import Controller from './controller';
-import { TopScoreSection } from './extra-page-props';
+import type Controller from './controller';
+import type { TopScoreSection } from './extra-page-props';
 import PlayDetail from './play-detail';
 
 type ScoreSections = TopScoreSection | 'scoresRecent';

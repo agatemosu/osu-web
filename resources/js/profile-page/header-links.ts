@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import HeaderLink from 'interfaces/header-link';
-import UserExtendedJson from 'interfaces/user-extended-json';
-import { MultiplayerTypeGroup } from 'interfaces/user-multiplayer-history-json';
+import type HeaderLink from 'interfaces/header-link';
+import type UserExtendedJson from 'interfaces/user-extended-json';
+import type { MultiplayerTypeGroup } from 'interfaces/user-multiplayer-history-json';
 import { route } from 'laroute';
 import { trans } from 'utils/lang';
 

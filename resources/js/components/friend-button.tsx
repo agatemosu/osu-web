@@ -3,14 +3,14 @@
 
 import FriendUpdated from 'actions/friend-updated';
 import { dispatch } from 'app-dispatcher';
-import UserRelationJson from 'interfaces/user-relation-json';
+import type UserRelationJson from 'interfaces/user-relation-json';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { onErrorWithCallback } from 'utils/ajax';
-import { Modifiers, classWithModifiers } from 'utils/css';
+import { type Modifiers, classWithModifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
 import { Spinner } from './spinner';

@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import UserJson from 'interfaces/user-json';
+import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
+import type UserJson from 'interfaces/user-json';
 import { action, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { group as groupBeatmaps } from 'utils/beatmap-helper';
 import { trans } from 'utils/lang';
 import BeatmapOwnerEditor from './beatmap-owner-editor';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 
 interface Props {
   beatmapset: BeatmapsetWithDiscussionsJson;

@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { observer } from 'mobx-react';
-import Notification from 'models/notification';
-import NotificationStack from 'models/notification-stack';
+import type Notification from 'models/notification';
+import type NotificationStack from 'models/notification-stack';
 import { nameToIconsCompact } from 'notification-maps/icons';
 import { formatMessage } from 'notification-maps/message';
 import { urlSingular } from 'notification-maps/url';

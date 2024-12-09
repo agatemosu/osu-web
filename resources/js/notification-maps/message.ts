@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Notification from 'models/notification';
-import NotificationDetails from 'models/notification-details';
+import type Notification from 'models/notification';
+import type NotificationDetails from 'models/notification-details';
 import { isBeatmapOwnerChangeNotification } from 'models/notification/beatmap-owner-change-notification';
 import { trans, transArray, transChoice, transExists } from 'utils/lang';
 

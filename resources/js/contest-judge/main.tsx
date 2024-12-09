@@ -4,7 +4,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import ContestJudgeStore from 'stores/contest-judge-store';
+import type ContestJudgeStore from 'stores/contest-judge-store';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import Entry from './entry';

@@ -1,8 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import ContestEntryJson, { ContestEntryJsonForResults } from './contest-entry-json';
-import ContestScoringCategoryJson from './contest-scoring-category-json';
+import type ContestEntryJson from './contest-entry-json';
+import type { ContestEntryJsonForResults } from './contest-entry-json';
+import type ContestScoringCategoryJson from './contest-scoring-category-json';
 
 interface ContestJsonAvailableIncludes {
   entries: ContestEntryJson[];

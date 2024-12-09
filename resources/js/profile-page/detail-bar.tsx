@@ -5,7 +5,7 @@ import Bar from 'components/bar';
 import FollowUserMappingButton from 'components/follow-user-mapping-button';
 import FriendButton from 'components/friend-button';
 import UserLevel from 'components/user-level';
-import UserExtendedJson from 'interfaces/user-extended-json';
+import type UserExtendedJson from 'interfaces/user-extended-json';
 import { route } from 'laroute';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

@@ -1,18 +1,19 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CommentsController, { CommentEditMode } from 'components/comments-controller';
-import UserJson from 'interfaces/user-json';
+import type CommentsController from 'components/comments-controller';
+import type { CommentEditMode } from 'components/comments-controller';
+import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import { truncate } from 'lodash';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import CommentModel from 'models/comment';
+import type CommentModel from 'models/comment';
 import { canModerateComments } from 'models/comment';
 import { deletedUserJson } from 'models/user';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { estimateMinLines } from 'utils/estimate-min-lines';
 import { formatNumberSuffixed, stripTags } from 'utils/html';
 import { trans, transChoice } from 'utils/lang';

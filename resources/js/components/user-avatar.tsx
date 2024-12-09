@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import * as React from 'react';
-import { classWithModifiers, Modifiers, urlPresence } from 'utils/css';
+import { classWithModifiers, type Modifiers, urlPresence } from 'utils/css';
 
 interface UserForAvatarJson {
   // TODO: make non-optional; existing coffeescript passes {} for guest user.

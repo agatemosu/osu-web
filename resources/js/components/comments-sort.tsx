@@ -4,7 +4,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import type { Modifiers } from 'utils/css';
-import CommentsController from './comments-controller';
+import type CommentsController from './comments-controller';
 import { Sort } from './sort';
 
 interface Props {

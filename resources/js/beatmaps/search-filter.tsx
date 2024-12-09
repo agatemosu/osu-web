@@ -1,14 +1,14 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { FilterKey } from 'beatmapset-search-filters';
+import type { FilterKey } from 'beatmapset-search-filters';
 import { action, computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
-import { FilterOption } from './available-filters';
+import type { FilterOption } from './available-filters';
 
 interface Props {
   modifiers?: Modifiers;

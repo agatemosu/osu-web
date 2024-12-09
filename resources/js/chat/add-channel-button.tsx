@@ -6,7 +6,7 @@ import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import { AddChannelType } from './channel-id';
+import type { AddChannelType } from './channel-id';
 
 interface Props {
   type: AddChannelType;

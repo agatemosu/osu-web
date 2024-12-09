@@ -3,8 +3,8 @@
 
 import LineChart, { makeOptionsNumber } from 'charts/line-chart';
 import { scaleLinear, scaleLog } from 'd3';
-import RankHistoryJson from 'interfaces/rank-history-json';
-import { UserStatisticsRankedJson } from 'interfaces/user-statistics-json';
+import type RankHistoryJson from 'interfaces/rank-history-json';
+import type { UserStatisticsRankedJson } from 'interfaces/user-statistics-json';
 import { last } from 'lodash';
 import core from 'osu-core-singleton';
 import * as React from 'react';

@@ -4,14 +4,14 @@
 import BigButton from 'components/big-button';
 import InputContainer from 'components/input-container';
 import TextareaAutosize from 'components/textarea-autosize';
-import ContestEntryJson from 'interfaces/contest-entry-json';
-import ContestScoringCategoryJson from 'interfaces/contest-scoring-category-json';
+import type ContestEntryJson from 'interfaces/contest-entry-json';
+import type ContestScoringCategoryJson from 'interfaces/contest-scoring-category-json';
 import { route } from 'laroute';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
-import { ContestEntry } from 'models/contest-entry';
+import type { ContestEntry } from 'models/contest-entry';
 import * as React from 'react';
-import ContestJudgeStore from 'stores/contest-judge-store';
+import type ContestJudgeStore from 'stores/contest-judge-store';
 import { onError } from 'utils/ajax';
 import { trans } from 'utils/lang';
 import CurrentUserJudgeVote from './current-user-judge-vote';

@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import SelectOptions, { OptionRenderProps } from 'components/select-options';
-import SelectOptionJson from 'interfaces/select-option-json';
+import SelectOptions, { type OptionRenderProps } from 'components/select-options';
+import type SelectOptionJson from 'interfaces/select-option-json';
 import { route } from 'laroute';
 import * as React from 'react';
 import { fail } from 'utils/fail';

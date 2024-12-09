@@ -5,7 +5,7 @@ import BigButton from 'components/big-button';
 import StringWithComponent from 'components/string-with-component';
 import UserLink from 'components/user-link';
 import { observer } from 'mobx-react';
-import { Client } from 'models/oauth/client';
+import type { Client } from 'models/oauth/client';
 import * as React from 'react';
 import { onError } from 'utils/ajax';
 import { trans } from 'utils/lang';

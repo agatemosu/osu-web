@@ -4,8 +4,8 @@
 import AdminMenu from 'components/admin-menu';
 import NewsHeader from 'components/news-header';
 import ShowMoreLink from 'components/show-more-link';
-import PostJson from 'interfaces/news-post-json';
-import NewsSidebarMetaJson from 'interfaces/news-sidebar-meta-json';
+import type PostJson from 'interfaces/news-post-json';
+import type NewsSidebarMetaJson from 'interfaces/news-sidebar-meta-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';

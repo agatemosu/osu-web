@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Ruleset from 'interfaces/ruleset';
-import { ProfileExtraPage } from 'interfaces/user-extended-json';
-import UserJson from 'interfaces/user-json';
+import type Ruleset from 'interfaces/ruleset';
+import type { ProfileExtraPage } from 'interfaces/user-extended-json';
+import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
-import { OffsetPaginationJson } from 'utils/offset-paginator';
+import type { OffsetPaginationJson } from 'utils/offset-paginator';
 
 export interface PageSectionJson<T> {
   count: number;

@@ -3,7 +3,7 @@
 
 import PopupMenu from 'components/popup-menu';
 import { ReportReportable } from 'components/report-reportable';
-import BeatmapsetJson from 'interfaces/beatmapset-json';
+import type BeatmapsetJson from 'interfaces/beatmapset-json';
 import * as React from 'react';
 
 interface Props {

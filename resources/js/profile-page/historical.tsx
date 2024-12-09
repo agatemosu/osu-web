@@ -11,9 +11,10 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { trans } from 'utils/lang';
 import BeatmapPlaycount from './beatmap-playcount';
-import Chart, { ChartData } from './chart';
+import Chart, { type ChartData } from './chart';
 import ExtraHeader from './extra-header';
-import ExtraPageProps, { HistoricalSection } from './extra-page-props';
+import type ExtraPageProps from './extra-page-props';
+import type { HistoricalSection } from './extra-page-props';
 import PlayDetailList from './play-detail-list';
 
 const chartSections = ['monthly_playcounts', 'replays_watched_counts'] as const;

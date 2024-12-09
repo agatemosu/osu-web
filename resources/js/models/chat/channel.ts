@@ -2,12 +2,13 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { markAsRead, getChannel, getChannelUsers, getMessages } from 'chat/chat-api';
-import ChannelJson, { ChannelType, SupportedChannelType, supportedTypeLookup } from 'interfaces/chat/channel-json';
-import MessageJson from 'interfaces/chat/message-json';
-import UserJson from 'interfaces/user-json';
+import type ChannelJson from 'interfaces/chat/channel-json';
+import { type ChannelType, type SupportedChannelType, supportedTypeLookup } from 'interfaces/chat/channel-json'
+import type MessageJson from 'interfaces/chat/message-json';
+import type UserJson from 'interfaces/user-json';
 import { sortBy, throttle } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import User from 'models/user';
+import type User from 'models/user';
 import core from 'osu-core-singleton';
 import Message from './message';
 

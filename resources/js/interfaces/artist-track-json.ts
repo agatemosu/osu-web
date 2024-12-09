@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import ArtistAlbumJson from './artist-album-json';
-import ArtistJson from './artist-json';
+import type ArtistAlbumJson from './artist-album-json';
+import type ArtistJson from './artist-json';
 
 export type ArtistTrackWithArtistJson = ArtistTrackJson & Required<Pick<ArtistTrackJson, 'artist'>>;
 

@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import DiscussionsStateWorker from './discussions-state-worker';
+import type DiscussionsStateWorker from './discussions-state-worker';
 
 interface Props {
   worker: DiscussionsStateWorker;

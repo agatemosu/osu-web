@@ -9,7 +9,7 @@ import { shouldShowPp } from 'utils/beatmap-helper';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import { modeAttributesMap } from 'utils/score-helper';
-import Controller from './controller';
+import type Controller from './controller';
 import TableRow from './table-row';
 
 const bn = 'beatmap-scoreboard-table';

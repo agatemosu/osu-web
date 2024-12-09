@@ -3,7 +3,7 @@
 
 import { Discussion } from 'beatmap-discussions/discussion';
 import BeatmapsetCover from 'components/beatmapset-cover';
-import BeatmapsetDiscussionsBundleJson from 'interfaces/beatmapset-discussions-bundle-json';
+import type BeatmapsetDiscussionsBundleJson from 'interfaces/beatmapset-discussions-bundle-json';
 import * as React from 'react';
 import BeatmapsetDiscussionsBundleStore from 'stores/beatmapset-discussions-bundle-store';
 import { makeUrl } from 'utils/beatmapset-discussion-helper';

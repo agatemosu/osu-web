@@ -3,13 +3,13 @@
 
 import HeaderV4 from 'components/header-v4';
 import ShowMoreLink from 'components/show-more-link';
-import HeaderLink from 'interfaces/header-link';
+import type HeaderLink from 'interfaces/header-link';
 import { route } from 'laroute';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
-import { Name as NotificationTypeName, typeNames } from 'models/notification-type';
+import { type Name as NotificationTypeName, typeNames } from 'models/notification-type';
 import Stack from 'notification-widget/stack';
-import { NotificationContext, NotificationContextData } from 'notifications-context';
+import { NotificationContext, type NotificationContextData } from 'notifications-context';
 import NotificationController from 'notifications/notification-controller';
 import NotificationDeleteButton from 'notifications/notification-delete-button';
 import NotificationReadButton from 'notifications/notification-read-button';

@@ -3,8 +3,8 @@
 
 import { discussionTypeIcons } from 'beatmap-discussions/discussion-type';
 import { BeatmapIcon } from 'components/beatmap-icon';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
+import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
 import * as React from 'react';
 import { formatTimestamp, makeUrl, startingPost } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';

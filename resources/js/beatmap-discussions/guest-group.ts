@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserGroupJson from 'interfaces/user-group-json';
+import type UserGroupJson from 'interfaces/user-group-json';
 
 const guestGroup: Readonly<UserGroupJson> = Object.freeze({
   colour: 'hsl(var(--hsl-l1))',

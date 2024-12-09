@@ -3,7 +3,7 @@
 
 import UserAvatar from 'components/user-avatar';
 import UserLink from 'components/user-link';
-import UserJson from 'interfaces/user-json';
+import type UserJson from 'interfaces/user-json';
 import { autorun } from 'mobx';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';

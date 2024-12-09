@@ -3,14 +3,14 @@
 
 import { BeatmapIcon } from 'components/beatmap-icon';
 import BeatmapListItem from 'components/beatmap-list-item';
-import { EmbedElement } from 'editor';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type { EmbedElement } from 'editor';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
 import * as React from 'react';
 import { Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import IconDropdownMenu, { MenuItem } from './icon-dropdown-menu';
+import IconDropdownMenu, { type MenuItem } from './icon-dropdown-menu';
 import { SlateContext } from './slate-context';
 
 interface Props {

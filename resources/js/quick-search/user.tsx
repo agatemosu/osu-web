@@ -5,7 +5,7 @@ import FlagCountry from 'components/flag-country';
 import FriendButton from 'components/friend-button';
 import SupporterIcon from 'components/supporter-icon';
 import UserGroupBadges from 'components/user-group-badges';
-import UserJson from 'interfaces/user-json';
+import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as React from 'react';
 import { classWithModifiers, urlPresence } from 'utils/css';

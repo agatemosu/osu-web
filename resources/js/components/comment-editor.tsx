@@ -2,17 +2,18 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import TextareaAutosize from 'components/textarea-autosize';
-import { CommentableMetaJson } from 'interfaces/comment-json';
+import type { CommentableMetaJson } from 'interfaces/comment-json';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import Comment from 'models/comment';
+import type Comment from 'models/comment';
 import core from 'osu-core-singleton';
 import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
-import { InputEventType, makeTextAreaHandler, TextAreaCallback } from 'utils/input-handler';
+import { classWithModifiers, type Modifiers } from 'utils/css';
+import { InputEventType, makeTextAreaHandler, type TextAreaCallback } from 'utils/input-handler';
 import { trans } from 'utils/lang';
 import BigButton from './big-button';
-import Controller, { CommentEditMode, PostParams } from './comments-controller';
+import type Controller from './comments-controller';
+import type { CommentEditMode, PostParams } from './comments-controller';
 import { Spinner } from './spinner';
 import UserAvatar from './user-avatar';
 

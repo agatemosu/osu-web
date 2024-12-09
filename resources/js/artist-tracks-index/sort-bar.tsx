@@ -9,11 +9,11 @@ import { trans } from 'utils/lang';
 import { present } from 'utils/string';
 import makeLink from './make-link';
 import {
-  ArtistTrackSearch,
+  type ArtistTrackSearch,
   artistTrackSearchRelevanceParams,
-  ArtistTrackSortField,
+  type ArtistTrackSortField,
   artistTrackSortFields,
-  ArtistTrackSortOrder,
+  type ArtistTrackSortOrder,
   artistTrackSortOrders,
 } from './search-form';
 

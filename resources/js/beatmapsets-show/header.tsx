@@ -21,7 +21,7 @@ import { trans } from 'utils/lang';
 import { beatmapDownloadDirect, wikiUrl } from 'utils/url';
 import BeatmapPicker from './beatmap-picker';
 import BeatmapsetMenu from './beatmapset-menu';
-import Controller from './controller';
+import type Controller from './controller';
 import Stats from './stats';
 
 const favouritesToShow = 50;

@@ -1,22 +1,22 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CountryJson from './country-json';
-import DailyChallengeUserStatsJson from './daily-challenge-user-stats-json';
-import ProfileBannerJson from './profile-banner';
-import RankHighestJson from './rank-highest-json';
-import RankHistoryJson from './rank-history-json';
-import UserAccountHistoryJson from './user-account-history-json';
-import UserAchievementJson from './user-achievement-json';
-import UserBadgeJson from './user-badge-json';
-import UserCoverJson from './user-cover-json';
-import UserGroupJson from './user-group-json';
-import UserMonthlyPlaycountJson from './user-monthly-playcount-json';
-import UserPreferencesJson from './user-preferences-json';
-import UserRelationJson from './user-relation-json';
-import UserReplaysWatchedCountJson from './user-replays-watched-count-json';
-import UserStatisticsJson from './user-statistics-json';
-import UserStatisticsRulesetsJson from './user-statistics-rulesets-json';
+import type CountryJson from './country-json';
+import type DailyChallengeUserStatsJson from './daily-challenge-user-stats-json';
+import type ProfileBannerJson from './profile-banner';
+import type RankHighestJson from './rank-highest-json';
+import type RankHistoryJson from './rank-history-json';
+import type UserAccountHistoryJson from './user-account-history-json';
+import type UserAchievementJson from './user-achievement-json';
+import type UserBadgeJson from './user-badge-json';
+import type UserCoverJson from './user-cover-json';
+import type UserGroupJson from './user-group-json';
+import type UserMonthlyPlaycountJson from './user-monthly-playcount-json';
+import type UserPreferencesJson from './user-preferences-json';
+import type UserRelationJson from './user-relation-json';
+import type UserReplaysWatchedCountJson from './user-replays-watched-count-json';
+import type UserStatisticsJson from './user-statistics-json';
+import type UserStatisticsRulesetsJson from './user-statistics-rulesets-json';
 
 interface UserJsonAvailableIncludes {
   account_history: UserAccountHistoryJson[];

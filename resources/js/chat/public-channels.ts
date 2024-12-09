@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { getPublicChannels } from 'chat/chat-api';
-import ChannelJson from 'interfaces/chat/channel-json';
+import type ChannelJson from 'interfaces/chat/channel-json';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 
 export default class PublicChannels {

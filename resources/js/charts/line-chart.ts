@@ -2,26 +2,26 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import {
-  Axis,
+  type Axis,
   axisBottom,
   axisLeft,
   bisector,
-  CurveFactory,
+  type CurveFactory,
   curveMonotoneX,
   extent,
-  Line,
+  type Line,
   line,
   pointer,
-  ScaleContinuousNumeric,
+  type ScaleContinuousNumeric,
   scaleLinear,
-  ScaleTime,
+  type ScaleTime,
   scaleUtc,
   select,
-  Selection,
+  type Selection,
 } from 'd3';
 import { clamp } from 'lodash';
 import core from 'osu-core-singleton';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { fadeIn, fadeOut } from 'utils/fade';
 
 const bn = 'line-chart';

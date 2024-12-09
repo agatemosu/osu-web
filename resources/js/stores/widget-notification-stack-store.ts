@@ -2,10 +2,10 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { dispatchListener } from 'app-dispatcher';
-import DispatchListener from 'dispatch-listener';
-import { NotificationBundleJson } from 'interfaces/notification-json';
+import type DispatchListener from 'dispatch-listener';
+import type { NotificationBundleJson } from 'interfaces/notification-json';
 import { override } from 'mobx';
-import {
+import type {
   NotificationEventMoreLoaded,
   NotificationEventNew,
   NotificationEventRead,

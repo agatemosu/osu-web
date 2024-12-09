@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
 import remarkParse from 'remark-parse';
 import disableConstructs from 'remark-plugins/disable-constructs';
-import { Element, Text } from 'slate';
+import type { Element, Text } from 'slate';
 import { unified } from 'unified';
 import type { Parent, Node as UnistNode } from 'unist';
 import { formatTimestamp, startingPost } from 'utils/beatmapset-discussion-helper';
 import { present } from 'utils/string';
-import { BeatmapDiscussionReview, isBeatmapReviewDiscussionType, PersistedDocumentIssueEmbed } from '../interfaces/beatmap-discussion-review';
+import { type BeatmapDiscussionReview, isBeatmapReviewDiscussionType, type PersistedDocumentIssueEmbed } from '../interfaces/beatmap-discussion-review';
 
 interface ParsedDocumentNode extends UnistNode {
   children: UnistNode[];

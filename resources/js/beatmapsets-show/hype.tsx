@@ -4,7 +4,7 @@
 import BigButton from 'components/big-button';
 import DiscreteBar from 'components/discrete-bar';
 import StringWithComponent from 'components/string-with-component';
-import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
+import type { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
 import { route } from 'laroute';
 import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';

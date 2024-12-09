@@ -3,13 +3,13 @@
 
 import UserLinkList from 'beatmap-discussions/user-link-list';
 import DifficultyBadge from 'components/difficulty-badge';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import BeatmapJson from 'interfaces/beatmap-json';
-import BeatmapsetJson from 'interfaces/beatmapset-json';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type BeatmapJson from 'interfaces/beatmap-json';
+import type BeatmapsetJson from 'interfaces/beatmapset-json';
 import { hasOwners } from 'interfaces/with-beatmap-owners';
 import * as React from 'react';
 import { hasGuestOwners } from 'utils/beatmap-helper';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import StringWithComponent from './string-with-component';
 

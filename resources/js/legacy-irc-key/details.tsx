@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { trans } from 'utils/lang';
-import Controller from './controller';
+import type Controller from './controller';
 
 const serverHost = 'irc.ppy.sh';
 const serverPort = '6667';

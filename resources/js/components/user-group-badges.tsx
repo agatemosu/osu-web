@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserGroupJson from 'interfaces/user-group-json';
+import type UserGroupJson from 'interfaces/user-group-json';
 import * as React from 'react';
-import { Modifiers } from 'utils/css';
+import type { Modifiers } from 'utils/css';
 import UserGroupBadge from './user-group-badge';
 
 interface Props {

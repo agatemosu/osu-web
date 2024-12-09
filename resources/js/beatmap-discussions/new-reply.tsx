@@ -4,8 +4,8 @@
 import BigButton from 'components/big-button';
 import TextareaAutosize from 'components/textarea-autosize';
 import UserAvatar from 'components/user-avatar';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import { BeatmapsetDiscussionPostStoreResponseJson } from 'interfaces/beatmapset-discussion-post-responses';
+import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type { BeatmapsetDiscussionPostStoreResponseJson } from 'interfaces/beatmapset-discussion-post-responses';
 import { route } from 'laroute';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { observer } from 'mobx-react';
@@ -13,12 +13,12 @@ import core from 'osu-core-singleton';
 import * as React from 'react';
 import { onError } from 'utils/ajax';
 import { validMessageLength } from 'utils/beatmapset-discussion-helper';
-import { InputEventType, makeTextAreaHandler, TextAreaCallback } from 'utils/input-handler';
+import { InputEventType, makeTextAreaHandler, type TextAreaCallback } from 'utils/input-handler';
 import { trans } from 'utils/lang';
 import { hideLoadingOverlay, showLoadingOverlay } from 'utils/loading-overlay';
 import { present } from 'utils/string';
 import DiscussionMessageLengthCounter from './discussion-message-length-counter';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 
 const bn = 'beatmap-discussion-post';
 

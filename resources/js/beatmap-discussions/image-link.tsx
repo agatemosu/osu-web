@@ -7,7 +7,7 @@ import { LinkContext } from 'markdown/renderers';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
-import { ReactMarkdownProps } from 'react-markdown/lib/complex-types';
+import type { ReactMarkdownProps } from 'react-markdown/lib/complex-types';
 
 type Props = ReactMarkdownProps & JSX.IntrinsicElements['img'];
 

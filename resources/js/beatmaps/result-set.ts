@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { SearchResponse } from 'beatmaps/beatmapset-search';
-import SearchResults from 'beatmaps/search-results';
+import type { SearchResponse } from 'beatmaps/beatmapset-search';
+import type SearchResults from 'beatmaps/search-results';
 import { action, computed, makeObservable, observable } from 'mobx';
 
 export default class ResultSet implements SearchResults {

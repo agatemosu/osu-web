@@ -6,7 +6,7 @@ import TextareaAutosize from 'components/textarea-autosize';
 import { FormErrors } from 'form-errors';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { OwnClient as Client } from 'models/oauth/own-client';
+import type { OwnClient as Client } from 'models/oauth/own-client';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { onError } from 'utils/ajax';

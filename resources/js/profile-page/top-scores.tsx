@@ -6,7 +6,8 @@ import { computed } from 'mobx';
 import { observer } from 'mobx-react';
 import ExtraHeader from 'profile-page/extra-header';
 import * as React from 'react';
-import ExtraPageProps, { topScoreSections } from './extra-page-props';
+import type ExtraPageProps from './extra-page-props';
+import { topScoreSections } from './extra-page-props';
 import PlayDetailList from './play-detail-list';
 
 @observer

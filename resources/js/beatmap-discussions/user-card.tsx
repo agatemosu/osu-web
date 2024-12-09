@@ -3,8 +3,8 @@
 
 import UserAvatar from 'components/user-avatar';
 import UserGroupBadge from 'components/user-group-badge';
-import UserGroupJson from 'interfaces/user-group-json';
-import UserJson from 'interfaces/user-json';
+import type UserGroupJson from 'interfaces/user-group-json';
+import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import * as React from 'react';
 import { groupColour } from 'utils/css';

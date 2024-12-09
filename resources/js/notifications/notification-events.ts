@@ -4,8 +4,9 @@
 /* eslint-disable max-classes-per-file */
 
 import DispatcherAction from 'actions/dispatcher-action';
-import NotificationJson, { NotificationBundleJson } from 'interfaces/notification-json';
-import { fromJson, NotificationIdentity, NotificationIdentityJson } from 'notifications/notification-identity';
+import type NotificationJson from 'interfaces/notification-json';
+import type { NotificationBundleJson } from 'interfaces/notification-json';
+import { fromJson, type NotificationIdentity, type NotificationIdentityJson } from 'notifications/notification-identity';
 
 export interface NotificationEventLogoutJson {
   event: 'logout';

@@ -2,10 +2,10 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ProfilePageExtraTab from 'components/profile-page-extra-tab';
-import { ProfileExtraPage } from 'interfaces/user-extended-json';
+import type { ProfileExtraPage } from 'interfaces/user-extended-json';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import Controller from './controller';
+import type Controller from './controller';
 
 interface Props {
   controller: Controller;

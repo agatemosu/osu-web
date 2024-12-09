@@ -4,7 +4,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import BeatmapSelection from './beatmap-selection';
-import Controller from './controller';
+import type Controller from './controller';
 
 interface Props {
   controller: Controller;

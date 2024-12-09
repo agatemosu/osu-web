@@ -1,8 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CommentJson, { CommentableMetaJson, CommentBundleJson } from 'interfaces/comment-json';
-import UserJson from 'interfaces/user-json';
+import type CommentJson from 'interfaces/comment-json';
+import type { CommentableMetaJson, CommentBundleJson } from 'interfaces/comment-json';
+import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import { isEqual, last } from 'lodash';
 import { action, makeObservable, observable, runInAction } from 'mobx';

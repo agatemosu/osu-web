@@ -3,7 +3,7 @@
 
 import { currentUrl } from 'utils/turbolinks';
 import { Ziggy } from 'ziggy';
-import ziggyRoute, { RouteList } from 'ziggy-js';
+import ziggyRoute, { type RouteList } from 'ziggy-js';
 
 // ensure correct url
 const siteUrl = currentUrl();

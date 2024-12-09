@@ -2,9 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BeatmapsetEvent from 'components/beatmapset-event';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetEventJson from 'interfaces/beatmapset-event-json';
-import UserJson from 'interfaces/user-json';
+import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
+import type BeatmapsetEventJson from 'interfaces/beatmapset-event-json';
+import type UserJson from 'interfaces/user-json';
 import moment from 'moment';
 import React from 'react';
 import { trans } from 'utils/lang';

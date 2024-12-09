@@ -6,7 +6,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeTruncate from 'rehype-truncate';
 import autolink from 'remark-plugins/autolink';
-import disableConstructs, { DisabledType } from 'remark-plugins/disable-constructs';
+import disableConstructs, { type DisabledType } from 'remark-plugins/disable-constructs';
 import { maxMessagePreviewLength, propsFromHref } from 'utils/beatmapset-discussion-helper';
 import { presence } from 'utils/string';
 

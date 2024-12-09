@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import GithubUser from 'github-user';
-import { ClientJson } from 'interfaces/client-json';
-import { OwnClientJson } from 'interfaces/own-client-json';
+import type { ClientJson } from 'interfaces/client-json';
+import type { OwnClientJson } from 'interfaces/own-client-json';
 import LegacyApiKey from 'legacy-api-key';
 import LegacyIrcKey from 'legacy-irc-key';
 import { AuthorizedClients } from 'oauth/authorized-clients';

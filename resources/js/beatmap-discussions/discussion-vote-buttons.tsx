@@ -2,9 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { createTooltip } from 'components/user-list-popup';
-import { BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import UserJson from 'interfaces/user-json';
+import type { BeatmapsetDiscussionJsonForShow } from 'interfaces/beatmapset-discussion-json';
+import type BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
+import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -13,7 +13,7 @@ import { onError } from 'utils/ajax';
 import { classWithModifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import { hideLoadingOverlay, showLoadingOverlay } from 'utils/loading-overlay';
-import DiscussionsState from './discussions-state';
+import type DiscussionsState from './discussions-state';
 
 const voteTypes = ['up', 'down'] as const;
 type VoteType = typeof voteTypes[number];

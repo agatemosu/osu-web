@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
+import type BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { getDiffColour } from 'utils/beatmap-helper';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { nextVal } from 'utils/seq';
 import DifficultyBadge from './difficulty-badge';
 

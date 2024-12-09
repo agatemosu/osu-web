@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import GroupJson from 'interfaces/group-json';
-import Ruleset from 'interfaces/ruleset';
-import UserJson from 'interfaces/user-json';
+import type GroupJson from 'interfaces/group-json';
+import type Ruleset from 'interfaces/ruleset';
+import type UserJson from 'interfaces/user-json';
 import { usernameSortAscending } from 'models/user';
 import * as moment from 'moment';
 import core from 'osu-core-singleton';
@@ -13,7 +13,7 @@ import { trans } from 'utils/lang';
 import { currentUrlParams, updateHistory } from 'utils/turbolinks';
 import { updateQueryString } from 'utils/url';
 import { Sort } from './sort';
-import { ViewMode, viewModes } from './user-card';
+import { type ViewMode, viewModes } from './user-card';
 import { UserCards } from './user-cards';
 
 export type Filter = 'all' | 'online' | 'offline';

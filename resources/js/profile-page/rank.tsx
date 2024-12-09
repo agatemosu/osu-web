@@ -2,8 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ValueDisplay from 'components/value-display';
-import RankHighestJson from 'interfaces/rank-highest-json';
-import UserStatisticsJson, { RankType } from 'interfaces/user-statistics-json';
+import type RankHighestJson from 'interfaces/rank-highest-json';
+import type UserStatisticsJson from 'interfaces/user-statistics-json';
+import type { RankType } from 'interfaces/user-statistics-json';
 import * as moment from 'moment';
 import * as React from 'react';
 import { formatNumber } from 'utils/html';

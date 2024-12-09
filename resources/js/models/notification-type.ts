@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { NotificationTypeJson } from 'interfaces/notification-json';
+import type { NotificationTypeJson } from 'interfaces/notification-json';
 import { action, computed, makeObservable, observable } from 'mobx';
-import NotificationStack from 'models/notification-stack';
-import { NotificationContextData } from 'notifications-context';
-import { NotificationCursor } from 'notifications/notification-cursor';
-import NotificationDeletable from 'notifications/notification-deletable';
-import { NotificationIdentity } from 'notifications/notification-identity';
-import NotificationReadable from 'notifications/notification-readable';
-import { NotificationResolver } from 'notifications/notification-resolver';
+import type NotificationStack from 'models/notification-stack';
+import type { NotificationContextData } from 'notifications-context';
+import type { NotificationCursor } from 'notifications/notification-cursor';
+import type NotificationDeletable from 'notifications/notification-deletable';
+import type { NotificationIdentity } from 'notifications/notification-identity';
+import type NotificationReadable from 'notifications/notification-readable';
+import type { NotificationResolver } from 'notifications/notification-resolver';
 
 // List is in the order they appear on the notification filter.
 export const typeNames = [null, 'user', 'beatmapset', 'forum_topic', 'news_post', 'build', 'channel'] as const;

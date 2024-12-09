@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import DispatcherAction from 'actions/dispatcher-action';
-import ChannelJson from 'interfaces/chat/channel-json';
+import type ChannelJson from 'interfaces/chat/channel-json';
 
 export default class ChannelJoinEvent extends DispatcherAction {
   constructor(readonly json: ChannelJson) {

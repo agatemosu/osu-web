@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { route } from 'laroute';
-import { ArtistTrackSearch } from './search-form';
+import type { ArtistTrackSearch } from './search-form';
 
 export default function makeLink(params: ArtistTrackSearch) {
   const urlParams: Partial<ArtistTrackSearch> = { ...params };

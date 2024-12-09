@@ -2,10 +2,11 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { action, computed, makeObservable, observable } from 'mobx';
-import NotificationType, { getValidName, Name as NotificationTypeName, typeNames } from 'models/notification-type';
-import { NotificationContextData } from 'notifications-context';
-import NotificationStackStore from 'stores/notification-stack-store';
-import NotificationStore from 'stores/notification-store';
+import type NotificationType from 'models/notification-type';
+import { getValidName, type Name as NotificationTypeName, typeNames } from 'models/notification-type'
+import type { NotificationContextData } from 'notifications-context';
+import type NotificationStackStore from 'stores/notification-stack-store';
+import type NotificationStore from 'stores/notification-store';
 import { updateHistory, currentUrl, currentUrlParams } from 'utils/turbolinks';
 import { updateQueryString } from 'utils/url';
 

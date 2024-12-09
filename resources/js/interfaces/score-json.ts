@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapExtendedJson from './beatmap-extended-json';
-import BeatmapsetJson from './beatmapset-json';
-import Rank from './rank';
-import Ruleset from './ruleset';
-import UserJson from './user-json';
+import type BeatmapExtendedJson from './beatmap-extended-json';
+import type BeatmapsetJson from './beatmapset-json';
+import type Rank from './rank';
+import type Ruleset from './ruleset';
+import type UserJson from './user-json';
 
 export interface ScoreCurrentUserPinJson {
   is_pinned: boolean;

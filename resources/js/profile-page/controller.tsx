@@ -1,20 +1,21 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import AchievementJson from 'interfaces/achievement-json';
-import BeatmapPlaycountJson from 'interfaces/beatmap-playcount-json';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
-import CurrentUserJson from 'interfaces/current-user-json';
-import EventJson from 'interfaces/event-json';
-import KudosuHistoryJson from 'interfaces/kudosu-history-json';
-import Ruleset from 'interfaces/ruleset';
-import { ScoreCurrentUserPinJson } from 'interfaces/score-json';
-import SoloScoreJson, { isSoloScoreJsonForUser, SoloScoreJsonForUser } from 'interfaces/solo-score-json';
-import UserCoverJson from 'interfaces/user-cover-json';
-import UserCoverPresetJson from 'interfaces/user-cover-preset-json';
-import { ProfileExtraPage, profileExtraPages } from 'interfaces/user-extended-json';
-import UserMonthlyPlaycountJson from 'interfaces/user-monthly-playcount-json';
-import UserReplaysWatchedCountJson from 'interfaces/user-replays-watched-count-json';
+import type AchievementJson from 'interfaces/achievement-json';
+import type BeatmapPlaycountJson from 'interfaces/beatmap-playcount-json';
+import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import type CurrentUserJson from 'interfaces/current-user-json';
+import type EventJson from 'interfaces/event-json';
+import type KudosuHistoryJson from 'interfaces/kudosu-history-json';
+import type Ruleset from 'interfaces/ruleset';
+import type { ScoreCurrentUserPinJson } from 'interfaces/score-json';
+import type SoloScoreJson from 'interfaces/solo-score-json';
+import { isSoloScoreJsonForUser, type SoloScoreJsonForUser } from 'interfaces/solo-score-json'
+import type UserCoverJson from 'interfaces/user-cover-json';
+import type UserCoverPresetJson from 'interfaces/user-cover-preset-json';
+import { type ProfileExtraPage, profileExtraPages } from 'interfaces/user-extended-json';
+import type UserMonthlyPlaycountJson from 'interfaces/user-monthly-playcount-json';
+import type UserReplaysWatchedCountJson from 'interfaces/user-replays-watched-count-json';
 import { route } from 'laroute';
 import { debounce, pullAt } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
@@ -25,8 +26,8 @@ import { hideLoadingOverlay, showLoadingOverlay } from 'utils/loading-overlay';
 import { getInt } from 'utils/math';
 import { apiShowMore } from 'utils/offset-paginator';
 import { switchNever } from 'utils/switch-never';
-import getPage, { PageSectionJson, PageSectionWithoutCountJson } from './extra-page';
-import { ProfilePageSection, ProfilePageUserJson } from './extra-page-props';
+import getPage, { type PageSectionJson, type PageSectionWithoutCountJson } from './extra-page';
+import type { ProfilePageSection, ProfilePageUserJson } from './extra-page-props';
 
 const sectionToUrlType = {
   favouriteBeatmapsets: 'favourite',

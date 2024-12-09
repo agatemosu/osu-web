@@ -2,14 +2,14 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import BbcodeEditor from 'components/bbcode-editor';
-import { OnChangeProps } from 'components/bbcode-editor';
+import type { OnChangeProps } from 'components/bbcode-editor';
 import { action, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { onErrorWithCallback } from 'utils/ajax';
 import { trans } from 'utils/lang';
 import { showLoadingOverlay, hideLoadingOverlay } from 'utils/loading-overlay';
-import Controller from './controller';
+import type Controller from './controller';
 
 interface Props {
   controller: Controller;

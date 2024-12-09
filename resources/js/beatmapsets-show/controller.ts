@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
-import UserJson from 'interfaces/user-json';
+import type { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
+import type UserJson from 'interfaces/user-json';
 import { keyBy } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { deletedUserJson } from 'models/user';

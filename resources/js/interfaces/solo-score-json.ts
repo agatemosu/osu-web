@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapExtendedJson from './beatmap-extended-json';
-import Rank from './rank';
-import Ruleset from './ruleset';
-import { ScoreJsonAvailableIncludes, ScoreJsonDefaultIncludes } from './score-json';
-import ScoreModJson from './score-mod-json';
-import WithBeatmapOwners from './with-beatmap-owners';
+import type BeatmapExtendedJson from './beatmap-extended-json';
+import type Rank from './rank';
+import type Ruleset from './ruleset';
+import type { ScoreJsonAvailableIncludes, ScoreJsonDefaultIncludes } from './score-json';
+import type ScoreModJson from './score-mod-json';
+import type WithBeatmapOwners from './with-beatmap-owners';
 
 export type SoloScoreStatisticsAttribute =
   | 'good'

@@ -5,7 +5,7 @@ import Mod from 'components/mod';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';
-import Controller from './controller';
+import type Controller from './controller';
 
 interface Props {
   controller: Controller;

@@ -1,16 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { NotificationStackJson } from 'interfaces/notification-json';
+import type { NotificationStackJson } from 'interfaces/notification-json';
 import { action, computed, makeObservable, observable } from 'mobx';
-import Notification from 'models/notification';
-import { Name } from 'models/notification-type';
-import { NotificationContextData } from 'notifications-context';
-import { NotificationCursor } from 'notifications/notification-cursor';
-import NotificationDeletable from 'notifications/notification-deletable';
-import { NotificationIdentity } from 'notifications/notification-identity';
-import NotificationReadable from 'notifications/notification-readable';
-import { NotificationResolver } from 'notifications/notification-resolver';
+import type Notification from 'models/notification';
+import type { Name } from 'models/notification-type';
+import type { NotificationContextData } from 'notifications-context';
+import type { NotificationCursor } from 'notifications/notification-cursor';
+import type NotificationDeletable from 'notifications/notification-deletable';
+import type { NotificationIdentity } from 'notifications/notification-identity';
+import type NotificationReadable from 'notifications/notification-readable';
+import type { NotificationResolver } from 'notifications/notification-resolver';
 
 export default class NotificationStack implements NotificationReadable, NotificationDeletable {
   @observable cursor: NotificationCursor | null = null;

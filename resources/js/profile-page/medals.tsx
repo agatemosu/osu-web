@@ -2,8 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import ProfilePageExtraSectionTitle from 'components/profile-page-extra-section-title';
-import AchievementJson from 'interfaces/achievement-json';
-import UserAchievementJson from 'interfaces/user-achievement-json';
+import type AchievementJson from 'interfaces/achievement-json';
+import type UserAchievementJson from 'interfaces/user-achievement-json';
 import { keyBy } from 'lodash';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -12,7 +12,7 @@ import * as React from 'react';
 import { trans } from 'utils/lang';
 import AchievementBadge from './achievement-badge';
 import ExtraHeader from './extra-header';
-import ExtraPageProps from './extra-page-props';
+import type ExtraPageProps from './extra-page-props';
 
 interface UserAchievementData {
   achievement: AchievementJson;

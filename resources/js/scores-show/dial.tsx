@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import * as d3 from 'd3';
-import Rank from 'interfaces/rank';
+import type Rank from 'interfaces/rank';
 import * as React from 'react';
 
 interface Props {

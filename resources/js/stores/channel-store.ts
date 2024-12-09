@@ -4,14 +4,15 @@
 import { ChatMessageSendAction } from 'actions/chat-message-send-action';
 import { ChatNewConversationAdded } from 'actions/chat-new-conversation-added';
 import ChatUpdateSilences from 'actions/chat-update-silences';
-import DispatcherAction from 'actions/dispatcher-action';
+import type DispatcherAction from 'actions/dispatcher-action';
 import { dispatch, dispatchListener } from 'app-dispatcher';
 import { getChannel, newConversation, partChannel as apiPartChannel, sendMessage } from 'chat/chat-api';
 import MessageNewEvent from 'chat/message-new-event';
-import DispatchListener from 'dispatch-listener';
-import ChannelJson, { filterSupportedChannelTypes, SupportedChannelType, supportedChannelTypes } from 'interfaces/chat/channel-json';
-import ChatUpdatesJson from 'interfaces/chat/chat-updates-json';
-import MessageJson from 'interfaces/chat/message-json';
+import type DispatchListener from 'dispatch-listener';
+import type ChannelJson from 'interfaces/chat/channel-json';
+import { filterSupportedChannelTypes, type SupportedChannelType, supportedChannelTypes } from 'interfaces/chat/channel-json'
+import type ChatUpdatesJson from 'interfaces/chat/chat-updates-json';
+import type MessageJson from 'interfaces/chat/message-json';
 import { groupBy, maxBy } from 'lodash';
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import Channel from 'models/chat/channel';

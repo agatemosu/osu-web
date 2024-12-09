@@ -2,11 +2,11 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { observer } from 'mobx-react';
-import Comment from 'models/comment';
+import type Comment from 'models/comment';
 import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { trans } from 'utils/lang';
-import CommentsController from './comments-controller';
+import type CommentsController from './comments-controller';
 import ShowMoreLink from './show-more-link';
 import { Spinner } from './spinner';
 

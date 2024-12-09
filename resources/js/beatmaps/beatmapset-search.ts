@@ -1,17 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
+import type DispatcherAction from 'actions/dispatcher-action';
 import { UserLoginAction } from 'actions/user-login-actions';
 import { dispatchListener } from 'app-dispatcher';
 import ResultSet from 'beatmaps/result-set';
-import SearchResults from 'beatmaps/search-results';
-import { BeatmapsetSearchFilters } from 'beatmapset-search-filters';
-import DispatchListener from 'dispatch-listener';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
+import type SearchResults from 'beatmaps/search-results';
+import type { BeatmapsetSearchFilters } from 'beatmapset-search-filters';
+import type DispatchListener from 'dispatch-listener';
+import type BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
 import { route } from 'laroute';
 import { action, makeObservable, observable, runInAction } from 'mobx';
-import { BeatmapsetStore } from 'stores/beatmapset-store';
+import type { BeatmapsetStore } from 'stores/beatmapset-store';
 
 export interface SearchResponse {
   beatmapsets: BeatmapsetExtendedJson[];

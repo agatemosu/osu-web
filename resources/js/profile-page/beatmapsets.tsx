@@ -9,7 +9,8 @@ import { computed } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import ExtraHeader from './extra-header';
-import ExtraPageProps, { BeatmapsetSection } from './extra-page-props';
+import type ExtraPageProps from './extra-page-props';
+import type { BeatmapsetSection } from './extra-page-props';
 
 const sectionKeys = [
   {

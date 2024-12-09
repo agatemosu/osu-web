@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { Spinner } from 'components/spinner';
-import ChannelJson from 'interfaces/chat/channel-json';
+import type ChannelJson from 'interfaces/chat/channel-json';
 import { route } from 'laroute';
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';

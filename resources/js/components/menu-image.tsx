@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import MenuImageJson from 'interfaces/menu-image-json';
-import * as React from 'react';
+import type MenuImageJson from 'interfaces/menu-image-json';
+import type * as React from 'react';
 
 const bn = 'menu-image';
 

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./resources/js",
-    // "esModuleInterop": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "es2020"],
@@ -17,7 +17,7 @@
     "strictPropertyInitialization": true,
     "target": "es2015",
     "useDefineForClassFields": true,
-    // "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true
   },
   "include": [
     "resources/js",

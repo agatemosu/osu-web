@@ -92,6 +92,7 @@ module.exports = {
         // or appending empty `.then().catch()`.
         // Blindly appending `void` isn't all that useful either.
         '@typescript-eslint/no-floating-promises': 'off',
+        '@typescript-eslint/no-import-type-side-effects': 'error',
         '@typescript-eslint/no-invalid-this': 'error',
         '@typescript-eslint/no-parameter-properties': 'off',
         '@typescript-eslint/no-shadow': ['error', { hoist: 'all' }],

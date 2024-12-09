@@ -6,7 +6,7 @@ import FriendButton from 'components/friend-button';
 import type Reportable from 'interfaces/reportable';
 import type UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
-import * as _ from 'lodash';
+import { find } from 'lodash';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers, type Modifiers } from 'utils/css';
@@ -72,7 +72,7 @@ export class UserCard extends React.PureComponent<Props, State> {
 
   private get canMessage() {
     return !this.isSelf
-      && _.find(core.currentUser?.blocks ?? [], { target_id: this.user.id }) == null;
+      && find(core.currentUser?.blocks ?? [], { target_id: this.user.id }) == null;
   }
 
   private get isOnline() {

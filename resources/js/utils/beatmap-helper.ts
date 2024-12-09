@@ -8,7 +8,7 @@ import type BeatmapsetJson from 'interfaces/beatmapset-json';
 import type Ruleset from 'interfaces/ruleset';
 import { rulesets } from 'interfaces/ruleset';
 import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
-import * as _ from 'lodash';
+import { groupBy, last, orderBy, without } from 'lodash';
 import core from 'osu-core-singleton';
 import { parseJsonNullable } from 'utils/json';
 
@@ -47,7 +47,7 @@ export function findDefault<T extends BeatmapJson>(params: FindDefaultParams<T>)
       }
     }
 
-    return currentItem ?? _.last(params.items) ?? null;
+    return currentItem ?? last(params.items) ?? null;
   }
 
   if (params.group == null) return null;
@@ -89,7 +89,7 @@ export function getDiffColour(rating: number) {
 
 export function group<T extends BeatmapJson>(beatmaps?: T[] | null, includeEmpty = true): Map<Ruleset, T[]> {
   // TODO: replace with mapBy
-  const grouped: Partial<Record<Ruleset, T[]>> = _.groupBy(beatmaps ?? [], 'mode');
+  const grouped: Partial<Record<Ruleset, T[]>> = groupBy(beatmaps ?? [], 'mode');
   const ret = new Map<Ruleset, T[]>();
 
   rulesets.forEach((mode) => {
@@ -135,10 +135,10 @@ export function sort<T extends BeatmapJson>(beatmaps: T[]): T[] {
   }
 
   if (beatmaps[0].mode === 'mania') {
-    return _.orderBy(beatmaps, ['convert', 'cs', 'difficulty_rating'], ['desc', 'asc', 'asc']);
+    return orderBy(beatmaps, ['convert', 'cs', 'difficulty_rating'], ['desc', 'asc', 'asc']);
   }
 
-  return _.orderBy(beatmaps, ['convert', 'difficulty_rating'], ['desc', 'asc']);
+  return orderBy(beatmaps, ['convert', 'difficulty_rating'], ['desc', 'asc']);
 }
 
 export function sortWithMode<T extends BeatmapJson>(beatmaps: T[]): T[] {
@@ -151,7 +151,7 @@ function userModes() {
     return rulesets;
   }
 
-  const ret = _.without(rulesets, currentMode);
+  const ret = without(rulesets, currentMode);
   ret.unshift(currentMode);
 
   return ret;

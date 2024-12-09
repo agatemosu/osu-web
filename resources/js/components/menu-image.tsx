@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type MenuImageJson from 'interfaces/menu-image-json';
-import type * as React from 'react';
+import * as React from 'react';
 
 const bn = 'menu-image';
 

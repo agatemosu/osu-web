@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type SoloScoreJson from 'interfaces/solo-score-json';
-import type * as React from 'react';
+import * as React from 'react';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
 

@@ -4,8 +4,8 @@
 import Mod from 'components/mod';
 import ScoreValue from 'components/score-value';
 import type { SoloScoreJsonForShow } from 'interfaces/solo-score-json';
-import * as moment from 'moment';
-import type * as React from 'react';
+import moment from 'moment';
+import * as React from 'react';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';
 import { filterMods } from 'utils/score-helper';

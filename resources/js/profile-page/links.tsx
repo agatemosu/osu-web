@@ -7,7 +7,7 @@ import TimeWithTooltip from 'components/time-with-tooltip';
 import type UserExtendedJson from 'interfaces/user-extended-json';
 import { route } from 'laroute';
 import { compact } from 'lodash';
-import * as moment from 'moment';
+import moment from 'moment';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';

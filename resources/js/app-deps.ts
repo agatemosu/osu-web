@@ -13,7 +13,7 @@ import 'jquery-ujs';
 import { patchPluralHandler } from 'lang-overrides';
 import Lang from 'lang.js';
 import { configure as mobxConfigure } from 'mobx';
-import * as moment from 'moment';
+import moment from 'moment';
 import { popup } from 'utils/popup';
 import { reloadPage } from 'utils/turbolinks';
 

@@ -5,7 +5,7 @@ import type MessageJson from 'interfaces/chat/message-json';
 import type { MessageType } from 'interfaces/chat/message-json';
 import { action, computed, makeObservable, observable } from 'mobx';
 import User from 'models/user';
-import * as moment from 'moment';
+import moment from 'moment';
 import core from 'osu-core-singleton';
 import { v4 as uuidv4 } from 'uuid';
 

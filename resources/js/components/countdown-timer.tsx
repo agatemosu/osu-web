@@ -3,7 +3,7 @@
 
 import { computed, makeObservable } from 'mobx';
 import { observer } from 'mobx-react';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as React from 'react';
 import { trans } from 'utils/lang';
 

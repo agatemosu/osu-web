@@ -4,7 +4,7 @@
 import LineChart, { makeOptionsDate } from 'charts/line-chart';
 import { curveLinear } from 'd3';
 import { escape } from 'lodash';
-import * as moment from 'moment';
+import moment from 'moment';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { formatNumber } from 'utils/html';

@@ -3,7 +3,7 @@
 
 import Img2x from 'components/img2x';
 import type UserBadgeJson from 'interfaces/user-badge-json';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as React from 'react';
 import { type Modifiers, classWithModifiers } from 'utils/css';
 import { present } from 'utils/string';

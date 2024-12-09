@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import type BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import type * as React from 'react';
+import * as React from 'react';
 import { formatTimestamp, makeUrl } from 'utils/beatmapset-discussion-helper';
 import { classWithModifiers } from 'utils/css';
 

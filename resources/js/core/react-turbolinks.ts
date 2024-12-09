@@ -6,7 +6,7 @@ import { removeLeftoverPortalContainers } from 'components/portal';
 import type TurbolinksReload from 'core/turbolinks-reload';
 import { runInAction } from 'mobx';
 import type OsuCore from 'osu-core';
-import type * as React from 'react';
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { currentUrl } from 'utils/turbolinks';
 

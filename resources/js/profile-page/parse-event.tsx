@@ -4,7 +4,7 @@
 import StringWithComponent from 'components/string-with-component';
 import type EventJson from 'interfaces/event-json';
 import core from 'osu-core-singleton';
-import type * as React from 'react';
+import * as React from 'react';
 import type { Modifiers } from 'utils/css';
 import { formatNumber } from 'utils/html';
 import { trans, transExists } from 'utils/lang';

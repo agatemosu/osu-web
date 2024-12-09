@@ -3,7 +3,7 @@
 
 import Img2x from 'components/img2x';
 import type AchievementJson from 'interfaces/achievement-json';
-import type * as React from 'react';
+import * as React from 'react';
 import { classWithModifiers, type Modifiers } from 'utils/css';
 
 type Props = {

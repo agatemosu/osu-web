@@ -17,7 +17,7 @@ import type UserJson from 'interfaces/user-json';
 import type WithBeatmapOwners from 'interfaces/with-beatmap-owners';
 import { route } from 'laroute';
 import { assign, padStart, sortBy } from 'lodash';
-import * as moment from 'moment';
+import moment from 'moment';
 import core from 'osu-core-singleton';
 import { currentUrl } from 'utils/turbolinks';
 import { linkHtml, openBeatmapEditor } from 'utils/url';

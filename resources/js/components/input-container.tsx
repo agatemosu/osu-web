@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 import { observer } from 'mobx-react';
-import type * as React from 'react';
+import * as React from 'react';
 import { classWithModifiers, type Modifiers } from 'utils/css';
 import { trans } from 'utils/lang';
 import MessageLengthCounter from './message-length-counter';

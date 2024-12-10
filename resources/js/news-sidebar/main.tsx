@@ -3,7 +3,7 @@
 
 import NewsPostJson from 'interfaces/news-post-json';
 import NewsSidebarMetaJson from 'interfaces/news-sidebar-meta-json';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as React from 'react';
 import { trans } from 'utils/lang';
 import MonthListing from './month-listing';

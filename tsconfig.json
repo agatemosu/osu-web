@@ -2,7 +2,9 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./resources/js",
+    "esModuleInterop": true,
     "experimentalDecorators": true,
+    "isolatedModules": true,
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "es2020"],
     "module": "es2020",

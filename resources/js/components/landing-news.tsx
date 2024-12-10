@@ -2,7 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 import PostJson from 'interfaces/news-post-json';
 import { route } from 'laroute';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import PostItem from 'news-index/post-item';
 import * as React from 'react';
 import { trans } from 'utils/lang';

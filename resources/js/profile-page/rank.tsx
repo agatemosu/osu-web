@@ -4,7 +4,7 @@
 import ValueDisplay from 'components/value-display';
 import RankHighestJson from 'interfaces/rank-highest-json';
 import UserStatisticsJson, { RankType } from 'interfaces/user-statistics-json';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as React from 'react';
 import { formatNumber } from 'utils/html';
 import { trans } from 'utils/lang';

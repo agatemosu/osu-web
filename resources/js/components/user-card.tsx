@@ -6,7 +6,7 @@ import FriendButton from 'components/friend-button';
 import Reportable from 'interfaces/reportable';
 import UserJson from 'interfaces/user-json';
 import { route } from 'laroute';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers, Modifiers } from 'utils/css';

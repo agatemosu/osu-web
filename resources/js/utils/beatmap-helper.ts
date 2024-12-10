@@ -7,7 +7,7 @@ import BeatmapJson from 'interfaces/beatmap-json';
 import BeatmapsetJson from 'interfaces/beatmapset-json';
 import Ruleset, { rulesets } from 'interfaces/ruleset';
 import WithBeatmapOwners from 'interfaces/with-beatmap-owners';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import core from 'osu-core-singleton';
 import { parseJsonNullable } from 'utils/json';
 

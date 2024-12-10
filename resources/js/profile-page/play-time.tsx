@@ -3,7 +3,7 @@
 
 import ValueDisplay from 'components/value-display';
 import UserStatisticsJson from 'interfaces/user-statistics-json';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as React from 'react';
 import { formatNumber } from 'utils/html';
 import { trans, transChoice } from 'utils/lang';

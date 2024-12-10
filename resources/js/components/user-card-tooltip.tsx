@@ -3,7 +3,7 @@
 
 import Reportable from 'interfaces/reportable';
 import UserJson from 'interfaces/user-json';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { userNotFoundJson } from 'models/user';
 import core from 'osu-core-singleton';
 import * as React from 'react';

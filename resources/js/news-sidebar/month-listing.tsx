@@ -3,7 +3,7 @@
 
 import NewsPostJson from 'interfaces/news-post-json';
 import { route } from 'laroute';
-import * as moment from 'moment';
+import moment from 'moment';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { trans } from 'utils/lang';

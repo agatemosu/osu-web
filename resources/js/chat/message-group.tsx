@@ -7,7 +7,7 @@ import Reportable from 'interfaces/reportable';
 import { last } from 'lodash';
 import { observer } from 'mobx-react';
 import Message from 'models/chat/message';
-import * as moment from 'moment';
+import moment from 'moment';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';

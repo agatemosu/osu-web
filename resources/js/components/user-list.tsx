@@ -5,7 +5,7 @@ import GroupJson from 'interfaces/group-json';
 import Ruleset from 'interfaces/ruleset';
 import UserJson from 'interfaces/user-json';
 import { usernameSortAscending } from 'models/user';
-import * as moment from 'moment';
+import moment from 'moment';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';

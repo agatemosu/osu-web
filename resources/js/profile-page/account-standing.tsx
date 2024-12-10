@@ -8,7 +8,7 @@ import UserLink from 'components/user-link';
 import UserAccountHistoryJson from 'interfaces/user-account-history-json';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react';
-import * as moment from 'moment';
+import moment from 'moment';
 import ExtraHeader from 'profile-page/extra-header';
 import * as React from 'react';
 import { classWithModifiers } from 'utils/css';

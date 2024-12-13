@@ -1,4 +1,13 @@
 /*
+!/*.js
+!/*.json
+!/.*rc
+
 !/resources
 /resources/*
 !/resources/css
+!/resources/js
+
+!/tests
+/tests/*
+!/tests/karma

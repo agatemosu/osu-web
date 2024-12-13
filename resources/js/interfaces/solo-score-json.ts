@@ -1,29 +1,32 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapExtendedJson from './beatmap-extended-json';
-import Rank from './rank';
-import Ruleset from './ruleset';
-import { ScoreJsonAvailableIncludes, ScoreJsonDefaultIncludes } from './score-json';
-import ScoreModJson from './score-mod-json';
-import WithBeatmapOwners from './with-beatmap-owners';
+import BeatmapExtendedJson from "./beatmap-extended-json";
+import Rank from "./rank";
+import Ruleset from "./ruleset";
+import {
+  ScoreJsonAvailableIncludes,
+  ScoreJsonDefaultIncludes,
+} from "./score-json";
+import ScoreModJson from "./score-mod-json";
+import WithBeatmapOwners from "./with-beatmap-owners";
 
 export type SoloScoreStatisticsAttribute =
-  | 'good'
-  | 'great'
-  | 'ignore_hit'
-  | 'ignore_miss'
-  | 'large_bonus'
-  | 'large_tick_hit'
-  | 'large_tick_miss'
-  | 'legacy_combo_increase'
-  | 'meh'
-  | 'miss'
-  | 'ok'
-  | 'perfect'
-  | 'small_bonus'
-  | 'small_tick_hit'
-  | 'small_tick_miss';
+  | "good"
+  | "great"
+  | "ignore_hit"
+  | "ignore_miss"
+  | "large_bonus"
+  | "large_tick_hit"
+  | "large_tick_miss"
+  | "legacy_combo_increase"
+  | "meh"
+  | "miss"
+  | "ok"
+  | "perfect"
+  | "small_bonus"
+  | "small_tick_hit"
+  | "small_tick_miss";
 
 interface SoloScoreJsonAttributesBase {
   accuracy: number;
@@ -60,31 +63,42 @@ interface SoloScoreJsonAttributesSoloScore extends SoloScoreJsonAttributesBase {
   preserve: boolean;
   processed: boolean;
   ranked: boolean;
-  type: 'solo_score';
+  type: "solo_score";
 }
 
-interface SoloScoreJsonAttributesMultiplayer extends SoloScoreJsonAttributesSoloScore {
+interface SoloScoreJsonAttributesMultiplayer
+  extends SoloScoreJsonAttributesSoloScore {
   playlist_item_id: number;
   room_id: number;
   solo_score_id: number;
 }
 
-type SoloScoreJsonAttributes = SoloScoreJsonAttributesLegacy | SoloScoreJsonAttributesMultiplayer | SoloScoreJsonAttributesSoloScore;
+type SoloScoreJsonAttributes =
+  | SoloScoreJsonAttributesLegacy
+  | SoloScoreJsonAttributesMultiplayer
+  | SoloScoreJsonAttributesSoloScore;
 
-type SoloScoreJson = SoloScoreJsonAttributes & ScoreJsonDefaultIncludes & Partial<ScoreJsonAvailableIncludes>;
+type SoloScoreJson = SoloScoreJsonAttributes &
+  ScoreJsonDefaultIncludes &
+  Partial<ScoreJsonAvailableIncludes>;
 
 export default SoloScoreJson;
 
-export type SoloScoreJsonForBeatmap = SoloScoreJson & Required<Pick<SoloScoreJson, 'user'>>;
+export type SoloScoreJsonForBeatmap = SoloScoreJson &
+  Required<Pick<SoloScoreJson, "user">>;
 
-export type SoloScoreJsonForShow = SoloScoreJson
-& Required<Pick<SoloScoreJson, 'beatmapset' | 'best_id' | 'rank_global' | 'user'>>
-& {
-  beatmap: WithBeatmapOwners<BeatmapExtendedJson>;
-};
+export type SoloScoreJsonForShow = SoloScoreJson &
+  Required<
+    Pick<SoloScoreJson, "beatmapset" | "best_id" | "rank_global" | "user">
+  > & {
+    beatmap: WithBeatmapOwners<BeatmapExtendedJson>;
+  };
 
-export type SoloScoreJsonForUser = SoloScoreJson & Required<Pick<SoloScoreJson, 'beatmap' | 'beatmapset'>>;
+export type SoloScoreJsonForUser = SoloScoreJson &
+  Required<Pick<SoloScoreJson, "beatmap" | "beatmapset">>;
 
-export function isSoloScoreJsonForUser(score: SoloScoreJson): score is SoloScoreJsonForUser {
+export function isSoloScoreJsonForUser(
+  score: SoloScoreJson,
+): score is SoloScoreJsonForUser {
   return score.beatmap != null && score.beatmapset != null;
 }

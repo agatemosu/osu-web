@@ -1,34 +1,34 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import mapperGroup from 'beatmap-discussions/mapper-group';
-import SelectOptions, { OptionRenderProps } from 'components/select-options';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import UserJson from 'interfaces/user-json';
-import { action, computed, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import { usernameSortAscending } from 'models/user';
-import * as React from 'react';
-import { mobxArrayGet } from 'utils/array';
-import { makeUrl, parseUrl } from 'utils/beatmapset-discussion-helper';
-import { groupColour } from 'utils/css';
-import { trans } from 'utils/lang';
-import DiscussionsState from './discussions-state';
+import mapperGroup from "beatmap-discussions/mapper-group";
+import SelectOptions, { OptionRenderProps } from "components/select-options";
+import BeatmapsetDiscussionsStore from "interfaces/beatmapset-discussions-store";
+import UserJson from "interfaces/user-json";
+import { action, computed, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import { usernameSortAscending } from "models/user";
+import * as React from "react";
+import { mobxArrayGet } from "utils/array";
+import { makeUrl, parseUrl } from "utils/beatmapset-discussion-helper";
+import { groupColour } from "utils/css";
+import { trans } from "utils/lang";
+import DiscussionsState from "./discussions-state";
 
 const allUsers = Object.freeze({
   id: null,
-  text: trans('beatmap_discussions.user_filter.everyone'),
+  text: trans("beatmap_discussions.user_filter.everyone"),
 });
 
 const noSelection = Object.freeze({
   id: null,
-  text: trans('beatmap_discussions.user_filter.label'),
+  text: trans("beatmap_discussions.user_filter.label"),
 });
 
 interface Option {
-  groups: UserJson['groups'];
-  id: UserJson['id'] | null;
-  text: UserJson['username'];
+  groups: UserJson["groups"];
+  id: UserJson["id"] | null;
+  text: UserJson["username"];
 }
 
 interface Props {
@@ -61,7 +61,7 @@ export class UserFilter extends React.Component<Props> {
   private get options() {
     const usersWithDicussions = new Map<number, UserJson>();
     for (const [, discussion] of this.props.store.discussions) {
-      if (discussion.message_type === 'hype') continue;
+      if (discussion.message_type === "hype") continue;
 
       const user = this.props.store.users.get(discussion.user_id);
       if (user != null && !usersWithDicussions.has(user.id)) {
@@ -85,7 +85,7 @@ export class UserFilter extends React.Component<Props> {
   render() {
     return (
       <SelectOptions
-        modifiers='beatmap-discussions-user-filter'
+        modifiers="beatmap-discussions-user-filter"
         onChange={this.handleChange}
         options={this.options}
         renderOption={this.renderOption}
@@ -109,7 +109,12 @@ export class UserFilter extends React.Component<Props> {
     return user != null && user.id === this.ownerId;
   }
 
-  private readonly renderOption = ({ cssClasses, children, onClick, option }: OptionRenderProps<Option>) => {
+  private readonly renderOption = ({
+    cssClasses,
+    children,
+    onClick,
+    option,
+  }: OptionRenderProps<Option>) => {
     const group = this.getGroup(option);
     const style = groupColour(group);
 

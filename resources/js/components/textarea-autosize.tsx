@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import autosize from 'autosize';
-import React from 'react';
-import { present } from 'utils/string';
+import autosize from "autosize";
+import React from "react";
+import { present } from "utils/string";
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   innerRef?: React.RefObject<HTMLTextAreaElement>;
@@ -14,13 +14,17 @@ interface State {
   lineHeight: number;
 }
 
-export default class TextareaAutosize extends React.PureComponent<Props, State> {
+export default class TextareaAutosize extends React.PureComponent<
+  Props,
+  State
+> {
   static readonly defaultProps = {
     async: false,
     rows: 1,
   };
 
-  private readonly ref = this.props.innerRef ?? React.createRef<HTMLTextAreaElement>();
+  private readonly ref =
+    this.props.innerRef ?? React.createRef<HTMLTextAreaElement>();
   private shouldUpdate = true;
 
   private get maxHeight() {
@@ -42,7 +46,13 @@ export default class TextareaAutosize extends React.PureComponent<Props, State> 
         if (this.ref.current != null) {
           if (this.props.maxRows != null) {
             // getting line-height should be delayed until after turbolinks navigation, otherwise it returns NaN.
-            const lineHeight = Math.ceil(parseFloat(window.getComputedStyle(this.ref.current).getPropertyValue('line-height')));
+            const lineHeight = Math.ceil(
+              parseFloat(
+                window
+                  .getComputedStyle(this.ref.current)
+                  .getPropertyValue("line-height"),
+              ),
+            );
             this.setState({ lineHeight });
           }
 
@@ -59,8 +69,8 @@ export default class TextareaAutosize extends React.PureComponent<Props, State> 
 
     // autosize sets overflowX to 'scroll' on update unless the existing style is 'hidden'.
     // It doesn't work if the style is set on class, component or didMount.
-    if (this.ref.current.style.overflowX !== 'hidden') {
-      this.ref.current.style.overflowX = 'hidden';
+    if (this.ref.current.style.overflowX !== "hidden") {
+      this.ref.current.style.overflowX = "hidden";
     }
 
     // Avoid double updating since autosize automatically triggers update on input.
@@ -91,7 +101,9 @@ export default class TextareaAutosize extends React.PureComponent<Props, State> 
     );
   }
 
-  private readonly handleInput = (event: React.SyntheticEvent<HTMLTextAreaElement>) => {
+  private readonly handleInput = (
+    event: React.SyntheticEvent<HTMLTextAreaElement>,
+  ) => {
     this.shouldUpdate = false;
     this.props.onInput?.(event);
   };

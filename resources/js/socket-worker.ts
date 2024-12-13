@@ -1,31 +1,45 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
-import SocketMessageSendAction from 'actions/socket-message-send-action';
-import SocketStateChangedAction from 'actions/socket-state-changed-action';
-import { dispatch, dispatchListener } from 'app-dispatcher';
-import { route } from 'laroute';
-import { forEach } from 'lodash';
-import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { NotificationEventLogoutJson, NotificationEventVerifiedJson } from 'notifications/notification-events';
-import core from 'osu-core-singleton';
-import SocketMessageEvent, { isSocketEventData, SocketEventData } from 'socket-message-event';
-import RetryDelay from 'utils/retry-delay';
+import DispatcherAction from "actions/dispatcher-action";
+import SocketMessageSendAction from "actions/socket-message-send-action";
+import SocketStateChangedAction from "actions/socket-state-changed-action";
+import { dispatch, dispatchListener } from "app-dispatcher";
+import { route } from "laroute";
+import { forEach } from "lodash";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
+import {
+  NotificationEventLogoutJson,
+  NotificationEventVerifiedJson,
+} from "notifications/notification-events";
+import core from "osu-core-singleton";
+import SocketMessageEvent, {
+  isSocketEventData,
+  SocketEventData,
+} from "socket-message-event";
+import RetryDelay from "utils/retry-delay";
 
-const isNotificationEventLogoutJson = (arg: SocketEventData): arg is NotificationEventLogoutJson => arg.event === 'logout';
+const isNotificationEventLogoutJson = (
+  arg: SocketEventData,
+): arg is NotificationEventLogoutJson => arg.event === "logout";
 
-const isNotificationEventVerifiedJson = (arg: SocketEventData): arg is NotificationEventVerifiedJson => arg.event === 'verified';
+const isNotificationEventVerifiedJson = (
+  arg: SocketEventData,
+): arg is NotificationEventVerifiedJson => arg.event === "verified";
 
 interface NotificationFeedMetaJson {
   url: string;
 }
 
-type ConnectionStatus = 'disconnected' | 'disconnecting' | 'connecting' | 'connected';
+type ConnectionStatus =
+  | "disconnected"
+  | "disconnecting"
+  | "connecting"
+  | "connected";
 
 @dispatchListener
 export default class SocketWorker {
-  @observable connectionStatus: ConnectionStatus = 'disconnected';
+  @observable connectionStatus: ConnectionStatus = "disconnected";
   @observable hasConnectedOnce = false;
   userId: number | null = null;
   @observable private active = false;
@@ -37,7 +51,7 @@ export default class SocketWorker {
 
   @computed
   get isConnected() {
-    return this.connectionStatus === 'connected';
+    return this.connectionStatus === "connected";
   }
 
   constructor() {
@@ -86,29 +100,32 @@ export default class SocketWorker {
       return;
     }
 
-    this.connectionStatus = 'connecting';
+    this.connectionStatus = "connecting";
     window.clearTimeout(this.timeout.connectWebSocket);
 
-    const tokenEl = document.querySelector('meta[name=csrf-token]');
+    const tokenEl = document.querySelector("meta[name=csrf-token]");
 
     if (tokenEl == null) {
       return;
     }
 
-    const token = tokenEl.getAttribute('content');
+    const token = tokenEl.getAttribute("content");
     this.ws = new WebSocket(`${this.endpoint}?csrf=${token}`);
-    this.ws.addEventListener('open', action(() => {
-      this.retryDelay.reset();
-      this.connectionStatus = 'connected';
-      this.hasConnectedOnce = true;
-    }));
-    this.ws.addEventListener('close', this.reconnectWebSocket);
-    this.ws.addEventListener('message', this.handleNewEvent);
+    this.ws.addEventListener(
+      "open",
+      action(() => {
+        this.retryDelay.reset();
+        this.connectionStatus = "connected";
+        this.hasConnectedOnce = true;
+      }),
+    );
+    this.ws.addEventListener("close", this.reconnectWebSocket);
+    this.ws.addEventListener("message", this.handleNewEvent);
   }
 
   @action
   private destroy() {
-    this.connectionStatus = 'disconnecting';
+    this.connectionStatus = "disconnecting";
 
     this.userId = null;
     this.active = false;
@@ -120,7 +137,7 @@ export default class SocketWorker {
       this.ws = null;
     }
 
-    this.connectionStatus = 'disconnected';
+    this.connectionStatus = "disconnected";
   }
 
   private readonly handleNewEvent = (event: MessageEvent<string>) => {
@@ -131,7 +148,7 @@ export default class SocketWorker {
       this.destroy();
       core.userLoginObserver.logout();
     } else if (isNotificationEventVerifiedJson(eventData)) {
-      $.publish('user-verification:success');
+      $.publish("user-verification:success");
     } else {
       dispatch(new SocketMessageEvent(eventData));
     }
@@ -144,23 +161,26 @@ export default class SocketWorker {
         return json;
       }
 
-      console.error('message missing event type.');
+      console.error("message missing event type.");
     } catch {
-      console.error('Failed parsing data:', event.data);
+      console.error("Failed parsing data:", event.data);
     }
   }
 
   @action
   private readonly reconnectWebSocket = () => {
-    this.connectionStatus = 'disconnected';
+    this.connectionStatus = "disconnected";
     if (!this.active) {
       return;
     }
 
-    this.timeout.connectWebSocket = window.setTimeout(action(() => {
-      this.ws = null;
-      this.connectWebSocket();
-    }), this.retryDelay.get());
+    this.timeout.connectWebSocket = window.setTimeout(
+      action(() => {
+        this.ws = null;
+        this.connectWebSocket();
+      }),
+      this.retryDelay.get(),
+    );
   };
 
   private readonly startWebSocket = () => {
@@ -174,7 +194,7 @@ export default class SocketWorker {
 
     window.clearTimeout(this.timeout.startWebSocket);
 
-    this.xhr = $.get(route('notifications.endpoint'));
+    this.xhr = $.get(route("notifications.endpoint"));
     this.xhr
       .always(() => {
         this.xhr = null;
@@ -191,7 +211,10 @@ export default class SocketWorker {
           this.destroy();
           return;
         }
-        this.timeout.startWebSocket = window.setTimeout(this.startWebSocket, this.retryDelay.get());
+        this.timeout.startWebSocket = window.setTimeout(
+          this.startWebSocket,
+          this.retryDelay.get(),
+        );
       });
   };
 }

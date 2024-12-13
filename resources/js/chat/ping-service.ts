@@ -1,13 +1,13 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import ChatUpdateSilences from 'actions/chat-update-silences';
-import { dispatch } from 'app-dispatcher';
-import { ack } from 'chat/chat-api';
-import AckResponseJson from 'interfaces/chat/ack-response-json';
-import { maxBy } from 'lodash';
-import ChannelStore from 'stores/channel-store';
-import RetryDelay from 'utils/retry-delay';
+import ChatUpdateSilences from "actions/chat-update-silences";
+import { dispatch } from "app-dispatcher";
+import { ack } from "chat/chat-api";
+import AckResponseJson from "interfaces/chat/ack-response-json";
+import { maxBy } from "lodash";
+import ChannelStore from "stores/channel-store";
+import RetryDelay from "utils/retry-delay";
 
 export default class PingService {
   private lastHistoryId?: number;
@@ -16,7 +16,9 @@ export default class PingService {
   private timerId?: number;
   private xhr?: JQuery.jqXHR<AckResponseJson>;
 
-  constructor(private readonly channelStore: ChannelStore) { /* do nothing */ }
+  constructor(private readonly channelStore: ChannelStore) {
+    /* do nothing */
+  }
 
   start() {
     if (this.timerId == null) {
@@ -34,25 +36,27 @@ export default class PingService {
   }
 
   private readonly ping = () => {
-    this.xhr = ack(this.channelStore.lastReceivedMessageId, this.lastHistoryId).done((json) => {
-      const newHistoryId = maxBy(json.silences, 'id')?.id;
+    this.xhr = ack(this.channelStore.lastReceivedMessageId, this.lastHistoryId)
+      .done((json) => {
+        const newHistoryId = maxBy(json.silences, "id")?.id;
 
-      if (newHistoryId != null) {
-        this.lastHistoryId = newHistoryId;
-      }
+        if (newHistoryId != null) {
+          this.lastHistoryId = newHistoryId;
+        }
 
-      dispatch(new ChatUpdateSilences(json.silences));
+        dispatch(new ChatUpdateSilences(json.silences));
 
-      this.retryDelay.reset();
-      this.scheduleNextPing();
-    }).fail((xhr) => {
-      // logged out, stop pinging.
-      if (xhr.status === 401) {
-        return;
-      }
+        this.retryDelay.reset();
+        this.scheduleNextPing();
+      })
+      .fail((xhr) => {
+        // logged out, stop pinging.
+        if (xhr.status === 401) {
+          return;
+        }
 
-      this.scheduleNextPing();
-    });
+        this.scheduleNextPing();
+      });
   };
 
   private scheduleNextPing() {

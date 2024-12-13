@@ -3,10 +3,13 @@
 
 export default class ReferenceLinkTooltip {
   constructor() {
-    $(document).on('mouseover', '.js-reference-link', this.showTooltip);
+    $(document).on("mouseover", ".js-reference-link", this.showTooltip);
   }
 
-  private readonly createTooltip = (element: HTMLElement, content: HTMLElement) => {
+  private readonly createTooltip = (
+    element: HTMLElement,
+    content: HTMLElement,
+  ) => {
     $(element).qtip({
       content: {
         text: content,
@@ -19,8 +22,8 @@ export default class ReferenceLinkTooltip {
         fixed: true,
       },
       position: {
-        at: 'top center',
-        my: 'bottom center',
+        at: "top center",
+        my: "bottom center",
         viewport: $(window),
       },
       show: {
@@ -31,7 +34,7 @@ export default class ReferenceLinkTooltip {
         ready: true,
       },
       style: {
-        classes: 'tooltip-default tooltip-default--interactable',
+        classes: "tooltip-default tooltip-default--interactable",
       },
     });
   };
@@ -40,25 +43,27 @@ export default class ReferenceLinkTooltip {
     if (!(e.currentTarget instanceof HTMLAnchorElement)) return;
 
     const el = e.currentTarget;
-    const targetId = el.getAttribute('href');
+    const targetId = el.getAttribute("href");
 
     if (targetId == null) return;
 
-    const tooltipContent = document.querySelector(targetId)?.firstElementChild?.cloneNode(true);
+    const tooltipContent = document
+      .querySelector(targetId)
+      ?.firstElementChild?.cloneNode(true);
 
     if (!(tooltipContent instanceof HTMLParagraphElement)) return;
 
-    tooltipContent.querySelectorAll('*').forEach((node) => {
-      if (node.getAttribute('role') === 'doc-backlink') {
+    tooltipContent.querySelectorAll("*").forEach((node) => {
+      if (node.getAttribute("role") === "doc-backlink") {
         node.remove();
       } else {
-        node.removeAttribute('class');
+        node.removeAttribute("class");
       }
     });
     // Remove extra non-breaking spaces between backlink elements
     for (let i = tooltipContent.childNodes.length - 1; i >= 0; i--) {
       const node = tooltipContent.childNodes[i];
-      if (node.textContent === ' ') {
+      if (node.textContent === " ") {
         node.remove();
       } else {
         break;

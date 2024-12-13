@@ -1,13 +1,13 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import ValueDisplay from 'components/value-display';
-import RankHighestJson from 'interfaces/rank-highest-json';
-import UserStatisticsJson, { RankType } from 'interfaces/user-statistics-json';
-import * as moment from 'moment';
-import * as React from 'react';
-import { formatNumber } from 'utils/html';
-import { trans } from 'utils/lang';
+import ValueDisplay from "components/value-display";
+import RankHighestJson from "interfaces/rank-highest-json";
+import UserStatisticsJson, { RankType } from "interfaces/user-statistics-json";
+import * as moment from "moment";
+import * as React from "react";
+import { formatNumber } from "utils/html";
+import { trans } from "utils/lang";
 
 interface Props {
   highest?: RankHighestJson | null;
@@ -31,8 +31,8 @@ export default function Rank({ highest, stats, type }: Props) {
   }
 
   if (highest != null) {
-    const text = trans('users.show.rank.highest', {
-      date: moment(highest.updated_at).format('ll'),
+    const text = trans("users.show.rank.highest", {
+      date: moment(highest.updated_at).format("ll"),
       rank: `#${formatNumber(highest.rank)}`,
     });
 
@@ -42,12 +42,10 @@ export default function Rank({ highest, stats, type }: Props) {
   return (
     <ValueDisplay
       label={trans(`users.show.rank.${type}_simple`)}
-      modifiers='rank'
+      modifiers="rank"
       value={
-        <div data-html-title={tooltip.join('')} title=''>
-          {rank != null ? (
-            `#${formatNumber(rank)}`
-          ) : '-'}
+        <div data-html-title={tooltip.join("")} title="">
+          {rank != null ? `#${formatNumber(rank)}` : "-"}
         </div>
       }
     />

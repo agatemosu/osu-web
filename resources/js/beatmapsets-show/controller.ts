@@ -1,25 +1,36 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
-import UserJson from 'interfaces/user-json';
-import { keyBy } from 'lodash';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { deletedUserJson } from 'models/user';
-import core from 'osu-core-singleton';
-import { find, findDefault, group } from 'utils/beatmap-helper';
-import { parse } from 'utils/beatmapset-page-hash';
-import { parseJson } from 'utils/json';
-import { currentUrl } from 'utils/turbolinks';
+import { BeatmapsetJsonForShow } from "interfaces/beatmapset-extended-json";
+import UserJson from "interfaces/user-json";
+import { keyBy } from "lodash";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
+import { deletedUserJson } from "models/user";
+import core from "osu-core-singleton";
+import { find, findDefault, group } from "utils/beatmap-helper";
+import { parse } from "utils/beatmapset-page-hash";
+import { parseJson } from "utils/json";
+import { currentUrl } from "utils/turbolinks";
 
-export type ScoreLoadingState = null | 'error' | 'loading' | 'supporter_only' | 'unranked';
+export type ScoreLoadingState =
+  | null
+  | "error"
+  | "loading"
+  | "supporter_only"
+  | "unranked";
 
-type BeatmapJsonForBeatmapsetShow = BeatmapsetJsonForShow['converts'][number];
+type BeatmapJsonForBeatmapsetShow = BeatmapsetJsonForShow["converts"][number];
 
 interface State {
-  beatmapId?: BeatmapJsonForBeatmapsetShow['id'];
+  beatmapId?: BeatmapJsonForBeatmapsetShow["id"];
   beatmapset: BeatmapsetJsonForShow;
-  playmode?: BeatmapJsonForBeatmapsetShow['mode'];
+  playmode?: BeatmapJsonForBeatmapsetShow["mode"];
   showingNsfwWarning: boolean;
 }
 
@@ -59,7 +70,7 @@ export default class Controller {
     });
 
     if (beatmap == null) {
-      throw new Error('failed to find default beatmap');
+      throw new Error("failed to find default beatmap");
     }
 
     return beatmap;
@@ -72,26 +83,32 @@ export default class Controller {
 
   @computed
   get usersById() {
-    return keyBy(this.beatmapset.related_users, 'id') as Partial<Record<number, UserJson>>;
+    return keyBy(this.beatmapset.related_users, "id") as Partial<
+      Record<number, UserJson>
+    >;
   }
 
   constructor(private readonly container: HTMLElement) {
     let state: State | null = null;
     try {
-      state = JSON.parse(this.container.dataset.state ?? 'null') as (State | null);
+      state = JSON.parse(
+        this.container.dataset.state ?? "null",
+      ) as State | null;
     } catch {
       // Do nothing if failed parsing.
     }
 
     if (state == null) {
       const optionsHash = parse(currentUrl().hash);
-      const beatmapset = parseJson<BeatmapsetJsonForShow>('json-beatmapset');
+      const beatmapset = parseJson<BeatmapsetJsonForShow>("json-beatmapset");
 
       state = {
         beatmapId: optionsHash.beatmapId,
         beatmapset,
         playmode: optionsHash.playmode,
-        showingNsfwWarning: beatmapset.nsfw && runInAction(() => !core.userPreferences.get('beatmapset_show_nsfw')),
+        showingNsfwWarning:
+          beatmapset.nsfw &&
+          runInAction(() => !core.userPreferences.get("beatmapset_show_nsfw")),
       };
     }
 
@@ -99,16 +116,18 @@ export default class Controller {
 
     makeObservable(this);
 
-    $(document).on('turbo:before-cache', this.saveState);
+    $(document).on("turbo:before-cache", this.saveState);
   }
 
   destroy() {
     this.saveState();
-    $(document).off('turbo:before-cache', this.saveState);
+    $(document).off("turbo:before-cache", this.saveState);
   }
 
   owners(beatmap: BeatmapJsonForBeatmapsetShow) {
-    return beatmap.owners.map((mapper) => this.usersById[mapper.id] ?? deletedUserJson);
+    return beatmap.owners.map(
+      (mapper) => this.usersById[mapper.id] ?? deletedUserJson,
+    );
   }
 
   @action

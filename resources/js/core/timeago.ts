@@ -2,14 +2,14 @@
 // See the LICENCE file in the repository root for full licence text.
 
 export default class Timeago {
-  private static readonly className = 'js-timeago';
+  private static readonly className = "js-timeago";
   private static readonly searchQuery = `.${Timeago.className}`;
 
   private readonly observer = new MutationObserver(Timeago.handleMutations);
 
   constructor() {
     this.observer.observe(document, {
-      attributeFilter: ['datetime'],
+      attributeFilter: ["datetime"],
       attributeOldValue: true,
       childList: true,
       subtree: true,
@@ -18,19 +18,19 @@ export default class Timeago {
 
   private static handleMutation(this: void, mutation: MutationRecord) {
     switch (mutation.type) {
-      case 'childList':
+      case "childList":
         $(mutation.addedNodes)
           .find(Timeago.searchQuery)
           .addBack(Timeago.searchQuery)
           .timeago();
         break;
-      case 'attributes':
+      case "attributes":
         if (
-          mutation.target instanceof HTMLTimeElement
-          && mutation.target.dateTime !== mutation.oldValue
-          && mutation.target.classList.contains(Timeago.className)
+          mutation.target instanceof HTMLTimeElement &&
+          mutation.target.dateTime !== mutation.oldValue &&
+          mutation.target.classList.contains(Timeago.className)
         ) {
-          $(mutation.target).timeago('updateFromDOM');
+          $(mutation.target).timeago("updateFromDOM");
         }
         break;
     }

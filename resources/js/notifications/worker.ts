@@ -1,16 +1,23 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
-import { dispatch, dispatchListener } from 'app-dispatcher';
-import { isUserVerificationXhr } from 'core/user/user-verification';
-import DispatchListener from 'dispatch-listener';
-import { NotificationBundleJson } from 'interfaces/notification-json';
-import { route } from 'laroute';
-import { action, computed, makeObservable, observable, observe, runInAction } from 'mobx';
-import SocketMessageEvent, { SocketEventData } from 'socket-message-event';
-import SocketWorker from 'socket-worker';
-import RetryDelay from 'utils/retry-delay';
+import DispatcherAction from "actions/dispatcher-action";
+import { dispatch, dispatchListener } from "app-dispatcher";
+import { isUserVerificationXhr } from "core/user/user-verification";
+import DispatchListener from "dispatch-listener";
+import { NotificationBundleJson } from "interfaces/notification-json";
+import { route } from "laroute";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  observe,
+  runInAction,
+} from "mobx";
+import SocketMessageEvent, { SocketEventData } from "socket-message-event";
+import SocketWorker from "socket-worker";
+import RetryDelay from "utils/retry-delay";
 import {
   NotificationEventDelete,
   NotificationEventDeleteJson,
@@ -19,17 +26,23 @@ import {
   NotificationEventNewJson,
   NotificationEventRead,
   NotificationEventReadJson,
-} from './notification-events';
+} from "./notification-events";
 
 interface NotificationBootJson extends NotificationBundleJson {
   notification_endpoint: string;
 }
 
-const isNotificationEventDeleteJson = (arg: SocketEventData): arg is NotificationEventDeleteJson => arg.event === 'delete';
+const isNotificationEventDeleteJson = (
+  arg: SocketEventData,
+): arg is NotificationEventDeleteJson => arg.event === "delete";
 
-const isNotificationEventNewJson = (arg: SocketEventData): arg is NotificationEventNewJson => arg.event === 'new';
+const isNotificationEventNewJson = (
+  arg: SocketEventData,
+): arg is NotificationEventNewJson => arg.event === "new";
 
-const isNotificationEventReadJson = (arg: SocketEventData): arg is NotificationEventReadJson => arg.event === 'read';
+const isNotificationEventReadJson = (
+  arg: SocketEventData,
+): arg is NotificationEventReadJson => arg.event === "read";
 
 /**
  * Handles initial notifications bootstrapping and parsing of web socket messages into notification events.
@@ -48,13 +61,18 @@ export default class Worker implements DispatchListener {
   }
 
   constructor(private readonly socketWorker: SocketWorker) {
-    observe(this.socketWorker, 'connectionStatus', (change) => {
-      if (change.newValue === 'connected') {
-        this.loadMore();
-      }
-    }, true);
+    observe(
+      this.socketWorker,
+      "connectionStatus",
+      (change) => {
+        if (change.newValue === "connected") {
+          this.loadMore();
+        }
+      },
+      true,
+    );
 
-    $.subscribe('user-verification:success.notifications-worker', () => {
+    $.subscribe("user-verification:success.notifications-worker", () => {
       this.loadMore();
     });
 
@@ -102,30 +120,34 @@ export default class Worker implements DispatchListener {
     window.clearTimeout(this.timeout);
 
     this.xhr = $.ajax({
-      dataType: 'json',
-      url: route('notifications.index', { unread: 1 }),
+      dataType: "json",
+      url: route("notifications.index", { unread: 1 }),
     });
 
     this.xhr
       .always(() => {
         this.xhr = null;
       })
-      .done((data) => runInAction(() => {
-        this.waitingVerification = false;
-        this.loadBundle(data);
-        this.retryDelay.reset();
-      }))
-      .fail((xhr) => runInAction(() => {
-        if (isUserVerificationXhr(xhr)) {
-          this.waitingVerification = true;
+      .done((data) =>
+        runInAction(() => {
+          this.waitingVerification = false;
+          this.loadBundle(data);
+          this.retryDelay.reset();
+        }),
+      )
+      .fail((xhr) =>
+        runInAction(() => {
+          if (isUserVerificationXhr(xhr)) {
+            this.waitingVerification = true;
 
-          return;
-        }
-        // Non-verification 401 error means user has been logged out. Don't retry.
-        if (xhr.status === 401) {
-          return;
-        }
-        this.delayedRetryInitialLoadMore();
-      }));
+            return;
+          }
+          // Non-verification 401 error means user has been logged out. Don't retry.
+          if (xhr.status === 401) {
+            return;
+          }
+          this.delayedRetryInitialLoadMore();
+        }),
+      );
   };
 }

@@ -1,14 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { codes } from 'micromark-util-symbol/codes';
-import type { Code, Effects, State } from 'micromark-util-types';
+import { codes } from "micromark-util-symbol/codes";
+import type { Code, Effects, State } from "micromark-util-types";
 
 function isEol(code: Code) {
-  return code === codes.carriageReturn
-    || code === codes.lineFeed
-    || code === codes.carriageReturnLineFeed
-    || code === codes.eof;
+  return (
+    code === codes.carriageReturn ||
+    code === codes.lineFeed ||
+    code === codes.carriageReturnLineFeed ||
+    code === codes.eof
+  );
 }
 
 function tokenize(effects: Effects, ok: State, nok: State) {
@@ -23,10 +25,10 @@ function tokenize(effects: Effects, ok: State, nok: State) {
   function start(code: Code): State | void {
     if (code !== codes.leftParenthesis) return nok(code);
 
-    effects.enter('oldLink');
+    effects.enter("oldLink");
     effects.consume(code);
-    effects.enter('oldLinkTitle');
-    effects.enter('chunkString', { contentType: 'string' });
+    effects.enter("oldLinkTitle");
+    effects.enter("chunkString", { contentType: "string" });
 
     return consumeTitle;
   }
@@ -55,11 +57,11 @@ function tokenize(effects: Effects, ok: State, nok: State) {
     if (code === codes.rightSquareBracket) {
       if (foundUrl) {
         if (openBrackets === 0) {
-          effects.exit('oldLinkUrl');
-          effects.enter('oldLinkUrlClose');
+          effects.exit("oldLinkUrl");
+          effects.enter("oldLinkUrlClose");
           effects.consume(code);
-          effects.exit('oldLinkUrlClose');
-          effects.exit('oldLink');
+          effects.exit("oldLinkUrlClose");
+          effects.exit("oldLink");
 
           return ok(code);
         }
@@ -80,10 +82,10 @@ function tokenize(effects: Effects, ok: State, nok: State) {
 
   function consumeUrlStart(code: Code): State | void {
     if (code === codes.leftSquareBracket) {
-      effects.enter('oldLinkUrlOpen');
+      effects.enter("oldLinkUrlOpen");
       effects.consume(code);
-      effects.exit('oldLinkUrlOpen');
-      effects.enter('oldLinkUrl');
+      effects.exit("oldLinkUrlOpen");
+      effects.enter("oldLinkUrl");
 
       return consumeUrl;
     }
@@ -103,11 +105,11 @@ function tokenize(effects: Effects, ok: State, nok: State) {
     if (code === codes.rightParenthesis) {
       if (openBrackets === 0) {
         if (foundTitle) {
-          effects.exit('chunkString');
-          effects.exit('oldLinkTitle');
-          effects.enter('oldLinkTitleClose');
+          effects.exit("chunkString");
+          effects.exit("oldLinkTitle");
+          effects.enter("oldLinkTitleClose");
           effects.consume(code);
-          effects.exit('oldLinkTitleClose');
+          effects.exit("oldLinkTitleClose");
 
           return consumeUrlStart;
         } else {
@@ -129,7 +131,11 @@ function tokenize(effects: Effects, ok: State, nok: State) {
   }
 
   function consumeTitleEscape(code: Code): State | void {
-    if (code === codes.backslash || code === codes.leftParenthesis || code === codes.rightParenthesis) {
+    if (
+      code === codes.backslash ||
+      code === codes.leftParenthesis ||
+      code === codes.rightParenthesis
+    ) {
       effects.consume(code);
 
       return consumeTitle;

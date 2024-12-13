@@ -20,6 +20,6 @@ export default interface NotificationDetails extends Record<string, any> {
 export function newEmptyNotificationDetails(): NotificationDetails {
   return {
     coverUrl: null,
-    title: '',
+    title: "",
   };
 }

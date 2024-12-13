@@ -1,34 +1,41 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as React from 'react';
-import { TooltipContext } from 'tooltip-context';
-import { isModalShowing } from 'utils/modal-helper';
-import { nextVal } from 'utils/seq';
-import Portal from './portal';
+import * as React from "react";
+import { TooltipContext } from "tooltip-context";
+import { isModalShowing } from "utils/modal-helper";
+import { nextVal } from "utils/seq";
+import Portal from "./portal";
 
 type Children = (dismiss: () => void) => React.ReactNode;
 
 export interface Props {
   children: Children;
-  customRender?: (children: React.ReactNode, ref: React.RefObject<HTMLElement>, toggle: (event: React.MouseEvent<HTMLElement>) => void) => React.ReactNode;
-  direction?: 'left' | 'right';
+  customRender?: (
+    children: React.ReactNode,
+    ref: React.RefObject<HTMLElement>,
+    toggle: (event: React.MouseEvent<HTMLElement>) => void,
+  ) => React.ReactNode;
+  direction?: "left" | "right";
   onHide?: () => void;
   onShow?: () => void;
 }
 
-type DefaultProps = Required<Pick<Props, 'children' | 'direction'>>;
+type DefaultProps = Required<Pick<Props, "children" | "direction">>;
 type PropsWithDefaults = Props & DefaultProps;
 
 interface State {
   active: boolean;
 }
 
-export default class PopupMenu extends React.PureComponent<PropsWithDefaults, State> {
+export default class PopupMenu extends React.PureComponent<
+  PropsWithDefaults,
+  State
+> {
   static readonly contextType = TooltipContext;
   static readonly defaultProps: DefaultProps = {
     children: () => null,
-    direction: 'left',
+    direction: "left",
   };
 
   declare context: React.ContextType<typeof TooltipContext>;
@@ -47,11 +54,11 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
   }
 
   private get tooltipElement() {
-    return this.context?.closest('.qtip');
+    return this.context?.closest(".qtip");
   }
 
   componentDidMount() {
-    this.tooltipHideEvent = this.$tooltipElement?.qtip('option', 'hide.event');
+    this.tooltipHideEvent = this.$tooltipElement?.qtip("option", "hide.event");
     $(window).on(`resize.${this.eventId}`, this.resize);
   }
 
@@ -63,16 +70,22 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
       const $tooltipElement = this.$tooltipElement;
 
       if ($tooltipElement != null) {
-        this.tooltipHideEvent = $tooltipElement.qtip('option', 'hide.event');
-        $tooltipElement.qtip('option', 'hide.event', false);
+        this.tooltipHideEvent = $tooltipElement.qtip("option", "hide.event");
+        $tooltipElement.qtip("option", "hide.event", false);
       }
 
-      $(document).on(`click.${this.eventId} keydown.${this.eventId}`, this.hide);
+      $(document).on(
+        `click.${this.eventId} keydown.${this.eventId}`,
+        this.hide,
+      );
       this.props.onShow?.();
     } else {
-      this.$tooltipElement?.qtip('option', 'hide.event', this.tooltipHideEvent);
+      this.$tooltipElement?.qtip("option", "hide.event", this.tooltipHideEvent);
 
-      $(document).off(`click.${this.eventId} keydown.${this.eventId}`, this.hide);
+      $(document).off(
+        `click.${this.eventId} keydown.${this.eventId}`,
+        this.hide,
+      );
       this.props.onHide?.();
     }
   }
@@ -84,18 +97,22 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
 
   render() {
     if (this.props.customRender) {
-      return this.props.customRender(this.renderMenu(), this.buttonRef, this.toggle);
+      return this.props.customRender(
+        this.renderMenu(),
+        this.buttonRef,
+        this.toggle,
+      );
     }
 
     return (
       <>
         <button
           ref={this.buttonRef}
-          className='popup-menu'
+          className="popup-menu"
           onClick={this.toggle}
-          type='button'
+          type="button"
         >
-          <span className='fas fa-ellipsis-v' />
+          <span className="fas fa-ellipsis-v" />
         </button>
 
         {this.renderMenu()}
@@ -115,13 +132,18 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
     // originalEvent gets eaten by error popup?
     if (event == null) return;
 
-    if (('key' in event && event.key === 'Escape') || ('button' in event && event.button === 0 && !this.isMenuInPath(event.composedPath()))) {
+    if (
+      ("key" in event && event.key === "Escape") ||
+      ("button" in event &&
+        event.button === 0 &&
+        !this.isMenuInPath(event.composedPath()))
+    ) {
       this.setState({ active: false });
     }
   };
 
   private isMenuInPath(path: EventTarget[]) {
-    for (const ref of ['menuRootRef', 'buttonRef'] as const) {
+    for (const ref of ["menuRootRef", "buttonRef"] as const) {
       const el = this[ref].current;
       if (el != null && path.includes(el)) {
         return true;
@@ -138,7 +160,7 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
     return (
       <Portal>
         <div ref={this.menuRootRef}>
-          <div ref={this.menuRef} className='popup-menu-float'>
+          <div ref={this.menuRef} className="popup-menu-float">
             {this.props.children(this.dismiss)}
           </div>
         </div>
@@ -153,12 +175,12 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
     const menuEl = this.menuRef.current;
     const menuRootEl = this.menuRootRef.current;
     if (buttonEl == null || menuEl == null || menuRootEl == null) {
-      throw new Error('missing button and/or menu element');
+      throw new Error("missing button and/or menu element");
     }
 
     // disappear if the tree the menu is in is no longer displayed
     if (buttonEl.offsetParent == null) {
-      menuRootEl.style.display = 'none';
+      menuRootEl.style.display = "none";
       return;
     }
 
@@ -169,12 +191,12 @@ export default class PopupMenu extends React.PureComponent<PropsWithDefaults, St
     let left = scrollX + buttonRect.right;
     // shift the menu right if it clips out of the window;
     // menuRect.x doesn't update until after layout is finished so the known position of buttonRect is used instead.
-    if (this.props.direction === 'right' || buttonRect.x - menuRect.width < 0) {
+    if (this.props.direction === "right" || buttonRect.x - menuRect.width < 0) {
       left += menuRect.width - buttonRect.width;
     }
 
-    menuRootEl.style.display = 'block';
-    menuRootEl.style.position = 'absolute';
+    menuRootEl.style.display = "block";
+    menuRootEl.style.position = "absolute";
     menuRootEl.style.top = `${Math.floor(scrollY + buttonRect.bottom + 5)}px`;
     menuRootEl.style.left = `${Math.floor(left)}px`;
 

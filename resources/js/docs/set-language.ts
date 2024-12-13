@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { htmlElementOrNull } from 'utils/html';
-import { presence } from 'utils/string';
+import { htmlElementOrNull } from "utils/html";
+import { presence } from "utils/string";
 
-const currentStorageKey = 'docs-example-language';
+const currentStorageKey = "docs-example-language";
 
 export default class SetLanguage {
   private readonly languages;
@@ -15,20 +15,27 @@ export default class SetLanguage {
   }
 
   constructor() {
-    this.languages = JSON.parse(document.body.dataset.languages ?? '') as string[];
+    this.languages = JSON.parse(
+      document.body.dataset.languages ?? "",
+    ) as string[];
     this.language = this.currentLanguage();
 
-    document.addEventListener('click', this.updateLanguage);
+    document.addEventListener("click", this.updateLanguage);
   }
 
   private currentLanguage() {
-    return presence(window.localStorage.getItem(currentStorageKey)) ?? this.languages[0];
+    return (
+      presence(window.localStorage.getItem(currentStorageKey)) ??
+      this.languages[0]
+    );
   }
 
   private readonly updateLanguage = (event: MouseEvent) => {
-    const button = htmlElementOrNull(htmlElementOrNull(event.target)?.closest('.js-set-language'));
+    const button = htmlElementOrNull(
+      htmlElementOrNull(event.target)?.closest(".js-set-language"),
+    );
     if (button == null) return;
 
-    this.language = button.dataset.languageName ?? '';
+    this.language = button.dataset.languageName ?? "";
   };
 }

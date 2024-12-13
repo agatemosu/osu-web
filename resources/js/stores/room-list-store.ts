@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import RoomListJson, { EndpointRoomJson } from 'interfaces/room-list-json';
-import { action, makeObservable, observable } from 'mobx';
+import RoomListJson, { EndpointRoomJson } from "interfaces/room-list-json";
+import { action, makeObservable, observable } from "mobx";
 
 export default class RoomListStore {
   @observable cursorString: string | null = null;

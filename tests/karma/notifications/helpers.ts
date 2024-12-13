@@ -1,26 +1,34 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import NotificationJson, { NotificationStackJson, NotificationTypeJson } from 'interfaces/notification-json';
-import { NotificationIdentity } from 'notifications/notification-identity';
+import NotificationJson, {
+  NotificationStackJson,
+  NotificationTypeJson,
+} from "interfaces/notification-json";
+import { NotificationIdentity } from "notifications/notification-identity";
 
 export function makeNotificationJson(overrides: Record<string, unknown>) {
   const base = {
-    category: 'beatmapset_discussion',
-    created_at: '2019-12-02T08:13:19+00:00',
+    category: "beatmapset_discussion",
+    created_at: "2019-12-02T08:13:19+00:00",
     details: {},
     id: 1,
     is_read: false,
-    name: 'beatmapset_discussion_post_new',
+    name: "beatmapset_discussion_post_new",
     object_id: 1,
-    object_type: 'beatmapset',
+    object_type: "beatmapset",
     source_user_id: 475002,
   };
 
   return Object.assign({}, base, overrides) as NotificationJson;
 }
 
-export function makeStackJson(identity: NotificationIdentity, total: number, name: string, cursorId?: number) {
+export function makeStackJson(
+  identity: NotificationIdentity,
+  total: number,
+  name: string,
+  cursorId?: number,
+) {
   return {
     category: identity.category,
     cursor: cursorId != null ? { id: cursorId } : null,
@@ -31,7 +39,11 @@ export function makeStackJson(identity: NotificationIdentity, total: number, nam
   } as NotificationStackJson;
 }
 
-export function makeTypeJson(total: number, name: string | null, cursorId?: number) {
+export function makeTypeJson(
+  total: number,
+  name: string | null,
+  cursorId?: number,
+) {
   return {
     cursor: cursorId != null ? { id: cursorId } : null,
     name,

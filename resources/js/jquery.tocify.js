@@ -4,38 +4,46 @@
  * Copyright (c) 2013 Greg Franko;
  * Copyright (c) ppy Pty Ltd <contact@ppy.sh>;
  * Licensed MIT */
-import 'jquery-ui/ui/widget';
+import "jquery-ui/ui/widget";
 
 /* globals $, document, window */
-var tocClassName = 'tocify';
-var tocFocusClassName = 'tocify-focus';
-var tocHoverClassName = 'tocify-hover';
-var hideTocClassName = 'tocify-hide';
-var headerClassName = 'tocify-header';
-var headerClass = '.' + headerClassName;
-var subheaderClassName = 'tocify-subheader';
-var subheaderClass = '.' + subheaderClassName;
-var itemClassName = 'tocify-item';
-var itemClass = '.' + itemClassName;
-var extendPageClassName = 'tocify-extend-page';
-var extendPageClass = '.' + extendPageClassName;
+var tocClassName = "tocify";
+var tocFocusClassName = "tocify-focus";
+var tocHoverClassName = "tocify-hover";
+var hideTocClassName = "tocify-hide";
+var headerClassName = "tocify-header";
+var headerClass = "." + headerClassName;
+var subheaderClassName = "tocify-subheader";
+var subheaderClass = "." + subheaderClassName;
+var itemClassName = "tocify-item";
+var itemClass = "." + itemClassName;
+var extendPageClassName = "tocify-extend-page";
+var extendPageClass = "." + extendPageClassName;
 
 // Calling the jQueryUI Widget Factory Method
-$.widget('toc.tocify', {
+$.widget("toc.tocify", {
   // _addCSSClasses
   // --------------
   //      Adds CSS classes to the newly generated table of contents HTML
   _addCSSClasses() {
-    if (this.options.theme === 'jqueryui') {
+    if (this.options.theme === "jqueryui") {
       // If the user wants a jqueryUI theme
-      this.focusClass = 'ui-state-default';
-      this.hoverClass = 'ui-state-hover';
+      this.focusClass = "ui-state-default";
+      this.hoverClass = "ui-state-hover";
       // Adds the default styling to the dropdown list
-      this.element.addClass('ui-widget').find('.toc-title').addClass('ui-widget-header').end().find('li').addClass('ui-widget-content');
-    } else if (this.options.theme === 'bootstrap') {
+      this.element
+        .addClass("ui-widget")
+        .find(".toc-title")
+        .addClass("ui-widget-header")
+        .end()
+        .find("li")
+        .addClass("ui-widget-content");
+    } else if (this.options.theme === "bootstrap") {
       // If the user wants a twitterBootstrap theme
-      this.element.find(headerClass + ',' + subheaderClass).addClass('nav nav-list');
-      this.focusClass = 'active';
+      this.element
+        .find(headerClass + "," + subheaderClass)
+        .addClass("nav nav-list");
+      this.focusClass = "active";
       // If a user does not want a prebuilt theme
     } else {
       // Adds more neutral classes (instead of jqueryui)
@@ -55,26 +63,35 @@ $.widget('toc.tocify', {
     var index = $(this).index(self.options.selectors);
     // Finds the previous header DOM element
     var previousHeader = $(self.options.selectors).eq(index - 1);
-    var currentTagName = +$(this).prop('tagName').charAt(1);
-    var previousTagName = +previousHeader.prop('tagName').charAt(1);
+    var currentTagName = +$(this).prop("tagName").charAt(1);
+    var previousTagName = +previousHeader.prop("tagName").charAt(1);
 
     if (currentTagName < previousTagName) {
       // If the current header DOM element is smaller than the previous header DOM element or the first subheader
       // Selects the last unordered list HTML found within the HTML element calling the plugin
-      self.element.find(subheaderClass + '[data-tag=' + currentTagName + ']').last().append(self._nestElements($(this), index));
+      self.element
+        .find(subheaderClass + "[data-tag=" + currentTagName + "]")
+        .last()
+        .append(self._nestElements($(this), index));
     } else if (currentTagName === previousTagName) {
       // If the current header DOM element is the same type of header(eg. h4) as the previous header DOM element
-      ul.find(itemClass).last().after(self._nestElements($(this), index));
+      ul.find(itemClass)
+        .last()
+        .after(self._nestElements($(this), index));
     } else {
       // Selects the last unordered list HTML found within the HTML element calling the plugin
-      ul.find(itemClass).last().
+      ul.find(itemClass)
+        .last()
         // Appends an unorderedList HTML element to the dynamic `unorderedList` variable and sets a common class name
-        after($('<ul/>', {
-          class: subheaderClassName,
-          'data-tag': currentTagName,
-        })).next(subheaderClass).
+        .after(
+          $("<ul/>", {
+            class: subheaderClassName,
+            "data-tag": currentTagName,
+          }),
+        )
+        .next(subheaderClass)
         // Appends a list item HTML element to the last unordered list HTML element found within the HTML element calling the plugin
-        append(self._nestElements($(this), index));
+        .append(self._nestElements($(this), index));
     }
   },
 
@@ -90,31 +107,33 @@ $.widget('toc.tocify', {
     self._generateToc();
     // Adds CSS classes to the newly generated table of contents HTML
     self._addCSSClasses();
-    self.webkit = (function() {
+    self.webkit = (function () {
       for (var prop in window) {
         if (prop) {
-          if (prop.toLowerCase().indexOf('webkit') !== -1) {
+          if (prop.toLowerCase().indexOf("webkit") !== -1) {
             return true;
           }
         }
       }
 
       return false;
-    }());
+    })();
 
     // Adds jQuery event handlers to the newly generated table of contents
     self._setEventHandlers();
 
     // Binding to the Window load event to make sure the correct scrollTop is calculated
-    $(window).on('load', function() {
+    $(window).on("load", function () {
       // Sets the active TOC item
       self._setActiveElement(true);
       // Once all animations on the page are complete, this callback function will be called
-      $('html, body').promise().done(function() {
-        setTimeout(function() {
-          self.extendPageScroll = false;
-        }, 0);
-      });
+      $("html, body")
+        .promise()
+        .done(function () {
+          setTimeout(function () {
+            self.extendPageScroll = false;
+          }, 0);
+        });
     });
   },
 
@@ -122,31 +141,31 @@ $.widget('toc.tocify', {
   // ------------------
   //      Generates the hash value that will be used to refer to each item.
   _generateHashValue(arr, self, index) {
-    var hashValue = '';
+    var hashValue = "";
     var hashGeneratorOption = this.options.hashGenerator;
 
-    if (hashGeneratorOption === 'pretty') {
+    if (hashGeneratorOption === "pretty") {
       // prettify the text
-      hashValue = self.text().toLowerCase().replace(/\s/g, '-');
+      hashValue = self.text().toLowerCase().replace(/\s/g, "-");
       // fix double hyphens
-      while (hashValue.indexOf('--') > -1) {
-        hashValue = hashValue.replace(/--/g, '-');
+      while (hashValue.indexOf("--") > -1) {
+        hashValue = hashValue.replace(/--/g, "-");
       }
       // fix colon-space instances
-      while (hashValue.indexOf(':-') > -1) {
-        hashValue = hashValue.replace(/:-/g, '-');
+      while (hashValue.indexOf(":-") > -1) {
+        hashValue = hashValue.replace(/:-/g, "-");
       }
-    } else if (typeof hashGeneratorOption === 'function') {
+    } else if (typeof hashGeneratorOption === "function") {
       // call the function
       hashValue = hashGeneratorOption(self.text(), self);
     } else {
       // compact - the default
-      hashValue = self.text().replace(/\s/g, '');
+      hashValue = self.text().replace(/\s/g, "");
     }
 
     // add the index if we need to
     if (arr.length) {
-      hashValue += '' + index;
+      hashValue += "" + index;
     }
 
     // return the value
@@ -165,13 +184,19 @@ $.widget('toc.tocify', {
     var ul;
     var ignoreSelector = self.options.ignoreSelector;
     // If the selectors option has a comma within the string
-    if (this.options.selectors.indexOf(',') !== -1) {
+    if (this.options.selectors.indexOf(",") !== -1) {
       // Grabs the first selector from the string
-      $firstElems = $(this.options.context).find(this.options.selectors.replace(/ /g, '').substr(0, this.options.selectors.indexOf(',')));
+      $firstElems = $(this.options.context).find(
+        this.options.selectors
+          .replace(/ /g, "")
+          .substr(0, this.options.selectors.indexOf(",")),
+      );
     } else {
       // If the selectors option does not have a comma within the string
       // Grabs the first selector from the string and makes sure there are no spaces
-      $firstElems = $(this.options.context).find(this.options.selectors.replace(/ /g, ''));
+      $firstElems = $(this.options.context).find(
+        this.options.selectors.replace(/ /g, ""),
+      );
     }
 
     if (!$firstElems.length) {
@@ -182,7 +207,7 @@ $.widget('toc.tocify', {
     self.element.addClass(tocClassName);
 
     // Loops through each top level selector
-    $firstElems.each(function(index, firstElem) {
+    $firstElems.each(function (index, firstElem) {
       const $firstElem = $(firstElem);
 
       // If the element matches the ignoreSelector then we skip it
@@ -191,43 +216,47 @@ $.widget('toc.tocify', {
       }
 
       // Creates an unordered list HTML element and adds a dynamic ID and standard class name
-      ul = $('<ul/>', {
+      ul = $("<ul/>", {
         class: headerClassName,
         id: headerClassName + index,
-      }).
+      })
         // Appends a top level list item HTML element to the previously created HTML header
-        append(self._nestElements($firstElem, index));
+        .append(self._nestElements($firstElem, index));
 
       // Add the created unordered list element to the HTML element calling the plugin
       self.element.append(ul);
 
       // Finds all of the HTML tags between the header and subheader elements
-      $firstElem.nextUntil(firstElem.nodeName.toLowerCase()).each(function(_idx, el) {
-        const $el = $(el);
-        // If there are no nested subheader elemements
-        if ($el.find(self.options.selectors).length === 0) {
-          // Loops through all of the subheader elements
-          $el.filter(self.options.selectors).each(function(__idx, subheader) {
-            // If the element matches the ignoreSelector then we skip it
-            if ($(subheader).is(ignoreSelector)) {
-              return;
-            }
+      $firstElem
+        .nextUntil(firstElem.nodeName.toLowerCase())
+        .each(function (_idx, el) {
+          const $el = $(el);
+          // If there are no nested subheader elemements
+          if ($el.find(self.options.selectors).length === 0) {
+            // Loops through all of the subheader elements
+            $el
+              .filter(self.options.selectors)
+              .each(function (__idx, subheader) {
+                // If the element matches the ignoreSelector then we skip it
+                if ($(subheader).is(ignoreSelector)) {
+                  return;
+                }
 
-            self._appendSubheaders.call(subheader, self, ul);
-          });
-        } else {
-          // If there are nested subheader elements
-          // Loops through all of the subheader elements
-          $el.find(self.options.selectors).each(function(__idx, subheader) {
-            // If the element matches the ignoreSelector then we skip it
-            if ($(subheader).is(ignoreSelector)) {
-              return;
-            }
+                self._appendSubheaders.call(subheader, self, ul);
+              });
+          } else {
+            // If there are nested subheader elements
+            // Loops through all of the subheader elements
+            $el.find(self.options.selectors).each(function (__idx, subheader) {
+              // If the element matches the ignoreSelector then we skip it
+              if ($(subheader).is(ignoreSelector)) {
+                return;
+              }
 
-            self._appendSubheaders.call(subheader, self, ul);
-          });
-        }
-      });
+              self._appendSubheaders.call(subheader, self, ul);
+            });
+          }
+        });
     });
   },
 
@@ -235,9 +264,11 @@ $.widget('toc.tocify', {
   // -------------
   //      Helps create the table of contents list by appending nested list items
   _nestElements(self, index) {
-    var arr; var item; var hashValue;
+    var arr;
+    var item;
+    var hashValue;
 
-    arr = $.grep(this.items, function(i) {
+    arr = $.grep(this.items, function (i) {
       return i === self.text();
     });
 
@@ -254,20 +285,24 @@ $.widget('toc.tocify', {
     hashValue = this._generateHashValue(arr, self, index);
 
     // Appends a list item HTML element to the last unordered list HTML element found within the HTML element calling the plugin
-    item = $('<li/>', {
+    item = $("<li/>", {
       // Sets a common class name to the list item
       class: itemClassName,
-      'data-unique': hashValue,
-    }).append($('<a/>', {
-      text: self.text(),
-    }));
+      "data-unique": hashValue,
+    }).append(
+      $("<a/>", {
+        text: self.text(),
+      }),
+    );
 
     // Adds an HTML anchor tag before the currently traversed HTML element
-    self.before($('<div/>', {
-      'data-unique': hashValue,
-      // Sets a name attribute on the anchor tag to the text of the currently traversed HTML element (also making sure that all whitespace is replaced with an underscore)
-      name: hashValue,
-    }));
+    self.before(
+      $("<div/>", {
+        "data-unique": hashValue,
+        // Sets a name attribute on the anchor tag to the text of the currently traversed HTML element (also making sure that all whitespace is replaced with an underscore)
+        name: hashValue,
+      }),
+    );
 
     return item;
   },
@@ -279,23 +314,31 @@ $.widget('toc.tocify', {
     var self = this;
     var duration = self.options.smoothScroll || 0;
     var scrollTo = self.options.scrollTo;
-    var currentDiv = $('div[data-unique="' + elem.attr('data-unique') + '"]');
+    var currentDiv = $('div[data-unique="' + elem.attr("data-unique") + '"]');
 
     if (!currentDiv.length) {
       return self;
     }
 
     // Once all animations on the page are complete, this callback function will be called
-    $('html, body').promise().done(function() {
-      // Animates the html and body element scrolltops
-      $('html, body').animate({
-        // Sets the jQuery `scrollTop` to the top offset of the HTML div tag that matches the current list item's `data-unique` tag
-        scrollTop: currentDiv.offset().top - ($.isFunction(scrollTo) ? scrollTo.call() : scrollTo) + 'px',
-      }, {
-        // Sets the smoothScroll animation time duration to the smoothScrollSpeed option
-        duration,
+    $("html, body")
+      .promise()
+      .done(function () {
+        // Animates the html and body element scrolltops
+        $("html, body").animate(
+          {
+            // Sets the jQuery `scrollTop` to the top offset of the HTML div tag that matches the current list item's `data-unique` tag
+            scrollTop:
+              currentDiv.offset().top -
+              ($.isFunction(scrollTo) ? scrollTo.call() : scrollTo) +
+              "px",
+          },
+          {
+            // Sets the smoothScroll animation time duration to the smoothScrollSpeed option
+            duration,
+          },
+        );
       });
-    });
 
     // Maintains chainability
     return self;
@@ -308,7 +351,7 @@ $.widget('toc.tocify', {
 
     if (hash.length) {
       // Removes highlighting from all of the list item's
-      self.element.find('.' + self.focusClass).removeClass(self.focusClass);
+      self.element.find("." + self.focusClass).removeClass(self.focusClass);
       // Highlights the current list item that was clicked
       elem.addClass(self.focusClass);
 
@@ -319,7 +362,7 @@ $.widget('toc.tocify', {
       }
     } else {
       // Removes highlighting from all of the list item's
-      self.element.find('.' + self.focusClass).removeClass(self.focusClass);
+      self.element.find("." + self.focusClass).removeClass(self.focusClass);
 
       if (!hash.length && pageload && self.options.highlightDefault) {
         // Highlights the first TOC item if no other items are highlighted
@@ -338,41 +381,41 @@ $.widget('toc.tocify', {
     var self = this;
 
     // Event delegation that looks for any clicks on list item elements inside of the HTML element calling the plugin
-    this.element.on('click.tocify', 'li', function(event) {
+    this.element.on("click.tocify", "li", function (event) {
       const $target = $(event.currentTarget);
 
       if (self.options.history) {
-        window.location.hash = $target.attr('data-unique');
+        window.location.hash = $target.attr("data-unique");
       }
 
       // Removes highlighting from all of the list item's
-      self.element.find('.' + self.focusClass).removeClass(self.focusClass);
+      self.element.find("." + self.focusClass).removeClass(self.focusClass);
 
       // Highlights the current list item that was clicked
       $target.addClass(self.focusClass);
 
       // If the showAndHide option is true
       if (self.options.showAndHide) {
-        var elem = $('li[data-unique="' + $target.attr('data-unique') + '"]');
+        var elem = $('li[data-unique="' + $target.attr("data-unique") + '"]');
         self._triggerShow(elem);
       }
       self._scrollTo($target);
     });
 
     // Mouseenter and Mouseleave event handlers for the list item's within the HTML element calling the plugin
-    this.element.find('li').on({
+    this.element.find("li").on({
       // Mouseenter event handler
-      'mouseenter.tocify'() {
+      "mouseenter.tocify"() {
         // Adds a hover CSS class to the current list item
         $(this).addClass(self.hoverClass);
 
         // Makes sure the cursor is set to the pointer icon
-        $(this).css('cursor', 'pointer');
+        $(this).css("cursor", "pointer");
       },
 
       // Mouseleave event handler
-      'mouseleave.tocify'() {
-        if (self.options.theme !== 'bootstrap') {
+      "mouseleave.tocify"() {
+        if (self.options.theme !== "bootstrap") {
           // Removes the hover CSS class from the current list item
           $(this).removeClass(self.hoverClass);
         }
@@ -380,99 +423,136 @@ $.widget('toc.tocify', {
     });
 
     // only attach handler if needed (expensive in IE)
-    if (self.options.extendPage || self.options.highlightOnScroll || self.options.scrollHistory || self.options.showAndHideOnScroll) {
+    if (
+      self.options.extendPage ||
+      self.options.highlightOnScroll ||
+      self.options.scrollHistory ||
+      self.options.showAndHideOnScroll
+    ) {
       // Window scroll event handler
-      $(window).on('scroll.tocify', function() {
+      $(window).on("scroll.tocify", function () {
         // Once all animations on the page are complete, this callback function will be called
-        $('html, body').promise().done(function() {
-          // Stores how far the user has scrolled
-          var winScrollTop = $(window).scrollTop();
-          // Stores the height of the window
-          var winHeight = $(window).height();
-          // Stores the height of the document
-          var docHeight = $(document).height();
-          var scrollHeight = $('body')[0].scrollHeight;
-          // Instantiates a variable that will be used to hold a selected HTML element
-          var elem;
-          var lastElem;
-          var lastElemOffset;
-          var currentElem;
+        $("html, body")
+          .promise()
+          .done(function () {
+            // Stores how far the user has scrolled
+            var winScrollTop = $(window).scrollTop();
+            // Stores the height of the window
+            var winHeight = $(window).height();
+            // Stores the height of the document
+            var docHeight = $(document).height();
+            var scrollHeight = $("body")[0].scrollHeight;
+            // Instantiates a variable that will be used to hold a selected HTML element
+            var elem;
+            var lastElem;
+            var lastElemOffset;
+            var currentElem;
 
-          if (self.options.extendPage) {
+            if (self.options.extendPage) {
+              // If the user has scrolled to the bottom of the page and the last toc item is not focused
+              if (
+                (self.webkit &&
+                  winScrollTop >=
+                    scrollHeight - winHeight - self.options.extendPageOffset) ||
+                (!self.webkit &&
+                  winHeight + winScrollTop >
+                    docHeight - self.options.extendPageOffset)
+              ) {
+                if (!$(extendPageClass).length) {
+                  lastElem = $(
+                    'div[data-unique="' +
+                      $(itemClass).last().attr("data-unique") +
+                      '"]',
+                  );
 
-            // If the user has scrolled to the bottom of the page and the last toc item is not focused
-            if ((self.webkit && winScrollTop >= scrollHeight - winHeight - self.options.extendPageOffset) || (!self.webkit && winHeight + winScrollTop > docHeight - self.options.extendPageOffset)) {
-              if (!$(extendPageClass).length) {
-                lastElem = $('div[data-unique="' + $(itemClass).last().attr('data-unique') + '"]');
+                  if (!lastElem.length) return;
 
-                if (!lastElem.length) return;
+                  // Gets the top offset of the page header that is linked to the last toc item
+                  lastElemOffset = lastElem.offset().top;
 
-                // Gets the top offset of the page header that is linked to the last toc item
-                lastElemOffset = lastElem.offset().top;
+                  // Appends a div to the bottom of the page and sets the height to the difference of the window scrollTop and the last element's position top offset
+                  $(self.options.context).append(
+                    $("<div />", {
+                      class: extendPageClassName,
+                      "data-unique": extendPageClassName,
+                      height: Math.abs(lastElemOffset - winScrollTop) + "px",
+                    }),
+                  );
 
-                // Appends a div to the bottom of the page and sets the height to the difference of the window scrollTop and the last element's position top offset
-                $(self.options.context).append($('<div />', {
-                  class: extendPageClassName,
-                  'data-unique': extendPageClassName,
-                  height: Math.abs(lastElemOffset - winScrollTop) + 'px',
-                }));
-
-                if (self.extendPageScroll) {
-                  currentElem = self.element.find('li.active');
-                  self._scrollTo($('div[data-unique="' + currentElem.attr('data-unique') + '"]'));
+                  if (self.extendPageScroll) {
+                    currentElem = self.element.find("li.active");
+                    self._scrollTo(
+                      $(
+                        'div[data-unique="' +
+                          currentElem.attr("data-unique") +
+                          '"]',
+                      ),
+                    );
+                  }
                 }
               }
             }
-          }
 
-          // The zero timeout ensures the following code is run after the scroll events
-          setTimeout(function() {
-            // Stores the distance to the closest anchor
-            var closestAnchorDistance = null;
-            // Stores the index of the closest anchor
-            var closestAnchorIdx = null;
-            // Keeps a reference to all anchors
-            var anchors = $(self.options.context).find('div[data-unique]');
-            var anchorText;
+            // The zero timeout ensures the following code is run after the scroll events
+            setTimeout(function () {
+              // Stores the distance to the closest anchor
+              var closestAnchorDistance = null;
+              // Stores the index of the closest anchor
+              var closestAnchorIdx = null;
+              // Keeps a reference to all anchors
+              var anchors = $(self.options.context).find("div[data-unique]");
+              var anchorText;
 
-            // Determines the index of the closest anchor
-            anchors.each(function(idx, el) {
-              const $el = $(el);
-              var distance = Math.abs(($el.next().length ? $el.next() : $el).offset().top - winScrollTop - self.options.highlightOffset);
-              if (closestAnchorDistance == null || distance < closestAnchorDistance) {
-                closestAnchorDistance = distance;
-                closestAnchorIdx = idx;
-              } else {
-                return false;
+              // Determines the index of the closest anchor
+              anchors.each(function (idx, el) {
+                const $el = $(el);
+                var distance = Math.abs(
+                  ($el.next().length ? $el.next() : $el).offset().top -
+                    winScrollTop -
+                    self.options.highlightOffset,
+                );
+                if (
+                  closestAnchorDistance == null ||
+                  distance < closestAnchorDistance
+                ) {
+                  closestAnchorDistance = distance;
+                  closestAnchorIdx = idx;
+                } else {
+                  return false;
+                }
+              });
+
+              anchorText = $(anchors[closestAnchorIdx]).attr("data-unique");
+
+              // Stores the list item HTML element that corresponds to the currently traversed anchor tag
+              elem = $('li[data-unique="' + anchorText + '"]');
+
+              // If the `highlightOnScroll` option is true and a next element is found
+              if (self.options.highlightOnScroll && elem.length) {
+                // Removes highlighting from all of the list item's
+                self.element
+                  .find("." + self.focusClass)
+                  .removeClass(self.focusClass);
+
+                // Highlights the corresponding list item
+                elem.addClass(self.focusClass);
               }
-            });
 
-            anchorText = $(anchors[closestAnchorIdx]).attr('data-unique');
-
-            // Stores the list item HTML element that corresponds to the currently traversed anchor tag
-            elem = $('li[data-unique="' + anchorText + '"]');
-
-            // If the `highlightOnScroll` option is true and a next element is found
-            if (self.options.highlightOnScroll && elem.length) {
-              // Removes highlighting from all of the list item's
-              self.element.find('.' + self.focusClass).removeClass(self.focusClass);
-
-              // Highlights the corresponding list item
-              elem.addClass(self.focusClass);
-            }
-
-            if (self.options.scrollHistory) {
-              if (window.location.hash !== '#' + anchorText) {
-                window.history.replaceState(null, '', '#' + anchorText);
+              if (self.options.scrollHistory) {
+                if (window.location.hash !== "#" + anchorText) {
+                  window.history.replaceState(null, "", "#" + anchorText);
+                }
               }
-            }
 
-            // If the `showAndHideOnScroll` option is true
-            if (self.options.showAndHideOnScroll && self.options.showAndHide) {
-              self._triggerShow(elem, true);
-            }
-          }, 0);
-        });
+              // If the `showAndHideOnScroll` option is true
+              if (
+                self.options.showAndHideOnScroll &&
+                self.options.showAndHide
+              ) {
+                self._triggerShow(elem, true);
+              }
+            }, 0);
+          });
       });
     }
   },
@@ -507,19 +587,19 @@ $.widget('toc.tocify', {
     // Determines what jQuery effect to use
     switch (self.options.hideEffect) {
       // Uses `no effect`
-      case 'none':
+      case "none":
         elem.hide();
         break;
       // Uses the jQuery `hide` special effect
-      case 'hide':
+      case "hide":
         elem.hide(self.options.hideEffectSpeed);
         break;
       // Uses the jQuery `slideUp` special effect
-      case 'slideUp':
+      case "slideUp":
         elem.slideUp(self.options.hideEffectSpeed);
         break;
       // Uses the jQuery `fadeOut` special effect
-      case 'fadeOut':
+      case "fadeOut":
         elem.fadeOut(self.options.hideEffectSpeed);
         break;
       // If none of the above options were passed, then a `jqueryUI hide effect` is expected
@@ -534,10 +614,9 @@ $.widget('toc.tocify', {
 
   // These options will be used as defaults
   options: {
-
     // **context**: Accepts String: Any jQuery selector
     // The container element that holds all of the elements used to generate the table of contents
-    context: 'body',
+    context: "body",
 
     // **extendPage**: Accepts a boolean: true or false
     // If a user scrolls to the bottom of the page and the page is not tall enough to scroll to the last table of contents item, then the page height is increased
@@ -554,15 +633,15 @@ $.widget('toc.tocify', {
     // "pretty" - #looks-like-a-nice-url-and-is-easily-readable
     // function(text, element){} - Your own hash generation function that accepts the text as an
     // argument, and returns the hash value.
-    hashGenerator: 'compact',
+    hashGenerator: "compact",
 
     // **hideEffect**: Accepts String: "none", "fadeOut", "hide", or "slideUp"
     // Used to hide any of the table of contents nested items
-    hideEffect: 'slideUp',
+    hideEffect: "slideUp",
 
     // **hideEffectSpeed**: Accepts Number (milliseconds) or String: "slow", "medium", or "fast"
     // The time duration of the hide animation
-    hideEffectSpeed: 'medium',
+    hideEffectSpeed: "medium",
 
     // **highlightDefault**: Accepts a boolean: true or false
     // Set's the first TOC item as active if no other TOC item is active.
@@ -594,7 +673,7 @@ $.widget('toc.tocify', {
 
     // **selectors**: Accepts an Array of Strings: Any jQuery selectors
     // The element's used to generate the table of contents.  The order is very important since it will determine the table of content's nesting structure
-    selectors: 'h1, h2, h3',
+    selectors: "h1, h2, h3",
 
     // **showAndHide**: Accepts a boolean: true or false
     // Used to determine if elements should be shown and hidden
@@ -606,11 +685,11 @@ $.widget('toc.tocify', {
 
     // **showEffect**: Accepts String: "none", "fadeIn", "show", or "slideDown"
     // Used to display any of the table of contents nested items
-    showEffect: 'slideDown',
+    showEffect: "slideDown",
 
     // **showEffectSpeed**: Accepts Number (milliseconds) or String: "slow", "medium", or "fast"
     // The time duration of the show animation
-    showEffectSpeed: 'medium',
+    showEffectSpeed: "medium",
 
     // **smoothScroll**: Accepts a boolean: true or false
     // Determines if a jQuery animation should be used to scroll to specific table of contents items on the page
@@ -618,11 +697,11 @@ $.widget('toc.tocify', {
 
     // **smoothScrollSpeed**: Accepts Number (milliseconds) or String: "slow", "medium", or "fast"
     // The time duration of the smoothScroll animation
-    smoothScrollSpeed: 'medium',
+    smoothScrollSpeed: "medium",
 
     // **theme**: Accepts a string: "bootstrap", "jqueryui", or "none"
     // Determines if Twitter Bootstrap, jQueryUI, or Tocify classes should be added to the table of contents
-    theme: 'bootstrap',
+    theme: "bootstrap",
   },
 
   // setOption
@@ -649,13 +728,19 @@ $.widget('toc.tocify', {
     var self = this;
 
     // If the sub-header is not already visible
-    if (!elem.is(':visible')) {
-
-      if (!elem.find(subheaderClass).length && !elem.parent().is(headerClass) && !elem.parent().is(':visible')) {
+    if (!elem.is(":visible")) {
+      if (
+        !elem.find(subheaderClass).length &&
+        !elem.parent().is(headerClass) &&
+        !elem.parent().is(":visible")
+      ) {
         // If the current element does not have any nested subheaders, is not a header, and its parent is not visible
         // Sets the current element to all of the subheaders within the current header
         elem = elem.parents(subheaderClass).add(elem);
-      } else if (!elem.children(subheaderClass).length && !elem.parent().is(headerClass)) {
+      } else if (
+        !elem.children(subheaderClass).length &&
+        !elem.parent().is(headerClass)
+      ) {
         // If the current element does not have any nested subheaders and is not a header
         // Sets the current element to the closest subheader
         elem = elem.closest(subheaderClass);
@@ -664,19 +749,19 @@ $.widget('toc.tocify', {
       // Determines what jQuery effect to use
       switch (self.options.showEffect) {
         // Uses `no effect`
-        case 'none':
+        case "none":
           elem.show();
           break;
         // Uses the jQuery `show` special effect
-        case 'show':
+        case "show":
           elem.show(self.options.showEffectSpeed);
           break;
         // Uses the jQuery `slideDown` special effect
-        case 'slideDown':
+        case "slideDown":
           elem.slideDown(self.options.showEffectSpeed);
           break;
         // Uses the jQuery `fadeIn` special effect
-        case 'fadeIn':
+        case "fadeIn":
           elem.fadeIn(self.options.showEffectSpeed);
           break;
         // If none of the above options were passed, then a `jQueryUI show effect` is expected
@@ -684,7 +769,6 @@ $.widget('toc.tocify', {
           elem.show();
           break;
       }
-
     }
 
     if (elem.parent().is(headerClass)) {
@@ -694,7 +778,11 @@ $.widget('toc.tocify', {
     } else {
       // If the current subheader parent element is not a header
       // Hides all non-active sub-headers
-      self.hide($(subheaderClass).not(elem.closest(headerClass).find(subheaderClass).not(elem.siblings())));
+      self.hide(
+        $(subheaderClass).not(
+          elem.closest(headerClass).find(subheaderClass).not(elem.siblings()),
+        ),
+      );
     }
 
     // Maintains chainablity
@@ -702,5 +790,5 @@ $.widget('toc.tocify', {
   },
 
   // Plugin version
-  version: '1.9.0',
+  version: "1.9.0",
 });

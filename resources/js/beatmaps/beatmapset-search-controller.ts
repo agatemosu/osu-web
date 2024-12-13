@@ -1,30 +1,48 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapsetSearch, SearchResponse } from 'beatmaps/beatmapset-search';
-import ResultSet from 'beatmaps/result-set';
-import { BeatmapsetSearchFilters, FilterKey, filtersFromUrl } from 'beatmapset-search-filters';
-import { route } from 'laroute';
-import { debounce, intersection } from 'lodash';
-import { action, computed, IObjectDidChange, Lambda, makeObservable, observable, observe, runInAction } from 'mobx';
-import core from 'osu-core-singleton';
-import { trans, transArray } from 'utils/lang';
-import { popup } from 'utils/popup';
-import { updateHistory, currentUrl } from 'utils/turbolinks';
-import { updateQueryString } from 'utils/url';
+import { BeatmapsetSearch, SearchResponse } from "beatmaps/beatmapset-search";
+import ResultSet from "beatmaps/result-set";
+import {
+  BeatmapsetSearchFilters,
+  FilterKey,
+  filtersFromUrl,
+} from "beatmapset-search-filters";
+import { route } from "laroute";
+import { debounce, intersection } from "lodash";
+import {
+  action,
+  computed,
+  IObjectDidChange,
+  Lambda,
+  makeObservable,
+  observable,
+  observe,
+  runInAction,
+} from "mobx";
+import core from "osu-core-singleton";
+import { trans, transArray } from "utils/lang";
+import { popup } from "utils/popup";
+import { updateHistory, currentUrl } from "utils/turbolinks";
+import { updateQueryString } from "utils/url";
 
-
-const expandFilters: FilterKey[] = ['genre', 'language', 'extra', 'rank', 'played'];
+const expandFilters: FilterKey[] = [
+  "genre",
+  "language",
+  "extra",
+  "rank",
+  "played",
+];
 
 export interface SearchStatus {
   error?: any;
   from: number;
   restore?: boolean;
-  state: 'completed' // search not doing anything
-  | 'input'        // receiving input but not searching
-  | 'paging'       // getting more pages
-  | 'searching'    // actually doing a search
-  ;
+  state:
+    | "completed" // search not doing anything
+    | "input" // receiving input but not searching
+    | "paging" // getting more pages
+    | "searching"; // actually doing a search
 }
 
 export class BeatmapsetSearchController {
@@ -37,10 +55,13 @@ export class BeatmapsetSearchController {
   @observable searchStatus: SearchStatus = {
     error: null,
     from: 0,
-    state: 'completed',
+    state: "completed",
   };
 
-  private readonly debouncedFilterChangedSearch = debounce(() => this.filterChangedSearch(), 500);
+  private readonly debouncedFilterChangedSearch = debounce(
+    () => this.filterChangedSearch(),
+    500,
+  );
   private filtersObserver!: Lambda;
   private initialErrorMessage?: string;
 
@@ -64,17 +85,23 @@ export class BeatmapsetSearchController {
 
   @computed
   get isBusy() {
-    return this.searchStatus.state === 'searching' || this.searchStatus.state === 'input';
+    return (
+      this.searchStatus.state === "searching" ||
+      this.searchStatus.state === "input"
+    );
   }
 
   @computed
   get isPaging() {
-    return this.searchStatus.state === 'paging';
+    return this.searchStatus.state === "paging";
   }
 
   @computed
   get isSupporterMissing() {
-    return !(core.currentUser?.is_supporter ?? false) && this.filters.supporterRequired.length > 0;
+    return (
+      !(core.currentUser?.is_supporter ?? false) &&
+      this.filters.supporterRequired.length > 0
+    );
   }
 
   @computed
@@ -84,7 +111,9 @@ export class BeatmapsetSearchController {
 
   @computed
   get supporterRequiredFilterText() {
-    const text = this.filters.supporterRequired.map((name) => trans(`beatmaps.listing.search.filters.${name}`));
+    const text = this.filters.supporterRequired.map((name) =>
+      trans(`beatmaps.listing.search.filters.${name}`),
+    );
     return transArray(text);
   }
 
@@ -97,7 +126,7 @@ export class BeatmapsetSearchController {
   getFilters(key: FilterKey) {
     const value = this.filters.selectedValue(key);
 
-    return value != null ? value.split('.') : value;
+    return value != null ? value.split(".") : value;
   }
 
   initialize(data: SearchResponse) {
@@ -120,7 +149,7 @@ export class BeatmapsetSearchController {
     this.restoreStateFromUrl();
     this.search(0, true);
     if (this.initialErrorMessage != null) {
-      popup(this.initialErrorMessage, 'danger');
+      popup(this.initialErrorMessage, "danger");
       delete this.initialErrorMessage;
     }
   }
@@ -128,14 +157,14 @@ export class BeatmapsetSearchController {
   @action
   async search(from = 0, restore = false) {
     if (this.isSupporterMissing || from < 0) {
-      this.searchStatus = { error: null, from, restore, state: 'completed' };
+      this.searchStatus = { error: null, from, restore, state: "completed" };
       return;
     }
 
     this.searchStatus = {
       from: 0,
       restore,
-      state: from === 0 ? 'searching' : 'paging',
+      state: from === 0 ? "searching" : "paging",
     };
 
     let error: any;
@@ -146,26 +175,28 @@ export class BeatmapsetSearchController {
     }
 
     runInAction(() => {
-      this.searchStatus = { error, from, restore, state: 'completed' };
+      this.searchStatus = { error, from, restore, state: "completed" };
       this.currentResultSet = this.beatmapsetSearch.getResultSet(this.filters);
     });
   }
 
   @action
-  private readonly filterChangedHandler = (change: IObjectDidChange<BeatmapsetSearchFilters>) => {
-    if (change.type === 'update' && change.oldValue === change.newValue) return;
+  private readonly filterChangedHandler = (
+    change: IObjectDidChange<BeatmapsetSearchFilters>,
+  ) => {
+    if (change.type === "update" && change.oldValue === change.newValue) return;
 
-    this.searchStatus.state = 'input';
+    this.searchStatus.state = "input";
     this.debouncedFilterChangedSearch();
 
-    if (change.name !== 'query') {
+    if (change.name !== "query") {
       this.debouncedFilterChangedSearch.flush();
     }
   };
 
   private filterChangedSearch() {
-    const url = route('beatmapsets.index', this.filters.queryParams);
-    updateHistory(url, 'push');
+    const url = route("beatmapsets.index", this.filters.queryParams);
+    updateHistory(url, "push");
 
     this.search();
   }
@@ -180,10 +211,14 @@ export class BeatmapsetSearchController {
     this.filters = new BeatmapsetSearchFilters(url);
 
     // normalize url
-    updateHistory(updateQueryString(null, { ...this.filters.queryParams }), 'replace');
+    updateHistory(
+      updateQueryString(null, { ...this.filters.queryParams }),
+      "replace",
+    );
 
     this.filtersObserver = observe(this.filters, this.filterChangedHandler);
 
-    this.isExpanded = intersection(Object.keys(filtersFromUrl(url)), expandFilters).length > 0;
+    this.isExpanded =
+      intersection(Object.keys(filtersFromUrl(url)), expandFilters).length > 0;
   }
 }

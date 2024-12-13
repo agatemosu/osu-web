@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { SearchResponse } from 'beatmaps/beatmapset-search';
-import SearchResults from 'beatmaps/search-results';
-import { action, computed, makeObservable, observable } from 'mobx';
+import { SearchResponse } from "beatmaps/beatmapset-search";
+import SearchResults from "beatmaps/search-results";
+import { action, computed, makeObservable, observable } from "mobx";
 
 export default class ResultSet implements SearchResults {
   static CACHE_DURATION_MS = 60000;
@@ -25,7 +25,10 @@ export default class ResultSet implements SearchResults {
       return true;
     }
 
-    return new Date().getTime() - this.fetchedAt.getTime() > ResultSet.CACHE_DURATION_MS;
+    return (
+      new Date().getTime() - this.fetchedAt.getTime() >
+      ResultSet.CACHE_DURATION_MS
+    );
   }
 
   constructor() {

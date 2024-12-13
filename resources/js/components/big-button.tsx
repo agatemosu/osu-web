@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
-import { present } from 'utils/string';
-import { Spinner } from './spinner';
+import * as React from "react";
+import { classWithModifiers, Modifiers } from "utils/css";
+import { present } from "utils/string";
+import { Spinner } from "./spinner";
 
 interface Props {
   disabled: boolean;
@@ -17,11 +17,14 @@ interface Props {
   isBusy: boolean;
   isSubmit: boolean;
   modifiers?: Modifiers;
-  props: React.HTMLAttributes<HTMLElement> & Partial<Record<`data-${string}`, string | number>>;
-  text?: {
-    bottom?: string;
-    top: React.ReactNode;
-  } | string;
+  props: React.HTMLAttributes<HTMLElement> &
+    Partial<Record<`data-${string}`, string | number>>;
+  text?:
+    | {
+        bottom?: string;
+        top: React.ReactNode;
+      }
+    | string;
 }
 
 export default class BigButton extends React.Component<Props> {
@@ -42,7 +45,7 @@ export default class BigButton extends React.Component<Props> {
       return null;
     }
 
-    if (typeof this.props.text === 'string') {
+    if (typeof this.props.text === "string") {
       return {
         top: this.props.text,
       };
@@ -52,9 +55,11 @@ export default class BigButton extends React.Component<Props> {
   }
 
   render() {
-    let blockClass = classWithModifiers('btn-osu-big', this.props.modifiers, { disabled: this.disabled });
+    let blockClass = classWithModifiers("btn-osu-big", this.props.modifiers, {
+      disabled: this.disabled,
+    });
     if (this.props.extraClasses != null) {
-      blockClass += ` ${this.props.extraClasses.join(' ')}`;
+      blockClass += ` ${this.props.extraClasses.join(" ")}`;
     }
 
     if (this.disabled) {
@@ -65,46 +70,47 @@ export default class BigButton extends React.Component<Props> {
       );
     }
 
-    return present(this.props.href)
-      ? (
-        <a
-          className={blockClass}
-          href={this.props.href}
-          {...this.props.props}
-        >
-          {this.renderChildren()}
-        </a>
-      ) : (
-        <button
-          className={blockClass}
-          type={this.props.isSubmit ? 'submit' : 'button'}
-          {...this.props.props}
-        >
-          {this.renderChildren()}
-        </button>
-      );
+    return present(this.props.href) ? (
+      <a className={blockClass} href={this.props.href} {...this.props.props}>
+        {this.renderChildren()}
+      </a>
+    ) : (
+      <button
+        className={blockClass}
+        type={this.props.isSubmit ? "submit" : "button"}
+        {...this.props.props}
+      >
+        {this.renderChildren()}
+      </button>
+    );
   }
 
   private renderChildren() {
     const text = this.text;
 
     return (
-      <span className={classWithModifiers('btn-osu-big__content', { center: text == null || this.props.icon == null })}>
+      <span
+        className={classWithModifiers("btn-osu-big__content", {
+          center: text == null || this.props.icon == null,
+        })}
+      >
         {text != null && (
-          <span className='btn-osu-big__left'>
-            <span className='btn-osu-big__text-top'>
-              {text.top}
-            </span>
-            {'bottom' in text && text.bottom != null && (
-              <span className='btn-osu-big__text-bottom'>{text.bottom}</span>
+          <span className="btn-osu-big__left">
+            <span className="btn-osu-big__text-top">{text.top}</span>
+            {"bottom" in text && text.bottom != null && (
+              <span className="btn-osu-big__text-bottom">{text.bottom}</span>
             )}
           </span>
         )}
         {this.props.icon != null && (
-          <span className='btn-osu-big__icon'>
+          <span className="btn-osu-big__icon">
             {/* ensure no random width change when changing icon */}
-            <span className='fa fa-fw'>
-              {this.props.isBusy ? <Spinner modifiers='center-inline' /> : <span className={this.props.icon} />}
+            <span className="fa fa-fw">
+              {this.props.isBusy ? (
+                <Spinner modifiers="center-inline" />
+              ) : (
+                <span className={this.props.icon} />
+              )}
             </span>
           </span>
         )}

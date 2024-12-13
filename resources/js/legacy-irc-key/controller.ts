@@ -1,10 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import LegacyIrcKeyJson from 'interfaces/legacy-irc-key-json';
-import { route } from 'laroute';
-import { action, makeObservable, observable, reaction, runInAction } from 'mobx';
-import { onError } from 'utils/ajax';
+import LegacyIrcKeyJson from "interfaces/legacy-irc-key-json";
+import { route } from "laroute";
+import {
+  action,
+  makeObservable,
+  observable,
+  reaction,
+  runInAction,
+} from "mobx";
+import { onError } from "utils/ajax";
 
 interface State {
   legacy_irc_key: LegacyIrcKeyJson | null;
@@ -29,40 +35,52 @@ export default class Controller {
   }
 
   constructor(private readonly container: HTMLElement) {
-    this.state = JSON.parse(container.dataset.state ?? '') as State;
+    this.state = JSON.parse(container.dataset.state ?? "") as State;
 
     makeObservable(this);
 
     this.stateSyncDisposer = reaction(
       () => JSON.stringify(this.state),
-      (stateString) => this.container.dataset.state = stateString,
+      (stateString) => (this.container.dataset.state = stateString),
     );
   }
 
   @action
   createKey() {
-    this.xhrCreate = $.ajax(route('legacy-irc-key.store'), {
-      method: 'POST',
+    this.xhrCreate = $.ajax(route("legacy-irc-key.store"), {
+      method: "POST",
     });
     this.xhrCreate
-      .done((json) => runInAction(() => {
-        this.state.legacy_irc_key = json;
-      })).always(action(() => {
-        this.xhrCreate = undefined;
-      }));
+      .done((json) =>
+        runInAction(() => {
+          this.state.legacy_irc_key = json;
+        }),
+      )
+      .always(
+        action(() => {
+          this.xhrCreate = undefined;
+        }),
+      );
 
     return this.xhrCreate;
   }
 
   @action
   deleteKey() {
-    this.xhrDelete = $.ajax(route('legacy-irc-key.destroy'), { method: 'DELETE' })
+    this.xhrDelete = $.ajax(route("legacy-irc-key.destroy"), {
+      method: "DELETE",
+    })
       .fail(onError)
-      .done(action(() => {
-        this.state.legacy_irc_key = null;
-      })).always(action(() => {
-        this.xhrDelete = undefined;
-      }));
+      .done(
+        action(() => {
+          this.state.legacy_irc_key = null;
+        }),
+      )
+      .always(
+        action(() => {
+          this.xhrDelete = undefined;
+        }),
+      );
   }
 
   destroy() {

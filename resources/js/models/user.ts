@@ -1,23 +1,23 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserGroupJson from 'interfaces/user-group-json';
-import UserJson from 'interfaces/user-json';
-import { action, makeObservable, observable } from 'mobx';
-import { trans } from 'utils/lang';
+import UserGroupJson from "interfaces/user-group-json";
+import UserJson from "interfaces/user-json";
+import { action, makeObservable, observable } from "mobx";
+import { trans } from "utils/lang";
 
 export function normaliseUsername(username: string) {
   return username.trim().toLowerCase();
 }
 
-export function usernameSortAscending(x: UserJson | User , y: UserJson | User) {
+export function usernameSortAscending(x: UserJson | User, y: UserJson | User) {
   return x.username.localeCompare(y.username);
 }
 
 export default class User {
-  @observable avatarUrl = '/images/layout/avatar-guest@2x.png'; // TODO: move to a global config store?
-  @observable countryCode = 'XX';
-  @observable defaultGroup = '';
+  @observable avatarUrl = "/images/layout/avatar-guest@2x.png"; // TODO: move to a global config store?
+  @observable countryCode = "XX";
+  @observable defaultGroup = "";
   @observable groups?: UserGroupJson[];
   @observable id: number;
   @observable isActive = false;
@@ -27,8 +27,8 @@ export default class User {
   @observable isSupporter = false;
   @observable lastVisit: string | null = null;
   @observable pmFriendsOnly = false;
-  @observable profileColour = '';
-  @observable username = '';
+  @observable profileColour = "";
+  @observable username = "";
 
   constructor(id: number) {
     this.id = id;
@@ -67,13 +67,13 @@ export default class User {
   updateWithJson(json: UserJson) {
     this.avatarUrl = json.avatar_url;
     this.countryCode = json.country_code;
-    this.defaultGroup = json.default_group ?? '';
+    this.defaultGroup = json.default_group ?? "";
     this.isActive = json.is_active;
     this.isBot = json.is_bot;
     this.isOnline = json.is_online;
     this.isSupporter = json.is_supporter;
     this.pmFriendsOnly = json.pm_friends_only;
-    this.profileColour= json.profile_colour ?? '';
+    this.profileColour = json.profile_colour ?? "";
     this.username = json.username;
 
     if (json.groups != null) {
@@ -84,13 +84,13 @@ export default class User {
 
 export const deletedUser = new User(-1);
 deletedUser.isDeleted = true;
-deletedUser.username = trans('users.deleted');
+deletedUser.username = trans("users.deleted");
 Object.freeze(deletedUser);
 
 export const deletedUserJson = Object.freeze(deletedUser.toJson());
 
 const userNotFound = new User(-1);
-userNotFound.username = trans('supporter_tag.user_search.not_found');
+userNotFound.username = trans("supporter_tag.user_search.not_found");
 Object.freeze(userNotFound);
 
 export const userNotFoundJson = Object.freeze(userNotFound.toJson());

@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { CircularProgress } from 'components/circular-progress';
-import * as React from 'react';
-import { trans } from 'utils/lang';
+import { CircularProgress } from "components/circular-progress";
+import * as React from "react";
+import { trans } from "utils/lang";
 
 type Props = Record<string, never>;
 
@@ -12,7 +12,10 @@ interface State {
   voteCount: number;
 }
 
-export default class GalleryContestVoteProgress extends React.PureComponent<Props, State> {
+export default class GalleryContestVoteProgress extends React.PureComponent<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
 
@@ -20,21 +23,21 @@ export default class GalleryContestVoteProgress extends React.PureComponent<Prop
   }
 
   componentDidMount() {
-    $.subscribe('contest:vote:end', this.syncState);
+    $.subscribe("contest:vote:end", this.syncState);
   }
 
   componentWillUnmount() {
-    $.unsubscribe('contest:vote:end', this.syncState);
+    $.unsubscribe("contest:vote:end", this.syncState);
   }
 
   render() {
     return (
-      <div className='pswp__button pswp__button--vote-progress'>
+      <div className="pswp__button pswp__button--vote-progress">
         <CircularProgress
           current={this.state.voteCount}
           max={this.state.maxVotes}
-          theme='gallery-contest'
-          tooltip={trans('contest.voting.progress._', {
+          theme="gallery-contest"
+          tooltip={trans("contest.voting.progress._", {
             max: this.state.maxVotes,
             used: this.state.voteCount,
           })}
@@ -43,19 +46,22 @@ export default class GalleryContestVoteProgress extends React.PureComponent<Prop
     );
   }
 
-  private readonly getVoteState = (): State => JSON.parse(this.voteSummary().dataset.contestVoteSummary ?? '');
+  private readonly getVoteState = (): State =>
+    JSON.parse(this.voteSummary().dataset.contestVoteSummary ?? "");
 
   private readonly syncState = () => {
     this.setState(this.getVoteState());
   };
 
   private readonly voteSummary = () => {
-    const contestVoteSummary = document.querySelector('.js-contest-vote-summary');
+    const contestVoteSummary = document.querySelector(
+      ".js-contest-vote-summary",
+    );
 
     if (contestVoteSummary instanceof HTMLElement) {
       return contestVoteSummary;
     }
 
-    throw new Error('.js-contest-vote-summary is not HTMLElement');
+    throw new Error(".js-contest-vote-summary is not HTMLElement");
   };
 }

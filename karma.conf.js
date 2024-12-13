@@ -5,7 +5,7 @@
 // This plugin makes it exit on compile error.
 class ExitOnErrorWebpackPlugin {
   apply(compiler) {
-    compiler.hooks.done.tap('ExitOnErrorWebpackPlugin', (stats) => {
+    compiler.hooks.done.tap("ExitOnErrorWebpackPlugin", (stats) => {
       if (stats && stats.hasErrors()) {
         stats.toJson().errors.forEach((error) => {
           console.error(error);
@@ -20,13 +20,13 @@ class ExitOnErrorWebpackPlugin {
  * Blocks until the webpack config is read.
  */
 function readWebpackConfig() {
-  const { argv } = require('yargs');
+  const { argv } = require("yargs");
 
   if (!argv.singleRun) {
     argv.watch = true;
   }
 
-  const configFn = require('./webpack.config.js');
+  const configFn = require("./webpack.config.js");
 
   return configFn(null, argv);
 }
@@ -34,41 +34,41 @@ function readWebpackConfig() {
 process.env.SKIP_MANIFEST = true;
 const webpackConfig = readWebpackConfig();
 webpackConfig.plugins.push(new ExitOnErrorWebpackPlugin());
-webpackConfig.mode = 'development';
-webpackConfig.devtool = 'inline-source-map';
+webpackConfig.mode = "development";
+webpackConfig.devtool = "inline-source-map";
 delete webpackConfig.optimization; // karma doesn't work with splitChunks...or runtimeChunk
 delete webpackConfig.entry; // test runner doesn't use the entry points
 
-const testIndex = './tests/karma/index.ts';
+const testIndex = "./tests/karma/index.ts";
 
 const files = [
-  './tests/karma/globals.js', // shims for tests
+  "./tests/karma/globals.js", // shims for tests
   testIndex,
 ];
 
 const preprocessors = {};
-preprocessors[testIndex] = ['webpack', 'sourcemap'];
+preprocessors[testIndex] = ["webpack", "sourcemap"];
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     autoWatch: true,
-    basePath: '.',
-    browsers: ['ChromeHeadless'],
+    basePath: ".",
+    browsers: ["ChromeHeadless"],
     colors: true,
     concurrency: Infinity,
     exclude: [],
     files,
-    frameworks: ['jasmine', 'webpack'],
+    frameworks: ["jasmine", "webpack"],
     logLevel: config.LOG_INFO,
-    mime: { 'text/x-typescript': ['ts', 'tsx'] },
+    mime: { "text/x-typescript": ["ts", "tsx"] },
     port: 9876,
     preprocessors,
-    reporters: ['mocha'],
+    reporters: ["mocha"],
     singleRun: false, // set to true for the process to exit after completing.
     webpack: webpackConfig,
     webpackMiddleware: {
       noInfo: true,
-      stats: 'errors-only',
+      stats: "errors-only",
     },
   });
 };

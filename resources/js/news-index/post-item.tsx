@@ -1,53 +1,68 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Img2x from 'components/img2x';
-import StringWithComponent from 'components/string-with-component';
-import PostJson from 'interfaces/news-post-json';
-import { route } from 'laroute';
-import * as moment from 'moment';
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
+import Img2x from "components/img2x";
+import StringWithComponent from "components/string-with-component";
+import PostJson from "interfaces/news-post-json";
+import { route } from "laroute";
+import * as moment from "moment";
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
 
-export default function PostItem({ modifiers, post }: { modifiers?: string[]; post: PostJson }) {
+export default function PostItem({
+  modifiers,
+  post,
+}: {
+  modifiers?: string[];
+  post: PostJson;
+}) {
   let cover;
 
   if (post.first_image != null) {
-    cover = <Img2x className='news-card__cover' src={post.first_image} src2x={post['first_image@2x']} />;
+    cover = (
+      <Img2x
+        className="news-card__cover"
+        src={post.first_image}
+        src2x={post["first_image@2x"]}
+      />
+    );
   }
 
   let preview = post.preview;
 
   if (preview == null) {
-    preview = '';
+    preview = "";
   }
 
   return (
     <a
-      className={classWithModifiers('news-card', modifiers ?? ['index', 'hover'])}
-      href={route('news.show', { news: post.slug })}
+      className={classWithModifiers(
+        "news-card",
+        modifiers ?? ["index", "hover"],
+      )}
+      href={route("news.show", { news: post.slug })}
     >
-      <div className='news-card__cover-container'>
+      <div className="news-card__cover-container">
         {cover}
         <div
-          className='news-card__time js-tooltip-time'
+          className="news-card__time js-tooltip-time"
           title={post.published_at}
         >
-          {moment.utc(post.published_at).format('ll')}
+          {moment.utc(post.published_at).format("ll")}
         </div>
       </div>
 
-      <div className='news-card__main'>
-        <div className='news-card__row news-card__row--title'>{post.title}</div>
+      <div className="news-card__main">
+        <div className="news-card__row news-card__row--title">{post.title}</div>
         <div
           dangerouslySetInnerHTML={{ __html: preview }}
-          className='news-card__row news-card__row--preview'
+          className="news-card__row news-card__row--preview"
         />
-        <div className='news-card__row news-card__row--author'>
+        <div className="news-card__row news-card__row--author">
           <StringWithComponent
             mappings={{ user: <strong>{post.author}</strong> }}
-            pattern={trans('news.show.by')}
+            pattern={trans("news.show.by")}
           />
         </div>
       </div>

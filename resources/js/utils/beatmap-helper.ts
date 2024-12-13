@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as d3 from 'd3';
-import { isValid as isBeatmapExtendedJson } from 'interfaces/beatmap-extended-json';
-import BeatmapJson from 'interfaces/beatmap-json';
-import BeatmapsetJson from 'interfaces/beatmapset-json';
-import Ruleset, { rulesets } from 'interfaces/ruleset';
-import WithBeatmapOwners from 'interfaces/with-beatmap-owners';
-import * as _ from 'lodash';
-import core from 'osu-core-singleton';
-import { parseJsonNullable } from 'utils/json';
+import * as d3 from "d3";
+import { isValid as isBeatmapExtendedJson } from "interfaces/beatmap-extended-json";
+import BeatmapJson from "interfaces/beatmap-json";
+import BeatmapsetJson from "interfaces/beatmapset-json";
+import Ruleset, { rulesets } from "interfaces/ruleset";
+import WithBeatmapOwners from "interfaces/with-beatmap-owners";
+import * as _ from "lodash";
+import core from "osu-core-singleton";
+import { parseJsonNullable } from "utils/json";
 
 function isVisibleBeatmap(beatmap: BeatmapJson) {
   if (isBeatmapExtendedJson(beatmap)) {
@@ -19,10 +19,23 @@ function isVisibleBeatmap(beatmap: BeatmapJson) {
   return true;
 }
 
-const difficultyColourSpectrum = d3.scaleLinear<string>()
+const difficultyColourSpectrum = d3
+  .scaleLinear<string>()
   .domain([0.1, 1.25, 2, 2.5, 3.3, 4.2, 4.9, 5.8, 6.7, 7.7, 9])
   .clamp(true)
-  .range(['#4290FB', '#4FC0FF', '#4FFFD5', '#7CFF4F', '#F6F05C', '#FF8068', '#FF4E6F', '#C645B8', '#6563DE', '#18158E', '#000000'])
+  .range([
+    "#4290FB",
+    "#4FC0FF",
+    "#4FFFD5",
+    "#7CFF4F",
+    "#F6F05C",
+    "#FF8068",
+    "#FF4E6F",
+    "#C645B8",
+    "#6563DE",
+    "#18158E",
+    "#000000",
+  ])
   .interpolate(d3.interpolateRgb.gamma(2.2));
 
 interface FindDefaultParams<T> {
@@ -31,7 +44,9 @@ interface FindDefaultParams<T> {
   mode?: Ruleset;
 }
 
-export function findDefault<T extends BeatmapJson>(params: FindDefaultParams<T>): T | null {
+export function findDefault<T extends BeatmapJson>(
+  params: FindDefaultParams<T>,
+): T | null {
   if (params.items != null) {
     let currentDiffDelta: number | null = null;
     let currentItem: T | null = null;
@@ -40,7 +55,10 @@ export function findDefault<T extends BeatmapJson>(params: FindDefaultParams<T>)
     for (const item of params.items) {
       const diffDelta = Math.abs(item.difficulty_rating - targetDiff);
 
-      if (isVisibleBeatmap(item) && (currentDiffDelta == null || diffDelta < currentDiffDelta)) {
+      if (
+        isVisibleBeatmap(item) &&
+        (currentDiffDelta == null || diffDelta < currentDiffDelta)
+      ) {
         currentDiffDelta = diffDelta;
         currentItem = item;
       }
@@ -81,14 +99,20 @@ export function find<T extends BeatmapJson>(params: FindParams<T>): T | null {
 }
 
 export function getDiffColour(rating: number) {
-  if (rating < 0.1) return '#AAAAAA';
-  if (rating >= 9) return '#000000';
+  if (rating < 0.1) return "#AAAAAA";
+  if (rating >= 9) return "#000000";
   return difficultyColourSpectrum(rating);
 }
 
-export function group<T extends BeatmapJson>(beatmaps?: T[] | null, includeEmpty = true): Map<Ruleset, T[]> {
+export function group<T extends BeatmapJson>(
+  beatmaps?: T[] | null,
+  includeEmpty = true,
+): Map<Ruleset, T[]> {
   // TODO: replace with mapBy
-  const grouped: Partial<Record<Ruleset, T[]>> = _.groupBy(beatmaps ?? [], 'mode');
+  const grouped: Partial<Record<Ruleset, T[]>> = _.groupBy(
+    beatmaps ?? [],
+    "mode",
+  );
   const ret = new Map<Ruleset, T[]>();
 
   rulesets.forEach((mode) => {
@@ -101,31 +125,37 @@ export function group<T extends BeatmapJson>(beatmaps?: T[] | null, includeEmpty
   return ret;
 }
 
-export function hasGuestOwners(beatmap: WithBeatmapOwners<BeatmapJson>, beatmapset: BeatmapsetJson) {
+export function hasGuestOwners(
+  beatmap: WithBeatmapOwners<BeatmapJson>,
+  beatmapset: BeatmapsetJson,
+) {
   return beatmap.owners.some((owner) => owner.id !== beatmapset.user_id);
 }
 
-export function isOwner(userId: number, beatmap: WithBeatmapOwners<BeatmapJson>) {
+export function isOwner(
+  userId: number,
+  beatmap: WithBeatmapOwners<BeatmapJson>,
+) {
   return beatmap.owners.some((owner) => owner.id === userId);
 }
 
 export function rulesetName(id: number): Ruleset {
   switch (id) {
     case 0:
-      return 'osu';
+      return "osu";
     case 1:
-      return 'taiko';
+      return "taiko";
     case 2:
-      return 'fruits';
+      return "fruits";
     case 3:
-      return 'mania';
+      return "mania";
     default:
-      throw new Error('invalid ruleset id passed');
+      throw new Error("invalid ruleset id passed");
   }
 }
 
 export function shouldShowPp(beatmap: BeatmapJson) {
-  return beatmap.status === 'ranked' || beatmap.status === 'approved';
+  return beatmap.status === "ranked" || beatmap.status === "approved";
 }
 
 export function sort<T extends BeatmapJson>(beatmaps: T[]): T[] {
@@ -133,11 +163,15 @@ export function sort<T extends BeatmapJson>(beatmaps: T[]): T[] {
     return [];
   }
 
-  if (beatmaps[0].mode === 'mania') {
-    return _.orderBy(beatmaps, ['convert', 'cs', 'difficulty_rating'], ['desc', 'asc', 'asc']);
+  if (beatmaps[0].mode === "mania") {
+    return _.orderBy(
+      beatmaps,
+      ["convert", "cs", "difficulty_rating"],
+      ["desc", "asc", "asc"],
+    );
   }
 
-  return _.orderBy(beatmaps, ['convert', 'difficulty_rating'], ['desc', 'asc']);
+  return _.orderBy(beatmaps, ["convert", "difficulty_rating"], ["desc", "asc"]);
 }
 
 export function sortWithMode<T extends BeatmapJson>(beatmaps: T[]): T[] {
@@ -156,12 +190,14 @@ function userModes() {
   return ret;
 }
 
-let userRecommendedDifficultyCache: Partial<Record<Ruleset, number>> | null = null;
+let userRecommendedDifficultyCache: Partial<Record<Ruleset, number>> | null =
+  null;
 
 function userRecommendedDifficulty(mode: Ruleset) {
   if (userRecommendedDifficultyCache == null) {
-    userRecommendedDifficultyCache = parseJsonNullable('json-recommended-star-difficulty-all') ?? {};
-    $(document).one('turbo:before-cache', () => {
+    userRecommendedDifficultyCache =
+      parseJsonNullable("json-recommended-star-difficulty-all") ?? {};
+    $(document).one("turbo:before-cache", () => {
       userRecommendedDifficultyCache = null;
     });
   }

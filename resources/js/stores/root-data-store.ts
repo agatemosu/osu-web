@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapsetSearch } from 'beatmaps/beatmapset-search';
-import ChatStateStore from 'chat/chat-state-store';
-import { BeatmapsetStore } from './beatmapset-store';
-import ChannelStore from './channel-store';
-import ClientStore from './client-store';
-import NotificationStore from './notification-store';
-import OwnClientStore from './own-client-store';
-import UIStateStore from './ui-state-store';
-import UserStore from './user-store';
+import { BeatmapsetSearch } from "beatmaps/beatmapset-search";
+import ChatStateStore from "chat/chat-state-store";
+import { BeatmapsetStore } from "./beatmapset-store";
+import ChannelStore from "./channel-store";
+import ClientStore from "./client-store";
+import NotificationStore from "./notification-store";
+import OwnClientStore from "./own-client-store";
+import UIStateStore from "./ui-state-store";
+import UserStore from "./user-store";
 
 export default class RootDataStore {
   beatmapsetSearch: BeatmapsetSearch;

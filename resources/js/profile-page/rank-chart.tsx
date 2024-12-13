@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import LineChart, { makeOptionsNumber } from 'charts/line-chart';
-import { scaleLinear, scaleLog } from 'd3';
-import RankHistoryJson from 'interfaces/rank-history-json';
-import { UserStatisticsRankedJson } from 'interfaces/user-statistics-json';
-import { last } from 'lodash';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { formatNumber } from 'utils/html';
-import { trans, transChoice } from 'utils/lang';
+import LineChart, { makeOptionsNumber } from "charts/line-chart";
+import { scaleLinear, scaleLog } from "d3";
+import RankHistoryJson from "interfaces/rank-history-json";
+import { UserStatisticsRankedJson } from "interfaces/user-statistics-json";
+import { last } from "lodash";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { formatNumber } from "utils/html";
+import { trans, transChoice } from "utils/lang";
 
 interface Props {
   rankHistory: RankHistoryJson | null;
@@ -25,17 +25,19 @@ const options = makeOptionsNumber({
   marginLeft: 15, // referenced in css .profile-detail__col--bottom-left
   marginRight: 15,
   marginTop: 15,
-  modifiers: 'profile-page',
+  modifiers: "profile-page",
   scaleX: scaleLinear(),
   scaleY: scaleLog(),
 });
 
 function formatX(d: number) {
-  return d === 0 ? trans('common.time.now') : transChoice('common.time.days_ago', -d);
+  return d === 0
+    ? trans("common.time.now")
+    : transChoice("common.time.days_ago", -d);
 }
 
 function formatY(d: number) {
-  return `<strong>${trans('users.show.rank.global_simple')}</strong> #${formatNumber(-d)}`;
+  return `<strong>${trans("users.show.rank.global_simple")}</strong> #${formatNumber(-d)}`;
 }
 
 export default class RankChart extends React.Component<Props> {
@@ -45,7 +47,9 @@ export default class RankChart extends React.Component<Props> {
 
   get data() {
     const raw = this.props.rankHistory?.data ?? [];
-    const data = raw.map((rank, i) => ({ x: i - raw.length + 1, y: -rank })).filter((point) => point.y < 0);
+    const data = raw
+      .map((rank, i) => ({ x: i - raw.length + 1, y: -rank }))
+      .filter((point) => point.y < 0);
 
     if (data.length === 0) {
       data.push({ x: 0, y: -this.props.stats.global_rank });
@@ -69,12 +73,14 @@ export default class RankChart extends React.Component<Props> {
 
     if (this.rankChart == null) {
       const rankChart = new LineChart(this.rankChartArea.current, options);
-      $(window).on('resize', rankChart.resize);
-      this.disposers.add(() => $(window).off('resize', rankChart.resize));
+      $(window).on("resize", rankChart.resize);
+      this.disposers.add(() => $(window).off("resize", rankChart.resize));
       this.rankChart = rankChart;
     }
 
-    this.disposers.add(core.reactTurbolinks.runAfterPageLoad(this.loadRankChart));
+    this.disposers.add(
+      core.reactTurbolinks.runAfterPageLoad(this.loadRankChart),
+    );
   }
 
   componentDidUpdate() {

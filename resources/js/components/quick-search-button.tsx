@@ -1,14 +1,14 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { route } from 'laroute';
-import { observer } from 'mobx-react';
-import core from 'osu-core-singleton';
-import QuickSearch from 'quick-search/main';
-import Worker from 'quick-search/worker';
-import * as React from 'react';
-import { currentUrl } from 'utils/turbolinks';
-import Modal from './modal';
+import { route } from "laroute";
+import { observer } from "mobx-react";
+import core from "osu-core-singleton";
+import QuickSearch from "quick-search/main";
+import Worker from "quick-search/worker";
+import * as React from "react";
+import { currentUrl } from "utils/turbolinks";
+import Modal from "./modal";
 
 interface Props {
   worker: Worker;
@@ -18,9 +18,10 @@ interface State {
   open: boolean;
 }
 
-@observer export default class QuickSearchButton extends React.Component<Props, State> {
+@observer
+export default class QuickSearchButton extends React.Component<Props, State> {
   formRef = React.createRef<QuickSearch>();
-  searchPath = route('search', undefined, false);
+  searchPath = route("search", undefined, false);
   state: State = { open: false };
 
   private get isSearchPage() {
@@ -34,20 +35,19 @@ interface State {
   }
 
   render() {
-    let className = 'nav2__menu-link-main nav2__menu-link-main--search';
+    let className = "nav2__menu-link-main nav2__menu-link-main--search";
 
-    if (this.state.open || currentUrl().pathname === route('search', undefined, false)) {
-      className += ' u-section--bg-normal';
+    if (
+      this.state.open ||
+      currentUrl().pathname === route("search", undefined, false)
+    ) {
+      className += " u-section--bg-normal";
     }
 
     return (
       <>
-        <a
-          className={className}
-          href={route('search')}
-          onClick={this.toggle}
-        >
-          <span className='fas fa-search' />
+        <a className={className} href={route("search")} onClick={this.toggle}>
+          <span className="fas fa-search" />
         </a>
         {this.renderModal()}
       </>
@@ -61,7 +61,11 @@ interface State {
 
     return (
       <Modal onClose={this.toggle}>
-        <QuickSearch ref={this.formRef} onClose={this.toggle} worker={this.props.worker} />
+        <QuickSearch
+          ref={this.formRef}
+          onClose={this.toggle}
+          worker={this.props.worker}
+        />
       </Modal>
     );
   }
@@ -76,7 +80,7 @@ interface State {
     }
 
     if (this.isSearchPage) {
-      $('.js-search--input').focus();
+      $(".js-search--input").focus();
 
       return;
     }

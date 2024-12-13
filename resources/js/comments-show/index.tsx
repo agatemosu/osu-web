@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Comment from 'components/comment';
-import CommentsController from 'components/comments-controller';
-import { observer } from 'mobx-react';
-import * as React from 'react';
+import Comment from "components/comment";
+import CommentsController from "components/comments-controller";
+import { observer } from "mobx-react";
+import * as React from "react";
 
 interface Props {
   controllerStateSelector: string;
@@ -16,7 +16,9 @@ export default class CommentsShow extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);
-    this.controller = new CommentsController(this.props.controllerStateSelector);
+    this.controller = new CommentsController(
+      this.props.controllerStateSelector,
+    );
   }
 
   componentWillUnmount() {
@@ -24,10 +26,12 @@ export default class CommentsShow extends React.Component<Props> {
   }
 
   render() {
-    const comment = this.controller.getComments(this.controller.state.commentIdsByParentId[-1])[0];
+    const comment = this.controller.getComments(
+      this.controller.state.commentIdsByParentId[-1],
+    )[0];
 
     if (comment == null) {
-      throw new Error('missing comment');
+      throw new Error("missing comment");
     }
 
     return (
@@ -36,7 +40,7 @@ export default class CommentsShow extends React.Component<Props> {
         controller={this.controller}
         depth={0}
         linkParent
-        modifiers={['dark', 'single']}
+        modifiers={["dark", "single"]}
         showCommentableMeta
         showToolbar
       />

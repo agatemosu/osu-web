@@ -1,47 +1,47 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapsetSearchController } from 'beatmaps/beatmapset-search-controller';
-import ChatWorker from 'chat/chat-worker';
-import AccountEdit from 'core/account-edit';
-import AccountEditAvatar from 'core/account-edit-avatar';
-import AccountEditBlocklist from 'core/account-edit-blocklist';
-import AnimateNav from 'core/animate-nav';
-import BrowserTitleWithNotificationCount from 'core/browser-title-with-notification-count';
-import Captcha from 'core/captcha';
-import ClickMenu from 'core/click-menu';
-import CurrentUserObserver from 'core/current-user-observer';
-import Enchant from 'core/enchant';
-import ForumPoll from 'core/forum/forum-poll';
-import ForumPostEdit from 'core/forum/forum-post-edit';
-import ForumPostInput from 'core/forum/forum-post-input';
-import ForumPostReport from 'core/forum/forum-post-report';
-import Localtime from 'core/localtime';
-import MobileToggle from 'core/mobile-toggle';
-import OsuAudio from 'core/osu-audio/main';
-import ReactTurbolinks from 'core/react-turbolinks';
-import Spoilerbox from 'core/spoilerbox';
-import StickyFooter from 'core/sticky-footer';
-import StickyHeader from 'core/sticky-header';
-import SyncHeight from 'core/sync-height';
-import Timeago from 'core/timeago';
-import TurbolinksReload from 'core/turbolinks-reload';
-import TwitchPlayer from 'core/twitch-player';
-import ScorePins from 'core/user/score-pins';
-import UserLogin from 'core/user/user-login';
-import UserLoginObserver from 'core/user/user-login-observer';
-import UserModel from 'core/user/user-model';
-import UserPreferences from 'core/user/user-preferences';
-import UserVerification from 'core/user/user-verification';
-import ReferenceLinkTooltip from 'core/wiki/reference-link-tooltip';
-import WindowFocusObserver from 'core/window-focus-observer';
-import WindowSize from 'core/window-size';
-import CurrentUserJson from 'interfaces/current-user-json';
-import { action, computed, makeObservable, observable } from 'mobx';
-import NotificationsWorker from 'notifications/worker';
-import SocketWorker from 'socket-worker';
-import RootDataStore from 'stores/root-data-store';
-import { parseJsonNullable } from 'utils/json';
+import { BeatmapsetSearchController } from "beatmaps/beatmapset-search-controller";
+import ChatWorker from "chat/chat-worker";
+import AccountEdit from "core/account-edit";
+import AccountEditAvatar from "core/account-edit-avatar";
+import AccountEditBlocklist from "core/account-edit-blocklist";
+import AnimateNav from "core/animate-nav";
+import BrowserTitleWithNotificationCount from "core/browser-title-with-notification-count";
+import Captcha from "core/captcha";
+import ClickMenu from "core/click-menu";
+import CurrentUserObserver from "core/current-user-observer";
+import Enchant from "core/enchant";
+import ForumPoll from "core/forum/forum-poll";
+import ForumPostEdit from "core/forum/forum-post-edit";
+import ForumPostInput from "core/forum/forum-post-input";
+import ForumPostReport from "core/forum/forum-post-report";
+import Localtime from "core/localtime";
+import MobileToggle from "core/mobile-toggle";
+import OsuAudio from "core/osu-audio/main";
+import ReactTurbolinks from "core/react-turbolinks";
+import Spoilerbox from "core/spoilerbox";
+import StickyFooter from "core/sticky-footer";
+import StickyHeader from "core/sticky-header";
+import SyncHeight from "core/sync-height";
+import Timeago from "core/timeago";
+import TurbolinksReload from "core/turbolinks-reload";
+import TwitchPlayer from "core/twitch-player";
+import ScorePins from "core/user/score-pins";
+import UserLogin from "core/user/user-login";
+import UserLoginObserver from "core/user/user-login-observer";
+import UserModel from "core/user/user-model";
+import UserPreferences from "core/user/user-preferences";
+import UserVerification from "core/user/user-verification";
+import ReferenceLinkTooltip from "core/wiki/reference-link-tooltip";
+import WindowFocusObserver from "core/window-focus-observer";
+import WindowSize from "core/window-size";
+import CurrentUserJson from "interfaces/current-user-json";
+import { action, computed, makeObservable, observable } from "mobx";
+import NotificationsWorker from "notifications/worker";
+import SocketWorker from "socket-worker";
+import RootDataStore from "stores/root-data-store";
+import { parseJsonNullable } from "utils/json";
 
 // will this replace main.coffee eventually?
 export default class OsuCore {
@@ -89,7 +89,7 @@ export default class OsuCore {
   @computed
   get currentUserOrFail() {
     if (this.currentUser == null) {
-      throw new Error('current user is null');
+      throw new Error("current user is null");
     }
 
     return this.currentUser;
@@ -99,7 +99,7 @@ export default class OsuCore {
     // Set current user on first page load. Further updates are done in
     // reactTurbolinks before the new page is rendered.
     // This needs to be fired before everything else (turbo:load etc).
-    $.subscribe('user:update', this.onCurrentUserUpdate);
+    $.subscribe("user:update", this.onCurrentUserUpdate);
 
     this.animateNav = new AnimateNav();
     this.captcha = new Captcha();
@@ -113,7 +113,8 @@ export default class OsuCore {
     this.forumPostReport = new ForumPostReport();
     this.localtime = new Localtime();
     this.mobileToggle = new MobileToggle();
-    this.browserTitleWithNotificationCount = new BrowserTitleWithNotificationCount(this);
+    this.browserTitleWithNotificationCount =
+      new BrowserTitleWithNotificationCount(this);
     this.referenceLinkTooltip = new ReferenceLinkTooltip();
     this.scorePins = new ScorePins();
     this.spoilerbox = new Spoilerbox();
@@ -141,7 +142,9 @@ export default class OsuCore {
     this.userLoginObserver = new UserLoginObserver();
     this.windowFocusObserver = new WindowFocusObserver();
 
-    this.beatmapsetSearchController = new BeatmapsetSearchController(this.dataStore.beatmapsetSearch);
+    this.beatmapsetSearchController = new BeatmapsetSearchController(
+      this.dataStore.beatmapsetSearch,
+    );
 
     this.socketWorker = new SocketWorker();
     this.notificationsWorker = new NotificationsWorker(this.socketWorker);
@@ -164,14 +167,20 @@ export default class OsuCore {
 
   readonly updateCurrentUser = () => {
     // Remove from DOM so only new data is parsed on navigation.
-    const currentUser = parseJsonNullable<typeof window.currentUser>('json-current-user', true);
+    const currentUser = parseJsonNullable<typeof window.currentUser>(
+      "json-current-user",
+      true,
+    );
 
     if (currentUser != null) {
       this.setCurrentUser(currentUser);
     }
   };
 
-  private readonly onCurrentUserUpdate = (event: unknown, user: CurrentUserJson) => {
+  private readonly onCurrentUserUpdate = (
+    event: unknown,
+    user: CurrentUserJson,
+  ) => {
     this.setCurrentUser(user);
   };
 }

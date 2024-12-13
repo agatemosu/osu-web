@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as moment from 'moment';
+import * as moment from "moment";
 
 export default class Localtime {
   private readonly observer: MutationObserver;
@@ -12,14 +12,14 @@ export default class Localtime {
   }
 
   private readonly formatElem = (elem: HTMLTimeElement) => {
-    if (elem.dataset.localtime === '1') {
+    if (elem.dataset.localtime === "1") {
       return;
     }
 
-    elem.dataset.localtime = '1';
-    elem.classList.add('js-tooltip-time');
+    elem.dataset.localtime = "1";
+    elem.classList.add("js-tooltip-time");
     elem.title = elem.dateTime;
-    elem.innerText = moment(elem.dateTime).format('LLL');
+    elem.innerText = moment(elem.dateTime).format("LLL");
   };
 
   private readonly formatElems = (elems?: HTMLTimeElement[]) => {
@@ -35,12 +35,15 @@ export default class Localtime {
       return [];
     }
 
-    if (parent instanceof HTMLTimeElement && parent.classList.contains('js-localtime')) {
+    if (
+      parent instanceof HTMLTimeElement &&
+      parent.classList.contains("js-localtime")
+    ) {
       return [parent];
     } else {
       // Casting is needed because the compiler doesn't detect result of
       // 'time.class-name' query as array of time elements.
-      return [...parent.querySelectorAll<HTMLTimeElement>('time.js-localtime')];
+      return [...parent.querySelectorAll<HTMLTimeElement>("time.js-localtime")];
     }
   };
 

@@ -1,16 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Portal from 'components/portal';
-import { throttle } from 'lodash';
-import * as React from 'react';
-import { Editor, Element, Node, Range } from 'slate';
-import { ReactEditor } from 'slate-react';
-import { nextVal } from 'utils/seq';
-import { EditorToolbarButton } from './editor-toolbar-button';
-import { SlateContext } from './slate-context';
+import Portal from "components/portal";
+import { throttle } from "lodash";
+import * as React from "react";
+import { Editor, Element, Node, Range } from "slate";
+import { ReactEditor } from "slate-react";
+import { nextVal } from "utils/seq";
+import { EditorToolbarButton } from "./editor-toolbar-button";
+import { SlateContext } from "./slate-context";
 
-const bn = 'beatmap-discussion-editor-toolbar';
+const bn = "beatmap-discussion-editor-toolbar";
 
 export class EditorToolbar extends React.Component {
   static contextType = SlateContext;
@@ -28,7 +28,7 @@ export class EditorToolbar extends React.Component {
       !selection ||
       !ReactEditor.isFocused(this.context) ||
       Range.isCollapsed(selection) ||
-      Editor.string(this.context, selection) === ''
+      Editor.string(this.context, selection) === ""
     ) {
       return null;
     }
@@ -63,7 +63,7 @@ export class EditorToolbar extends React.Component {
     const tooltip = this.ref.current;
 
     if (tooltip) {
-      tooltip.style.display = 'none';
+      tooltip.style.display = "none";
     }
   }
 
@@ -74,12 +74,9 @@ export class EditorToolbar extends React.Component {
 
     return (
       <Portal>
-        <div
-          ref={this.ref}
-          className={bn}
-        >
-          <EditorToolbarButton format='bold' />
-          <EditorToolbarButton format='italic' />
+        <div ref={this.ref} className={bn}>
+          <EditorToolbarButton format="bold" />
+          <EditorToolbarButton format="italic" />
           <div className={`${bn}__popup-tail`} />
         </div>
       </Portal>
@@ -110,10 +107,13 @@ export class EditorToolbar extends React.Component {
         return this.hide();
       }
 
-      for (const p of Editor.positions(this.context, { at: this.context.selection ?? undefined, unit: 'block' })) {
+      for (const p of Editor.positions(this.context, {
+        at: this.context.selection ?? undefined,
+        unit: "block",
+      })) {
         const block = Node.parent(this.context, p.path);
 
-        if (Element.isElement(block) && block.type === 'embed') {
+        if (Element.isElement(block) && block.type === "embed") {
           return this.hide();
         }
       }
@@ -121,15 +121,16 @@ export class EditorToolbar extends React.Component {
       const containerBounds = this.scrollContainer?.getBoundingClientRect();
       const selectionBounds = selectionRange.getBoundingClientRect();
 
-      const outsideContainer = containerBounds != null
-        && (selectionBounds.top < containerBounds.top
-          || selectionBounds.top > containerBounds.bottom);
+      const outsideContainer =
+        containerBounds != null &&
+        (selectionBounds.top < containerBounds.top ||
+          selectionBounds.top > containerBounds.bottom);
 
       if (outsideContainer) {
         return this.hide();
       } else {
-        tooltip.style.display = 'block';
-        tooltip.style.left = `${selectionBounds.left + ((window.pageXOffset - tooltip.offsetWidth) / 2) + (selectionBounds.width / 2)}px`;
+        tooltip.style.display = "block";
+        tooltip.style.left = `${selectionBounds.left + (window.pageXOffset - tooltip.offsetWidth) / 2 + selectionBounds.width / 2}px`;
         tooltip.style.top = `${selectionBounds.top - tooltip.clientHeight - 10}px`;
       }
     }, 10);

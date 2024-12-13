@@ -1,26 +1,30 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BigButton from 'components/big-button';
-import TextareaAutosize from 'components/textarea-autosize';
-import UserAvatar from 'components/user-avatar';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import { BeatmapsetDiscussionPostStoreResponseJson } from 'interfaces/beatmapset-discussion-post-responses';
-import { route } from 'laroute';
-import { action, makeObservable, observable, runInAction } from 'mobx';
-import { observer } from 'mobx-react';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { onError } from 'utils/ajax';
-import { validMessageLength } from 'utils/beatmapset-discussion-helper';
-import { InputEventType, makeTextAreaHandler, TextAreaCallback } from 'utils/input-handler';
-import { trans } from 'utils/lang';
-import { hideLoadingOverlay, showLoadingOverlay } from 'utils/loading-overlay';
-import { present } from 'utils/string';
-import DiscussionMessageLengthCounter from './discussion-message-length-counter';
-import DiscussionsState from './discussions-state';
+import BigButton from "components/big-button";
+import TextareaAutosize from "components/textarea-autosize";
+import UserAvatar from "components/user-avatar";
+import BeatmapsetDiscussionJson from "interfaces/beatmapset-discussion-json";
+import { BeatmapsetDiscussionPostStoreResponseJson } from "interfaces/beatmapset-discussion-post-responses";
+import { route } from "laroute";
+import { action, makeObservable, observable, runInAction } from "mobx";
+import { observer } from "mobx-react";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { onError } from "utils/ajax";
+import { validMessageLength } from "utils/beatmapset-discussion-helper";
+import {
+  InputEventType,
+  makeTextAreaHandler,
+  TextAreaCallback,
+} from "utils/input-handler";
+import { trans } from "utils/lang";
+import { hideLoadingOverlay, showLoadingOverlay } from "utils/loading-overlay";
+import { present } from "utils/string";
+import DiscussionMessageLengthCounter from "./discussion-message-length-counter";
+import DiscussionsState from "./discussions-state";
 
-const bn = 'beatmap-discussion-post';
+const bn = "beatmap-discussion-post";
 
 interface Props {
   discussion: BeatmapsetDiscussionJson;
@@ -28,9 +32,9 @@ interface Props {
 }
 
 const actionIcons = {
-  reply: 'fas fa-reply',
-  reply_reopen: 'fas fa-exclamation-circle',
-  reply_resolve: 'fas fa-check',
+  reply: "fas fa-reply",
+  reply_reopen: "fas fa-exclamation-circle",
+  reply_resolve: "fas fa-check",
 };
 
 const actionResolveLookup = {
@@ -45,15 +49,22 @@ export class NewReply extends React.Component<Props> {
   private readonly handleKeyDown;
   @observable private message = this.storedMessage;
   @observable private posting: string | null = null;
-  private postXhr: JQuery.jqXHR<BeatmapsetDiscussionPostStoreResponseJson> | null = null;
+  private postXhr: JQuery.jqXHR<BeatmapsetDiscussionPostStoreResponseJson> | null =
+    null;
   private startEditing = false;
 
   private get canReopen() {
-    return this.props.discussion.can_be_resolved && (this.props.discussion.current_user_attributes?.can_reopen ?? false);
+    return (
+      this.props.discussion.can_be_resolved &&
+      (this.props.discussion.current_user_attributes?.can_reopen ?? false)
+    );
   }
 
   private get canResolve() {
-    return this.props.discussion.can_be_resolved && (this.props.discussion.current_user_attributes?.can_resolve ?? false);
+    return (
+      this.props.discussion.can_be_resolved &&
+      (this.props.discussion.current_user_attributes?.can_resolve ?? false)
+    );
   }
 
   private get isTimeline() {
@@ -65,7 +76,7 @@ export class NewReply extends React.Component<Props> {
   }
 
   private get storedMessage() {
-    return localStorage.getItem(this.storageKey) ?? '';
+    return localStorage.getItem(this.storageKey) ?? "";
   }
 
   private get validPost() {
@@ -107,7 +118,9 @@ export class NewReply extends React.Component<Props> {
     this.startEditing = true;
   };
 
-  private readonly handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  private readonly handleChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     this.setMessage(e.target.value);
   };
 
@@ -118,9 +131,12 @@ export class NewReply extends React.Component<Props> {
         this.editing = false;
         break;
       case InputEventType.Submit: {
-        const postAction = this.canResolve && this.props.discussion.can_be_resolved && event.ctrlKey
-          ? 'reply_resolve'
-          : 'reply';
+        const postAction =
+          this.canResolve &&
+          this.props.discussion.can_be_resolved &&
+          event.ctrlKey
+            ? "reply_resolve"
+            : "reply";
 
         this.post(event, postAction);
         break;
@@ -130,14 +146,18 @@ export class NewReply extends React.Component<Props> {
 
   @action
   private readonly onCancelClick = () => {
-    if (present(this.message) && !confirm(trans('common.confirmation_unsaved'))) return;
+    if (present(this.message) && !confirm(trans("common.confirmation_unsaved")))
+      return;
 
     this.editing = false;
-    this.setMessage('');
+    this.setMessage("");
   };
 
   @action
-  private readonly post = (event: React.SyntheticEvent<HTMLElement>, postAction?: string) => {
+  private readonly post = (
+    event: React.SyntheticEvent<HTMLElement>,
+    postAction?: string,
+  ) => {
     postAction ??= event.currentTarget.dataset.action;
     if (!this.validPost || this.postXhr != null || postAction == null) return;
     showLoadingOverlay();
@@ -154,23 +174,27 @@ export class NewReply extends React.Component<Props> {
       },
     };
 
-    this.postXhr = $.ajax(route('beatmapsets.discussions.posts.store'), {
+    this.postXhr = $.ajax(route("beatmapsets.discussions.posts.store"), {
       data,
-      method: 'POST',
+      method: "POST",
     });
 
     this.postXhr
-      .done((json) => runInAction(() => {
-        this.editing = false;
-        this.setMessage('');
-        this.props.discussionsState.update(json);
-      }))
+      .done((json) =>
+        runInAction(() => {
+          this.editing = false;
+          this.setMessage("");
+          this.props.discussionsState.update(json);
+        }),
+      )
       .fail(onError)
-      .always(action(() => {
-        hideLoadingOverlay();
-        this.postXhr = null;
-        this.posting = null;
-      }));
+      .always(
+        action(() => {
+          hideLoadingOverlay();
+          this.postXhr = null;
+          this.posting = null;
+        }),
+      );
   };
 
   private renderBox() {
@@ -179,7 +203,7 @@ export class NewReply extends React.Component<Props> {
         {this.renderCancelButton()}
         <div className={`${bn}__content`}>
           <div className={`${bn}__avatar`}>
-            <UserAvatar modifiers='full-rounded' user={core.currentUser} />
+            <UserAvatar modifiers="full-rounded" user={core.currentUser} />
           </div>
           <div className={`${bn}__message-container`}>
             <TextareaAutosize
@@ -188,7 +212,7 @@ export class NewReply extends React.Component<Props> {
               innerRef={this.box}
               onChange={this.handleChange}
               onKeyDown={this.handleKeyDown}
-              placeholder={trans('beatmaps.discussions.reply_placeholder')}
+              placeholder={trans("beatmaps.discussions.reply_placeholder")}
               value={this.message}
             />
           </div>
@@ -196,19 +220,26 @@ export class NewReply extends React.Component<Props> {
 
         <div className={`${bn}__footer ${bn}__footer--notice`}>
           {this.canResolve && !this.props.discussion.resolved
-            ? trans('beatmaps.discussions.reply_resolve_notice')
-            : trans('beatmaps.discussions.reply_notice')}
-          <DiscussionMessageLengthCounter isTimeline={this.isTimeline} message={this.message} />
+            ? trans("beatmaps.discussions.reply_resolve_notice")
+            : trans("beatmaps.discussions.reply_notice")}
+          <DiscussionMessageLengthCounter
+            isTimeline={this.isTimeline}
+            message={this.message}
+          />
         </div>
 
         <div className={`${bn}__footer`}>
           <div className={`${bn}__actions`}>
             <div className={`${bn}__actions-group`}>
-              {this.canResolve && !this.props.discussion.resolved && this.renderReplyButton('reply_resolve')}
+              {this.canResolve &&
+                !this.props.discussion.resolved &&
+                this.renderReplyButton("reply_resolve")}
 
-              {this.canReopen && this.props.discussion.resolved && this.renderReplyButton('reply_reopen')}
+              {this.canReopen &&
+                this.props.discussion.resolved &&
+                this.renderReplyButton("reply_reopen")}
 
-              {this.renderReplyButton('reply')}
+              {this.renderReplyButton("reply")}
             </div>
           </div>
         </div>
@@ -223,22 +254,33 @@ export class NewReply extends React.Component<Props> {
         disabled={this.posting != null}
         onClick={this.onCancelClick}
       >
-        <i className='fas fa-times' />
+        <i className="fas fa-times" />
       </button>
     );
   }
 
   private renderPlaceholder() {
-    const [text, icon, disabled] = core.currentUser != null
-      ? [trans('beatmap_discussions.reply.open.user'), 'fas fa-reply', core.currentUser.is_silenced]
-      : [trans('beatmap_discussions.reply.open.guest'), 'fas fa-sign-in-alt', false];
+    const [text, icon, disabled] =
+      core.currentUser != null
+        ? [
+            trans("beatmap_discussions.reply.open.user"),
+            "fas fa-reply",
+            core.currentUser.is_silenced,
+          ]
+        : [
+            trans("beatmap_discussions.reply.open.guest"),
+            "fas fa-sign-in-alt",
+            false,
+          ];
 
     return (
-      <div className={`${bn} ${bn}--reply ${bn}--new-reply ${bn}--new-reply-placeholder`}>
+      <div
+        className={`${bn} ${bn}--reply ${bn}--new-reply ${bn}--new-reply-placeholder`}
+      >
         <BigButton
           disabled={disabled}
           icon={icon}
-          modifiers='beatmap-discussion-reply-open'
+          modifiers="beatmap-discussion-reply-open"
           props={{ onClick: this.editStart }}
           text={text}
         />
@@ -254,7 +296,7 @@ export class NewReply extends React.Component<Props> {
           icon={actionIcons[postAction]}
           isBusy={this.posting === postAction}
           props={{
-            'data-action': postAction,
+            "data-action": postAction,
             onClick: this.post,
           }}
           text={trans(`common.buttons.${postAction}`)}

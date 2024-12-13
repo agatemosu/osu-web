@@ -6,21 +6,21 @@ export default class SidebarToggle {
   private readonly navButton: Element;
 
   constructor() {
-    const navButton = document.getElementById('nav-button');
-    const menuWrapper = document.querySelector('.tocify-wrapper');
+    const navButton = document.getElementById("nav-button");
+    const menuWrapper = document.querySelector(".tocify-wrapper");
 
     if (navButton == null || menuWrapper == null) {
-      throw new Error('nav button and/or menu wrapper is missing');
+      throw new Error("nav button and/or menu wrapper is missing");
     }
 
     this.navButton = navButton;
     this.menuWrapper = menuWrapper;
 
-    this.navButton.addEventListener('click', this.onClickNavButton);
+    this.navButton.addEventListener("click", this.onClickNavButton);
   }
 
   private readonly onClickNavButton = () => {
-    this.menuWrapper.classList.toggle('open');
-    this.navButton.classList.toggle('open');
+    this.menuWrapper.classList.toggle("open");
+    this.navButton.classList.toggle("open");
   };
 }

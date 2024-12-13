@@ -1,22 +1,22 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import LazyLoad from 'components/lazy-load';
-import ProfilePageExtraSectionTitle from 'components/profile-page-extra-section-title';
-import ShowMoreLink from 'components/show-more-link';
-import { sortBy, times } from 'lodash';
-import { computed, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as moment from 'moment';
-import * as React from 'react';
-import { trans } from 'utils/lang';
-import BeatmapPlaycount from './beatmap-playcount';
-import Chart, { ChartData } from './chart';
-import ExtraHeader from './extra-header';
-import ExtraPageProps, { HistoricalSection } from './extra-page-props';
-import PlayDetailList from './play-detail-list';
+import LazyLoad from "components/lazy-load";
+import ProfilePageExtraSectionTitle from "components/profile-page-extra-section-title";
+import ShowMoreLink from "components/show-more-link";
+import { sortBy, times } from "lodash";
+import { computed, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import * as moment from "moment";
+import * as React from "react";
+import { trans } from "utils/lang";
+import BeatmapPlaycount from "./beatmap-playcount";
+import Chart, { ChartData } from "./chart";
+import ExtraHeader from "./extra-header";
+import ExtraPageProps, { HistoricalSection } from "./extra-page-props";
+import PlayDetailList from "./play-detail-list";
 
-type ChartSection = 'monthly_playcounts' | 'replays_watched_counts';
+type ChartSection = "monthly_playcounts" | "replays_watched_counts";
 
 // conveniently both charts share same interface
 interface RawChartData {
@@ -25,15 +25,16 @@ interface RawChartData {
 }
 
 function convertUserDataForChart(rawData: RawChartData[]): ChartData[] {
-  const data = sortBy(rawData, 'start_date')
+  const data = sortBy(rawData, "start_date")
     .map((count) => ({
       x: new Date(count.start_date),
       y: count.count,
-    })).reduce(dataPadder, []);
+    }))
+    .reduce(dataPadder, []);
 
   if (data.length === 1) {
     data.unshift({
-      x: moment(data[0].x).subtract(1, 'month').toDate(),
+      x: moment(data[0].x).subtract(1, "month").toDate(),
       y: 0,
     });
   }
@@ -45,11 +46,15 @@ function dataPadder(padded: ChartData[], entry: ChartData) {
   if (padded.length > 0) {
     const lastEntry = padded[padded.length - 1];
     // use UTC to prevent wrong month calculation on timezone with DST
-    const missingMonths = moment.utc(entry.x).diff(moment.utc(lastEntry.x), 'months') - 1;
+    const missingMonths =
+      moment.utc(entry.x).diff(moment.utc(lastEntry.x), "months") - 1;
 
     times(missingMonths, (i) => {
       padded.push({
-        x: moment.utc(lastEntry.x).add(i + 1, 'months').toDate(),
+        x: moment
+          .utc(lastEntry.x)
+          .add(i + 1, "months")
+          .toDate(),
         y: 0,
       });
     });
@@ -90,17 +95,24 @@ export default class Historical extends React.Component<ExtraPageProps> {
 
   render() {
     return (
-      <div className='page-extra'>
-        <ExtraHeader name={this.props.name} withEdit={this.props.controller.withEdit} />
+      <div className="page-extra">
+        <ExtraHeader
+          name={this.props.name}
+          withEdit={this.props.controller.withEdit}
+        />
 
-        <LazyLoad hasData={this.hasData} name={this.props.name} onLoad={this.handleOnLoad}>
+        <LazyLoad
+          hasData={this.hasData}
+          name={this.props.name}
+          onLoad={this.handleOnLoad}
+        >
           {this.renderHistorical()}
         </LazyLoad>
       </div>
     );
   }
 
-  private readonly handleOnLoad = () => this.props.controller.get('historical');
+  private readonly handleOnLoad = () => this.props.controller.get("historical");
 
   private hasSection(attribute: ChartSection) {
     return this.data != null && this.data[attribute].length > 0;
@@ -115,22 +127,25 @@ export default class Historical extends React.Component<ExtraPageProps> {
 
     return (
       <>
-        {this.hasSection('monthly_playcounts') &&
+        {this.hasSection("monthly_playcounts") && (
           <>
-            <ProfilePageExtraSectionTitle titleKey='users.show.extra.historical.monthly_playcounts.title' />
+            <ProfilePageExtraSectionTitle titleKey="users.show.extra.historical.monthly_playcounts.title" />
 
-            <div className='page-extra__chart'>
-              <Chart data={this.monthlyPlaycountsData} labelY={`${trans('users.show.extra.historical.monthly_playcounts.count_label')}`} />
+            <div className="page-extra__chart">
+              <Chart
+                data={this.monthlyPlaycountsData}
+                labelY={`${trans("users.show.extra.historical.monthly_playcounts.count_label")}`}
+              />
             </div>
           </>
-        }
+        )}
 
         <ProfilePageExtraSectionTitle
           count={this.data.beatmap_playcounts.count}
-          titleKey='users.show.extra.historical.most_played.title'
+          titleKey="users.show.extra.historical.most_played.title"
         />
 
-        {this.data.beatmap_playcounts.count > 0 &&
+        {this.data.beatmap_playcounts.count > 0 && (
           <div>
             {this.data.beatmap_playcounts.items.map((playcount) => (
               <BeatmapPlaycount
@@ -142,23 +157,29 @@ export default class Historical extends React.Component<ExtraPageProps> {
             <ShowMoreLink
               {...this.data.beatmap_playcounts.pagination}
               callback={this.onShowMore}
-              data={'beatmapPlaycounts' as const}
-              modifiers='profile-page'
+              data={"beatmapPlaycounts" as const}
+              modifiers="profile-page"
             />
           </div>
-        }
+        )}
 
-        <PlayDetailList controller={this.props.controller} section='scoresRecent' />
+        <PlayDetailList
+          controller={this.props.controller}
+          section="scoresRecent"
+        />
 
-        {this.hasSection('replays_watched_counts') &&
+        {this.hasSection("replays_watched_counts") && (
           <>
-            <ProfilePageExtraSectionTitle titleKey='users.show.extra.historical.replays_watched_counts.title' />
+            <ProfilePageExtraSectionTitle titleKey="users.show.extra.historical.replays_watched_counts.title" />
 
-            <div className='page-extra__chart'>
-              <Chart data={this.replaysWatchedCountsData} labelY={`${trans('users.show.extra.historical.replays_watched_counts.count_label')}`} />
+            <div className="page-extra__chart">
+              <Chart
+                data={this.replaysWatchedCountsData}
+                labelY={`${trans("users.show.extra.historical.replays_watched_counts.count_label")}`}
+              />
             </div>
           </>
-        }
+        )}
       </>
     );
   }

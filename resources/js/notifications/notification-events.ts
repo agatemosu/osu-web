@@ -3,17 +3,23 @@
 
 /* eslint-disable max-classes-per-file */
 
-import DispatcherAction from 'actions/dispatcher-action';
-import NotificationJson, { NotificationBundleJson } from 'interfaces/notification-json';
-import { fromJson, NotificationIdentity, NotificationIdentityJson } from 'notifications/notification-identity';
+import DispatcherAction from "actions/dispatcher-action";
+import NotificationJson, {
+  NotificationBundleJson,
+} from "interfaces/notification-json";
+import {
+  fromJson,
+  NotificationIdentity,
+  NotificationIdentityJson,
+} from "notifications/notification-identity";
 
 export interface NotificationEventLogoutJson {
-  event: 'logout';
+  event: "logout";
 }
 
 export interface NotificationEventNewJson {
   data: NotificationJson;
-  event: 'new';
+  event: "new";
 }
 
 export interface NotificationEventDeleteJson {
@@ -22,7 +28,7 @@ export interface NotificationEventDeleteJson {
     read_count: number;
     timestamp: string;
   };
-  event: 'delete';
+  event: "delete";
 }
 
 export interface NotificationEventMoreLoadedContext {
@@ -35,15 +41,18 @@ export interface NotificationEventReadJson {
     read_count: number;
     timestamp: string;
   };
-  event: 'read';
+  event: "read";
 }
 
 export interface NotificationEventVerifiedJson {
-  event: 'verified';
+  event: "verified";
 }
 
 export class NotificationEventMoreLoaded extends DispatcherAction {
-  constructor(readonly data: NotificationBundleJson, readonly context: NotificationEventMoreLoadedContext) {
+  constructor(
+    readonly data: NotificationBundleJson,
+    readonly context: NotificationEventMoreLoadedContext,
+  ) {
     super();
   }
 }
@@ -55,17 +64,25 @@ export class NotificationEventNew extends DispatcherAction {
 }
 
 export class NotificationEventDelete extends DispatcherAction {
-  constructor(readonly data: NotificationIdentity[], readonly readCount: number) {
+  constructor(
+    readonly data: NotificationIdentity[],
+    readonly readCount: number,
+  ) {
     super();
   }
 
-  static fromJson(eventData: NotificationEventDeleteJson): NotificationEventDelete {
+  static fromJson(
+    eventData: NotificationEventDeleteJson,
+  ): NotificationEventDelete {
     const data = eventData.data.notifications.map((json) => fromJson(json));
     return new NotificationEventDelete(data, eventData.data.read_count);
   }
 }
 export class NotificationEventRead extends DispatcherAction {
-  constructor(readonly data: NotificationIdentity[], readonly readCount: number) {
+  constructor(
+    readonly data: NotificationIdentity[],
+    readonly readCount: number,
+  ) {
     super();
   }
 

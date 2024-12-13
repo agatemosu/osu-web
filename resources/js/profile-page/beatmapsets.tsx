@@ -1,44 +1,44 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetPanel from 'beatmapset-panel';
-import LazyLoad from 'components/lazy-load';
-import ProfilePageExtraSectionTitle from 'components/profile-page-extra-section-title';
-import ShowMoreLink from 'components/show-more-link';
-import { computed } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import ExtraHeader from './extra-header';
-import ExtraPageProps, { BeatmapsetSection } from './extra-page-props';
+import BeatmapsetPanel from "beatmapset-panel";
+import LazyLoad from "components/lazy-load";
+import ProfilePageExtraSectionTitle from "components/profile-page-extra-section-title";
+import ShowMoreLink from "components/show-more-link";
+import { computed } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import ExtraHeader from "./extra-header";
+import ExtraPageProps, { BeatmapsetSection } from "./extra-page-props";
 
 const sectionKeys = [
   {
-    key: 'favourite',
-    urlType: 'favouriteBeatmapsets',
+    key: "favourite",
+    urlType: "favouriteBeatmapsets",
   },
   {
-    key: 'ranked',
-    urlType: 'rankedBeatmapsets',
+    key: "ranked",
+    urlType: "rankedBeatmapsets",
   },
   {
-    key: 'loved',
-    urlType: 'lovedBeatmapsets',
+    key: "loved",
+    urlType: "lovedBeatmapsets",
   },
   {
-    key: 'guest',
-    urlType: 'guestBeatmapsets',
+    key: "guest",
+    urlType: "guestBeatmapsets",
   },
   {
-    key: 'pending',
-    urlType: 'pendingBeatmapsets',
+    key: "pending",
+    urlType: "pendingBeatmapsets",
   },
   {
-    key: 'graveyard',
-    urlType: 'graveyardBeatmapsets',
+    key: "graveyard",
+    urlType: "graveyardBeatmapsets",
   },
   {
-    key: 'nominated',
-    urlType: 'nominatedBeatmapsets',
+    key: "nominated",
+    urlType: "nominatedBeatmapsets",
   },
 ] as const;
 
@@ -51,22 +51,31 @@ export default class Beatmapsets extends React.Component<ExtraPageProps> {
 
   render() {
     return (
-      <div className='page-extra'>
-        <ExtraHeader name={this.props.name} withEdit={this.props.controller.withEdit} />
-        <LazyLoad hasData={this.hasData} name={this.props.name} onLoad={this.handleOnLoad}>
+      <div className="page-extra">
+        <ExtraHeader
+          name={this.props.name}
+          withEdit={this.props.controller.withEdit}
+        />
+        <LazyLoad
+          hasData={this.hasData}
+          name={this.props.name}
+          onLoad={this.handleOnLoad}
+        >
           {sectionKeys.map(this.renderBeatmapsets)}
         </LazyLoad>
       </div>
     );
   }
 
-  private readonly handleOnLoad = () => this.props.controller.get('beatmaps');
+  private readonly handleOnLoad = () => this.props.controller.get("beatmaps");
 
   private readonly onShowMore = (section: BeatmapsetSection) => {
     this.props.controller.apiShowMore(section);
   };
 
-  private readonly renderBeatmapsets = (section: typeof sectionKeys[number]) => {
+  private readonly renderBeatmapsets = (
+    section: (typeof sectionKeys)[number],
+  ) => {
     const state = this.props.controller.state.lazy.beatmaps?.[section.key];
     if (state == null) return;
 
@@ -78,7 +87,7 @@ export default class Beatmapsets extends React.Component<ExtraPageProps> {
         />
 
         {state.items.length > 0 && (
-          <div className='page-extra__beatmapsets js-audio--group'>
+          <div className="page-extra__beatmapsets js-audio--group">
             {state.items.map((beatmapset) => (
               <BeatmapsetPanel key={beatmapset.id} beatmapset={beatmapset} />
             ))}
@@ -87,7 +96,7 @@ export default class Beatmapsets extends React.Component<ExtraPageProps> {
               {...state.pagination}
               callback={this.onShowMore}
               data={section.urlType}
-              modifiers={['profile-page', 'profile-page-beatmapsets']}
+              modifiers={["profile-page", "profile-page-beatmapsets"]}
             />
           </div>
         )}

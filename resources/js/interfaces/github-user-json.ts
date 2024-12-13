@@ -22,9 +22,12 @@ interface OsuProps {
 
 type Null<T> = Record<keyof T, null>;
 
-type GithubUserJson = CommonProps & GithubProps       & IdProps       & (OsuProps | Null<OsuProps>);
-type Legacy         = CommonProps & Null<GithubProps> & Null<IdProps> & OsuProps;
-type Placeholder    = CommonProps & GithubProps       & Null<IdProps> & Null<OsuProps>;
+type GithubUserJson = CommonProps &
+  GithubProps &
+  IdProps &
+  (OsuProps | Null<OsuProps>);
+type Legacy = CommonProps & Null<GithubProps> & Null<IdProps> & OsuProps;
+type Placeholder = CommonProps & GithubProps & Null<IdProps> & Null<OsuProps>;
 
 export default GithubUserJson;
 export type GithubUserJsonForChangelog = GithubUserJson | Legacy | Placeholder;

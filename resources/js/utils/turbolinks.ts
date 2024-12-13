@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { VisitOptions } from '@hotwired/turbo';
-import { v4 as uuidv4 } from 'uuid';
+import { VisitOptions } from "@hotwired/turbo";
+import { v4 as uuidv4 } from "uuid";
 
 export function currentUrl() {
   return window.newUrl ?? document.location;
@@ -26,10 +26,16 @@ export function currentUrlRelative() {
 
 function keepScrollOnLoad() {
   const { pageXOffset, pageYOffset } = window;
-  $(document).one('turbo:load', () => window.scrollTo(pageXOffset, pageYOffset));
+  $(document).one("turbo:load", () =>
+    window.scrollTo(pageXOffset, pageYOffset),
+  );
 }
 
-export function navigate(url: string, keepScroll = false, options?: VisitOptions) {
+export function navigate(
+  url: string,
+  keepScroll = false,
+  options?: VisitOptions,
+) {
   if (keepScroll) {
     keepScrollOnLoad();
   }
@@ -38,19 +44,19 @@ export function navigate(url: string, keepScroll = false, options?: VisitOptions
 }
 
 export function reloadPage(keepScroll = true) {
-  $(document).off('.ujsHideLoadingOverlay');
+  $(document).off(".ujsHideLoadingOverlay");
   Turbo.cache.clear();
 
-  navigate(currentUrl().href, keepScroll, { action: 'replace' });
+  navigate(currentUrl().href, keepScroll, { action: "replace" });
 }
 
-export function updateHistory(url: string, action: 'push' | 'replace') {
+export function updateHistory(url: string, action: "push" | "replace") {
   const currentLocation = currentUrl();
 
   if (url === currentLocation.href) {
     return;
   }
-  if (action === 'push') {
+  if (action === "push") {
     Turbo.session.view.snapshotCache.put(
       currentLocation,
       Turbo.session.view.snapshot.clone(),
@@ -63,7 +69,7 @@ export function updateHistory(url: string, action: 'push' | 'replace') {
     Turbo.session.history[action](newLocation, uuidv4());
     Turbo.session.view.lastRenderedLocation = newLocation;
   };
-  if (action === 'replace' && window.newUrl == null) {
+  if (action === "replace" && window.newUrl == null) {
     window.setTimeout(callback);
   } else {
     callback();

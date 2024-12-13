@@ -1,21 +1,28 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import StringWithComponent from 'components/string-with-component';
-import EventJson from 'interfaces/event-json';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { Modifiers } from 'utils/css';
-import { formatNumber } from 'utils/html';
-import { trans, transExists } from 'utils/lang';
-import { switchNever } from 'utils/switch-never';
-import AchievementBadge from './achievement-badge';
+import StringWithComponent from "components/string-with-component";
+import EventJson from "interfaces/event-json";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { Modifiers } from "utils/css";
+import { formatNumber } from "utils/html";
+import { trans, transExists } from "utils/lang";
+import { switchNever } from "utils/switch-never";
+import AchievementBadge from "./achievement-badge";
 
-export default function parseEvent(event: EventJson, modifiers: Modifiers): { badge?: React.ReactNode; iconModifiers?: string; mappings?: Record<string, React.ReactNode> } {
+export default function parseEvent(
+  event: EventJson,
+  modifiers: Modifiers,
+): {
+  badge?: React.ReactNode;
+  iconModifiers?: string;
+  mappings?: Record<string, React.ReactNode>;
+} {
   if (event.parse_error) return {};
 
   switch (event.type) {
-    case 'achievement':
+    case "achievement":
       return {
         badge: (
           <AchievementBadge
@@ -26,82 +33,123 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
         ),
         mappings: {
           achievement: <strong>{event.achievement.name}</strong>,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 
-    case 'beatmapPlaycount':
+    case "beatmapPlaycount":
       return {
-        badge: <span className='fas fa-play' />,
+        badge: <span className="fas fa-play" />,
         mappings: {
           beatmap: <a href={event.beatmap.url}>{event.beatmap.title}</a>,
           count: event.count,
         },
       };
 
-    case 'beatmapsetApprove':
+    case "beatmapsetApprove":
       return {
-        badge: <span className='fas fa-check' />,
+        badge: <span className="fas fa-check" />,
         iconModifiers: event.approval,
         mappings: {
           approval: trans(`events.beatmapset_status.${event.approval}`),
-          beatmapset: <a href={event.beatmapset.url}>{event.beatmapset.title}</a>,
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          beatmapset: (
+            <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+          ),
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
-    case 'beatmapsetDelete': {
-      const canView = core.currentUser != null && (core.currentUser.is_bng || core.currentUser.is_moderator);
+    case "beatmapsetDelete": {
+      const canView =
+        core.currentUser != null &&
+        (core.currentUser.is_bng || core.currentUser.is_moderator);
 
       return {
-        badge: <span className='far fa-trash-alt' />,
-        iconModifiers: 'danger',
+        badge: <span className="far fa-trash-alt" />,
+        iconModifiers: "danger",
         mappings: {
-          beatmapset: canView
-            ? <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
-            : event.beatmapset.title,
+          beatmapset: canView ? (
+            <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+          ) : (
+            event.beatmapset.title
+          ),
         },
       };
     }
 
-    case 'beatmapsetRevive':
+    case "beatmapsetRevive":
       return {
-        badge: <span className='fas fa-trash-restore' />,
+        badge: <span className="fas fa-trash-restore" />,
         mappings: {
-          beatmapset: <a href={event.beatmapset.url}>{event.beatmapset.title}</a>,
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          beatmapset: (
+            <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+          ),
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
-    case 'beatmapsetUpdate':
+    case "beatmapsetUpdate":
       return {
-        badge: <span className='fas fa-sync-alt' />,
-        iconModifiers: 'green',
+        badge: <span className="fas fa-sync-alt" />,
+        iconModifiers: "green",
         mappings: {
-          beatmapset: <em><a href={event.beatmapset.url}>{event.beatmapset.title}</a></em>,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          beatmapset: (
+            <em>
+              <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+            </em>
+          ),
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 
-    case 'beatmapsetUpload':
+    case "beatmapsetUpload":
       return {
-        badge: <span className='fas fa-arrow-up' />,
-        iconModifiers: 'orange',
+        badge: <span className="fas fa-arrow-up" />,
+        iconModifiers: "orange",
         mappings: {
-          beatmapset: <a href={event.beatmapset.url}>{event.beatmapset.title}</a>,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          beatmapset: (
+            <a href={event.beatmapset.url}>{event.beatmapset.title}</a>
+          ),
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 
-    case 'rank': {
+    case "rank": {
       const rankNumber = formatNumber(event.rank);
       // TODO: remove check after all languages are updated to have both `rank` and `value.rank`.
-      let rank: React.ReactNode = transExists('events.rank') && !transExists('events.value.rank')
-        ? rankNumber
-        : (
+      let rank: React.ReactNode =
+        transExists("events.rank") && !transExists("events.value.rank") ? (
+          rankNumber
+        ) : (
           <StringWithComponent
             mappings={{ rank: rankNumber }}
-            pattern={trans('events.value.rank')}
+            pattern={trans("events.value.rank")}
           />
         );
       if (event.rank <= 50) {
@@ -111,57 +159,95 @@ export default function parseEvent(event: EventJson, modifiers: Modifiers): { ba
       return {
         badge: <div className={`score-rank score-rank--${event.scoreRank}`} />,
         mappings: {
-          beatmap: <em><a href={event.beatmap.url}>{event.beatmap.title}</a></em>,
+          beatmap: (
+            <em>
+              <a href={event.beatmap.url}>{event.beatmap.title}</a>
+            </em>
+          ),
           mode: trans(`beatmaps.mode.${event.mode}`),
           rank,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
     }
 
-    case 'rankLost':
+    case "rankLost":
       return {
-        badge: <span className='fas fa-angle-double-down' />,
+        badge: <span className="fas fa-angle-double-down" />,
         mappings: {
-          beatmap: <em><a href={event.beatmap.url}>{event.beatmap.title}</a></em>,
+          beatmap: (
+            <em>
+              <a href={event.beatmap.url}>{event.beatmap.title}</a>
+            </em>
+          ),
           mode: trans(`beatmaps.mode.${event.mode}`),
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 
-    case 'userSupportAgain':
+    case "userSupportAgain":
       return {
-        badge: <span className='fas fa-heart' />,
-        iconModifiers: 'pink',
+        badge: <span className="fas fa-heart" />,
+        iconModifiers: "pink",
         mappings: {
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
-    case 'userSupportFirst':
+    case "userSupportFirst":
       return {
-        badge: <span className='fas fa-heart' />,
-        iconModifiers: 'pink',
+        badge: <span className="fas fa-heart" />,
+        iconModifiers: "pink",
         mappings: {
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
-    case 'userSupportGift':
+    case "userSupportGift":
       return {
-        badge: <span className='fas fa-gift' />,
-        iconModifiers: 'pink',
+        badge: <span className="fas fa-gift" />,
+        iconModifiers: "pink",
         mappings: {
-          user: <strong><a href={event.user.url}>{event.user.username}</a></strong>,
+          user: (
+            <strong>
+              <a href={event.user.url}>{event.user.username}</a>
+            </strong>
+          ),
         },
       };
 
-    case 'usernameChange':
+    case "usernameChange":
       return {
-        badge: <span className='fas fa-tag' />,
+        badge: <span className="fas fa-tag" />,
         mappings: {
           previousUsername: <strong>{event.user.previousUsername}</strong>,
-          user: <strong><em><a href={event.user.url}>{event.user.username}</a></em></strong>,
+          user: (
+            <strong>
+              <em>
+                <a href={event.user.url}>{event.user.username}</a>
+              </em>
+            </strong>
+          ),
         },
       };
 

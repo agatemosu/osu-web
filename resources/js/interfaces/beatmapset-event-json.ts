@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetDiscussionJson from './beatmapset-discussion-json';
-import BeatmapsetJson from './beatmapset-json';
-import Ruleset from './ruleset';
+import BeatmapsetDiscussionJson from "./beatmapset-discussion-json";
+import BeatmapsetJson from "./beatmapset-json";
+import Ruleset from "./ruleset";
 
 interface VoteEventJson {
   score: number;
@@ -22,59 +22,61 @@ interface NominateEvent extends BaseBeatmapsetEvent {
   comment: {
     modes: Ruleset[];
   } | null;
-  type: 'nominate';
+  type: "nominate";
 }
 
 interface LoveEvent extends BaseBeatmapsetEvent {
   comment: null;
-  type: 'love';
+  type: "love";
 }
 
 interface RemoveFromLovedEvent extends BaseBeatmapsetEvent {
   comment: {
     reason: string;
   };
-  type: 'remove_from_loved';
+  type: "remove_from_loved";
 }
 
 interface QualifyEvent extends BaseBeatmapsetEvent {
   comment: null;
-  type: 'qualify';
+  type: "qualify";
 }
 
 interface DisqualifyEvent extends BaseBeatmapsetEvent {
-  comment: {
-    beatmap_discussion_id: number;
-    // newer events don't have this field
-    beatmap_discussion_post_id?: number;
-    // older events don't have this field
-    nominator_ids?: number[];
-  } | string; // reason string text for older events
-  type: 'disqualify';
+  comment:
+    | {
+        beatmap_discussion_id: number;
+        // newer events don't have this field
+        beatmap_discussion_post_id?: number;
+        // older events don't have this field
+        nominator_ids?: number[];
+      }
+    | string; // reason string text for older events
+  type: "disqualify";
 }
 
 interface ApproveEvent extends BaseBeatmapsetEvent {
   comment: null;
-  type: 'approve';
+  type: "approve";
 }
 
 interface RankEvent extends BaseBeatmapsetEvent {
   comment: null;
-  type: 'rank';
+  type: "rank";
 }
 
 interface KudosuAllowEvent extends BaseBeatmapsetEvent {
   comment: {
     beatmap_discussion_id: number;
   };
-  type: 'kudosu_allow';
+  type: "kudosu_allow";
 }
 
 interface KudosuDenyEvent extends BaseBeatmapsetEvent {
   comment: {
     beatmap_discussion_id: number;
   };
-  type: 'kudosu_deny';
+  type: "kudosu_deny";
 }
 
 interface KudosuGainEvent extends BaseBeatmapsetEvent {
@@ -84,7 +86,7 @@ interface KudosuGainEvent extends BaseBeatmapsetEvent {
     // old events are missing this
     votes?: VoteEventJson[];
   };
-  type: 'kudosu_gain';
+  type: "kudosu_gain";
 }
 
 interface KudosuLostEvent extends BaseBeatmapsetEvent {
@@ -94,14 +96,14 @@ interface KudosuLostEvent extends BaseBeatmapsetEvent {
     // old events are missing this
     votes?: VoteEventJson[];
   };
-  type: 'kudosu_lost';
+  type: "kudosu_lost";
 }
 
 interface KudosuRecalculateEvent extends BaseBeatmapsetEvent {
   comment: {
     beatmap_discussion_id: number;
   };
-  type: 'kudosu_recalculate';
+  type: "kudosu_recalculate";
 }
 
 interface IssueResolveEvent extends BaseBeatmapsetEvent {
@@ -110,7 +112,7 @@ interface IssueResolveEvent extends BaseBeatmapsetEvent {
     // older events are missing this
     beatmap_discussion_post_id?: number;
   };
-  type: 'issue_resolve';
+  type: "issue_resolve";
 }
 
 interface IssueReopenEvent extends BaseBeatmapsetEvent {
@@ -119,33 +121,33 @@ interface IssueReopenEvent extends BaseBeatmapsetEvent {
     // older events are missing this
     beatmap_discussion_post_id?: number;
   };
-  type: 'issue_reopen';
+  type: "issue_reopen";
 }
 
 interface DiscussionLockEvent extends BaseBeatmapsetEvent {
   comment: {
     reason: string;
   };
-  type: 'discussion_lock';
+  type: "discussion_lock";
 }
 
 interface DiscussionUnlockEvent extends BaseBeatmapsetEvent {
   comment: null;
-  type: 'discussion_unlock';
+  type: "discussion_unlock";
 }
 
 interface DiscussionDeleteEvent extends BaseBeatmapsetEvent {
   comment: {
     beatmap_discussion_id: number;
   };
-  type: 'discussion_delete';
+  type: "discussion_delete";
 }
 
 interface DiscussionRestoreEvent extends BaseBeatmapsetEvent {
   comment: {
     beatmap_discussion_id: number;
   };
-  type: 'discussion_restore';
+  type: "discussion_restore";
 }
 
 interface DiscussionPostDeleteEvent extends BaseBeatmapsetEvent {
@@ -153,7 +155,7 @@ interface DiscussionPostDeleteEvent extends BaseBeatmapsetEvent {
     beatmap_discussion_id: number;
     beatmap_discussion_post_id: number;
   };
-  type: 'discussion_post_delete';
+  type: "discussion_post_delete";
 }
 
 interface DiscussionPostRestoreEvent extends BaseBeatmapsetEvent {
@@ -161,7 +163,7 @@ interface DiscussionPostRestoreEvent extends BaseBeatmapsetEvent {
     beatmap_discussion_id: number;
     beatmap_discussion_post_id: number;
   };
-  type: 'discussion_post_restore';
+  type: "discussion_post_restore";
 }
 
 interface NominationResetEvent extends BaseBeatmapsetEvent {
@@ -172,7 +174,7 @@ interface NominationResetEvent extends BaseBeatmapsetEvent {
     // older events don't have this field
     nominator_ids?: number[];
   };
-  type: 'nomination_reset';
+  type: "nomination_reset";
 }
 
 interface NominationResetReceivedEvent extends BaseBeatmapsetEvent {
@@ -181,7 +183,7 @@ interface NominationResetReceivedEvent extends BaseBeatmapsetEvent {
     source_user_id: number;
     source_user_username: string;
   };
-  type: 'nomination_reset_received';
+  type: "nomination_reset_received";
 }
 
 interface GenreEditEvent extends BaseBeatmapsetEvent {
@@ -189,7 +191,7 @@ interface GenreEditEvent extends BaseBeatmapsetEvent {
     new: string;
     old: string;
   };
-  type: 'genre_edit';
+  type: "genre_edit";
 }
 
 interface LanguageEditEvent extends BaseBeatmapsetEvent {
@@ -197,7 +199,7 @@ interface LanguageEditEvent extends BaseBeatmapsetEvent {
     new: string;
     old: string;
   };
-  type: 'language_edit';
+  type: "language_edit";
 }
 
 interface NsfwToggleEvent extends BaseBeatmapsetEvent {
@@ -205,7 +207,7 @@ interface NsfwToggleEvent extends BaseBeatmapsetEvent {
     new: boolean;
     old: boolean;
   };
-  type: 'nsfw_toggle';
+  type: "nsfw_toggle";
 }
 
 interface OffsetEditEvent extends BaseBeatmapsetEvent {
@@ -213,7 +215,7 @@ interface OffsetEditEvent extends BaseBeatmapsetEvent {
     new: number;
     old: number;
   };
-  type: 'offset_edit';
+  type: "offset_edit";
 }
 
 interface BeatmapOwnerChangeEvent extends BaseBeatmapsetEvent {
@@ -227,7 +229,7 @@ interface BeatmapOwnerChangeEvent extends BaseBeatmapsetEvent {
       username: string;
     }[];
   };
-  type: 'beatmap_owner_change';
+  type: "beatmap_owner_change";
 }
 
 type BeatmapsetEventJson =
@@ -238,33 +240,25 @@ type BeatmapsetEventJson =
   | DisqualifyEvent
   | ApproveEvent
   | RankEvent
-
   | KudosuAllowEvent
   | KudosuDenyEvent
   | KudosuGainEvent
   | KudosuLostEvent
   | KudosuRecalculateEvent
-
   | IssueResolveEvent
   | IssueReopenEvent
-
   | DiscussionLockEvent
   | DiscussionUnlockEvent
-
   | DiscussionDeleteEvent
   | DiscussionRestoreEvent
-
   | DiscussionPostDeleteEvent
   | DiscussionPostRestoreEvent
-
   | NominationResetEvent
   | NominationResetReceivedEvent
-
   | GenreEditEvent
   | LanguageEditEvent
   | NsfwToggleEvent
   | OffsetEditEvent
-
   | BeatmapOwnerChangeEvent;
 
 export default BeatmapsetEventJson;

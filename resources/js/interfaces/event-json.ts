@@ -1,24 +1,24 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import AchievementJson from './achievement-json';
-import Rank from './rank';
-import Ruleset from './ruleset';
+import AchievementJson from "./achievement-json";
+import Rank from "./rank";
+import Ruleset from "./ruleset";
 
 type EventType =
-  | 'achievement'
-  | 'beatmapPlaycount'
-  | 'beatmapsetApprove'
-  | 'beatmapsetDelete'
-  | 'beatmapsetRevive'
-  | 'beatmapsetUpdate'
-  | 'beatmapsetUpload'
-  | 'rank'
-  | 'rankLost'
-  | 'usernameChange'
-  | 'userSupportAgain'
-  | 'userSupportFirst'
-  | 'userSupportGift';
+  | "achievement"
+  | "beatmapPlaycount"
+  | "beatmapsetApprove"
+  | "beatmapsetDelete"
+  | "beatmapsetRevive"
+  | "beatmapsetUpdate"
+  | "beatmapsetUpload"
+  | "rank"
+  | "rankLost"
+  | "usernameChange"
+  | "userSupportAgain"
+  | "userSupportFirst"
+  | "userSupportGift";
 
 interface EventBase {
   created_at: string;
@@ -44,43 +44,43 @@ interface EventUser {
 
 interface AchievementEvent extends EventBase {
   achievement: AchievementJson;
-  type: 'achievement';
+  type: "achievement";
   user: EventUser;
 }
 
 interface BeatmapPlaycountEvent extends EventBase {
   beatmap: EventBeatmap;
   count: number;
-  type: 'beatmapPlaycount';
+  type: "beatmapPlaycount";
 }
 
 interface BeatmapsetApproveEvent extends EventBase {
   approval: string;
   beatmapset: EventBeatmapset;
-  type: 'beatmapsetApprove';
+  type: "beatmapsetApprove";
   user: EventUser;
 }
 
 interface BeatmapsetDeleteEvent extends EventBase {
   beatmapset: EventBeatmapset;
-  type: 'beatmapsetDelete';
+  type: "beatmapsetDelete";
 }
 
 interface BeatmapsetReviveEvent extends EventBase {
   beatmapset: EventBeatmapset;
-  type: 'beatmapsetRevive';
+  type: "beatmapsetRevive";
   user: EventUser;
 }
 
 interface BeatmapsetUpdateEvent extends EventBase {
   beatmapset: EventBeatmapset;
-  type: 'beatmapsetUpdate';
+  type: "beatmapsetUpdate";
   user: EventUser;
 }
 
 interface BeatmapsetUploadEvent extends EventBase {
   beatmapset: EventBeatmapset;
-  type: 'beatmapsetUpload';
+  type: "beatmapsetUpload";
   user: EventUser;
 }
 
@@ -89,36 +89,36 @@ interface RankEvent extends EventBase {
   mode: Ruleset;
   rank: number;
   scoreRank: Rank;
-  type: 'rank';
+  type: "rank";
   user: EventUser;
 }
 
 interface RankLostEvent extends EventBase {
   beatmap: EventBeatmap;
   mode: Ruleset;
-  type: 'rankLost';
+  type: "rankLost";
   user: EventUser;
 }
 
 interface UsernameChangeEvent extends EventBase {
-  type: 'usernameChange';
+  type: "usernameChange";
   user: EventUser & {
     previousUsername: string;
   };
 }
 
 interface UserSupportAgainEvent extends EventBase {
-  type: 'userSupportAgain';
+  type: "userSupportAgain";
   user: EventUser;
 }
 
 interface UserSupportFirstEvent extends EventBase {
-  type: 'userSupportFirst';
+  type: "userSupportFirst";
   user: EventUser;
 }
 
 interface UserSupportGiftEvent extends EventBase {
-  type: 'userSupportGift';
+  type: "userSupportGift";
   user: EventUser;
 }
 

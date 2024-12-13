@@ -1,18 +1,18 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
-import GenreJson from 'interfaces/genre-json';
-import LanguageJson from 'interfaces/language-json';
-import { route } from 'laroute';
-import { action, makeObservable, observable, runInAction } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { onError } from 'utils/ajax';
-import { parseJson } from 'utils/json';
-import { trans } from 'utils/lang';
-import { getInt } from 'utils/math';
-import Controller from './controller';
+import { BeatmapsetJsonForShow } from "interfaces/beatmapset-extended-json";
+import GenreJson from "interfaces/genre-json";
+import LanguageJson from "interfaces/language-json";
+import { route } from "laroute";
+import { action, makeObservable, observable, runInAction } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { onError } from "utils/ajax";
+import { parseJson } from "utils/json";
+import { trans } from "utils/lang";
+import { getInt } from "utils/math";
+import Controller from "./controller";
 
 interface Props {
   controller: Controller;
@@ -21,12 +21,12 @@ interface Props {
 
 let genresCache: GenreJson[];
 function genres() {
-  return genresCache ??= parseJson('json-genres');
+  return (genresCache ??= parseJson("json-genres"));
 }
 
 let languagesCache: LanguageJson[];
 function languages() {
-  return languagesCache ??= parseJson('json-languages');
+  return (languagesCache ??= parseJson("json-languages"));
 }
 
 @observer
@@ -76,122 +76,124 @@ export default class MetadataEditor extends React.Component<Props> {
 
   render() {
     return (
-      <form className='simple-form simple-form--modal'>
-        <label className='simple-form__row'>
-          <div className='simple-form__label'>
-            {trans('beatmapsets.show.info.language')}
+      <form className="simple-form simple-form--modal">
+        <label className="simple-form__row">
+          <div className="simple-form__label">
+            {trans("beatmapsets.show.info.language")}
           </div>
 
-          <div className='form-select form-select--full'>
+          <div className="form-select form-select--full">
             <select
-              className='form-select__input'
-              name='beatmapset[language_id]'
+              className="form-select__input"
+              name="beatmapset[language_id]"
               onChange={this.setLanguageId}
               value={this.languageId}
             >
-              {languages().map((language) => (
-                language.id === null ? null :
+              {languages().map((language) =>
+                language.id === null ? null : (
                   <option key={language.id} value={language.id}>
                     {language.name}
                   </option>
-              ))}
+                ),
+              )}
             </select>
           </div>
         </label>
 
-        <label className='simple-form__row'>
-          <div className='simple-form__label'>
-            {trans('beatmapsets.show.info.genre')}
+        <label className="simple-form__row">
+          <div className="simple-form__label">
+            {trans("beatmapsets.show.info.genre")}
           </div>
 
-          <div className='form-select form-select--full'>
+          <div className="form-select form-select--full">
             <select
-              className='form-select__input'
-              name='beatmapset[genre_id]'
+              className="form-select__input"
+              name="beatmapset[genre_id]"
               onChange={this.setGenreId}
               value={this.genreId}
             >
-              {genres().map((genre) => (
-                genre.id === null ? null :
+              {genres().map((genre) =>
+                genre.id === null ? null : (
                   <option key={genre.id} value={genre.id}>
                     {genre.name}
                   </option>
-              ))}
+                ),
+              )}
             </select>
           </div>
         </label>
 
-        {this.canEditTags &&
-          <label className='simple-form__row'>
-            <div className='simple-form__label'>
-              {trans('beatmapsets.show.info.tags')}
+        {this.canEditTags && (
+          <label className="simple-form__row">
+            <div className="simple-form__label">
+              {trans("beatmapsets.show.info.tags")}
             </div>
 
             <textarea
-              className='simple-form__input'
+              className="simple-form__input"
               maxLength={1000}
-              name='beatmapset[tags]'
+              name="beatmapset[tags]"
               onChange={this.setTags}
               value={this.tags}
             />
           </label>
-        }
+        )}
 
-        {this.canEditOffset &&
-          <label className='simple-form__row'>
-            <div className='simple-form__label'>
-              {trans('beatmapsets.show.info.offset')}
+        {this.canEditOffset && (
+          <label className="simple-form__row">
+            <div className="simple-form__label">
+              {trans("beatmapsets.show.info.offset")}
             </div>
 
             <input
-              className='simple-form__input'
+              className="simple-form__input"
               maxLength={6}
-              name='beatmapset[offset]'
+              name="beatmapset[offset]"
               onChange={this.setOffset}
-              type='text'
+              type="text"
               value={this.offset}
             />
           </label>
-        }
+        )}
 
-        <div className='simple-form__row'>
-          <div className='simple-form__label'>
-            {trans('beatmapsets.show.info.nsfw')}
+        <div className="simple-form__row">
+          <div className="simple-form__label">
+            {trans("beatmapsets.show.info.nsfw")}
           </div>
 
-          <label className='osu-switch-v2'>
+          <label className="osu-switch-v2">
             <input
               checked={this.nsfw}
-              className='osu-switch-v2__input'
-              name='beatmapset[nsfw]'
+              className="osu-switch-v2__input"
+              name="beatmapset[nsfw]"
               onChange={this.setNsfw}
-              type='checkbox'
+              type="checkbox"
             />
-            <span className='osu-switch-v2__content' />
+            <span className="osu-switch-v2__content" />
           </label>
         </div>
 
-        <div className='simple-form__row simple-form__row--no-label'>
-          <div className='simple-form__buttons'>
-            <div className='simple-form__button'>
+        <div className="simple-form__row simple-form__row--no-label">
+          <div className="simple-form__buttons">
+            <div className="simple-form__button">
               <button
-                className='btn-osu-big btn-osu-big--rounded-thin'
+                className="btn-osu-big btn-osu-big--rounded-thin"
                 disabled={this.xhr != null}
                 onClick={this.save}
-                type='button'
+                type="button"
               >
-                {trans('common.buttons.save')}
+                {trans("common.buttons.save")}
               </button>
             </div>
 
-            <div className='simple-form__button'>
+            <div className="simple-form__button">
               <button
-                className='btn-osu-big btn-osu-big--rounded-thin'
+                className="btn-osu-big btn-osu-big--rounded-thin"
                 disabled={this.xhr != null}
                 onClick={this.props.onClose}
-                type='button'
+                type="button"
               >
-                {trans('common.buttons.cancel')}
+                {trans("common.buttons.cancel")}
               </button>
             </div>
           </div>
@@ -202,23 +204,36 @@ export default class MetadataEditor extends React.Component<Props> {
 
   @action
   private readonly save = () => {
-    this.xhr = $.ajax(route('beatmapsets.update', { beatmapset: this.controller.beatmapset.id }), {
-      data: { beatmapset: {
-        genre_id: this.genreId,
-        language_id: this.languageId,
-        nsfw: this.nsfw,
-        offset: this.canEditOffset ? getInt(this.offset) : undefined,
-        tags: this.canEditTags ? this.tags : undefined,
-      } },
-      method: 'PATCH',
-    });
-    this.xhr.fail(onError).always(action(() => {
-      this.xhr = null;
-    }))
-      .done((beatmapset) => runInAction(() => {
-        this.controller.state.beatmapset = beatmapset;
-        this.props.onClose();
-      }));
+    this.xhr = $.ajax(
+      route("beatmapsets.update", {
+        beatmapset: this.controller.beatmapset.id,
+      }),
+      {
+        data: {
+          beatmapset: {
+            genre_id: this.genreId,
+            language_id: this.languageId,
+            nsfw: this.nsfw,
+            offset: this.canEditOffset ? getInt(this.offset) : undefined,
+            tags: this.canEditTags ? this.tags : undefined,
+          },
+        },
+        method: "PATCH",
+      },
+    );
+    this.xhr
+      .fail(onError)
+      .always(
+        action(() => {
+          this.xhr = null;
+        }),
+      )
+      .done((beatmapset) =>
+        runInAction(() => {
+          this.controller.state.beatmapset = beatmapset;
+          this.props.onClose();
+        }),
+      );
   };
 
   @action
@@ -227,7 +242,9 @@ export default class MetadataEditor extends React.Component<Props> {
   };
 
   @action
-  private readonly setLanguageId = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  private readonly setLanguageId = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     this.languageId = parseInt(e.currentTarget.value, 10);
   };
 

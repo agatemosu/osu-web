@@ -1,22 +1,22 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CountryJson from './country-json';
-import DailyChallengeUserStatsJson from './daily-challenge-user-stats-json';
-import ProfileBannerJson from './profile-banner';
-import RankHighestJson from './rank-highest-json';
-import RankHistoryJson from './rank-history-json';
-import UserAccountHistoryJson from './user-account-history-json';
-import UserAchievementJson from './user-achievement-json';
-import UserBadgeJson from './user-badge-json';
-import UserCoverJson from './user-cover-json';
-import UserGroupJson from './user-group-json';
-import UserMonthlyPlaycountJson from './user-monthly-playcount-json';
-import UserPreferencesJson from './user-preferences-json';
-import UserRelationJson from './user-relation-json';
-import UserReplaysWatchedCountJson from './user-replays-watched-count-json';
-import UserStatisticsJson from './user-statistics-json';
-import UserStatisticsRulesetsJson from './user-statistics-rulesets-json';
+import CountryJson from "./country-json";
+import DailyChallengeUserStatsJson from "./daily-challenge-user-stats-json";
+import ProfileBannerJson from "./profile-banner";
+import RankHighestJson from "./rank-highest-json";
+import RankHistoryJson from "./rank-history-json";
+import UserAccountHistoryJson from "./user-account-history-json";
+import UserAchievementJson from "./user-achievement-json";
+import UserBadgeJson from "./user-badge-json";
+import UserCoverJson from "./user-cover-json";
+import UserGroupJson from "./user-group-json";
+import UserMonthlyPlaycountJson from "./user-monthly-playcount-json";
+import UserPreferencesJson from "./user-preferences-json";
+import UserRelationJson from "./user-relation-json";
+import UserReplaysWatchedCountJson from "./user-replays-watched-count-json";
+import UserStatisticsJson from "./user-statistics-json";
+import UserStatisticsRulesetsJson from "./user-statistics-rulesets-json";
 
 interface UserJsonAvailableIncludes {
   account_history: UserAccountHistoryJson[];
@@ -88,15 +88,15 @@ interface UserJsonDefaultAttributes {
 }
 
 export type ProfileHeaderIncludes =
-  | 'active_tournament_banner'
-  | 'active_tournament_banners'
-  | 'badges'
-  | 'comments_count'
-  | 'follower_count'
-  | 'groups'
-  | 'mapping_follower_count'
-  | 'previous_usernames'
-  | 'support_level';
+  | "active_tournament_banner"
+  | "active_tournament_banners"
+  | "badges"
+  | "comments_count"
+  | "follower_count"
+  | "groups"
+  | "mapping_follower_count"
+  | "previous_usernames"
+  | "support_level";
 
 type UserJson = UserJsonDefaultAttributes & Partial<UserJsonAvailableIncludes>;
 

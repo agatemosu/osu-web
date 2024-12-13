@@ -1,17 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
-import { UserLoginAction } from 'actions/user-login-actions';
-import { dispatchListener } from 'app-dispatcher';
-import ResultSet from 'beatmaps/result-set';
-import SearchResults from 'beatmaps/search-results';
-import { BeatmapsetSearchFilters } from 'beatmapset-search-filters';
-import DispatchListener from 'dispatch-listener';
-import BeatmapsetExtendedJson from 'interfaces/beatmapset-extended-json';
-import { route } from 'laroute';
-import { action, makeObservable, observable, runInAction } from 'mobx';
-import { BeatmapsetStore } from 'stores/beatmapset-store';
+import DispatcherAction from "actions/dispatcher-action";
+import { UserLoginAction } from "actions/user-login-actions";
+import { dispatchListener } from "app-dispatcher";
+import ResultSet from "beatmaps/result-set";
+import SearchResults from "beatmaps/search-results";
+import { BeatmapsetSearchFilters } from "beatmapset-search-filters";
+import DispatchListener from "dispatch-listener";
+import BeatmapsetExtendedJson from "interfaces/beatmapset-extended-json";
+import { route } from "laroute";
+import { action, makeObservable, observable, runInAction } from "mobx";
+import { BeatmapsetStore } from "stores/beatmapset-store";
 
 export interface SearchResponse {
   beatmapsets: BeatmapsetExtendedJson[];
@@ -23,7 +23,10 @@ export interface SearchResponse {
 
 @dispatchListener
 export class BeatmapsetSearch implements DispatchListener {
-  @observable readonly recommendedDifficulties = new Map<string|null, number>();
+  @observable readonly recommendedDifficulties = new Map<
+    string | null,
+    number
+  >();
   @observable readonly resultSets = new Map<string, ResultSet>();
 
   private xhr?: JQueryXHR;
@@ -41,12 +44,14 @@ export class BeatmapsetSearch implements DispatchListener {
   @action
   get(filters: BeatmapsetSearchFilters, from = 0): PromiseLike<SearchResults> {
     if (from < 0) {
-      throw Error('from must be > 0');
+      throw Error("from must be > 0");
     }
 
     const key = filters.toKeyString();
     const resultSet = this.getOrCreate(key);
-    const sufficient = (from > 0 && from < resultSet.beatmapsetIds.size) || (from === 0 && !resultSet.isExpired);
+    const sufficient =
+      (from > 0 && from < resultSet.beatmapsetIds.size) ||
+      (from === 0 && !resultSet.isExpired);
     if (sufficient) {
       return Promise.resolve(resultSet);
     }
@@ -60,7 +65,10 @@ export class BeatmapsetSearch implements DispatchListener {
 
           this.updateBeatmapsetStore(data);
           resultSet.append(data);
-          this.recommendedDifficulties.set(filters.mode, data.recommended_difficulty);
+          this.recommendedDifficulties.set(
+            filters.mode,
+            data.recommended_difficulty,
+          );
         });
       }
 
@@ -101,7 +109,10 @@ export class BeatmapsetSearch implements DispatchListener {
     this.recommendedDifficulties.clear();
   }
 
-  private fetch(filters: BeatmapsetSearchFilters, from: number): PromiseLike<SearchResponse | null> {
+  private fetch(
+    filters: BeatmapsetSearchFilters,
+    from: number,
+  ): PromiseLike<SearchResponse | null> {
     this.cancel();
 
     const params = filters.queryParams;
@@ -117,11 +128,11 @@ export class BeatmapsetSearch implements DispatchListener {
       }
     }
 
-    const url = route('beatmapsets.search');
+    const url = route("beatmapsets.search");
     this.xhr = $.ajax(url, {
       data: params,
-      dataType: 'json',
-      method: 'get',
+      dataType: "json",
+      method: "get",
     });
 
     return this.xhr;

@@ -1,17 +1,32 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { markAsRead, getChannel, getChannelUsers, getMessages } from 'chat/chat-api';
-import ChannelJson, { ChannelType, SupportedChannelType, supportedTypeLookup } from 'interfaces/chat/channel-json';
-import MessageJson from 'interfaces/chat/message-json';
-import UserJson from 'interfaces/user-json';
-import { sortBy, throttle } from 'lodash';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import User from 'models/user';
-import core from 'osu-core-singleton';
-import Message from './message';
+import {
+  markAsRead,
+  getChannel,
+  getChannelUsers,
+  getMessages,
+} from "chat/chat-api";
+import ChannelJson, {
+  ChannelType,
+  SupportedChannelType,
+  supportedTypeLookup,
+} from "interfaces/chat/channel-json";
+import MessageJson from "interfaces/chat/message-json";
+import UserJson from "interfaces/user-json";
+import { sortBy, throttle } from "lodash";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
+import User from "models/user";
+import core from "osu-core-singleton";
+import Message from "./message";
 
-const hideableChannelTypes: Set<ChannelType> = new Set(['ANNOUNCE', 'PM']);
+const hideableChannelTypes: Set<ChannelType> = new Set(["ANNOUNCE", "PM"]);
 
 export const maxMessageLength = 1024;
 
@@ -19,7 +34,10 @@ export const maxMessageLength = 1024;
 function getMinMessageIdFrom(messages: Message[]) {
   let minMessageId: number | undefined;
   for (const message of messages) {
-    if (typeof message.messageId === 'number' && (minMessageId == null || message.messageId < minMessageId)) {
+    if (
+      typeof message.messageId === "number" &&
+      (minMessageId == null || message.messageId < minMessageId)
+    ) {
       minMessageId = message.messageId;
     }
   }
@@ -28,7 +46,8 @@ function getMinMessageIdFrom(messages: Message[]) {
 }
 
 export default class Channel {
-  private static readonly defaultIcon = '/images/layout/chat/channel-default.png'; // TODO: update with channel-specific icons?
+  private static readonly defaultIcon =
+    "/images/layout/chat/channel-default.png"; // TODO: update with channel-specific icons?
 
   @observable canListUsers: boolean = false;
   @observable canMessageError: string | null = null;
@@ -36,27 +55,33 @@ export default class Channel {
   @observable description?: string;
   @observable firstMessageId = -1;
   @observable icon?: string;
-  @observable inputText = '';
+  @observable inputText = "";
   @observable lastReadId?: number;
   @observable loadingEarlierMessages = false;
   @observable loadingMessages = false;
   @observable loadUsersXhr: ReturnType<typeof getChannelUsers> | undefined;
   @observable messageLengthLimit = maxMessageLength;
-  @observable name = '';
+  @observable name = "";
   needsRefresh = true;
   @observable newPmChannel = false;
-  readonly throttledSendMarkAsRead = throttle(() => this.sendMarkAsRead(), 1000);
-  @observable type: ChannelType = 'TEMPORARY'; // TODO: look at making this support channels only
+  readonly throttledSendMarkAsRead = throttle(
+    () => this.sendMarkAsRead(),
+    1000,
+  );
+  @observable type: ChannelType = "TEMPORARY"; // TODO: look at making this support channels only
   @observable uiState = {
     autoScroll: true,
     scrollY: 0,
   };
   @observable userIds: number[] = [];
   @observable users: null | UserJson[] = null;
-  @observable usersCursor: null | string = '';
+  @observable usersCursor: null | string = "";
 
   private markAsReadLastSent = 0;
-  @observable private readonly messagesMap = new Map<number | string, Message>();
+  @observable private readonly messagesMap = new Map<
+    number | string,
+    Message
+  >();
   private serverLastMessageId?: number;
 
   @computed
@@ -100,7 +125,7 @@ export default class Channel {
   @computed
   get lastMessageId() {
     for (let i = this.messages.length - 1; i >= 0; i--) {
-      if (typeof this.messages[i].messageId === 'number') {
+      if (typeof this.messages[i].messageId === "number") {
         return this.messages[i].messageId as number;
       }
     }
@@ -110,28 +135,33 @@ export default class Channel {
 
   @computed
   get messages() {
-    return sortBy([...this.messagesMap.values()], ['timestamp', 'channelId']);
+    return sortBy([...this.messagesMap.values()], ["timestamp", "channelId"]);
   }
 
   @computed
   get minMessageId() {
-    const id = this.messages.length > 0 ? this.messages[0].messageId : undefined;
+    const id =
+      this.messages.length > 0 ? this.messages[0].messageId : undefined;
 
-    return typeof id === 'number' ? id : -1;
+    return typeof id === "number" ? id : -1;
   }
 
   @computed
   get pmTarget(): number | undefined {
-    if (this.type !== 'PM') {
+    if (this.type !== "PM") {
       return;
     }
 
-    return this.userIds.find((userId: number) => userId !== core.currentUserOrFail.id);
+    return this.userIds.find(
+      (userId: number) => userId !== core.currentUserOrFail.id,
+    );
   }
 
   @computed
   get supportedType() {
-    return supportedTypeLookup.has(this.type) ? this.type as SupportedChannelType : null;
+    return supportedTypeLookup.has(this.type)
+      ? (this.type as SupportedChannelType)
+      : null;
   }
 
   constructor(channelId: number) {
@@ -143,7 +173,7 @@ export default class Channel {
   static newPM(target: User, channelId: number | null): Channel {
     const channel = new Channel(channelId ?? -1);
     channel.newPmChannel = channelId == null;
-    channel.type = 'PM';
+    channel.type = "PM";
     channel.name = target.username;
     channel.icon = target.avatarUrl;
     channel.userIds = [core.currentUserOrFail.id, target.id];
@@ -173,7 +203,9 @@ export default class Channel {
    */
   @action
   addMessages(messages: Message[]) {
-    messages.forEach((message) => this.messagesMap.set(message.messageId, message));
+    messages.forEach((message) =>
+      this.messagesMap.set(message.messageId, message),
+    );
   }
 
   @action
@@ -254,12 +286,17 @@ export default class Channel {
     }
 
     this.loadUsersXhr = getChannelUsers(this.channelId, this.usersCursor)
-      .done((json) => runInAction(() => {
-        this.users = [...(this.users ?? []), ...json.users];
-        this.usersCursor = json.cursor_string;
-      })).always(action(() => {
-        this.loadUsersXhr = undefined;
-      }));
+      .done((json) =>
+        runInAction(() => {
+          this.users = [...(this.users ?? []), ...json.users];
+          this.usersCursor = json.cursor_string;
+        }),
+      )
+      .always(
+        action(() => {
+          this.loadUsersXhr = undefined;
+        }),
+      );
   };
 
   @action
@@ -337,7 +374,7 @@ export default class Channel {
         }
       });
     } catch {
-      runInAction(() => this.loadingMessages = false);
+      runInAction(() => (this.loadingMessages = false));
     }
   }
 

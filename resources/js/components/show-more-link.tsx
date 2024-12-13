@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import { Spinner } from './spinner';
+import * as React from "react";
+import { classWithModifiers, Modifiers } from "utils/css";
+import { trans } from "utils/lang";
+import { Spinner } from "./spinner";
 
-const bn = 'show-more-link';
+const bn = "show-more-link";
 
 interface Props<T> {
   callback?: (data?: T) => void;
@@ -38,18 +38,20 @@ export default class ShowMoreLink<T> extends React.PureComponent<Props<T>> {
     };
 
     if (this.props.loading) {
-      return <span data-disabled='1' {...sharedProps} />;
+      return <span data-disabled="1" {...sharedProps} />;
     }
 
     if (this.props.url == null) {
-      return <button onClick={this.onClick} type='button' {...sharedProps} />;
+      return <button onClick={this.onClick} type="button" {...sharedProps} />;
     }
 
     return <a href={this.props.url} onClick={this.onClick} {...sharedProps} />;
   }
 
   private children() {
-    const icon = <span className={`fas fa-angle-${this.props.direction ?? 'down'}`} />;
+    const icon = (
+      <span className={`fas fa-angle-${this.props.direction ?? "down"}`} />
+    );
 
     return (
       <>
@@ -62,7 +64,7 @@ export default class ShowMoreLink<T> extends React.PureComponent<Props<T>> {
           </span>
 
           <span className={`${bn}__label-text`}>
-            {this.props.label ?? trans('common.buttons.show_more')}
+            {this.props.label ?? trans("common.buttons.show_more")}
             {this.props.remaining != null && ` (${this.props.remaining})`}
           </span>
 

@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapExtendedJson from './beatmap-extended-json';
-import BeatmapJson from './beatmap-json';
-import BeatmapsetDiscussionJson from './beatmapset-discussion-json';
-import BeatmapsetEventJson from './beatmapset-event-json';
-import BeatmapsetNominationJson from './beatmapset-nomination-json';
-import GenreJson from './genre-json';
-import LanguageJson from './language-json';
-import Ruleset from './ruleset';
-import UserJson, { UserJsonDeleted } from './user-json';
+import BeatmapExtendedJson from "./beatmap-extended-json";
+import BeatmapJson from "./beatmap-json";
+import BeatmapsetDiscussionJson from "./beatmapset-discussion-json";
+import BeatmapsetEventJson from "./beatmapset-event-json";
+import BeatmapsetNominationJson from "./beatmapset-nomination-json";
+import GenreJson from "./genre-json";
+import LanguageJson from "./language-json";
+import Ruleset from "./ruleset";
+import UserJson, { UserJsonDeleted } from "./user-json";
 
 export interface Availability {
   download_disabled: boolean;
@@ -54,11 +54,18 @@ export interface LegacyNominationsInterface extends BaseNominationsInterface {
 }
 
 export type BeatmapsetNominationsInterface =
-  NominationsInterface | LegacyNominationsInterface;
+  | NominationsInterface
+  | LegacyNominationsInterface;
 // #endregion
 
 export type BeatmapsetStatus =
-  'graveyard' | 'wip' | 'pending' | 'ranked' | 'approved' | 'qualified' | 'loved';
+  | "graveyard"
+  | "wip"
+  | "pending"
+  | "ranked"
+  | "approved"
+  | "qualified"
+  | "loved";
 
 export interface CurrentUserAttributes {
   can_beatmap_update_owner: boolean;
@@ -72,7 +79,7 @@ export interface CurrentUserAttributes {
   can_remove_from_loved: boolean;
   is_watching: boolean;
   new_hype_time: string | null;
-  nomination_modes: Partial<Record<Ruleset, 'full' | 'limited'>> | null;
+  nomination_modes: Partial<Record<Ruleset, "full" | "limited">> | null;
   remaining_hype: number;
 }
 
@@ -123,5 +130,6 @@ interface BeatmapsetJsonDefaultAttributes {
   video: boolean;
 }
 
-type BeatmapsetJson = BeatmapsetJsonDefaultAttributes & Partial<BeatmapsetJsonAvailableIncludes>;
+type BeatmapsetJson = BeatmapsetJsonDefaultAttributes &
+  Partial<BeatmapsetJsonAvailableIncludes>;
 export default BeatmapsetJson;

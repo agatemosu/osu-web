@@ -1,20 +1,24 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { fadeIn, fadeOut } from 'utils/fade';
-import { isModalShowing } from 'utils/modal-helper';
+import { fadeIn, fadeOut } from "utils/fade";
+import { isModalShowing } from "utils/modal-helper";
 
 export default class ClickMenu {
   private current: string | null | undefined = null;
   private documentMouseEventTarget: unknown;
 
   constructor() {
-    $(document).on('click', '.js-click-menu--close', this.close);
-    $(document).on('click', '.js-click-menu[data-click-menu-target]', this.toggle);
-    $(document).on('mousedown', this.onDocumentMousedown);
-    $(document).on('mouseup', this.onDocumentMouseup);
-    document.addEventListener('turbo:load', this.restoreSaved);
-    document.addEventListener('turbo:before-cache', this.saveCurrent);
+    $(document).on("click", ".js-click-menu--close", this.close);
+    $(document).on(
+      "click",
+      ".js-click-menu[data-click-menu-target]",
+      this.toggle,
+    );
+    $(document).on("mousedown", this.onDocumentMousedown);
+    $(document).on("mouseup", this.onDocumentMouseup);
+    document.addEventListener("turbo:load", this.restoreSaved);
+    document.addEventListener("turbo:before-cache", this.saveCurrent);
   }
 
   close = () => {
@@ -23,16 +27,22 @@ export default class ClickMenu {
 
   closestMenuId(child: Element | null | undefined) {
     if (child != null) {
-      return $(child).parents('[data-click-menu-id]').attr('data-click-menu-id');
+      return $(child)
+        .parents("[data-click-menu-id]")
+        .attr("data-click-menu-id");
     }
   }
 
   menu(id: string | null | undefined) {
-    return document.querySelector(`.js-click-menu[data-click-menu-id${id == null ? '' : `='${id}'`}]`);
+    return document.querySelector(
+      `.js-click-menu[data-click-menu-id${id == null ? "" : `='${id}'`}]`,
+    );
   }
 
   menuLink(id: string | null | undefined) {
-    return document.querySelector(`.js-click-menu[data-click-menu-target${id == null ? '' : `='${id}'`}]`);
+    return document.querySelector(
+      `.js-click-menu[data-click-menu-target${id == null ? "" : `='${id}'`}]`,
+    );
   }
 
   restoreSaved = () => {
@@ -53,7 +63,9 @@ export default class ClickMenu {
     this.current = target;
 
     const tree = this.tree();
-    const menus = document.querySelectorAll('.js-click-menu[data-click-menu-id]');
+    const menus = document.querySelectorAll(
+      ".js-click-menu[data-click-menu-id]",
+    );
     let shownMenu: HTMLElement | null = null;
     let validCurrent = false;
 
@@ -66,12 +78,12 @@ export default class ClickMenu {
 
       if (menuId == null || tree.indexOf(menuId) === -1) {
         fadeOut(menu);
-        menu.classList.remove('js-click-menu--active');
-        this.menuLink(menuId)?.classList.remove('js-click-menu--active');
+        menu.classList.remove("js-click-menu--active");
+        this.menuLink(menuId)?.classList.remove("js-click-menu--active");
       } else {
         fadeIn(menu);
-        menu.classList.add('js-click-menu--active');
-        this.menuLink(menuId)?.classList.add('js-click-menu--active');
+        menu.classList.add("js-click-menu--active");
+        this.menuLink(menuId)?.classList.add("js-click-menu--active");
         validCurrent = true;
 
         if (menuId === this.current) {
@@ -84,16 +96,22 @@ export default class ClickMenu {
       this.current = null;
     }
 
-    $.publish('click-menu:current', { previousTree, target: this.current, tree });
+    $.publish("click-menu:current", {
+      previousTree,
+      target: this.current,
+      tree,
+    });
 
-    const toFocus = shownMenu?.querySelector('.js-click-menu--autofocus');
+    const toFocus = shownMenu?.querySelector(".js-click-menu--autofocus");
 
     if (toFocus instanceof HTMLElement) {
       toFocus.focus();
     }
   };
 
-  toggle = (e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>) => {
+  toggle = (
+    e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>,
+  ) => {
     const menu = e.currentTarget;
     const tree = this.tree();
 
@@ -133,16 +151,25 @@ export default class ClickMenu {
     return tree;
   };
 
-  private readonly onDocumentMousedown = (e: JQuery.MouseDownEvent<Document, unknown, Document, HTMLElement | Document>) => {
+  private readonly onDocumentMousedown = (
+    e: JQuery.MouseDownEvent<
+      Document,
+      unknown,
+      Document,
+      HTMLElement | Document
+    >,
+  ) => {
     this.documentMouseEventTarget = e.button === 0 ? e.target : null;
   };
 
-  private readonly onDocumentMouseup = (e: JQuery.MouseUpEvent<Document, unknown, Document, HTMLElement | Document>) => {
+  private readonly onDocumentMouseup = (
+    e: JQuery.MouseUpEvent<Document, unknown, Document, HTMLElement | Document>,
+  ) => {
     if (this.documentMouseEventTarget !== e.target) return;
     if (e.button !== 0) return;
     if (isModalShowing()) return;
     if (this.current == null) return;
-    if ($(e.target).closest('.js-click-menu').length > 0) return;
+    if ($(e.target).closest(".js-click-menu").length > 0) return;
 
     this.show();
   };

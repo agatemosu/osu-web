@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import TurbolinksReload from 'core/turbolinks-reload';
+import TurbolinksReload from "core/turbolinks-reload";
 
 declare global {
   interface Window {
@@ -9,17 +9,17 @@ declare global {
   }
 }
 
-const src = '//platform.enchant.com';
+const src = "//platform.enchant.com";
 
 export default class Enchant {
   constructor(private readonly turbolinksReload: TurbolinksReload) {
-    $(document).on('turbo:load', this.load);
-    $(document).on('turbo:before-cache', this.unload);
-    $(document).on('click', '.js-enchant--show', this.showMessageWindow);
+    $(document).on("turbo:load", this.load);
+    $(document).on("turbo:before-cache", this.unload);
+    $(document).on("click", ".js-enchant--show", this.showMessageWindow);
   }
 
   load = () => {
-    const enchantIdElement = document.querySelector('.enchant-help-center');
+    const enchantIdElement = document.querySelector(".enchant-help-center");
 
     if (enchantIdElement == null) {
       return;
@@ -32,19 +32,25 @@ export default class Enchant {
   showMessageWindow = (e: JQuery.ClickEvent) => {
     e.preventDefault();
 
-    if (window.enchant != null && window.enchant.messenger != null && typeof window.enchant.messenger.open === 'function') {
+    if (
+      window.enchant != null &&
+      window.enchant.messenger != null &&
+      typeof window.enchant.messenger.open === "function"
+    ) {
       window.enchant.messenger.open();
     }
   };
 
   unload = () => {
     this.turbolinksReload.forget(src);
-    $('#enchant-messenger-main, #enchant-messenger-launcher, iframe[src^="https://enchantwidgets-"]').remove();
+    $(
+      '#enchant-messenger-main, #enchant-messenger-launcher, iframe[src^="https://enchantwidgets-"]',
+    ).remove();
 
-    document.querySelectorAll('style').forEach((el) => {
+    document.querySelectorAll("style").forEach((el) => {
       const text = el.textContent;
 
-      if (text != null && (/#enchant-/.exec(text))) {
+      if (text != null && /#enchant-/.exec(text)) {
         $(el).remove();
       }
     });

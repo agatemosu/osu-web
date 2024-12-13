@@ -1,23 +1,23 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import MessageJson, { MessageType } from 'interfaces/chat/message-json';
-import { action, computed, makeObservable, observable } from 'mobx';
-import User from 'models/user';
-import * as moment from 'moment';
-import core from 'osu-core-singleton';
-import { v4 as uuidv4 } from 'uuid';
+import MessageJson, { MessageType } from "interfaces/chat/message-json";
+import { action, computed, makeObservable, observable } from "mobx";
+import User from "models/user";
+import * as moment from "moment";
+import core from "osu-core-singleton";
+import { v4 as uuidv4 } from "uuid";
 
 export default class Message {
   @observable channelId = -1;
-  @observable content = '';
+  @observable content = "";
   @observable errored = false;
   @observable isAction = false;
   @observable messageId: number | string = uuidv4();
   @observable persisted = false;
   @observable senderId = -1;
   @observable timestamp: string = moment().toISOString();
-  @observable type: MessageType = 'plain';
+  @observable type: MessageType = "plain";
   @observable uuid = this.messageId;
 
   @computed

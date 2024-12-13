@@ -1,19 +1,24 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetJson from 'interfaces/beatmapset-json';
-import UserJson from 'interfaces/user-json';
-import { route } from 'laroute';
-import { debounce } from 'lodash';
-import { action, computed, makeObservable, observable } from 'mobx';
+import BeatmapsetJson from "interfaces/beatmapset-json";
+import UserJson from "interfaces/user-json";
+import { route } from "laroute";
+import { debounce } from "lodash";
+import { action, computed, makeObservable, observable } from "mobx";
 
-export type Section = 'user' | 'user_others' | 'beatmapset' | 'beatmapset_others' | 'others';
+export type Section =
+  | "user"
+  | "user_others"
+  | "beatmapset"
+  | "beatmapset_others"
+  | "others";
 const SECTIONS: Section[] = [
-  'user',
-  'user_others',
-  'beatmapset',
-  'beatmapset_others',
-  'others',
+  "user",
+  "user_others",
+  "beatmapset",
+  "beatmapset_others",
+  "others",
 ];
 
 interface SelectedItem {
@@ -21,7 +26,7 @@ interface SelectedItem {
   section: number;
 }
 
-export type ResultMode = 'beatmapset' | 'forum_post' | 'user' | 'wiki_page';
+export type ResultMode = "beatmapset" | "forum_post" | "user" | "wiki_page";
 interface SearchResult {
   beatmapset: SearchResultBeatmapset;
   forum_post: SearchResultSummary;
@@ -41,11 +46,11 @@ interface SearchResultUser extends SearchResultSummary {
   users: UserJson[];
 }
 
-const otherModes: ResultMode[] = ['forum_post', 'wiki_page'];
+const otherModes: ResultMode[] = ["forum_post", "wiki_page"];
 
 export default class Worker {
   debouncedSearch = debounce(() => this.search(), 500);
-  @observable query = '';
+  @observable query = "";
   @observable searching = false;
   @observable searchResult: SearchResult | null = null;
   @observable selected: SelectedItem | null = null;
@@ -64,14 +69,20 @@ export default class Worker {
       } else {
         const sectionIdx = SECTIONS.length - 1;
         const section: Section = SECTIONS[sectionIdx];
-        newSelected = { index: this.sectionLength(section) - 1, section: sectionIdx };
+        newSelected = {
+          index: this.sectionLength(section) - 1,
+          section: sectionIdx,
+        };
       }
     } else {
       newSelected = { ...this.selected };
       newSelected.index += direction;
     }
 
-    if (newSelected.index < 0 || newSelected.index >= this.sectionLength(SECTIONS[newSelected.section])) {
+    if (
+      newSelected.index < 0 ||
+      newSelected.index >= this.sectionLength(SECTIONS[newSelected.section])
+    ) {
       let newSection = newSelected.section;
       do {
         newSection = (newSection + direction) % SECTIONS.length;
@@ -106,23 +117,25 @@ export default class Worker {
     }
 
     switch (SECTIONS[this.selected.section]) {
-      case 'user': {
+      case "user": {
         const userId = searchResult.user.users[this.selected.index]?.id;
-        return userId ? route('users.show', { user: userId }) : undefined;
+        return userId ? route("users.show", { user: userId }) : undefined;
       }
-      case 'user_others':
-        return route('search', { mode: 'user', query: this.query });
-      case 'beatmapset': {
+      case "user_others":
+        return route("search", { mode: "user", query: this.query });
+      case "beatmapset": {
         const id = searchResult.beatmapset.beatmapsets[this.selected.index]?.id;
-        return id ? route('beatmapsets.show', { beatmapset: id }) : undefined;
+        return id ? route("beatmapsets.show", { beatmapset: id }) : undefined;
       }
-      case 'beatmapset_others':
-        return route('search', { mode: 'beatmapset', query: this.query });
-      case 'others': {
-        const others = otherModes.filter((mode) => searchResult[mode].total > 0);
+      case "beatmapset_others":
+        return route("search", { mode: "beatmapset", query: this.query });
+      case "others": {
+        const others = otherModes.filter(
+          (mode) => searchResult[mode].total > 0,
+        );
         const selectedMode = others[this.selected.index];
 
-        return route('search', { mode: selectedMode, query: this.query });
+        return route("search", { mode: selectedMode, query: this.query });
       }
     }
   }
@@ -137,13 +150,18 @@ export default class Worker {
 
     this.searching = true;
 
-    this.xhr = $.get(route('quick-search'), { query })
-      .done(action((searchResult: SearchResult) => {
-        this.searchResult = searchResult;
-        this.selected = null;
-      })).always(action(() => {
-        this.searching = false;
-      }));
+    this.xhr = $.get(route("quick-search"), { query })
+      .done(
+        action((searchResult: SearchResult) => {
+          this.searchResult = searchResult;
+          this.selected = null;
+        }),
+      )
+      .always(
+        action(() => {
+          this.searching = false;
+        }),
+      );
   }
 
   @action selectNone() {
@@ -176,15 +194,15 @@ export default class Worker {
       return 0;
     }
     switch (section) {
-      case 'user':
+      case "user":
         return searchResult.user.users.length;
-      case 'user_others':
+      case "user_others":
         return searchResult.user.total > searchResult.user.users.length ? 1 : 0;
-      case 'beatmapset':
+      case "beatmapset":
         return searchResult.beatmapset.beatmapsets.length;
-      case 'beatmapset_others':
+      case "beatmapset_others":
         return 1;
-      case 'others':
+      case "others":
         return otherModes.filter((mode) => searchResult[mode].total > 0).length;
     }
 

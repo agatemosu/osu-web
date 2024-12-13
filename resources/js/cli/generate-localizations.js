@@ -1,27 +1,27 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-'use strict';
+"use strict";
 
 /* eslint no-console: "off" */
-const { spawnSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
+const { spawnSync } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+const glob = require("glob");
 
 // project root directory
-const rootPath = path.resolve(__dirname, '../../..');
-const buildPath = path.resolve(rootPath, 'resources/builds');
-const localesPath = path.resolve(buildPath, 'locales');
-const messagesPath = path.resolve(buildPath, 'messages.json');
+const rootPath = path.resolve(__dirname, "../../..");
+const buildPath = path.resolve(rootPath, "resources/builds");
+const localesPath = path.resolve(buildPath, "locales");
+const messagesPath = path.resolve(buildPath, "messages.json");
 
 function extractLanguages() {
-  console.log('Extracting localizations...');
+  console.log("Extracting localizations...");
   const messages = getAllMesssages();
 
   const languages = new Map();
   for (const key of Object.keys(messages)) {
-    const index = key.indexOf('.');
+    const index = key.indexOf(".");
     const language = key.substring(0, index);
     if (!languages.has(language)) {
       languages.set(language, {});
@@ -39,7 +39,11 @@ function getAllMesssages() {
 }
 
 function generateTranslations() {
-  spawnSync('php', [path.resolve(rootPath, 'artisan'), 'lang:js', '--json', messagesPath], { stdio: 'inherit' });
+  spawnSync(
+    "php",
+    [path.resolve(rootPath, "artisan"), "lang:js", "--json", messagesPath],
+    { stdio: "inherit" },
+  );
 }
 
 function writeTranslations(languages) {
@@ -54,12 +58,12 @@ function writeTranslations(languages) {
     fs.writeFileSync(filename, script);
     process.stdout.write(` ${lang}`);
   }
-  console.log(' ...all done');
+  console.log(" ...all done");
 }
 
 function generateLocalizations() {
   // Remove previous existing files and ensure directory exists.
-  glob.sync(path.resolve(localesPath, '*.js')).forEach(fs.unlinkSync);
+  glob.sync(path.resolve(localesPath, "*.js")).forEach(fs.unlinkSync);
   fs.mkdirSync(localesPath, { recursive: true });
 
   generateTranslations();

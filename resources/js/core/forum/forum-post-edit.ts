@@ -4,24 +4,27 @@
 export default class ForumPostEdit {
   constructor() {
     $(document)
-      .on('ajax:success', '.js-edit-post-start', this.handleEditStart)
-      .on('click', '.js-edit-post-cancel', this.handleCancel)
-      .on('ajax:success', '.js-forum-post-edit', this.handleEditSaved);
+      .on("ajax:success", ".js-edit-post-start", this.handleEditStart)
+      .on("click", ".js-edit-post-cancel", this.handleCancel)
+      .on("ajax:success", ".js-forum-post-edit", this.handleEditSaved);
   }
 
   private readonly handleCancel = (e: JQuery.TriggeredEvent) => {
     e.preventDefault();
 
     // clear before target is removed
-    $.publish('forum-post-input:clear', [e.target]);
+    $.publish("forum-post-input:clear", [e.target]);
 
-    const $postBox = $(e.target).parents('.js-forum-post-edit--container');
+    const $postBox = $(e.target).parents(".js-forum-post-edit--container");
     $postBox
-      .html($postBox.attr('data-original-post') ?? '')
-      .attr('data-original-post', null);
+      .html($postBox.attr("data-original-post") ?? "")
+      .attr("data-original-post", null);
   };
 
-  private readonly handleEditSaved = (e: JQuery.TriggeredEvent, data: string) => {
+  private readonly handleEditSaved = (
+    e: JQuery.TriggeredEvent,
+    data: string,
+  ) => {
     const target: unknown = e.target;
 
     // allow another callbacks to finish before replacing form with new post.
@@ -30,7 +33,10 @@ export default class ForumPostEdit {
     });
   };
 
-  private readonly handleEditStart = (e: JQuery.TriggeredEvent, data: string) => {
+  private readonly handleEditStart = (
+    e: JQuery.TriggeredEvent,
+    data: string,
+  ) => {
     const target: unknown = e.target;
 
     // allow another callbacks to finish before replacing post with form.
@@ -41,25 +47,25 @@ export default class ForumPostEdit {
 
   private readonly saved = (target: unknown, data: string) => {
     if (!(target instanceof HTMLElement)) {
-      throw new Error('target must be instance of HTMLElement');
+      throw new Error("target must be instance of HTMLElement");
     }
 
-    $(target).parents('.js-forum-post').replaceWith(data);
+    $(target).parents(".js-forum-post").replaceWith(data);
   };
 
   private readonly start = (target: unknown, data: string) => {
     if (!(target instanceof HTMLElement)) {
-      throw new Error('target must be instance of HTMLElement');
+      throw new Error("target must be instance of HTMLElement");
     }
 
-    const $postBox = $(target).parents('.js-forum-post-edit--container');
+    const $postBox = $(target).parents(".js-forum-post-edit--container");
 
     $postBox
-      .attr('data-original-post', $postBox.html())
+      .attr("data-original-post", $postBox.html())
       .html(data)
-      .find('[name=body]')
+      .find("[name=body]")
       .focus();
 
-    $.publish('forum-post-input:restore', [$postBox[0]]);
+    $.publish("forum-post-input:restore", [$postBox[0]]);
   };
 }

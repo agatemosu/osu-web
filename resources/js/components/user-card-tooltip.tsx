@@ -1,19 +1,24 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Reportable from 'interfaces/reportable';
-import UserJson from 'interfaces/user-json';
-import * as _ from 'lodash';
-import { userNotFoundJson } from 'models/user';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { unmountComponentAtNode } from 'react-dom';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { activeKeyDidChange as contextActiveKeyDidChange, ContainerContext, KeyContext, State as ActiveKeyState } from 'stateful-activation-context';
-import { TooltipContext } from 'tooltip-context';
-import { presence } from 'utils/string';
-import { apiLookupUsers } from 'utils/user';
-import { UserCard } from './user-card';
+import Reportable from "interfaces/reportable";
+import UserJson from "interfaces/user-json";
+import * as _ from "lodash";
+import { userNotFoundJson } from "models/user";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { unmountComponentAtNode } from "react-dom";
+import { renderToStaticMarkup } from "react-dom/server";
+import {
+  activeKeyDidChange as contextActiveKeyDidChange,
+  ContainerContext,
+  KeyContext,
+  State as ActiveKeyState,
+} from "stateful-activation-context";
+import { TooltipContext } from "tooltip-context";
+import { presence } from "utils/string";
+import { apiLookupUsers } from "utils/user";
+import { UserCard } from "./user-card";
 
 interface Props {
   container: HTMLElement;
@@ -24,12 +29,12 @@ interface State extends ActiveKeyState {
   user?: UserJson;
 }
 
-const userCardTooltipClass = 'qtip--user-card';
+const userCardTooltipClass = "qtip--user-card";
 let inCard = false;
 let tooltipWithActiveMenu: any;
 
 function createTooltipOptions(card: HTMLElement) {
-  const at = card.dataset.tooltipPosition ?? 'right center';
+  const at = card.dataset.tooltipPosition ?? "right center";
 
   return {
     content: {
@@ -66,11 +71,13 @@ function createTooltipOptions(card: HTMLElement) {
 let blankCardCache: HTMLElement | undefined;
 function blankCard() {
   if (blankCardCache == null) {
-    const container = document.createElement('div');
+    const container = document.createElement("div");
     container.innerHTML = renderToStaticMarkup(<UserCard />);
     const card = container.children[0];
     if (!(card instanceof HTMLElement)) {
-      throw new Error('expected render of UserCard to be HTMLElement but got something else');
+      throw new Error(
+        "expected render of UserCard to be HTMLElement but got something else",
+      );
     }
     blankCardCache = card;
   }
@@ -85,8 +92,8 @@ function createTooltip(element: HTMLElement) {
   // React should override the existing content after mounting.
   // Casting because cloneNode returns Node by default.
   const card = blankCard().cloneNode(true) as HTMLElement;
-  card.classList.remove('js-react--user-card');
-  card.classList.add('js-react--user-card-tooltip');
+  card.classList.remove("js-react--user-card");
+  card.classList.add("js-react--user-card-tooltip");
   card.dataset.lookup = userId;
   for (const [key, value] of Object.entries(element.dataset)) {
     card.dataset[key] = value;
@@ -97,17 +104,17 @@ function createTooltip(element: HTMLElement) {
 
 function my(at: string) {
   switch (at) {
-    case 'top center':
-      return 'bottom center';
-    case 'top right':
-      return 'bottom left';
-    case 'left center':
-      return 'right center';
-    case 'bottom center':
-      return 'top center';
+    case "top center":
+      return "bottom center";
+    case "top right":
+      return "bottom left";
+    case "left center":
+      return "right center";
+    case "bottom center":
+      return "top center";
   }
 
-  return 'left center';
+  return "left center";
 }
 
 function onBeforeCache() {
@@ -123,7 +130,9 @@ function onMouseLeave() {
   inCard = false;
 }
 
-function onMouseOver(event: JQuery.TriggeredEvent<Document, unknown, HTMLElement, HTMLElement>) {
+function onMouseOver(
+  event: JQuery.TriggeredEvent<Document, unknown, HTMLElement, HTMLElement>,
+) {
   if (tooltipWithActiveMenu != null) return;
   if (core.windowSize.isMobile) return;
 
@@ -131,7 +140,10 @@ function onMouseOver(event: JQuery.TriggeredEvent<Document, unknown, HTMLElement
   const userId = presence(el.dataset.userId);
   if (userId == null) return;
   // don't show cards for blocked users
-  if (_.find(core.currentUser?.blocks ?? [], { target_id: parseInt(userId, 10) })) return;
+  if (
+    _.find(core.currentUser?.blocks ?? [], { target_id: parseInt(userId, 10) })
+  )
+    return;
 
   if (el._tooltip == null) {
     return createTooltip(el);
@@ -139,11 +151,13 @@ function onMouseOver(event: JQuery.TriggeredEvent<Document, unknown, HTMLElement
 
   if (el._tooltip !== el.dataset.userId) {
     // wrong userId, destroy current tooltip
-    const qtip = $(el).qtip('api');
+    const qtip = $(el).qtip("api");
     if (qtip != null) {
       const tooltipElement = qtip.tooltip;
       if (tooltipElement != null) {
-        const container = tooltipElement.find('.js-react--user-card-tooltip')[0];
+        const container = tooltipElement.find(
+          ".js-react--user-card-tooltip",
+        )[0];
         if (container != null) {
           unmountComponentAtNode(container);
         }
@@ -172,9 +186,11 @@ function onRemoveUserCard(_event: unknown, element: HTMLElement | null) {
   const tooltipElement = document.getElementById(`qtip-${qtipId}`);
   if (tooltipElement == null) return;
 
-  const qtip = $(tooltipElement).qtip('api');
+  const qtip = $(tooltipElement).qtip("api");
   if (qtip != null) {
-    const container = tooltipElement.querySelector('.js-react--user-card-tooltip');
+    const container = tooltipElement.querySelector(
+      ".js-react--user-card-tooltip",
+    );
     if (container != null) {
       unmountComponentAtNode(container);
     }
@@ -197,16 +213,16 @@ function shouldShow(event: JQuery.Event, api: any) {
   const target = api.target[0] as HTMLElement;
   if (target._tooltip !== target.dataset.userId) {
     event.preventDefault();
-    $(target).trigger('mouseover');
+    $(target).trigger("mouseover");
   }
 }
 
 export function startListening() {
-  $(document).on('mouseover', '.js-usercard', onMouseOver);
-  $(document).on('mouseenter', '.js-react--user-card-tooltip', onMouseEnter);
-  $(document).on('mouseleave', '.js-react--user-card-tooltip', onMouseLeave);
-  $(document).on('turbo:before-cache', onBeforeCache);
-  $.subscribe('user-card:remove.tooltip', onRemoveUserCard);
+  $(document).on("mouseover", ".js-usercard", onMouseOver);
+  $(document).on("mouseenter", ".js-react--user-card-tooltip", onMouseEnter);
+  $(document).on("mouseleave", ".js-react--user-card-tooltip", onMouseLeave);
+  $(document).on("turbo:before-cache", onBeforeCache);
+  $.subscribe("user-card:remove.tooltip", onRemoveUserCard);
 }
 
 /**
@@ -214,19 +230,23 @@ export function startListening() {
  */
 export class UserCardTooltip extends React.PureComponent<Props, State> {
   state: Readonly<State> = {};
-  private readonly contextActiveKeyDidChange = contextActiveKeyDidChange.bind(this);
+  private readonly contextActiveKeyDidChange =
+    contextActiveKeyDidChange.bind(this);
 
   private get reportable() {
     const dataString = this.props.container.dataset.reportable;
 
     return dataString == null
       ? undefined
-      : JSON.parse(dataString) as Reportable;
+      : (JSON.parse(dataString) as Reportable);
   }
 
   componentDidMount() {
     const currentUser = core.currentUser;
-    if (currentUser != null && this.props.lookup === currentUser.id.toString()) {
+    if (
+      currentUser != null &&
+      this.props.lookup === currentUser.id.toString()
+    ) {
       this.setState({ user: currentUser });
     } else {
       apiLookupUsers([this.props.lookup]).done((response) => {
@@ -240,7 +260,9 @@ export class UserCardTooltip extends React.PureComponent<Props, State> {
 
     return (
       <TooltipContext.Provider value={this.props.container}>
-        <ContainerContext.Provider value={{ activeKeyDidChange: this.activeKeyDidChange }}>
+        <ContainerContext.Provider
+          value={{ activeKeyDidChange: this.activeKeyDidChange }}
+        >
           <KeyContext.Provider value={this.props.lookup}>
             <UserCard
               activated={activated}
@@ -259,7 +281,7 @@ export class UserCardTooltip extends React.PureComponent<Props, State> {
     // close the tooltip if cursor is known to be not within the card
     // when the menu closes.
     if (key == null && !inCard) {
-      $(`.${userCardTooltipClass}`).qtip('hide');
+      $(`.${userCardTooltipClass}`).qtip("hide");
     }
   };
 }

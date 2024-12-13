@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import SoloScoreJson from 'interfaces/solo-score-json';
-import { route } from 'laroute';
-import { action, makeObservable, observable, runInAction } from 'mobx';
+import SoloScoreJson from "interfaces/solo-score-json";
+import { route } from "laroute";
+import { action, makeObservable, observable, runInAction } from "mobx";
 
 export default class ScorePins {
-  @observable pins = new Map<SoloScoreJson['id'], boolean>();
+  @observable pins = new Map<SoloScoreJson["id"], boolean>();
 
   constructor() {
     makeObservable(this);
@@ -18,14 +18,16 @@ export default class ScorePins {
       throw new Error("can't pin score without current user attributes");
     }
 
-    return $.ajax(route('score-pins.store'), {
+    return $.ajax(route("score-pins.store"), {
       data: pin,
-      dataType: 'json',
-      method: toPin ? 'POST' : 'DELETE',
-    }).done(action(() => {
-      this.markPinned(score, toPin);
-      $.publish('score:pin', [toPin, score]);
-    })) as JQuery.jqXHR<void>;
+      dataType: "json",
+      method: toPin ? "POST" : "DELETE",
+    }).done(
+      action(() => {
+        this.markPinned(score, toPin);
+        $.publish("score:pin", [toPin, score]);
+      }),
+    ) as JQuery.jqXHR<void>;
   }
 
   canBePinned(score: SoloScoreJson) {

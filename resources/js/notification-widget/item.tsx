@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import TimeWithTooltip from 'components/time-with-tooltip';
-import { observer } from 'mobx-react';
-import Notification from 'models/notification';
-import NotificationDeleteButton from 'notifications/notification-delete-button';
-import NotificationReadButton from 'notifications/notification-read-button';
-import { NotificationContext } from 'notifications-context';
-import * as React from 'react';
-import { classWithModifiers, mergeModifiers, urlPresence } from 'utils/css';
-import { trans } from 'utils/lang';
+import TimeWithTooltip from "components/time-with-tooltip";
+import { observer } from "mobx-react";
+import Notification from "models/notification";
+import NotificationDeleteButton from "notifications/notification-delete-button";
+import NotificationReadButton from "notifications/notification-read-button";
+import { NotificationContext } from "notifications-context";
+import * as React from "react";
+import { classWithModifiers, mergeModifiers, urlPresence } from "utils/css";
+import { trans } from "utils/lang";
 
 interface Props {
   canMarkAsRead?: boolean;
@@ -44,16 +44,16 @@ export default class Item extends React.Component<Props> {
     );
 
     return (
-      <div className={classWithModifiers('notification-popup-item', modifiers)}>
+      <div className={classWithModifiers("notification-popup-item", modifiers)}>
         <a
-          className='notification-popup-item__link'
+          className="notification-popup-item__link"
           href={this.props.url}
           onAuxClick={this.onLinkClick}
           onClick={this.onLinkClick}
         />
         {this.renderCover()}
-        <div className='notification-popup-item__main'>
-          <div className='notification-popup-item__content'>
+        <div className="notification-popup-item__main">
+          <div className="notification-popup-item__content">
             {this.renderCategory()}
             {this.renderMessage()}
             {this.renderTime()}
@@ -78,26 +78,34 @@ export default class Item extends React.Component<Props> {
       return null;
     }
 
-    const label = trans(`notifications.item.${this.props.item.displayType}.${this.props.item.category}._`);
+    const label = trans(
+      `notifications.item.${this.props.item.displayType}.${this.props.item.category}._`,
+    );
 
-    if (label === '') {
+    if (label === "") {
       return null;
     }
 
-    return <div className='notification-popup-item__row notification-popup-item__row--category'>{label}</div>;
+    return (
+      <div className="notification-popup-item__row notification-popup-item__row--category">
+        {label}
+      </div>
+    );
   }
 
   private renderCover() {
-    const coverUrl = this.props.withCoverImage ? this.props.item.details.coverUrl : null;
+    const coverUrl = this.props.withCoverImage
+      ? this.props.item.details.coverUrl
+      : null;
 
     return (
       <div
-        className='notification-popup-item__cover'
+        className="notification-popup-item__cover"
         style={{
           backgroundImage: urlPresence(coverUrl),
         }}
       >
-        <div className='notification-popup-item__cover-overlay'>
+        <div className="notification-popup-item__cover-overlay">
           {this.renderCoverIcons()}
         </div>
       </div>
@@ -110,7 +118,7 @@ export default class Item extends React.Component<Props> {
     }
 
     return this.props.icons.map((icon) => (
-      <div key={icon} className='notification-popup-item__cover-icon'>
+      <div key={icon} className="notification-popup-item__cover-icon">
         <span className={icon} />
       </div>
     ));
@@ -124,7 +132,7 @@ export default class Item extends React.Component<Props> {
     return (
       <NotificationDeleteButton
         isDeleting={this.props.isDeleting ?? this.props.item.isDeleting}
-        modifiers={['fancy']}
+        modifiers={["fancy"]}
         onDelete={this.props.delete}
       />
     );
@@ -136,7 +144,7 @@ export default class Item extends React.Component<Props> {
     }
 
     return (
-      <div className='notification-popup-item__row notification-popup-item__row--expand'>
+      <div className="notification-popup-item__row notification-popup-item__row--expand">
         {this.props.expandButton}
       </div>
     );
@@ -149,8 +157,10 @@ export default class Item extends React.Component<Props> {
 
     return (
       <NotificationReadButton
-        isMarkingAsRead={this.props.isMarkingAsRead ?? this.props.item.isMarkingAsRead}
-        modifiers={['fancy']}
+        isMarkingAsRead={
+          this.props.isMarkingAsRead ?? this.props.item.isMarkingAsRead
+        }
+        modifiers={["fancy"]}
         onMarkAsRead={this.props.markRead}
       />
     );
@@ -158,7 +168,7 @@ export default class Item extends React.Component<Props> {
 
   private renderMessage() {
     return (
-      <div className='notification-popup-item__row notification-popup-item__row--message'>
+      <div className="notification-popup-item__row notification-popup-item__row--message">
         {this.props.message}
       </div>
     );
@@ -171,7 +181,7 @@ export default class Item extends React.Component<Props> {
 
     return (
       <a
-        className='notification-popup-item__row notification-popup-item__row--time u-hover'
+        className="notification-popup-item__row notification-popup-item__row--time u-hover"
         href={this.props.url}
         onAuxClick={this.onLinkClick}
         onClick={this.onLinkClick}
@@ -184,8 +194,6 @@ export default class Item extends React.Component<Props> {
   private renderUnreadStripe() {
     if (this.context.isWidget || !this.canMarkAsRead) return null;
 
-    return (
-      <span className='notification-popup-item__unread-stripe' />
-    );
+    return <span className="notification-popup-item__unread-stripe" />;
   }
 }

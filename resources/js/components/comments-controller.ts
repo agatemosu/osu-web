@@ -1,23 +1,26 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CommentJson, { CommentableMetaJson, CommentBundleJson } from 'interfaces/comment-json';
-import UserJson from 'interfaces/user-json';
-import { route } from 'laroute';
-import { isEqual, last } from 'lodash';
-import { action, makeObservable, observable, runInAction } from 'mobx';
-import Comment from 'models/comment';
-import core from 'osu-core-singleton';
-import { onError } from 'utils/ajax';
-import { trans } from 'utils/lang';
-import { switchNever } from 'utils/switch-never';
+import CommentJson, {
+  CommentableMetaJson,
+  CommentBundleJson,
+} from "interfaces/comment-json";
+import UserJson from "interfaces/user-json";
+import { route } from "laroute";
+import { isEqual, last } from "lodash";
+import { action, makeObservable, observable, runInAction } from "mobx";
+import Comment from "models/comment";
+import core from "osu-core-singleton";
+import { onError } from "utils/ajax";
+import { trans } from "utils/lang";
+import { switchNever } from "utils/switch-never";
 
 export interface BaseCommentableMeta {
   id: number;
   type: string;
 }
 
-export type CommentEditMode = 'edit' | 'new' | 'reply';
+export type CommentEditMode = "edit" | "new" | "reply";
 
 export interface PostParams {
   commentableMeta?: CommentableMetaJson;
@@ -59,7 +62,9 @@ interface XhrCollection {
   [Delete: `delete-${number}`]: JQuery.jqXHR<CommentBundleJson>;
   [Load: `load-${number}`]: JQuery.jqXHR<CommentBundleJson>;
   [Pin: `pin-${number}`]: JQuery.jqXHR<CommentBundleJson>;
-  [Post: `${CommentEditMode}-${number | string}`]: JQuery.jqXHR<CommentBundleJson>;
+  [
+    Post: `${CommentEditMode}-${number | string}`
+  ]: JQuery.jqXHR<CommentBundleJson>;
   [Vote: `vote-${number}`]: JQuery.jqXHR<CommentBundleJson>;
   follow: JQuery.jqXHR<void>;
   sort: JQuery.jqXHR<CommentBundleJson>;
@@ -74,7 +79,9 @@ interface XhrPostParams {
   };
 }
 
-function abortXhrCollection(xhrCollection: Partial<Record<string, JQuery.jqXHR<unknown>>>) {
+function abortXhrCollection(
+  xhrCollection: Partial<Record<string, JQuery.jqXHR<unknown>>>,
+) {
   Object.values(xhrCollection).forEach((xhr) => xhr?.abort());
 }
 
@@ -86,7 +93,7 @@ function initialState() {
     hasMore: {},
     isFollowing: false,
     pinnedCommentIds: [],
-    sort: 'new',
+    sort: "new",
     topLevelCount: 0,
     total: 0,
     users: {},
@@ -94,23 +101,23 @@ function initialState() {
   };
 }
 
-function makeMetaId(meta: BaseCommentableMeta | CommentableMetaJson | undefined) {
-  return meta != null && 'id' in meta
-    ? `${meta.type}-${meta.id}`
-    : 'null';
+function makeMetaId(
+  meta: BaseCommentableMeta | CommentableMetaJson | undefined,
+) {
+  return meta != null && "id" in meta ? `${meta.type}-${meta.id}` : "null";
 }
 
 function postXhrKeyId(postParams: PostParams) {
   switch (postParams.mode) {
-    case 'edit':
+    case "edit":
       return postParams.id ?? 0;
-    case 'new':
+    case "new":
       return makeMetaId(postParams.commentableMeta);
-    case 'reply':
+    case "reply":
       return postParams.parentId ?? 0;
     default:
       switchNever(postParams.mode);
-      throw new Error('unsupported mode');
+      throw new Error("unsupported mode");
   }
 }
 
@@ -122,7 +129,9 @@ export default class CommentsController {
   @observable private xhr: Partial<XhrCollection> = {};
 
   get commentableMeta() {
-    return this.state.commentableMetaItems[makeMetaId(this.baseCommentableMeta)];
+    return this.state.commentableMetaItems[
+      makeMetaId(this.baseCommentableMeta)
+    ];
   }
 
   get pinnedComments() {
@@ -130,20 +139,25 @@ export default class CommentsController {
   }
 
   get stateEl() {
-    const ret = (window.newBody ?? document.body).querySelector(this.stateSelector);
+    const ret = (window.newBody ?? document.body).querySelector(
+      this.stateSelector,
+    );
 
     if (ret instanceof HTMLScriptElement) {
       return ret;
     }
 
-    throw new Error('missing state element');
+    throw new Error("missing state element");
   }
 
   get topLevelComments() {
     return this.getComments(this.state.commentIdsByParentId[0] ?? []);
   }
 
-  constructor(private readonly stateSelector: string, private readonly baseCommentableMeta?: BaseCommentableMeta) {
+  constructor(
+    private readonly stateSelector: string,
+    private readonly baseCommentableMeta?: BaseCommentableMeta,
+  ) {
     const stateEl = this.stateEl;
     const savedStateJson = stateEl.dataset.savedState;
     if (savedStateJson != null) {
@@ -156,22 +170,28 @@ export default class CommentsController {
 
     makeObservable(this);
 
-    document.addEventListener('turbo:before-cache', this.destroy);
+    document.addEventListener("turbo:before-cache", this.destroy);
   }
 
   @action
   apiDelete(comment: Comment) {
-    if (this.isDeleting(comment) || !confirm(trans('common.confirmation'))) return;
+    if (this.isDeleting(comment) || !confirm(trans("common.confirmation")))
+      return;
 
     const xhrKey = `delete-${comment.id}` as const;
-    this.xhr[xhrKey] = $.ajax(route('comments.destroy', { comment: comment.id }), { method: 'DELETE' });
+    this.xhr[xhrKey] = $.ajax(
+      route("comments.destroy", { comment: comment.id }),
+      { method: "DELETE" },
+    );
 
     this.xhr[xhrKey]
       ?.done((bundle) => this.loadBundle(bundle))
       .fail(onError)
-      .always(action(() => {
-        delete(this.xhr[xhrKey]);
-      }));
+      .always(
+        action(() => {
+          delete this.xhr[xhrKey];
+        }),
+      );
   }
 
   @action
@@ -201,83 +221,105 @@ export default class CommentsController {
     }
 
     const xhrKey = `load-${parentId}` as const;
-    this.xhr[xhrKey] = $.ajax(route('comments.index'), { data: params, dataType: 'json' });
+    this.xhr[xhrKey] = $.ajax(route("comments.index"), {
+      data: params,
+      dataType: "json",
+    });
     this.xhr[xhrKey]
       ?.done((bundle) => this.loadBundle(bundle))
-      .always(action(() => {
-        delete(this.xhr[xhrKey]);
-      }));
+      .always(
+        action(() => {
+          delete this.xhr[xhrKey];
+        }),
+      );
   }
 
   @action
   apiPost(postParams: PostParams, doneCallback: () => void) {
     if (this.isPosting(postParams)) return;
 
-    if (core.userLogin.showIfGuest(() => this.apiPost(postParams, doneCallback))) return;
+    if (
+      core.userLogin.showIfGuest(() => this.apiPost(postParams, doneCallback))
+    )
+      return;
 
     const params: XhrPostParams = {
       comment: { message: postParams.message },
     };
 
-    let url = route('comments.store');
-    let method = 'POST';
+    let url = route("comments.store");
+    let method = "POST";
 
     switch (postParams.mode) {
-      case 'edit':
+      case "edit":
         if (postParams.id == null) {
-          throw new Error('missing post id in edit mode');
+          throw new Error("missing post id in edit mode");
         }
-        url = route('comments.update', { comment: postParams.id });
-        method = 'PUT';
+        url = route("comments.update", { comment: postParams.id });
+        method = "PUT";
         break;
 
-      case 'new':
-        if (postParams.commentableMeta == null || !('id' in postParams.commentableMeta)) {
-          throw new Error('missing commentable meta in new mode');
+      case "new":
+        if (
+          postParams.commentableMeta == null ||
+          !("id" in postParams.commentableMeta)
+        ) {
+          throw new Error("missing commentable meta in new mode");
         }
         params.comment.commentable_type = postParams.commentableMeta.type;
         params.comment.commentable_id = postParams.commentableMeta.id;
         break;
 
-      case 'reply':
+      case "reply":
         if (postParams.parentId == null) {
-          throw new Error('missing parent in reply mode');
+          throw new Error("missing parent in reply mode");
         }
         params.comment.parent_id = postParams.parentId;
         break;
 
       default:
         switchNever(postParams.mode);
-        throw new Error('unsupported mode');
+        throw new Error("unsupported mode");
     }
 
     const xhrKey = `${postParams.mode}-${postXhrKeyId(postParams)}` as const;
 
     this.xhr[xhrKey] = $.ajax(url, { data: params, method });
     this.xhr[xhrKey]
-      ?.always(action(() => {
-        delete(this.xhr[xhrKey]);
-      })).done((bundle) => runInAction(() => {
-        doneCallback();
-        this.loadBundle(bundle, false);
-      })).fail(onError);
+      ?.always(
+        action(() => {
+          delete this.xhr[xhrKey];
+        }),
+      )
+      .done((bundle) =>
+        runInAction(() => {
+          doneCallback();
+          this.loadBundle(bundle, false);
+        }),
+      )
+      .fail(onError);
   }
 
   @action
   apiRestore(comment: Comment) {
-    if (this.isDeleting(comment) || !confirm(trans('common.confirmation'))) {
+    if (this.isDeleting(comment) || !confirm(trans("common.confirmation"))) {
       return;
     }
 
     const xhrKey = `delete-${comment.id}` as const;
-    this.xhr[xhrKey] = $.ajax(route('comments.restore', { comment: comment.id }), { method: 'POST' });
+    this.xhr[xhrKey] = $.ajax(
+      route("comments.restore", { comment: comment.id }),
+      { method: "POST" },
+    );
 
     this.xhr[xhrKey]
       ?.done((bundle) => this.loadBundle(bundle))
       .fail(onError)
-      .always(action(() => {
-        delete(this.xhr[xhrKey]);
-      }));
+      .always(
+        action(() => {
+          delete this.xhr[xhrKey];
+        }),
+      );
   }
 
   @action
@@ -290,24 +332,25 @@ export default class CommentsController {
       parent_id: 0,
       sort,
     };
-    if (this.commentableMeta != null && 'id' in this.commentableMeta) {
+    if (this.commentableMeta != null && "id" in this.commentableMeta) {
       params.commentable_id = this.commentableMeta.id;
       params.commentable_type = this.commentableMeta.type;
     }
 
-    this.xhr.sort = $.ajax(route('comments.index'), {
+    this.xhr.sort = $.ajax(route("comments.index"), {
       data: params,
-      dataType: 'json',
+      dataType: "json",
     });
-    this.xhr.sort
-      .done((bundle) => runInAction(() => {
+    this.xhr.sort.done((bundle) =>
+      runInAction(() => {
         abortXhrCollection(this.xhr);
         this.state = initialState();
         this.nextState = {};
         this.xhr = {};
         this.loadBundle(bundle, true, true);
-        core.userPreferences.set('comments_sort', this.state.sort);
-      }));
+        core.userPreferences.set("comments_sort", this.state.sort);
+      }),
+    );
   }
 
   @action
@@ -316,28 +359,34 @@ export default class CommentsController {
 
     const meta = this.commentableMeta;
 
-    if (meta == null || !('id' in meta)) return;
+    if (meta == null || !("id" in meta)) return;
 
-    const isFollowing = this.nextState.isFollowing = !this.state.isFollowing;
+    const isFollowing = (this.nextState.isFollowing = !this.state.isFollowing);
 
-    this.xhr.follow = $.ajax(route('follows.store'), {
+    this.xhr.follow = $.ajax(route("follows.store"), {
       data: {
         follow: {
           notifiable_id: meta.id,
           notifiable_type: meta.type,
-          subtype: 'comment',
+          subtype: "comment",
         },
       },
-      dataType: 'json',
-      method: this.nextState.isFollowing ? 'POST' : 'DELETE',
+      dataType: "json",
+      method: this.nextState.isFollowing ? "POST" : "DELETE",
     });
     this.xhr.follow
-      .always(action(() => {
-        delete(this.xhr.follow);
-        this.nextState.isFollowing = undefined;
-      })).done(action(() => {
-        this.state.isFollowing = isFollowing;
-      })).fail(onError);
+      .always(
+        action(() => {
+          delete this.xhr.follow;
+          this.nextState.isFollowing = undefined;
+        }),
+      )
+      .done(
+        action(() => {
+          this.state.isFollowing = isFollowing;
+        }),
+      )
+      .fail(onError);
   }
 
   @action
@@ -347,15 +396,17 @@ export default class CommentsController {
       return;
     }
 
-    this.xhr[xhrKey] = $.ajax(route('comments.pin', { comment: comment.id }), {
-      method: comment.pinned ? 'DELETE' : 'POST',
+    this.xhr[xhrKey] = $.ajax(route("comments.pin", { comment: comment.id }), {
+      method: comment.pinned ? "DELETE" : "POST",
     });
     this.xhr[xhrKey]
       ?.done((bundle) => this.loadBundle(bundle))
       .fail(onError)
-      .always(action(() => {
-        delete(this.xhr[xhrKey]);
-      }));
+      .always(
+        action(() => {
+          delete this.xhr[xhrKey];
+        }),
+      );
   }
 
   @action
@@ -365,39 +416,50 @@ export default class CommentsController {
     if (core.userLogin.showIfGuest(() => this.apiToggleVote(comment))) return;
 
     let method: string;
-    let storeMethod: 'add' | 'delete';
+    let storeMethod: "add" | "delete";
 
     if (this.state.votedCommentIds.has(comment.id)) {
-      method = 'DELETE';
-      storeMethod = 'delete';
+      method = "DELETE";
+      storeMethod = "delete";
     } else {
-      method = 'POST';
-      storeMethod = 'add';
+      method = "POST";
+      storeMethod = "add";
     }
 
     const xhrKey = `vote-${comment.id}` as const;
-    this.xhr[xhrKey] = $.ajax(route('comments.vote', { comment: comment.id }), { method });
+    this.xhr[xhrKey] = $.ajax(route("comments.vote", { comment: comment.id }), {
+      method,
+    });
     this.xhr[xhrKey]
-      ?.done((bundle) => runInAction(() => {
-        this.loadBundle(bundle);
-        this.state.votedCommentIds[storeMethod](comment.id);
-      })).fail(onError)
-      .always(action(() => {
-        delete(this.xhr[xhrKey]);
-      }));
+      ?.done((bundle) =>
+        runInAction(() => {
+          this.loadBundle(bundle);
+          this.state.votedCommentIds[storeMethod](comment.id);
+        }),
+      )
+      .fail(onError)
+      .always(
+        action(() => {
+          delete this.xhr[xhrKey];
+        }),
+      );
   }
 
   readonly destroy = () => {
     if (this.destroyed) return;
 
-    document.removeEventListener('turbo:before-cache', this.destroy);
+    document.removeEventListener("turbo:before-cache", this.destroy);
     abortXhrCollection(this.xhr);
     this.stateStore();
     this.destroyed = true;
   };
 
   getCommentableMeta(comment: Comment) {
-    return this.state.commentableMetaItems[`${comment.commentableType}-${comment.commentableId}`] ?? { title: '' };
+    return (
+      this.state.commentableMetaItems[
+        `${comment.commentableType}-${comment.commentableId}`
+      ] ?? { title: "" }
+    );
   }
 
   getComments(ids: number[] | undefined) {
@@ -464,10 +526,16 @@ export default class CommentsController {
   }
 
   @action
-  private loadBundle(bundle: CommentBundleJson, append = true, initial = false) {
+  private loadBundle(
+    bundle: CommentBundleJson,
+    append = true,
+    initial = false,
+  ) {
     if (initial) {
       // for initial page of comment index and show
-      this.state.commentIdsByParentId[-1] = bundle.comments.map((comment) => comment.id);
+      this.state.commentIdsByParentId[-1] = bundle.comments.map(
+        (comment) => comment.id,
+      );
       this.state.sort = bundle.sort;
       append = true;
     }
@@ -512,7 +580,7 @@ export default class CommentsController {
 
   @action
   private stateFromJson(json: StateJson): State {
-    const comments: State['comments'] = {};
+    const comments: State["comments"] = {};
     for (const commentJson of json.comments) {
       comments[commentJson.id] = new Comment(commentJson, this);
     }
@@ -534,7 +602,7 @@ export default class CommentsController {
 
   @action
   private stateStore() {
-    const comments: StateJson['comments'] = [];
+    const comments: StateJson["comments"] = [];
     for (const commentModel of Object.values(this.state.comments)) {
       if (commentModel != null) {
         comments.push(commentModel.toJson());

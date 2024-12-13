@@ -6,7 +6,7 @@ export default class TurbolinksReload {
   private readonly loading = new Map<string, [Promise<unknown>, () => void]>();
 
   constructor() {
-    $(document).on('turbo:before-cache', this.abortLoading);
+    $(document).on("turbo:before-cache", this.abortLoading);
   }
 
   abortLoading = () => {
@@ -25,10 +25,10 @@ export default class TurbolinksReload {
       return this.loading.get(src)?.[0] ?? Promise.resolve();
     }
 
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     const promise = new Promise((resolve, reject) => {
-      script.addEventListener('load', resolve);
-      script.addEventListener('error', reject);
+      script.addEventListener("load", resolve);
+      script.addEventListener("error", reject);
       script.src = src;
       document.head.append(script);
     });

@@ -1,23 +1,29 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Bar from 'components/bar';
-import BbcodeEditor, { OnChangeProps } from 'components/bbcode-editor';
-import Modal from 'components/modal';
-import UserLink from 'components/user-link';
-import { BeatmapsetJsonForShow } from 'interfaces/beatmapset-extended-json';
-import UserJson from 'interfaces/user-json';
-import { route } from 'laroute';
-import { sum } from 'lodash';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { onErrorWithClick } from 'utils/ajax';
-import { formatNumber } from 'utils/html';
-import { trans } from 'utils/lang';
-import { present } from 'utils/string';
-import Controller from './controller';
-import MetadataEditor from './metadata-editor';
+import Bar from "components/bar";
+import BbcodeEditor, { OnChangeProps } from "components/bbcode-editor";
+import Modal from "components/modal";
+import UserLink from "components/user-link";
+import { BeatmapsetJsonForShow } from "interfaces/beatmapset-extended-json";
+import UserJson from "interfaces/user-json";
+import { route } from "laroute";
+import { sum } from "lodash";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { onErrorWithClick } from "utils/ajax";
+import { formatNumber } from "utils/html";
+import { trans } from "utils/lang";
+import { present } from "utils/string";
+import Controller from "./controller";
+import MetadataEditor from "./metadata-editor";
 
 interface Props {
   controller: Controller;
@@ -28,7 +34,8 @@ export default class Info extends React.Component<Props> {
   private readonly descriptionEditorRef = React.createRef<BbcodeEditor>();
   @observable private isEditingDescription = false;
   @observable private isEditingMetadata = false;
-  @observable private saveDescriptionXhr: JQuery.jqXHR<BeatmapsetJsonForShow> | null = null;
+  @observable
+  private saveDescriptionXhr: JQuery.jqXHR<BeatmapsetJsonForShow> | null = null;
 
   private get controller() {
     return this.props.controller;
@@ -36,14 +43,19 @@ export default class Info extends React.Component<Props> {
 
   @computed
   private get failData() {
-    if (this.controller.currentBeatmap.failtimes.exit.length !== this.controller.currentBeatmap.failtimes.fail.length) {
-      throw new Error('invalid failtimes data (different length)');
+    if (
+      this.controller.currentBeatmap.failtimes.exit.length !==
+      this.controller.currentBeatmap.failtimes.fail.length
+    ) {
+      throw new Error("invalid failtimes data (different length)");
     }
 
-    const fails = this.controller.currentBeatmap.failtimes.exit.map((exitValue, i) => [
-      exitValue,
-      this.controller.currentBeatmap.failtimes.fail[i],
-    ]);
+    const fails = this.controller.currentBeatmap.failtimes.exit.map(
+      (exitValue, i) => [
+        exitValue,
+        this.controller.currentBeatmap.failtimes.fail[i],
+      ],
+    );
 
     return {
       fails,
@@ -84,136 +96,143 @@ export default class Info extends React.Component<Props> {
   }
 
   render() {
-    const tags = this.controller.beatmapset.tags
-      .split(' ')
-      .filter(present);
+    const tags = this.controller.beatmapset.tags.split(" ").filter(present);
 
     return (
-      <div className='beatmapset-info u-fancy-scrollbar'>
-        {this.isEditingDescription &&
+      <div className="beatmapset-info u-fancy-scrollbar">
+        {this.isEditingDescription && (
           <Modal onClose={this.handleCloseDescriptionEditor}>
-            <div className='osu-page'>
+            <div className="osu-page">
               <BbcodeEditor
-                key={this.controller.beatmapset.id /* ensure component is reset if beatmapset changes */}
+                key={
+                  this.controller.beatmapset
+                    .id /* ensure component is reset if beatmapset changes */
+                }
                 ref={this.descriptionEditorRef}
                 disabled={this.saveDescriptionXhr != null}
                 ignoreEsc
-                modifiers='beatmapset-description-editor'
+                modifiers="beatmapset-description-editor"
                 onChange={this.handleEditorChange}
-                rawValue={this.controller.beatmapset.description.bbcode ?? ''}
+                rawValue={this.controller.beatmapset.description.bbcode ?? ""}
               />
             </div>
           </Modal>
-        }
+        )}
 
-        {this.isEditingMetadata &&
+        {this.isEditingMetadata && (
           <Modal onClose={this.handleCloseMetadataEditor}>
-            <MetadataEditor controller={this.props.controller} onClose={this.handleCloseMetadataEditor} />
+            <MetadataEditor
+              controller={this.props.controller}
+              onClose={this.handleCloseMetadataEditor}
+            />
           </Modal>
-        }
+        )}
 
-        <div className='beatmapset-info__box'>
+        <div className="beatmapset-info__box">
           {this.withEditDescription && this.renderEditDescriptionButton()}
 
-          <div className='beatmapset-info__row beatmapset-info__row--value-overflow'>
-            <h3 className='beatmapset-info__header'>
-              {trans('beatmapsets.show.info.description')}
+          <div className="beatmapset-info__row beatmapset-info__row--value-overflow">
+            <h3 className="beatmapset-info__header">
+              {trans("beatmapsets.show.info.description")}
             </h3>
 
             <div
               dangerouslySetInnerHTML={{
-                __html: this.controller.beatmapset.description.description ?? '',
+                __html:
+                  this.controller.beatmapset.description.description ?? "",
               }}
-              className='beatmapset-info__value-overflow'
+              className="beatmapset-info__value-overflow"
             />
           </div>
         </div>
 
-        <div className='beatmapset-info__box'>
+        <div className="beatmapset-info__box">
           {this.withEditMetadata && this.renderEditMetadataButton()}
 
-          {this.nominators.length > 0 &&
-            <div className='beatmapset-info__row'>
-              <h3 className='beatmapset-info__header'>
-                {trans('beatmapsets.show.info.nominators')}
+          {this.nominators.length > 0 && (
+            <div className="beatmapset-info__row">
+              <h3 className="beatmapset-info__header">
+                {trans("beatmapsets.show.info.nominators")}
               </h3>
               <div>
                 {this.nominators.map((user, i) => (
                   <React.Fragment key={user.id}>
-                    <UserLink
-                      className='beatmapset-info__link'
-                      user={user}
-                    />
-                    {i < this.nominators.length - 1 && ', '}
+                    <UserLink className="beatmapset-info__link" user={user} />
+                    {i < this.nominators.length - 1 && ", "}
                   </React.Fragment>
                 ))}
               </div>
             </div>
-          }
+          )}
 
-          {present(this.controller.beatmapset.source) &&
-            <div className='beatmapset-info__row'>
-              <h3 className='beatmapset-info__header'>
-                {trans('beatmapsets.show.info.source')}
+          {present(this.controller.beatmapset.source) && (
+            <div className="beatmapset-info__row">
+              <h3 className="beatmapset-info__header">
+                {trans("beatmapsets.show.info.source")}
               </h3>
               <a
-                className='beatmapset-info__link'
-                href={route('beatmapsets.index', { q: `source=""${this.controller.beatmapset.source}""` })}
+                className="beatmapset-info__link"
+                href={route("beatmapsets.index", {
+                  q: `source=""${this.controller.beatmapset.source}""`,
+                })}
               >
                 {this.controller.beatmapset.source}
               </a>
             </div>
-          }
+          )}
 
-          <div className='beatmapset-info__row beatmapset-info__row--half'>
-            <div className='beatmapset-info__half-entry'>
-              <h3 className='beatmapset-info__header'>
-                {trans('beatmapsets.show.info.genre')}
+          <div className="beatmapset-info__row beatmapset-info__row--half">
+            <div className="beatmapset-info__half-entry">
+              <h3 className="beatmapset-info__header">
+                {trans("beatmapsets.show.info.genre")}
               </h3>
               <a
-                className='beatmapset-info__link'
-                href={route('beatmapsets.index', { g: this.controller.beatmapset.genre.id })}
+                className="beatmapset-info__link"
+                href={route("beatmapsets.index", {
+                  g: this.controller.beatmapset.genre.id,
+                })}
               >
                 {this.controller.beatmapset.genre.name}
               </a>
             </div>
 
-            <div className='beatmapset-info__half-entry'>
-              <h3 className='beatmapset-info__header'>
-                {trans('beatmapsets.show.info.language')}
+            <div className="beatmapset-info__half-entry">
+              <h3 className="beatmapset-info__header">
+                {trans("beatmapsets.show.info.language")}
               </h3>
               <a
-                className='beatmapset-info__link'
-                href={route('beatmapsets.index', { l: this.controller.beatmapset.language.id })}
+                className="beatmapset-info__link"
+                href={route("beatmapsets.index", {
+                  l: this.controller.beatmapset.language.id,
+                })}
               >
                 {this.controller.beatmapset.language.name}
               </a>
             </div>
           </div>
 
-          {tags.length > 0 &&
-            <div className='beatmapset-info__row beatmapset-info__row--value-overflow'>
-              <h3 className='beatmapset-info__header'>
-                {trans('beatmapsets.show.info.tags')}
+          {tags.length > 0 && (
+            <div className="beatmapset-info__row beatmapset-info__row--value-overflow">
+              <h3 className="beatmapset-info__header">
+                {trans("beatmapsets.show.info.tags")}
               </h3>
-              <div className='beatmapset-info__value-overflow'>
+              <div className="beatmapset-info__value-overflow">
                 {tags.map((tag, i) => (
                   <React.Fragment key={`${tag}-${i}`}>
                     <a
-                      className='beatmapset-info__link'
-                      href={route('beatmapsets.index', { q: tag })}
+                      className="beatmapset-info__link"
+                      href={route("beatmapsets.index", { q: tag })}
                     >
                       {tag}
-                    </a>
-                    {' '}
+                    </a>{" "}
                   </React.Fragment>
                 ))}
               </div>
             </div>
-          }
+          )}
         </div>
 
-        <div className='beatmapset-info__box beatmapset-info__box--success-rate'>
+        <div className="beatmapset-info__box beatmapset-info__box--success-rate">
           {this.renderPlaycountInfo()}
         </div>
       </div>
@@ -237,10 +256,10 @@ export default class Info extends React.Component<Props> {
   @action
   private readonly handleEditorChange = (change: OnChangeProps) => {
     switch (change.type) {
-      case 'cancel':
+      case "cancel":
         this.isEditingDescription = false;
         break;
-      case 'save':
+      case "save":
         if (change.hasChanged) {
           this.saveDescription(change);
         } else {
@@ -262,14 +281,14 @@ export default class Info extends React.Component<Props> {
 
   private renderEditDescriptionButton() {
     return (
-      <div className='beatmapset-info__edit-button'>
+      <div className="beatmapset-info__edit-button">
         <button
-          className='btn-circle'
+          className="btn-circle"
           onClick={this.onEditDescriptionClick}
-          type='button'
+          type="button"
         >
-          <span className='btn-circle__content'>
-            <span className='fas fa-pencil-alt' />
+          <span className="btn-circle__content">
+            <span className="fas fa-pencil-alt" />
           </span>
         </button>
       </div>
@@ -278,14 +297,14 @@ export default class Info extends React.Component<Props> {
 
   private renderEditMetadataButton() {
     return (
-      <div className='beatmapset-info__edit-button'>
+      <div className="beatmapset-info__edit-button">
         <button
-          className='btn-circle'
+          className="btn-circle"
           onClick={this.onEditMetadataClick}
-          type='button'
+          type="button"
         >
-          <span className='btn-circle__content'>
-            <span className='fas fa-pencil-alt' />
+          <span className="btn-circle__content">
+            <span className="fas fa-pencil-alt" />
           </span>
         </button>
       </div>
@@ -296,15 +315,15 @@ export default class Info extends React.Component<Props> {
     const { fails, maxValue } = this.failData;
 
     return (
-      <div className='stacked-bar-chart stacked-bar-chart--beatmap-fail-rate'>
+      <div className="stacked-bar-chart stacked-bar-chart--beatmap-fail-rate">
         {fails.map((f, i) => (
-          <div key={i} className='stacked-bar-chart__col'>
+          <div key={i} className="stacked-bar-chart__col">
             {f.map((value, j) => (
               <div
                 key={j}
                 className={`stacked-bar-chart__entry stacked-bar-chart__entry--${j}`}
                 style={{
-                  height: `${100 * value / maxValue}%`,
+                  height: `${(100 * value) / maxValue}%`,
                 }}
               />
             ))}
@@ -317,33 +336,33 @@ export default class Info extends React.Component<Props> {
   private renderPlaycountInfo() {
     if (this.controller.currentBeatmap.playcount === 0) {
       return (
-        <div className='beatmap-success-rate'>
-          <div className='beatmap-success-rate__empty'>
-            {trans('beatmapsets.show.info.no_scores')}
+        <div className="beatmap-success-rate">
+          <div className="beatmap-success-rate__empty">
+            {trans("beatmapsets.show.info.no_scores")}
           </div>
         </div>
       );
     }
 
     return (
-      <div className='beatmap-success-rate'>
-        <h3 className='beatmap-success-rate__header'>
-          {trans('beatmapsets.show.info.success-rate')}
+      <div className="beatmap-success-rate">
+        <h3 className="beatmap-success-rate__header">
+          {trans("beatmapsets.show.info.success-rate")}
         </h3>
 
         <Bar
           current={this.controller.currentBeatmap.passcount}
-          modifiers='beatmap-success-rate'
+          modifiers="beatmap-success-rate"
           textPrecision={1}
           title={`${formatNumber(this.controller.currentBeatmap.passcount)} / ${formatNumber(this.controller.currentBeatmap.playcount)}`}
           total={this.controller.currentBeatmap.playcount}
         />
 
-        <h3 className='beatmap-success-rate__header'>
-          {trans('beatmapsets.show.info.points-of-failure')}
+        <h3 className="beatmap-success-rate__header">
+          {trans("beatmapsets.show.info.points-of-failure")}
         </h3>
 
-        <div className='beatmap-success-rate__chart'>
+        <div className="beatmap-success-rate__chart">
           {this.renderFailChart()}
         </div>
       </div>
@@ -354,18 +373,28 @@ export default class Info extends React.Component<Props> {
   private saveDescription({ event, value }: OnChangeProps) {
     if (this.saveDescriptionXhr != null) return;
 
-    this.saveDescriptionXhr = $.ajax(route('beatmapsets.update', { beatmapset: this.controller.beatmapset.id }), {
-      data: { description: value },
-      method: 'PATCH',
-    });
+    this.saveDescriptionXhr = $.ajax(
+      route("beatmapsets.update", {
+        beatmapset: this.controller.beatmapset.id,
+      }),
+      {
+        data: { description: value },
+        method: "PATCH",
+      },
+    );
 
-    this.saveDescriptionXhr.done((beatmapset) => runInAction(() => {
-      this.isEditingDescription = false;
-      this.controller.state.beatmapset = beatmapset;
-    })).fail(
-      onErrorWithClick(event?.target),
-    ).always(action(() => {
-      this.saveDescriptionXhr = null;
-    }));
+    this.saveDescriptionXhr
+      .done((beatmapset) =>
+        runInAction(() => {
+          this.isEditingDescription = false;
+          this.controller.state.beatmapset = beatmapset;
+        }),
+      )
+      .fail(onErrorWithClick(event?.target))
+      .always(
+        action(() => {
+          this.saveDescriptionXhr = null;
+        }),
+      );
   }
 }

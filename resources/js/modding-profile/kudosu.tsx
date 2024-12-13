@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import ProfilePageKudosu from 'components/profile-page-kudosu';
-import KudosuHistoryJson from 'interfaces/kudosu-history-json';
-import * as React from 'react';
-import { jsonClone } from 'utils/json';
-import { hasMoreCheck } from 'utils/offset-paginator';
+import ProfilePageKudosu from "components/profile-page-kudosu";
+import KudosuHistoryJson from "interfaces/kudosu-history-json";
+import * as React from "react";
+import { jsonClone } from "utils/json";
+import { hasMoreCheck } from "utils/offset-paginator";
 
 interface Props {
   expectedInitialCount: number;

@@ -1,23 +1,23 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { UserLoginAction } from 'actions/user-login-actions';
-import { dispatch } from 'app-dispatcher';
-import { route } from 'laroute';
-import { present } from 'utils/string';
+import { UserLoginAction } from "actions/user-login-actions";
+import { dispatch } from "app-dispatcher";
+import { route } from "laroute";
+import { present } from "utils/string";
 
 export default class UserLoginObserver {
   constructor() {
     $(document)
-      .on('ajax:success', '.js-logout-link', this.handleUserLogout)
-      .on('ajax:success', '.js-login-form', this.handleUserLogin);
+      .on("ajax:success", ".js-logout-link", this.handleUserLogout)
+      .on("ajax:success", ".js-login-form", this.handleUserLogin);
   }
 
   logout(redirect = false) {
     localStorage.clear();
 
     if (redirect) {
-      location.href = route('home');
+      location.href = route("home");
     } else {
       location.reload();
     }
@@ -27,7 +27,9 @@ export default class UserLoginObserver {
     dispatch(new UserLoginAction());
   };
 
-  private readonly handleUserLogout = (event: JQuery.TriggeredEvent<unknown, unknown, HTMLElement, unknown>) => {
+  private readonly handleUserLogout = (
+    event: JQuery.TriggeredEvent<unknown, unknown, HTMLElement, unknown>,
+  ) => {
     const redirect = present(event.currentTarget.dataset.redirectHome);
     this.logout(redirect);
   };

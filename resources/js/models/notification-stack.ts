@@ -1,18 +1,20 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { NotificationStackJson } from 'interfaces/notification-json';
-import { action, computed, makeObservable, observable } from 'mobx';
-import Notification from 'models/notification';
-import { Name } from 'models/notification-type';
-import { NotificationCursor } from 'notifications/notification-cursor';
-import NotificationDeletable from 'notifications/notification-deletable';
-import { NotificationIdentity } from 'notifications/notification-identity';
-import NotificationReadable from 'notifications/notification-readable';
-import { NotificationResolver } from 'notifications/notification-resolver';
-import { NotificationContextData } from 'notifications-context';
+import { NotificationStackJson } from "interfaces/notification-json";
+import { action, computed, makeObservable, observable } from "mobx";
+import Notification from "models/notification";
+import { Name } from "models/notification-type";
+import { NotificationCursor } from "notifications/notification-cursor";
+import NotificationDeletable from "notifications/notification-deletable";
+import { NotificationIdentity } from "notifications/notification-identity";
+import NotificationReadable from "notifications/notification-readable";
+import { NotificationResolver } from "notifications/notification-resolver";
+import { NotificationContextData } from "notifications-context";
 
-export default class NotificationStack implements NotificationReadable, NotificationDeletable {
+export default class NotificationStack
+  implements NotificationReadable, NotificationDeletable
+{
   @observable cursor: NotificationCursor | null = null;
   @observable displayOrder = 0;
   @observable isDeleting = false;
@@ -87,7 +89,12 @@ export default class NotificationStack implements NotificationReadable, Notifica
   }
 
   static fromJson(json: NotificationStackJson, resolver: NotificationResolver) {
-    const obj = new NotificationStack(json.object_id, json.object_type, json.category, resolver);
+    const obj = new NotificationStack(
+      json.object_id,
+      json.object_type,
+      json.category,
+      resolver,
+    );
     obj.updateWithJson(json);
     return obj;
   }
@@ -106,7 +113,8 @@ export default class NotificationStack implements NotificationReadable, Notifica
   @action
   deleteItem(notification?: Notification) {
     // not from this stack, ignore.
-    if (notification == null || !this.notifications.has(notification.id)) return;
+    if (notification == null || !this.notifications.has(notification.id))
+      return;
     this.resolver.delete(notification);
   }
 
@@ -116,16 +124,18 @@ export default class NotificationStack implements NotificationReadable, Notifica
 
     this.isLoading = true;
 
-    this.resolver.loadMore(this.identity, context, this.cursor)
-      .always(action(() => {
+    this.resolver.loadMore(this.identity, context, this.cursor).always(
+      action(() => {
         this.isLoading = false;
-      }));
+      }),
+    );
   }
 
   @action
   markAsRead(notification?: Notification) {
     // not from this stack, ignore.
-    if (notification == null || !this.notifications.has(notification.id)) return;
+    if (notification == null || !this.notifications.has(notification.id))
+      return;
     this.resolver.queueMarkAsRead(notification);
   }
 

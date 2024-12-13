@@ -1,16 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { route } from 'laroute';
-import { action, computed, makeObservable, observable } from 'mobx';
-import { observer } from 'mobx-react';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { onErrorWithClick } from 'utils/ajax';
-import { classWithModifiers, Modifiers } from 'utils/css';
-import { formatNumber } from 'utils/html';
-import { trans } from 'utils/lang';
-import { Spinner } from './spinner';
+import { route } from "laroute";
+import { action, computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { onErrorWithClick } from "utils/ajax";
+import { classWithModifiers, Modifiers } from "utils/css";
+import { formatNumber } from "utils/html";
+import { trans } from "utils/lang";
+import { Spinner } from "./spinner";
 
 interface Props {
   alwaysVisible?: boolean;
@@ -20,7 +20,7 @@ interface Props {
   userId: number;
 }
 
-const bn = 'user-action-button';
+const bn = "user-action-button";
 
 @observer
 export default class FollowUserMappingButton extends React.Component<Props> {
@@ -56,21 +56,21 @@ export default class FollowUserMappingButton extends React.Component<Props> {
   }
 
   render() {
-    const canToggle = !(core.currentUser == null || core.currentUser.id === this.props.userId);
+    const canToggle = !(
+      core.currentUser == null || core.currentUser.id === this.props.userId
+    );
 
     if (!canToggle && !this.props.alwaysVisible) {
       return null;
     }
 
     const title = canToggle
-      ? trans(`follows.mapping.${this.following ? 'to_0' : 'to_1'}`)
-      : trans('follows.mapping.followers');
+      ? trans(`follows.mapping.${this.following ? "to_0" : "to_1"}`)
+      : trans("follows.mapping.followers");
 
-    const blockClass = classWithModifiers(
-      bn,
-      this.props.modifiers,
-      { friend: this.following },
-    );
+    const blockClass = classWithModifiers(bn, this.props.modifiers, {
+      friend: this.following,
+    });
 
     const disabled = this.loading || !canToggle;
 
@@ -95,32 +95,35 @@ export default class FollowUserMappingButton extends React.Component<Props> {
       data: {
         follow: {
           notifiable_id: this.props.userId,
-          notifiable_type: 'user',
-          subtype: 'mapping',
+          notifiable_type: "user",
+          subtype: "mapping",
         },
       },
     };
 
     if (this.following) {
-      params.type = 'DELETE';
-      params.url = route('follows.destroy');
+      params.type = "DELETE";
+      params.url = route("follows.destroy");
     } else {
-      params.type = 'POST';
-      params.url = route('follows.store');
+      params.type = "POST";
+      params.url = route("follows.store");
     }
 
     this.xhr = $.ajax(params)
       .done(this.updateData)
       .fail(onErrorWithClick(this.buttonRef.current))
-      .always(action(() => this.xhr = undefined));
+      .always(action(() => (this.xhr = undefined)));
   };
 
   private renderCounter() {
-    if (this.props.showFollowerCounter == null || this.props.followers == null) {
+    if (
+      this.props.showFollowerCounter == null ||
+      this.props.followers == null
+    ) {
       return;
     }
 
-    return(
+    return (
       <span className={`${bn}__counter`}>
         {formatNumber(this.followerCount)}
       </span>
@@ -128,19 +131,16 @@ export default class FollowUserMappingButton extends React.Component<Props> {
   }
 
   private renderIcon() {
-    const icon = this.loading
-      ? <Spinner />
-      : <i className='fas fa-bell' />;
+    const icon = this.loading ? <Spinner /> : <i className="fas fa-bell" />;
 
-    return(
-      <span className={`${bn}__icon-container`}>
-        {icon}
-      </span>
-    );
+    return <span className={`${bn}__icon-container`}>{icon}</span>;
   }
 
   @action
   private readonly updateData = () => {
-    core.currentUserModel.updateFollowUserMapping(!this.following, this.props.userId);
+    core.currentUserModel.updateFollowUserMapping(
+      !this.following,
+      this.props.userId,
+    );
   };
 }

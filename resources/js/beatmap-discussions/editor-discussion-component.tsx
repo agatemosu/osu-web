@@ -1,26 +1,32 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { EmbedElement } from 'editor';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import { Observer, observer } from 'mobx-react';
-import * as React from 'react';
-import { Transforms } from 'slate';
-import { RenderElementProps } from 'slate-react';
-import { ReactEditor } from 'slate-react';
-import { formatTimestamp, makeUrl, nearbyDiscussions, parseTimestamp, timestampRegex } from 'utils/beatmapset-discussion-helper';
-import { classWithModifiers } from 'utils/css';
-import { trans, transArray } from 'utils/lang';
-import { linkHtml } from 'utils/url';
-import DiscussionsState from './discussions-state';
-import { DraftsContext } from './drafts-context';
-import EditorBeatmapSelector from './editor-beatmap-selector';
-import EditorIssueTypeSelector from './editor-issue-type-selector';
-import { postEmbedModifiers } from './review-post-embed';
-import { SlateContext } from './slate-context';
+import { EmbedElement } from "editor";
+import BeatmapsetDiscussionJson from "interfaces/beatmapset-discussion-json";
+import BeatmapsetDiscussionsStore from "interfaces/beatmapset-discussions-store";
+import { Observer, observer } from "mobx-react";
+import * as React from "react";
+import { Transforms } from "slate";
+import { RenderElementProps } from "slate-react";
+import { ReactEditor } from "slate-react";
+import {
+  formatTimestamp,
+  makeUrl,
+  nearbyDiscussions,
+  parseTimestamp,
+  timestampRegex,
+} from "utils/beatmapset-discussion-helper";
+import { classWithModifiers } from "utils/css";
+import { trans, transArray } from "utils/lang";
+import { linkHtml } from "utils/url";
+import DiscussionsState from "./discussions-state";
+import { DraftsContext } from "./drafts-context";
+import EditorBeatmapSelector from "./editor-beatmap-selector";
+import EditorIssueTypeSelector from "./editor-issue-type-selector";
+import { postEmbedModifiers } from "./review-post-embed";
+import { SlateContext } from "./slate-context";
 
-const bn = 'beatmap-discussion-review-post-embed-preview';
+const bn = "beatmap-discussion-review-post-embed-preview";
 
 interface Cache {
   nearbyDiscussions?: {
@@ -54,7 +60,11 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
   componentDidMount = () => {
     // reset timestamp to null on clone
     if (this.editable()) {
-      Transforms.setNodes(this.context, { timestamp: undefined }, { at: this.path() });
+      Transforms.setNodes(
+        this.context,
+        { timestamp: undefined },
+        { at: this.path() },
+      );
     }
   };
 
@@ -66,7 +76,10 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
     const path = this.path();
     let purgeCache = false;
 
-    if (this.props.element.type === 'embed' && this.props.element.beatmapId != null) {
+    if (
+      this.props.element.type === "embed" &&
+      this.props.element.beatmapId != null
+    ) {
       const content = this.props.element.children[0].text;
       const matches = timestampRegex.exec(content);
       let timestamp: string | undefined;
@@ -96,7 +109,9 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
     this.destroyTooltip();
   }
 
-  createTooltip = (event: (React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>)) => {
+  createTooltip = (
+    event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
+  ) => {
     const timestamp = this.timestamp();
     if (timestamp == null) return;
 
@@ -120,8 +135,8 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
         fixed: true,
       },
       position: {
-        at: 'top center',
-        my: 'bottom center',
+        at: "top center",
+        my: "bottom center",
         viewport: $(window),
       },
       show: {
@@ -129,7 +144,7 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
         ready: true,
       },
       style: {
-        classes: 'tooltip-default tooltip-default--interactable',
+        classes: "tooltip-default tooltip-default--interactable",
       },
     });
 
@@ -138,7 +153,10 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
 
   delete = () => {
     // Timeout is used to let Slate handle the click event before the node is removed - otherwise a "Cannot find a descendant at path" error gets thrown.
-    window.setTimeout(() => Transforms.delete(this.context, { at: this.path() }), 0);
+    window.setTimeout(
+      () => Transforms.delete(this.context, { at: this.path() }),
+      0,
+    );
   };
 
   destroyTooltip = () => {
@@ -146,7 +164,7 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
       return;
     }
 
-    const qtip = $(this.tooltipEl).qtip('api');
+    const qtip = $(this.tooltipEl).qtip("api");
     if (qtip != null) {
       qtip.destroy();
       this.tooltipEl = undefined;
@@ -156,11 +174,13 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
   // FIXME: element should be typed properly instead.
   discussionType = () => this.props.element.discussionType;
 
-  editable = () => !(this.props.editMode && this.props.element.discussionId != null);
+  editable = () =>
+    !(this.props.editMode && this.props.element.discussionId != null);
 
-  isRelevantDiscussion = (discussion?: BeatmapsetDiscussionJson): discussion is BeatmapsetDiscussionJson => (
-    discussion != null && discussion.beatmap_id === this.selectedBeatmap()
-  );
+  isRelevantDiscussion = (
+    discussion?: BeatmapsetDiscussionJson,
+  ): discussion is BeatmapsetDiscussionJson =>
+    discussion != null && discussion.beatmap_id === this.selectedBeatmap();
 
   nearbyDiscussions = () => {
     const timestamp = this.timestamp();
@@ -169,10 +189,14 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
       return [];
     }
 
-    if (this.cache.nearbyDiscussions == null
-      || this.cache.nearbyDiscussions.timestamp !== timestamp
-      || this.cache.nearbyDiscussions.beatmap_id !== beatmapId) {
-      const relevantDiscussions = [...this.discussions.values()].filter(this.isRelevantDiscussion);
+    if (
+      this.cache.nearbyDiscussions == null ||
+      this.cache.nearbyDiscussions.timestamp !== timestamp ||
+      this.cache.nearbyDiscussions.beatmap_id !== beatmapId
+    ) {
+      const relevantDiscussions = [...this.discussions.values()].filter(
+        this.isRelevantDiscussion,
+      );
       this.cache.nearbyDiscussions = {
         beatmap_id: beatmapId,
         discussions: nearbyDiscussions(relevantDiscussions, timestamp),
@@ -190,7 +214,10 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
     }
 
     return drafts.filter((embed) => {
-      if (embed.timestamp == null || embed.beatmapId !== this.props.element.beatmapId) {
+      if (
+        embed.timestamp == null ||
+        embed.beatmapId !== this.props.element.beatmapId
+      ) {
         return false;
       }
 
@@ -204,7 +231,11 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
   };
 
   nearbyIndicator = (drafts: EmbedElement[]) => {
-    if (!this.editable() || this.timestamp() == null || this.discussionType() === 'praise') {
+    if (
+      !this.editable() ||
+      this.timestamp() == null ||
+      this.discussionType() === "praise"
+    ) {
       return null;
     }
 
@@ -218,22 +249,26 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
         const timestamp = formatTimestamp(discussion.timestamp);
 
         // don't linkify timestamps when in edit mode
-        timestamps.push(this.props.editMode
-          ? timestamp
-          : linkHtml(makeUrl({ discussion }),
-            timestamp,
-            { classNames: ['js-beatmap-discussion--jump'] },
-          ),
+        timestamps.push(
+          this.props.editMode
+            ? timestamp
+            : linkHtml(makeUrl({ discussion }), timestamp, {
+                classNames: ["js-beatmap-discussion--jump"],
+              }),
         );
       });
 
       if (nearbyUnsaved.length > 1) {
-        timestamps.push(trans('beatmap_discussions.nearby_posts.unsaved', { count: nearbyUnsaved.length - 1 }));
+        timestamps.push(
+          trans("beatmap_discussions.nearby_posts.unsaved", {
+            count: nearbyUnsaved.length - 1,
+          }),
+        );
       }
 
       const timestampsString = transArray(timestamps);
 
-      const nearbyText = trans('beatmap_discussions.nearby_posts.notice', {
+      const nearbyText = trans("beatmap_discussions.nearby_posts.notice", {
         existing_timestamps: timestampsString,
         timestamp: this.props.element.timestamp,
       });
@@ -250,9 +285,9 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
               __html: nearbyText,
             }}
             ref={this.tooltipContent}
-            type='text/html'
+            type="text/html"
           />
-          <i className='fas fa-exclamation-triangle' />
+          <i className="fas fa-exclamation-triangle" />
         </div>
       );
     }
@@ -264,26 +299,33 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
 
   render() {
     const canEdit = this.editable();
-    const classMods = canEdit ? [] : ['read-only'];
+    const classMods = canEdit ? [] : ["read-only"];
 
-    const timestampTooltipType = this.props.element.beatmapId != null ? 'diff' : 'all-diff';
-    const timestampTooltip = trans(`beatmaps.discussions.review.embed.timestamp.${timestampTooltipType}`, {
-      // TODO: remove after translations are updated without the key
-      type: trans(`beatmaps.discussions.message_type.${this.discussionType()}`),
-    });
+    const timestampTooltipType =
+      this.props.element.beatmapId != null ? "diff" : "all-diff";
+    const timestampTooltip = trans(
+      `beatmaps.discussions.review.embed.timestamp.${timestampTooltipType}`,
+      {
+        // TODO: remove after translations are updated without the key
+        type: trans(
+          `beatmaps.discussions.message_type.${this.discussionType()}`,
+        ),
+      },
+    );
 
-    const deleteButton =
-      (
-        <button
-          className={`${bn}__delete`}
-          contentEditable={false}
-          disabled={this.props.readOnly}
-          onClick={this.delete}
-          title={trans(`beatmaps.discussions.review.embed.${canEdit ? 'delete' : 'unlink'}`)}
-        >
-          <i className={`fas fa-${canEdit ? 'trash-alt' : 'link'}`} />
-        </button>
-      );
+    const deleteButton = (
+      <button
+        className={`${bn}__delete`}
+        contentEditable={false}
+        disabled={this.props.readOnly}
+        onClick={this.delete}
+        title={trans(
+          `beatmaps.discussions.review.embed.${canEdit ? "delete" : "unlink"}`,
+        )}
+      >
+        <i className={`fas fa-${canEdit ? "trash-alt" : "link"}`} />
+      </button>
+    );
 
     const nearbyIndicator = (
       <DraftsContext.Consumer>
@@ -292,28 +334,29 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
     );
 
     const unsavedIndicator =
-      this.props.editMode && canEdit ?
-        (
-          <div
-            className={`${bn}__indicator`}
-            contentEditable={false} // workaround for slatejs 'Cannot resolve a Slate point from DOM point' nonsense
-            title={trans('beatmaps.discussions.review.embed.unsaved')}
-          >
-            <i className='fas fa-pencil-alt' />
-          </div>
-        )
-        : null;
+      this.props.editMode && canEdit ? (
+        <div
+          className={`${bn}__indicator`}
+          contentEditable={false} // workaround for slatejs 'Cannot resolve a Slate point from DOM point' nonsense
+          title={trans("beatmaps.discussions.review.embed.unsaved")}
+        >
+          <i className="fas fa-pencil-alt" />
+        </div>
+      ) : null;
 
     const disabled = this.props.readOnly || !canEdit;
 
     const discussion = this.discussions.get(this.props.element.discussionId);
-    const embedMofidiers = discussion != null
-      ? postEmbedModifiers(discussion)
-      : this.discussionType() === 'praise' ? 'praise' : null;
+    const embedMofidiers =
+      discussion != null
+        ? postEmbedModifiers(discussion)
+        : this.discussionType() === "praise"
+          ? "praise"
+          : null;
 
     return (
       <div
-        className='beatmap-discussion beatmap-discussion--preview'
+        className="beatmap-discussion beatmap-discussion--preview"
         contentEditable={canEdit}
         suppressContentEditableWarning
         {...this.props.attributes}
@@ -324,14 +367,23 @@ export default class EditorDiscussionComponent extends React.Component<Props> {
               className={`${bn}__selectors`}
               contentEditable={false} // workaround for slatejs 'Cannot resolve a Slate point from DOM point' nonsense
             >
-              <EditorBeatmapSelector beatmaps={this.props.discussionsState.sortedBeatmaps} disabled={disabled} element={this.props.element} />
-              <EditorIssueTypeSelector beatmaps={this.props.discussionsState.sortedBeatmaps} disabled={disabled} element={this.props.element} />
+              <EditorBeatmapSelector
+                beatmaps={this.props.discussionsState.sortedBeatmaps}
+                disabled={disabled}
+                element={this.props.element}
+              />
+              <EditorIssueTypeSelector
+                beatmaps={this.props.discussionsState.sortedBeatmaps}
+                disabled={disabled}
+                element={this.props.element}
+              />
               <div
                 className={`${bn}__timestamp`}
                 contentEditable={false} // workaround for slatejs 'Cannot resolve a Slate point from DOM point' nonsense
               >
-                <span title={canEdit ? timestampTooltip : ''}>
-                  {this.props.element.timestamp ?? trans('beatmap_discussions.timestamp_display.general')}
+                <span title={canEdit ? timestampTooltip : ""}>
+                  {this.props.element.timestamp ??
+                    trans("beatmap_discussions.timestamp_display.general")}
                 </span>
               </div>
               {unsavedIndicator}

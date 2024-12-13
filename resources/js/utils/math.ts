@@ -8,7 +8,7 @@ export function getInt(input: unknown) {
     return input as number;
   }
 
-  if (typeof input === 'string') {
+  if (typeof input === "string") {
     const num = parseInt(input, 10);
 
     if (Number.isInteger(num)) {

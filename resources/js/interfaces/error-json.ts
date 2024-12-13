@@ -6,8 +6,10 @@ export default interface ErrorJson {
 }
 
 export function isErrorJson(arg: unknown): arg is ErrorJson {
-  return typeof arg === 'object'
-    && arg != null
-    && 'error' in arg
-    && typeof arg.error === 'string';
+  return (
+    typeof arg === "object" &&
+    arg != null &&
+    "error" in arg &&
+    typeof arg.error === "string"
+  );
 }

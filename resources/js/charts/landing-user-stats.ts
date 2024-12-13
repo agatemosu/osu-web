@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as d3 from 'd3';
-import { maxBy } from 'lodash';
-import { formatNumber } from 'utils/html';
-import { parseJson } from 'utils/json';
-import { trans } from 'utils/lang';
+import * as d3 from "d3";
+import { maxBy } from "lodash";
+import { formatNumber } from "utils/html";
+import { parseJson } from "utils/json";
+import { trans } from "utils/lang";
 
 interface Datum {
   x: number;
@@ -30,46 +30,75 @@ export default class LandingUserStats {
   private peakTextLength = 0;
   private readonly scaleX = d3.scaleLinear();
   private readonly scaleY = d3.scaleTime();
-  private readonly svg: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>;
-  private readonly svgArea: d3.Selection<SVGPathElement, unknown, HTMLElement, unknown>;
-  private readonly svgContainerInner: d3.Selection<SVGSVGElement, unknown, HTMLElement, unknown>;
-  private readonly svgContainerOuter: d3.Selection<d3.BaseType, unknown, HTMLElement, unknown>;
-  private readonly svgPeakCircle: d3.Selection<SVGCircleElement, unknown, HTMLElement, unknown>;
-  private readonly svgPeakText: d3.Selection<SVGTextElement, unknown, HTMLElement, unknown>;
+  private readonly svg: d3.Selection<
+    SVGGElement,
+    unknown,
+    HTMLElement,
+    unknown
+  >;
+  private readonly svgArea: d3.Selection<
+    SVGPathElement,
+    unknown,
+    HTMLElement,
+    unknown
+  >;
+  private readonly svgContainerInner: d3.Selection<
+    SVGSVGElement,
+    unknown,
+    HTMLElement,
+    unknown
+  >;
+  private readonly svgContainerOuter: d3.Selection<
+    d3.BaseType,
+    unknown,
+    HTMLElement,
+    unknown
+  >;
+  private readonly svgPeakCircle: d3.Selection<
+    SVGCircleElement,
+    unknown,
+    HTMLElement,
+    unknown
+  >;
+  private readonly svgPeakText: d3.Selection<
+    SVGTextElement,
+    unknown,
+    HTMLElement,
+    unknown
+  >;
   private width = 0;
 
   constructor() {
     // Define basic elements
-    this.svgContainerOuter = d3.select('.js-landing-graph');
+    this.svgContainerOuter = d3.select(".js-landing-graph");
 
     // Clear out previously set graphs
-    this.svgContainerOuter.selectAll('svg').remove();
+    this.svgContainerOuter.selectAll("svg").remove();
 
     this.svgContainerInner = this.svgContainerOuter
-      .append('svg')
-      .attr('class', 'landing-graph');
+      .append("svg")
+      .attr("class", "landing-graph");
 
     this.svg = this.svgContainerInner
-      .append('g')
+      .append("g")
       // Ensure no blank space at the bottom at certain zoom level in Firefox.
-      .attr('transform', `translate(${margin.left}, ${margin.top + 1})`);
+      .attr("transform", `translate(${margin.left}, ${margin.top + 1})`);
 
-    this.svgArea = this.svg
-      .append('path')
-      .attr('class', 'landing-graph__area');
+    this.svgArea = this.svg.append("path").attr("class", "landing-graph__area");
 
     this.svgPeakText = this.svg
-      .append('text')
-      .attr('class', 'landing-graph__text')
-      .attr('y', (-peakR * 2));
+      .append("text")
+      .attr("class", "landing-graph__text")
+      .attr("y", -peakR * 2);
 
     this.svgPeakCircle = this.svg
-      .append('circle')
-      .attr('class', 'landing-graph__circle')
-      .attr('cy', 0)
-      .attr('r', peakR);
+      .append("circle")
+      .attr("class", "landing-graph__circle")
+      .attr("cy", 0)
+      .attr("r", peakR);
 
-    this.area = d3.area<Datum>()
+    this.area = d3
+      .area<Datum>()
       .curve(d3.curveBasis)
       .x((d) => this.scaleX(d.x))
       .y0(() => this.height)
@@ -83,8 +112,14 @@ export default class LandingUserStats {
     if (this.data.length === 0) return;
 
     // set basic dimensions
-    this.width = parseInt(this.svgContainerOuter.style('width'), 10) - margin.left - margin.right;
-    this.height = parseInt(this.svgContainerOuter.style('height'), 10) - margin.top - margin.bottom;
+    this.width =
+      parseInt(this.svgContainerOuter.style("width"), 10) -
+      margin.left -
+      margin.right;
+    this.height =
+      parseInt(this.svgContainerOuter.style("height"), 10) -
+      margin.top -
+      margin.bottom;
 
     // set range of scales
     this.scaleX.range([0, this.width]);
@@ -92,28 +127,26 @@ export default class LandingUserStats {
 
     // resize svgContainerInner
     this.svgContainerInner
-      .attr('width', this.width + margin.left + margin.right)
-      .attr('height', this.height + margin.top + margin.bottom);
+      .attr("width", this.width + margin.left + margin.right)
+      .attr("height", this.height + margin.top + margin.bottom);
 
     // resize svgArea
-    this.svgArea
-      .datum(this.data)
-      .attr('d', this.area);
+    this.svgArea.datum(this.data).attr("d", this.area);
 
     // reposition peak circle...
-    this.svgPeakCircle.attr('cx', this.scaleX(this.maxElem.x));
+    this.svgPeakCircle.attr("cx", this.scaleX(this.maxElem.x));
 
     // ...and its label
-    this.svgPeakText.attr('x', () => {
-      const rightX = this.scaleX(this.maxElem.x) + (peakR * 2);
-      return (this.peakTextLength + rightX) > this.width
-        ? this.scaleX(this.maxElem.x) - (this.peakTextLength + (peakR * 2))
+    this.svgPeakText.attr("x", () => {
+      const rightX = this.scaleX(this.maxElem.x) + peakR * 2;
+      return this.peakTextLength + rightX > this.width
+        ? this.scaleX(this.maxElem.x) - (this.peakTextLength + peakR * 2)
         : rightX;
     });
   };
 
   private loadData() {
-    this.data = parseJson<Datum[]>('json-stats');
+    this.data = parseJson<Datum[]>("json-stats");
 
     if (this.data.length === 0) return;
 
@@ -125,12 +158,14 @@ export default class LandingUserStats {
     this.scaleX.domain([scaleXDomain[0] ?? 0, scaleXDomain[1] ?? 0]);
     this.scaleY.domain([0, this.maxElem.y]);
 
-    this.svgPeakText.text(trans('home.landing.peak', { count: formatNumber(this.maxElem.y) }));
+    this.svgPeakText.text(
+      trans("home.landing.peak", { count: formatNumber(this.maxElem.y) }),
+    );
     const textNode = this.svgPeakText.node();
 
     if (textNode == null) {
       // this shouldn't be possible...
-      throw new Error('peak text node is missing');
+      throw new Error("peak text node is missing");
     }
     this.peakTextLength = textNode.getComputedTextLength();
   }

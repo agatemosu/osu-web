@@ -5,10 +5,10 @@ let counterElem: HTMLElement | null = null;
 
 function getCounterElem() {
   if (counterElem == null) {
-    counterElem = document.querySelector('.js-estimate-min-lines');
+    counterElem = document.querySelector(".js-estimate-min-lines");
 
     if (counterElem == null) {
-      throw new Error('js-estimate-min-lines placeholder element is missing!');
+      throw new Error("js-estimate-min-lines placeholder element is missing!");
     }
   }
 
@@ -46,7 +46,9 @@ export function estimateMinLines(domString: string) {
     refLineHeight = firstChild;
   }
 
-  const lineHeight = parseFloat(window.getComputedStyle(refLineHeight).getPropertyValue('line-height'));
+  const lineHeight = parseFloat(
+    window.getComputedStyle(refLineHeight).getPropertyValue("line-height"),
+  );
   const height = counter.scrollHeight;
   const count = Math.ceil(height / lineHeight);
 

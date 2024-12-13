@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-const activeClass = 'js-mobile-toggle--active';
+const activeClass = "js-mobile-toggle--active";
 
 export default class MobileToggle {
   constructor() {
-    $(document).on('click', '.js-mobile-toggle', this.toggle);
+    $(document).on("click", ".js-mobile-toggle", this.toggle);
   }
 
   toggle = (e: JQuery.ClickEvent) => {
@@ -21,7 +21,9 @@ export default class MobileToggle {
       return;
     }
 
-    const target = document.querySelector(`.js-mobile-toggle[data-mobile-toggle-id=${targetId}]`);
+    const target = document.querySelector(
+      `.js-mobile-toggle[data-mobile-toggle-id=${targetId}]`,
+    );
 
     if (!(target instanceof HTMLElement)) {
       return;
@@ -30,6 +32,6 @@ export default class MobileToggle {
     const toActive = !button.classList.contains(activeClass);
 
     button.classList.toggle(activeClass, toActive);
-    target.classList.toggle('hidden-xs', !toActive);
+    target.classList.toggle("hidden-xs", !toActive);
   };
 }

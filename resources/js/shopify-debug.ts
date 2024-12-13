@@ -6,7 +6,7 @@
  * import them somewhere if you need them.
  */
 
-import client from './shopify-client';
+import client from "./shopify-client";
 
 export function fetchAllProducts(): Promise<any[]> {
   return client().product.fetchAll();

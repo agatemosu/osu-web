@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
 
 interface Props {
   currentPage: string;
@@ -11,16 +11,14 @@ interface Props {
 }
 
 export default function ProfilePageExtraTab(props: Props) {
-  const blockClass = classWithModifiers(
-    'page-mode-link',
-    'profile-page',
-    { 'is-active': props.page === props.currentPage },
-  );
+  const blockClass = classWithModifiers("page-mode-link", "profile-page", {
+    "is-active": props.page === props.currentPage,
+  });
   const title = trans(`users.show.extra.${props.page}.title`);
 
   return (
     <span className={blockClass}>
-      <span className='fake-bold' data-content={title}>
+      <span className="fake-bold" data-content={title}>
         {title}
       </span>
     </span>

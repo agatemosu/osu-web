@@ -1,16 +1,19 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CommentsController from 'components/comments-controller';
-import CommentJson from 'interfaces/comment-json';
-import { computed, makeObservable } from 'mobx';
-import core from 'osu-core-singleton';
+import CommentsController from "components/comments-controller";
+import CommentJson from "interfaces/comment-json";
+import { computed, makeObservable } from "mobx";
+import core from "osu-core-singleton";
 
 export function canModerateComments(): boolean {
-  return core.currentUser != null && (core.currentUser.is_admin || core.currentUser.is_moderator);
+  return (
+    core.currentUser != null &&
+    (core.currentUser.is_admin || core.currentUser.is_moderator)
+  );
 }
 
-export type CommentSort = 'new' | 'old' | 'top';
+export type CommentSort = "new" | "old" | "top";
 
 export default class Comment {
   commentableId: number;
@@ -31,7 +34,10 @@ export default class Comment {
   userId: number | null;
   votesCount: number;
 
-  constructor(json: CommentJson, private readonly controller: CommentsController) {
+  constructor(
+    json: CommentJson,
+    private readonly controller: CommentsController,
+  ) {
     this.commentableId = json.commentable_id;
     this.commentableType = json.commentable_type;
     this.createdAt = json.created_at;
@@ -84,7 +90,7 @@ export default class Comment {
     }
 
     if (
-      this.commentableType !== 'beatmapset' ||
+      this.commentableType !== "beatmapset" ||
       (!this.pinned && this.controller.state.pinnedCommentIds.length > 0)
     ) {
       return false;
@@ -100,7 +106,11 @@ export default class Comment {
 
     const meta = this.controller.getCommentableMeta(this);
 
-    return meta != null && 'owner_id' in meta && meta.owner_id === core.currentUser.id;
+    return (
+      meta != null &&
+      "owner_id" in meta &&
+      meta.owner_id === core.currentUser.id
+    );
   }
 
   @computed
@@ -145,7 +155,9 @@ export default class Comment {
       return baseCount;
     }
 
-    const deletedCount = this.controller.getReplies(this).filter((reply) => !reply.isVisible).length;
+    const deletedCount = this.controller
+      .getReplies(this)
+      .filter((reply) => !reply.isVisible).length;
 
     return Math.max(0, baseCount - deletedCount);
   }

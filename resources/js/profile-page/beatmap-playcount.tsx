@@ -1,18 +1,18 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapsetCover from 'components/beatmapset-cover';
-import StringWithComponent from 'components/string-with-component';
-import UserLink from 'components/user-link';
-import BeatmapPlaycountJson from 'interfaces/beatmap-playcount-json';
-import Ruleset from 'interfaces/ruleset';
-import * as React from 'react';
-import { getArtist, getTitle } from 'utils/beatmapset-helper';
-import { formatNumber } from 'utils/html';
-import { trans } from 'utils/lang';
-import { beatmapUrl } from 'utils/url';
+import BeatmapsetCover from "components/beatmapset-cover";
+import StringWithComponent from "components/string-with-component";
+import UserLink from "components/user-link";
+import BeatmapPlaycountJson from "interfaces/beatmap-playcount-json";
+import Ruleset from "interfaces/ruleset";
+import * as React from "react";
+import { getArtist, getTitle } from "utils/beatmapset-helper";
+import { formatNumber } from "utils/html";
+import { trans } from "utils/lang";
+import { beatmapUrl } from "utils/url";
 
-const bn = 'beatmap-playcount';
+const bn = "beatmap-playcount";
 
 interface Props {
   currentMode: Ruleset;
@@ -25,7 +25,9 @@ export default class BeatmapPlaycount extends React.PureComponent<Props> {
     const beatmapset = this.props.playcount.beatmapset;
 
     if (beatmap == null || beatmapset == null) {
-      throw new Error('playcount JSON is missing beatmap or beatmapset include');
+      throw new Error(
+        "playcount JSON is missing beatmap or beatmapset include",
+      );
     }
 
     const url = beatmapUrl(beatmap, this.props.currentMode);
@@ -33,7 +35,11 @@ export default class BeatmapPlaycount extends React.PureComponent<Props> {
     return (
       <div className={bn}>
         <a className={`${bn}__cover`} href={url}>
-          <BeatmapsetCover beatmapset={beatmapset} modifiers='full' size='list' />
+          <BeatmapsetCover
+            beatmapset={beatmapset}
+            modifiers="full"
+            size="list"
+          />
           <div className={`${bn}__cover-count`}>
             {this.renderPlaycountText()}
           </div>
@@ -44,7 +50,9 @@ export default class BeatmapPlaycount extends React.PureComponent<Props> {
               <a className={`${bn}__title`} href={url}>
                 {`${getTitle(beatmapset)} [${beatmap.version}] `}
                 <span className={`${bn}__title-artist`}>
-                  {trans('users.show.extra.beatmaps.by_artist', { artist: getArtist(beatmapset) })}
+                  {trans("users.show.extra.beatmaps.by_artist", {
+                    artist: getArtist(beatmapset),
+                  })}
                 </span>
               </a>
             </div>
@@ -54,10 +62,10 @@ export default class BeatmapPlaycount extends React.PureComponent<Props> {
                   mappings={{
                     artist: <strong>{getArtist(beatmapset)}</strong>,
                   }}
-                  pattern={trans('users.show.extra.beatmaps.by_artist')}
+                  pattern={trans("users.show.extra.beatmaps.by_artist")}
                 />
               </span>
-              {' ' /* separator for overflow tooltip */}
+              {" " /* separator for overflow tooltip */}
               <span className={`${bn}__mapper`}>
                 <StringWithComponent
                   mappings={{
@@ -71,7 +79,7 @@ export default class BeatmapPlaycount extends React.PureComponent<Props> {
                       />
                     ),
                   }}
-                  pattern={trans('beatmapsets.show.details.mapped_by')}
+                  pattern={trans("beatmapsets.show.details.mapped_by")}
                 />
               </span>
             </div>
@@ -89,10 +97,10 @@ export default class BeatmapPlaycount extends React.PureComponent<Props> {
     return (
       <div
         className={`${bn}__count`}
-        title={trans('users.show.extra.historical.most_played.count')}
+        title={trans("users.show.extra.historical.most_played.count")}
       >
         <span className={`${bn}__count-icon`}>
-          <span className='fas fa-play' />
+          <span className="fas fa-play" />
         </span>
         {formatNumber(this.props.playcount.count)}
       </div>

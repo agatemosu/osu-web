@@ -1,32 +1,32 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import headerLinks from 'beatmapsets-show/header-links';
-import BeatmapBasicStats from 'components/beatmap-basic-stats';
-import BeatmapsetBadge from 'components/beatmapset-badge';
-import BeatmapsetCover from 'components/beatmapset-cover';
-import BeatmapsetMapping from 'components/beatmapset-mapping';
-import BigButton from 'components/big-button';
-import HeaderV4 from 'components/header-v4';
-import PlaymodeTabs from 'components/playmode-tabs';
-import StringWithComponent from 'components/string-with-component';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import Ruleset, { rulesets } from 'interfaces/ruleset';
-import { route } from 'laroute';
-import { action, computed, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { hasGuestOwners } from 'utils/beatmap-helper';
-import { getArtist, getTitle } from 'utils/beatmapset-helper';
-import { trans, transChoice } from 'utils/lang';
-import BeatmapList from './beatmap-list';
-import Chart from './chart';
-import DiscussionsState from './discussions-state';
-import { Nominations } from './nominations';
-import { Subscribe } from './subscribe';
-import TypeFilters from './type-filters';
-import { UserFilter } from './user-filter';
-import UserLinkList from './user-link-list';
+import headerLinks from "beatmapsets-show/header-links";
+import BeatmapBasicStats from "components/beatmap-basic-stats";
+import BeatmapsetBadge from "components/beatmapset-badge";
+import BeatmapsetCover from "components/beatmapset-cover";
+import BeatmapsetMapping from "components/beatmapset-mapping";
+import BigButton from "components/big-button";
+import HeaderV4 from "components/header-v4";
+import PlaymodeTabs from "components/playmode-tabs";
+import StringWithComponent from "components/string-with-component";
+import BeatmapsetDiscussionsStore from "interfaces/beatmapset-discussions-store";
+import Ruleset, { rulesets } from "interfaces/ruleset";
+import { route } from "laroute";
+import { action, computed, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { hasGuestOwners } from "utils/beatmap-helper";
+import { getArtist, getTitle } from "utils/beatmapset-helper";
+import { trans, transChoice } from "utils/lang";
+import BeatmapList from "./beatmap-list";
+import Chart from "./chart";
+import DiscussionsState from "./discussions-state";
+import { Nominations } from "./nominations";
+import { Subscribe } from "./subscribe";
+import TypeFilters from "./type-filters";
+import { UserFilter } from "./user-filter";
+import UserLinkList from "./user-link-list";
 
 interface Props {
   discussionsState: DiscussionsState;
@@ -65,36 +65,49 @@ export class Header extends React.Component<Props> {
     return (
       <>
         <HeaderV4
-          links={headerLinks('discussions', this.beatmapset)}
-          linksAppend={(
+          links={headerLinks("discussions", this.beatmapset)}
+          linksAppend={
             <PlaymodeTabs
               currentMode={this.currentBeatmap.mode}
               entries={rulesets.map((mode) => ({
-                count: this.discussionsState.unresolvedDiscussionCounts.byMode[mode],
-                countTooltip: transChoice('beatmaps.discussions.unresolved_count', this.discussionsState.unresolvedDiscussionCounts.byMode[mode] ?? 0),
-                disabled: (this.discussionsState.groupedBeatmaps.get(mode)?.length ?? 0) === 0,
+                count:
+                  this.discussionsState.unresolvedDiscussionCounts.byMode[mode],
+                countTooltip: transChoice(
+                  "beatmaps.discussions.unresolved_count",
+                  this.discussionsState.unresolvedDiscussionCounts.byMode[
+                    mode
+                  ] ?? 0,
+                ),
+                disabled:
+                  (this.discussionsState.groupedBeatmaps.get(mode)?.length ??
+                    0) === 0,
                 mode,
               }))}
-              modifiers='beatmapset'
+              modifiers="beatmapset"
               onClick={this.onClickMode}
             />
-          )}
-          theme='beatmapset'
+          }
+          theme="beatmapset"
         />
-        <div className='osu-page'>{this.renderHeaderTop()}</div>
-        <div className='osu-page osu-page--small'>{this.renderHeaderBottom()}</div>
+        <div className="osu-page">{this.renderHeaderTop()}</div>
+        <div className="osu-page osu-page--small">
+          {this.renderHeaderBottom()}
+        </div>
       </>
     );
   }
 
   @action
-  private readonly onClickMode = (event: React.MouseEvent<HTMLAnchorElement>, mode: Ruleset) => {
+  private readonly onClickMode = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    mode: Ruleset,
+  ) => {
     event.preventDefault();
     this.discussionsState.changeGameMode(mode);
   };
 
   private renderHeaderBottom() {
-    const bn = 'beatmap-discussions-header-bottom';
+    const bn = "beatmap-discussions-header-bottom";
 
     return (
       <div className={bn}>
@@ -106,14 +119,19 @@ export class Header extends React.Component<Props> {
             />
           </div>
           <div className={`${bn}__details`}>
-            <Subscribe beatmapset={this.beatmapset} discussionsState={this.discussionsState} />
+            <Subscribe
+              beatmapset={this.beatmapset}
+              discussionsState={this.discussionsState}
+            />
           </div>
           <div className={`${bn}__details`}>
             <BigButton
-              href={route('beatmapsets.show', { beatmapset: this.beatmapset.id })}
-              icon='fas fa-info'
-              modifiers='full'
-              text={trans('beatmaps.discussions.beatmap_information')}
+              href={route("beatmapsets.show", {
+                beatmapset: this.beatmapset.id,
+              })}
+              icon="fas fa-info"
+              modifiers="full"
+              text={trans("beatmaps.discussions.beatmap_information")}
             />
           </div>
         </div>
@@ -127,9 +145,8 @@ export class Header extends React.Component<Props> {
     );
   }
 
-
   private renderHeaderTop() {
-    const bn = 'beatmap-discussions-header-top';
+    const bn = "beatmap-discussions-header-top";
 
     return (
       <div className={bn}>
@@ -137,24 +154,29 @@ export class Header extends React.Component<Props> {
           <div className={`${bn}__cover`}>
             <BeatmapsetCover
               beatmapset={this.beatmapset}
-              modifiers='full'
-              size='cover'
+              modifiers="full"
+              size="cover"
             />
           </div>
           <div className={`${bn}__title-container`}>
             <h1 className={`${bn}__title`}>
               <a
-                className='link link--white link--no-underline'
-                href={route('beatmapsets.show', { beatmapset: this.beatmapset.id })}
+                className="link link--white link--no-underline"
+                href={route("beatmapsets.show", {
+                  beatmapset: this.beatmapset.id,
+                })}
               >
                 {getTitle(this.beatmapset)}
               </a>
-              <BeatmapsetBadge beatmapset={this.beatmapset} type='nsfw' />
-              <BeatmapsetBadge beatmapset={this.beatmapset} type='spotlight' />
+              <BeatmapsetBadge beatmapset={this.beatmapset} type="nsfw" />
+              <BeatmapsetBadge beatmapset={this.beatmapset} type="spotlight" />
             </h1>
             <h2 className={`${bn}__title ${bn}__title--artist`}>
               {getArtist(this.beatmapset)}
-              <BeatmapsetBadge beatmapset={this.beatmapset} type='featured_artist' />
+              <BeatmapsetBadge
+                beatmapset={this.beatmapset}
+                type="featured_artist"
+              />
             </h2>
           </div>
           <div className={`${bn}__filters`}>
@@ -174,7 +196,7 @@ export class Header extends React.Component<Props> {
               </div>
             </div>
           </div>
-          <div className='u-relative'>
+          <div className="u-relative">
             <Chart
               discussions={this.timelineDiscussions}
               duration={this.currentBeatmap.total_length * 1000}
@@ -185,14 +207,21 @@ export class Header extends React.Component<Props> {
                   <span>
                     <StringWithComponent
                       mappings={{
-                        user: <UserLinkList users={this.currentBeatmap.owners ?? []} />,
+                        user: (
+                          <UserLinkList
+                            users={this.currentBeatmap.owners ?? []}
+                          />
+                        ),
                       }}
-                      pattern={trans('beatmaps.discussions.guest')}
+                      pattern={trans("beatmaps.discussions.guest")}
                     />
                   </span>
                 )}
               </div>
-              <BeatmapBasicStats beatmap={this.currentBeatmap} beatmapset={this.beatmapset} />
+              <BeatmapBasicStats
+                beatmap={this.currentBeatmap}
+                beatmapset={this.beatmapset}
+              />
             </div>
           </div>
         </div>

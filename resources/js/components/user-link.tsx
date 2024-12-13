@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Reportable from 'interfaces/reportable';
-import Ruleset from 'interfaces/ruleset';
-import UserJson from 'interfaces/user-json';
-import { route } from 'laroute';
-import * as React from 'react';
+import Reportable from "interfaces/reportable";
+import Ruleset from "interfaces/ruleset";
+import UserJson from "interfaces/user-json";
+import { route } from "laroute";
+import * as React from "react";
 
 interface Props {
   children?: React.ReactNode;
@@ -13,19 +13,23 @@ interface Props {
   mode?: Ruleset;
   reportable?: Reportable;
   tooltipPosition?: string;
-  user: Partial<Pick<UserJson, 'id' | 'username'>>;
+  user: Partial<Pick<UserJson, "id" | "username">>;
 }
 
 export default class UserLink extends React.PureComponent<Props> {
   render() {
-    let className = 'js-usercard';
+    let className = "js-usercard";
     if (this.props.className != null) {
       className += ` ${this.props.className}`;
     }
 
-    const href = (this.props.user.id ?? -1) > 0
-      ? route('users.show', { mode: this.props.mode, user: this.props.user.id })
-      : undefined;
+    const href =
+      (this.props.user.id ?? -1) > 0
+        ? route("users.show", {
+            mode: this.props.mode,
+            user: this.props.user.id,
+          })
+        : undefined;
 
     return (
       <a

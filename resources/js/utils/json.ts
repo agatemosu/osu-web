@@ -1,14 +1,14 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import FormErrorJson from 'interfaces/form-error-json';
+import FormErrorJson from "interfaces/form-error-json";
 
 function appendParamKey(key: string, suffix: string) {
   return key.length === 0 ? suffix : `${key}[${suffix}]`;
 }
 
 function flattenParamKey(key: string, prefixes: string[]) {
-  let ret = '';
+  let ret = "";
 
   for (const prefix of prefixes) {
     ret = appendParamKey(ret, prefix);
@@ -17,7 +17,10 @@ function flattenParamKey(key: string, prefixes: string[]) {
   return appendParamKey(ret, key);
 }
 
-export function flattenFormErrorJson(json: FormErrorJson, prefixes: string[] = []) {
+export function flattenFormErrorJson(
+  json: FormErrorJson,
+  prefixes: string[] = [],
+) {
   const ret = new Map<string, string[]>();
 
   for (const key of Object.keys(json)) {
@@ -46,7 +49,7 @@ export function flattenFormErrorJson(json: FormErrorJson, prefixes: string[] = [
  * @param obj object to clone.
  */
 export function jsonClone<T>(obj: T) {
-  return obj != null ? JSON.parse(JSON.stringify(obj)) as T : obj;
+  return obj != null ? (JSON.parse(JSON.stringify(obj)) as T) : obj;
 }
 
 /**
@@ -58,7 +61,9 @@ export function jsonClone<T>(obj: T) {
 export function parseJson<T>(id: string, remove = false): T {
   const json = parseJsonNullable<T>(id, remove);
   if (json == null) {
-    throw new Error(`script element ${id} is missing or contains nullish value.`);
+    throw new Error(
+      `script element ${id} is missing or contains nullish value.`,
+    );
   }
 
   return json;
@@ -71,7 +76,11 @@ export function parseJson<T>(id: string, remove = false): T {
  * @param id id of the HTMLScriptElement.
  * @param remove true to remove the element after parsing; false, otherwise.
  */
-export function parseJsonNullable<T>(id: string, remove = false, reviver?: (key: string, value: any) => any): T | undefined {
+export function parseJsonNullable<T>(
+  id: string,
+  remove = false,
+  reviver?: (key: string, value: any) => any,
+): T | undefined {
   const element = (window.newBody ?? document.body).querySelector(`#${id}`);
   if (!(element instanceof HTMLScriptElement)) return undefined;
   const json = JSON.parse(element.text, reviver) as T;
@@ -95,9 +104,9 @@ export function storeJson<T = unknown>(id: string, object: T) {
 
   let element: HTMLScriptElement;
   if (maybeElement == null) {
-    element = document.createElement('script');
+    element = document.createElement("script");
     element.id = id;
-    element.type = 'application/json';
+    element.type = "application/json";
     document.body.appendChild(element);
   } else if (maybeElement instanceof HTMLScriptElement) {
     element = maybeElement;

@@ -1,18 +1,20 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import StringWithComponent from 'components/string-with-component';
-import { route } from 'laroute';
-import { action, autorun, makeObservable, observable } from 'mobx';
-import { disposeOnUnmount, observer } from 'mobx-react';
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import Controller from './controller';
+import StringWithComponent from "components/string-with-component";
+import { route } from "laroute";
+import { action, autorun, makeObservable, observable } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
+import Controller from "./controller";
 
 function getDefaultHue() {
   // always cast and hope for the best
-  return +window.getComputedStyle(window.newBody ?? document.body).getPropertyValue('--base-hue-default');
+  return +window
+    .getComputedStyle(window.newBody ?? document.body)
+    .getPropertyValue("--base-hue-default");
 }
 
 interface Props {
@@ -65,13 +67,16 @@ export default class HueSelector extends React.Component<Props> {
   componentDidMount() {
     this.initSlider();
 
-    disposeOnUnmount(this, autorun(() => {
-      this.resetHue = this.selectedHue == null;
-      this.$slider?.slider({
-        disabled: !this.canSet || this.xhr != null,
-        value: this.displayHue,
-      });
-    }));
+    disposeOnUnmount(
+      this,
+      autorun(() => {
+        this.resetHue = this.selectedHue == null;
+        this.$slider?.slider({
+          disabled: !this.canSet || this.xhr != null,
+          value: this.displayHue,
+        });
+      }),
+    );
   }
 
   componentWillUnmount() {
@@ -80,32 +85,30 @@ export default class HueSelector extends React.Component<Props> {
 
   render() {
     return (
-      <div className='profile-hue'>
-        <h2 className='title title--profile-edit-popup'>
-          {trans('users.show.edit.hue.title')}
+      <div className="profile-hue">
+        <h2 className="title title--profile-edit-popup">
+          {trans("users.show.edit.hue.title")}
         </h2>
         {this.renderSlider()}
-        <div className='profile-hue__buttons'>
+        <div className="profile-hue__buttons">
           <button
-            className='btn-osu-big btn-osu-big--rounded'
+            className="btn-osu-big btn-osu-big--rounded"
             disabled={!this.canReset || this.xhr != null}
             onClick={this.onResetClick}
-            type='button'
+            type="button"
           >
-            {trans('common.buttons.reset')}
+            {trans("common.buttons.reset")}
           </button>
           <button
-            className='btn-osu-big btn-osu-big--rounded'
+            className="btn-osu-big btn-osu-big--rounded"
             disabled={!this.canSave || this.xhr != null}
             onClick={this.onSaveClick}
-            type='button'
+            type="button"
           >
-            {trans('common.buttons.save')}
+            {trans("common.buttons.save")}
           </button>
         </div>
-        <div className='profile-hue__info'>
-          {this.renderInfo()}
-        </div>
+        <div className="profile-hue__info">{this.renderInfo()}</div>
       </div>
     );
   }
@@ -114,10 +117,11 @@ export default class HueSelector extends React.Component<Props> {
   private readonly apiSet = (value: number | null) => {
     if (this.xhr != null) return;
 
-    this.xhr = this.props.controller.apiSetHue(value)
-      .always(action(() => {
+    this.xhr = this.props.controller.apiSetHue(value).always(
+      action(() => {
         this.xhr = undefined;
-      }));
+      }),
+    );
   };
 
   @action
@@ -127,7 +131,7 @@ export default class HueSelector extends React.Component<Props> {
       change: this.onSliderValueChange,
       max: 360,
       min: 1,
-      range: 'min',
+      range: "min",
       slide: this.onSliderValueChange,
       step: 0.125,
       value: this.displayHue,
@@ -136,8 +140,10 @@ export default class HueSelector extends React.Component<Props> {
 
   @action
   private readonly onResetClick = () => {
-    if (!this.canSet && !confirm(trans('users.show.edit.hue.reset_no_supporter'))) {
-
+    if (
+      !this.canSet &&
+      !confirm(trans("users.show.edit.hue.reset_no_supporter"))
+    ) {
       return;
     }
 
@@ -148,7 +154,10 @@ export default class HueSelector extends React.Component<Props> {
     this.apiSet(this.selectedHue);
   };
 
-  private readonly onSliderValueChange = (_event: unknown, ui: SliderUIParams) => {
+  private readonly onSliderValueChange = (
+    _event: unknown,
+    ui: SliderUIParams,
+  ) => {
     if (this.resetHue) {
       this.props.controller.setSelectedHue(null);
       this.resetHue = false;
@@ -163,15 +172,15 @@ export default class HueSelector extends React.Component<Props> {
         mappings={{
           link: (
             <a
-              href={route('store.products.show', { product: 'supporter-tag' })}
-              rel='noreferrer'
-              target='_blank'
+              href={route("store.products.show", { product: "supporter-tag" })}
+              rel="noreferrer"
+              target="_blank"
             >
-              {trans('users.show.edit.hue.supporter.link')}
+              {trans("users.show.edit.hue.supporter.link")}
             </a>
           ),
         }}
-        pattern={trans('users.show.edit.hue.supporter._')}
+        pattern={trans("users.show.edit.hue.supporter._")}
       />
     );
   }
@@ -180,16 +189,16 @@ export default class HueSelector extends React.Component<Props> {
     return (
       <div
         ref={this.sliderRef}
-        className='profile-hue-selector ui-slider ui-slider-horizontal'
+        className="profile-hue-selector ui-slider ui-slider-horizontal"
       >
-        <div className='profile-hue-selector__range' />
+        <div className="profile-hue-selector__range" />
 
         <div
           className={`
-            ${classWithModifiers('profile-hue-selector__handle', { default: this.selectedHue == null })}
+            ${classWithModifiers("profile-hue-selector__handle", { default: this.selectedHue == null })}
             ui-slider-handle
           `}
-          style={{ '--hue': this.displayHue } as React.CSSProperties}
+          style={{ "--hue": this.displayHue } as React.CSSProperties}
         />
       </div>
     );

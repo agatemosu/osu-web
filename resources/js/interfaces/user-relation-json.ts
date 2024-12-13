@@ -3,6 +3,6 @@
 
 export default interface UserRelationJson {
   mutual: boolean;
-  relation_type: 'block' | 'friend';
+  relation_type: "block" | "friend";
   target_id: number;
 }

@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { Component, createContext } from 'react';
+import { Component, createContext } from "react";
 
 export interface State {
   activeKey?: any;
@@ -13,7 +13,9 @@ export function activeKeyDidChange(this: Component, key: any) {
 }
 
 export const ContainerContext = createContext({
-  activeKeyDidChange: (_key: any) => { /* do nothing */},
+  activeKeyDidChange: (_key: any) => {
+    /* do nothing */
+  },
 });
 
 export const KeyContext = createContext<any>(null);

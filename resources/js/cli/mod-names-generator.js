@@ -1,14 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-'use strict';
+"use strict";
 
-const fs = require('fs');
+const fs = require("fs");
 
 const root = `${__dirname}/../../..`;
 
 function modNamesGenerator() {
-  const modsByRuleset = JSON.parse(fs.readFileSync(`${root}/database/mods.json`));
+  const modsByRuleset = JSON.parse(
+    fs.readFileSync(`${root}/database/mods.json`),
+  );
 
   const modNames = {};
   for (const mods of modsByRuleset) {
@@ -28,16 +30,16 @@ function modNamesGenerator() {
 
   // extra for mod icons
   modNames.V2 = {
-    acronym: 'V2',
-    name: 'Score V2',
+    acronym: "V2",
+    name: "Score V2",
     setting_labels: {},
-    type: 'Conversion',
+    type: "Conversion",
   };
   modNames.NM = {
-    acronym: 'NM',
-    name: 'No Mod',
+    acronym: "NM",
+    name: "No Mod",
     setting_labels: {},
-    type: 'Conversion', // not really relevant
+    type: "Conversion", // not really relevant
   };
 
   const outDir = `${root}/resources/builds`;

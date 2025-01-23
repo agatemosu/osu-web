@@ -1,21 +1,21 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { ChatMessageSendAction } from 'actions/chat-message-send-action';
-import { dispatch } from 'app-dispatcher';
-import BigButton from 'components/big-button';
-import TextareaAutosize from 'components/textarea-autosize';
-import { trim } from 'lodash';
-import { action, autorun, computed, makeObservable, reaction } from 'mobx';
-import { disposeOnUnmount, observer } from 'mobx-react';
-import { maxMessageLength } from 'models/chat/channel';
-import Message from 'models/chat/message';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import { isModalShowing } from 'utils/modal-helper';
-import { present } from 'utils/string';
+import { ChatMessageSendAction } from "actions/chat-message-send-action";
+import { dispatch } from "app-dispatcher";
+import BigButton from "components/big-button";
+import TextareaAutosize from "components/textarea-autosize";
+import { trim } from "lodash";
+import { action, autorun, computed, makeObservable, reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import { maxMessageLength } from "models/chat/channel";
+import Message from "models/chat/message";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
+import { isModalShowing } from "utils/modal-helper";
+import { present } from "utils/string";
 
 type Props = Record<string, never>;
 
@@ -38,7 +38,9 @@ export default class InputBox extends React.Component<Props> {
   }
 
   get isAnnouncement() {
-    return this.currentChannel != null && this.currentChannel.type === 'ANNOUNCE';
+    return (
+      this.currentChannel != null && this.currentChannel.type === "ANNOUNCE"
+    );
   }
 
   @computed
@@ -62,11 +64,18 @@ export default class InputBox extends React.Component<Props> {
 
     disposeOnUnmount(
       this,
-      reaction(() => this.currentChannel, (newValue, oldValue) => {
-        if (newValue != null && newValue !== oldValue && core.windowSize.isDesktop) {
-          this.focusInput();
-        }
-      }),
+      reaction(
+        () => this.currentChannel,
+        (newValue, oldValue) => {
+          if (
+            newValue != null &&
+            newValue !== oldValue &&
+            core.windowSize.isDesktop
+          ) {
+            this.focusInput();
+          }
+        },
+      ),
     );
   }
 
@@ -75,7 +84,7 @@ export default class InputBox extends React.Component<Props> {
   };
 
   checkIfEnterPressed = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       if (e.shiftKey && this.allowMultiLine) return;
 
       e.preventDefault();
@@ -105,29 +114,41 @@ export default class InputBox extends React.Component<Props> {
   render(): React.ReactNode {
     const channel = this.currentChannel;
 
-    const buttonIcon = core.dataStore.chatState.isReady ? 'fas fa-reply' : 'fas fa-times';
-    const buttonText = trans(core.dataStore.chatState.isReady ? 'chat.input.send' : 'chat.input.disconnected');
+    const buttonIcon = core.dataStore.chatState.isReady
+      ? "fas fa-reply"
+      : "fas fa-times";
+    const buttonText = trans(
+      core.dataStore.chatState.isReady
+        ? "chat.input.send"
+        : "chat.input.disconnected",
+    );
 
     return (
-      <div className='chat-input'>
+      <div className="chat-input">
         <TextareaAutosize
-          autoComplete='off'
-          className={classWithModifiers('chat-input__box', { disabled: this.inputDisabled })}
+          autoComplete="off"
+          className={classWithModifiers("chat-input__box", {
+            disabled: this.inputDisabled,
+          })}
           disabled={this.inputDisabled}
           innerRef={this.inputBoxRef}
           maxLength={channel?.messageLengthLimit ?? maxMessageLength}
-          maxRows={channel?.type === 'ANNOUNCE' ? 10 : 3}
-          name='textbox'
+          maxRows={channel?.type === "ANNOUNCE" ? 10 : 3}
+          name="textbox"
           onChange={this.handleChange}
           onKeyDown={this.checkIfEnterPressed}
-          placeholder={this.inputDisabled ? trans('chat.input.disabled') : trans('chat.input.placeholder')}
+          placeholder={
+            this.inputDisabled
+              ? trans("chat.input.disabled")
+              : trans("chat.input.placeholder")
+          }
           value={channel?.inputText}
         />
 
         <BigButton
           disabled={this.sendDisabled}
           icon={buttonIcon}
-          modifiers='chat-send'
+          modifiers="chat-send"
           props={{
             onClick: this.buttonClicked,
           }}
@@ -140,17 +161,19 @@ export default class InputBox extends React.Component<Props> {
   // TODO: move to channel?
   @action
   sendMessage(messageText?: string) {
-    if (this.currentChannel == null
-      || messageText == null
-      || !present(trim(messageText))) {
+    if (
+      this.currentChannel == null ||
+      messageText == null ||
+      !present(trim(messageText))
+    ) {
       return;
     }
 
-    const isCommand = messageText[0] === '/';
+    const isCommand = messageText[0] === "/";
     let command: string | null = null;
 
     if (isCommand) {
-      let split = messageText.indexOf(' ');
+      let split = messageText.indexOf(" ");
       if (split === -1) {
         split = messageText.length;
       }
@@ -159,7 +182,7 @@ export default class InputBox extends React.Component<Props> {
       messageText = trim(messageText.substring(split + 1));
 
       // we only support /me commands for now
-      if (command !== 'me' || !present(messageText)) {
+      if (command !== "me" || !present(messageText)) {
         return;
       }
     }
@@ -170,11 +193,12 @@ export default class InputBox extends React.Component<Props> {
     message.content = messageText;
 
     // Technically we don't need to check command here, but doing so in case we add more commands
-    if (isCommand && command === 'me') {
+    if (isCommand && command === "me") {
       message.isAction = true;
-      message.type = 'action';
+      message.type = "action";
     } else {
-      message.type = this.currentChannel.type === 'ANNOUNCE' ? 'markdown' : 'plain';
+      message.type =
+        this.currentChannel.type === "ANNOUNCE" ? "markdown" : "plain";
     }
 
     if (this.currentChannel != null) {
@@ -186,10 +210,10 @@ export default class InputBox extends React.Component<Props> {
 
   @action
   private readonly startSendMessage = () => {
-    if (this.isAnnouncement && !confirm(trans('common.confirmation'))) {
+    if (this.isAnnouncement && !confirm(trans("common.confirmation"))) {
       return;
     }
     this.sendMessage(this.currentChannel?.inputText);
-    this.currentChannel?.setInputText('');
+    this.currentChannel?.setInputText("");
   };
 }

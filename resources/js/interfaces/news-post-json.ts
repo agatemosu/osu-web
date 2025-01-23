@@ -8,12 +8,12 @@ interface Navigation {
 
 interface HasFirstImage {
   first_image: string;
-  'first_image@2x': string;
+  "first_image@2x": string;
 }
 
 interface HasNoFirstImage {
   first_image: null;
-  'first_image@2x': null;
+  "first_image@2x": null;
 }
 
 type NewsPostJson = {

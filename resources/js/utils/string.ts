@@ -6,5 +6,5 @@ export function presence(value?: string | null) {
 }
 
 export function present(value?: string | null) {
-  return value != null && value !== '';
+  return value != null && value !== "";
 }

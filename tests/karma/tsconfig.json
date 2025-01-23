@@ -11,11 +11,7 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "target": "es2015",
+    "target": "es2015"
   },
-  "include": [
-    "../../resources/js",
-    "../../resources/builds/ziggy.d.ts",
-    ".",
-  ]
+  "include": ["../../resources/js", "../../resources/builds/ziggy.d.ts", "."]
 }

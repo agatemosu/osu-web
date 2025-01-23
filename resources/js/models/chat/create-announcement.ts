@@ -1,20 +1,20 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserJson from 'interfaces/user-json';
-import { action, autorun, computed, makeObservable, observable } from 'mobx';
-import { present } from 'utils/string';
-import { v4 as uuidv4 } from 'uuid';
-import { maxMessageLength } from './channel';
+import UserJson from "interfaces/user-json";
+import { action, autorun, computed, makeObservable, observable } from "mobx";
+import { present } from "utils/string";
+import { v4 as uuidv4 } from "uuid";
+import { maxMessageLength } from "./channel";
 
 interface LocalStorageProps extends Record<InputKey, string> {
   validUsers: number[];
 }
 
-const inputKeys = ['description', 'message', 'name', 'users'] as const;
-type InputKey = typeof inputKeys[number];
+const inputKeys = ["description", "message", "name", "users"] as const;
+type InputKey = (typeof inputKeys)[number];
 
-const localStorageKey = 'createAnnouncement';
+const localStorageKey = "createAnnouncement";
 
 export const maxLengths = Object.freeze({
   description: 255,
@@ -39,11 +39,10 @@ export default class CreateAnnouncement {
   @computed
   get errors() {
     return {
-      description: !this.isValidLength('description', true),
-      message: !this.isValidLength('message'),
-      name: !this.isValidLength('name'),
-      users: this.validUsers.size === 0
-        || present(this.inputs.users.trim()), // implies invalid ids left
+      description: !this.isValidLength("description", true),
+      message: !this.isValidLength("message"),
+      name: !this.isValidLength("name"),
+      users: this.validUsers.size === 0 || present(this.inputs.users.trim()), // implies invalid ids left
     };
   }
 
@@ -87,9 +86,9 @@ export default class CreateAnnouncement {
         this.inputs.description = json.description;
         this.inputs.message = json.message;
         this.inputs.name = json.name;
-        this.inputs.users = [...json.validUsers, json.users].join(',');
+        this.inputs.users = [...json.validUsers, json.users].join(",");
       } catch (_error) {
-        console.error('invalid json in localStorage');
+        console.error("invalid json in localStorage");
         localStorage.removeItem(localStorageKey);
       }
     }
@@ -123,32 +122,35 @@ export default class CreateAnnouncement {
       channel: { description, name },
       message,
       target_ids: [...this.validUsers.keys()],
-      type: 'ANNOUNCE' as const,
+      type: "ANNOUNCE" as const,
       uuid: this.uuid,
     };
   }
 
-  private isValidLength(key: Exclude<InputKey, 'users'>, allowEmpty = false) {
-    return (allowEmpty || present(this.inputs[key])) && this.inputs[key].length <= maxLengths[key];
+  private isValidLength(key: Exclude<InputKey, "users">, allowEmpty = false) {
+    return (
+      (allowEmpty || present(this.inputs[key])) &&
+      this.inputs[key].length <= maxLengths[key]
+    );
   }
 
   @action
   private resetErrors() {
-    return this.showError = {
+    return (this.showError = {
       description: false,
       message: false,
       name: false,
       users: false,
-    };
+    });
   }
 
   @action
   private resetInputs() {
-    return this.inputs = {
-      description: '',
-      message: '',
-      name: '',
-      users: '',
-    };
+    return (this.inputs = {
+      description: "",
+      message: "",
+      name: "",
+      users: "",
+    });
   }
 }

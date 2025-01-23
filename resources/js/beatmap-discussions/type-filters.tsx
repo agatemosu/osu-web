@@ -1,23 +1,31 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { kebabCase, snakeCase } from 'lodash';
-import { computed } from 'mobx';
-import { observer } from 'mobx-react';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { makeUrl } from 'utils/beatmapset-discussion-helper';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import { Filter } from './current-discussions';
-import DiscussionsState from './discussions-state';
+import { kebabCase, snakeCase } from "lodash";
+import { computed } from "mobx";
+import { observer } from "mobx-react";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { makeUrl } from "utils/beatmapset-discussion-helper";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
+import { Filter } from "./current-discussions";
+import DiscussionsState from "./discussions-state";
 
 interface Props {
   discussionsState: DiscussionsState;
 }
 
-const bn = 'counter-box';
-const statTypes: Filter[] = ['mine', 'mapperNotes', 'resolved', 'pending', 'praises', 'deleted', 'total'];
+const bn = "counter-box";
+const statTypes: Filter[] = [
+  "mine",
+  "mapperNotes",
+  "resolved",
+  "pending",
+  "praises",
+  "deleted",
+  "total",
+];
 
 @observer
 export default class TypeFilters extends React.Component<Props> {
@@ -29,7 +37,9 @@ export default class TypeFilters extends React.Component<Props> {
     for (const type of statTypes) {
       let discussions = this.props.discussionsState.discussionsByFilter[type];
       if (selectedUserId != null) {
-        discussions = discussions.filter((discussion) => discussion.user_id === selectedUserId);
+        discussions = discussions.filter(
+          (discussion) => discussion.user_id === selectedUserId,
+        );
       }
 
       counts[type] = discussions.length;
@@ -43,13 +53,20 @@ export default class TypeFilters extends React.Component<Props> {
   }
 
   private readonly renderType = (type: Filter) => {
-    if ((type === 'deleted') && !core.currentUser?.is_admin) {
+    if (type === "deleted" && !core.currentUser?.is_admin) {
       return null;
     }
 
-    let topClasses = classWithModifiers(bn, 'beatmap-discussions', kebabCase(type));
-    if (this.props.discussionsState.currentPage !== 'events' && this.props.discussionsState.currentFilter === type) {
-      topClasses += ' js-active';
+    let topClasses = classWithModifiers(
+      bn,
+      "beatmap-discussions",
+      kebabCase(type),
+    );
+    if (
+      this.props.discussionsState.currentPage !== "events" &&
+      this.props.discussionsState.currentFilter === type
+    ) {
+      topClasses += " js-active";
     }
 
     return (
@@ -69,9 +86,7 @@ export default class TypeFilters extends React.Component<Props> {
           <div className={`${bn}__title`}>
             {trans(`beatmaps.discussions.stats.${snakeCase(type)}`)}
           </div>
-          <div className={`${bn}__count`}>
-            {this.discussionCounts[type]}
-          </div>
+          <div className={`${bn}__count`}>{this.discussionCounts[type]}</div>
         </div>
         <div className={`${bn}__line`} />
       </a>
@@ -83,4 +98,3 @@ export default class TypeFilters extends React.Component<Props> {
     this.props.discussionsState.changeFilter(event.currentTarget.dataset.type);
   };
 }
-

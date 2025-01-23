@@ -1,13 +1,13 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import { navigate } from 'utils/turbolinks';
-import { wikiUrl } from 'utils/url';
-import { WikiSearchController } from 'wiki-search-controller';
+import { observer } from "mobx-react";
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
+import { navigate } from "utils/turbolinks";
+import { wikiUrl } from "utils/url";
+import { WikiSearchController } from "wiki-search-controller";
 
 @observer
 export class WikiSearch extends React.Component {
@@ -16,22 +16,25 @@ export class WikiSearch extends React.Component {
   private readonly ref = React.createRef<HTMLDivElement>();
 
   componentDidMount() {
-    document.addEventListener('keydown', this.handleEsc);
-    document.addEventListener('mousedown', this.handleMouseDown);
+    document.addEventListener("keydown", this.handleEsc);
+    document.addEventListener("mousedown", this.handleMouseDown);
   }
 
   componentDidUpdate() {
     // scroll highlighted option into view if triggered by keys
     if (this.keepSelectionInView) {
       // FIXME: probably doesn't work on Edge?
-      $('.wiki-search__suggestion--active')[0]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      $(".wiki-search__suggestion--active")[0]?.scrollIntoView({
+        block: "nearest",
+        inline: "nearest",
+      });
       this.keepSelectionInView = false;
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleEsc);
-    document.removeEventListener('mousedown', this.handleMouseDown);
+    document.removeEventListener("keydown", this.handleEsc);
+    document.removeEventListener("mousedown", this.handleMouseDown);
     this.controller.cancel();
   }
 
@@ -40,7 +43,7 @@ export class WikiSearch extends React.Component {
   };
 
   handleEsc = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       this.controller.unselect(true);
     }
   };
@@ -48,15 +51,15 @@ export class WikiSearch extends React.Component {
   handleKeyDown = (e: React.KeyboardEvent) => {
     const key = e.key;
 
-    if (key === 'Enter') {
+    if (key === "Enter") {
       if (this.controller.selectedItem == null) {
         this.handleSearch();
       } else {
         navigate(wikiUrl(this.controller.selectedItem.path));
       }
-    } else if (key === 'ArrowUp' || key === 'ArrowDown') {
+    } else if (key === "ArrowUp" || key === "ArrowDown") {
       this.keepSelectionInView = true;
-      this.controller.shiftSelectedIndex(key === 'ArrowDown' ? 1 : -1);
+      this.controller.shiftSelectedIndex(key === "ArrowDown" ? 1 : -1);
     }
   };
 
@@ -78,18 +81,18 @@ export class WikiSearch extends React.Component {
 
   render() {
     return (
-      <div className='wiki-search'>
-        <div className='wiki-search__bar'>
+      <div className="wiki-search">
+        <div className="wiki-search__bar">
           <input
             autoFocus
-            className='wiki-search__input'
+            className="wiki-search__input"
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
-            placeholder={trans('common.input.search')}
+            placeholder={trans("common.input.search")}
             value={this.controller.displayText}
           />
-          <button className='wiki-search__button' onClick={this.handleSearch}>
-            <i className='fa fa-search' />
+          <button className="wiki-search__button" onClick={this.handleSearch}>
+            <i className="fa fa-search" />
           </button>
         </div>
         {this.renderSuggestions()}
@@ -101,26 +104,34 @@ export class WikiSearch extends React.Component {
     if (!this.controller.isSuggestionsVisible) return null;
 
     return (
-      <div ref={this.ref} className='wiki-search__suggestions u-fancy-scrollbar' onMouseLeave={this.handleMouseLeave}>
-        {
-          this.controller.suggestions.map((item, index) => (
-            <a
-              key={index}
-              className={classWithModifiers('wiki-search__suggestion', { active: this.controller.selectedIndex === index })}
-              data-index={index}
-              href={wikiUrl(item.path)}
-              onMouseEnter={this.handleSuggestionMouseEnter}
-            >
-              <span dangerouslySetInnerHTML={{ __html: item.highlight }} />
-            </a>
-          ))
-        }
+      <div
+        ref={this.ref}
+        className="wiki-search__suggestions u-fancy-scrollbar"
+        onMouseLeave={this.handleMouseLeave}
+      >
+        {this.controller.suggestions.map((item, index) => (
+          <a
+            key={index}
+            className={classWithModifiers("wiki-search__suggestion", {
+              active: this.controller.selectedIndex === index,
+            })}
+            data-index={index}
+            href={wikiUrl(item.path)}
+            onMouseEnter={this.handleSuggestionMouseEnter}
+          >
+            <span dangerouslySetInnerHTML={{ __html: item.highlight }} />
+          </a>
+        ))}
       </div>
     );
   }
 
-  private readonly handleSuggestionMouseEnter = (e: React.SyntheticEvent<HTMLElement>) => {
+  private readonly handleSuggestionMouseEnter = (
+    e: React.SyntheticEvent<HTMLElement>,
+  ) => {
     this.keepSelectionInView = false;
-    this.controller.selectIndex(parseInt(e.currentTarget.dataset.index ?? '', 10));
+    this.controller.selectIndex(
+      parseInt(e.currentTarget.dataset.index ?? "", 10),
+    );
   };
 }

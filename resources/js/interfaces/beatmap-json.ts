@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapOwnerJson from './beatmap-owner-json';
-import BeatmapsetJson from './beatmapset-json';
-import Ruleset from './ruleset';
-import UserJson from './user-json';
+import BeatmapOwnerJson from "./beatmap-owner-json";
+import BeatmapsetJson from "./beatmapset-json";
+import Ruleset from "./ruleset";
+import UserJson from "./user-json";
 
 interface BeatmapFailTimesArray {
   exit: number[];
@@ -32,6 +32,7 @@ interface BeatmapJsonDefaultAttributes {
   version: string;
 }
 
-type BeatmapJson = BeatmapJsonDefaultAttributes & Partial<BeatmapJsonAvailableIncludes>;
+type BeatmapJson = BeatmapJsonDefaultAttributes &
+  Partial<BeatmapJsonAvailableIncludes>;
 
 export default BeatmapJson;

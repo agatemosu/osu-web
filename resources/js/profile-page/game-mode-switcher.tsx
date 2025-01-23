@@ -1,16 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import PlaymodeTabs from 'components/playmode-tabs';
-import StringWithComponent from 'components/string-with-component';
-import { rulesets } from 'interfaces/ruleset';
-import { route } from 'laroute';
-import { action, observable, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { onErrorWithCallback } from 'utils/ajax';
-import { trans } from 'utils/lang';
-import Controller from './controller';
+import PlaymodeTabs from "components/playmode-tabs";
+import StringWithComponent from "components/string-with-component";
+import { rulesets } from "interfaces/ruleset";
+import { route } from "laroute";
+import { action, observable, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { onErrorWithCallback } from "utils/ajax";
+import { trans } from "utils/lang";
+import Controller from "./controller";
 
 interface Props {
   controller: Controller;
@@ -39,7 +39,10 @@ export default class GameModeSwitcher extends React.Component<Props> {
           defaultMode={this.props.controller.state.user.playmode}
           entries={rulesets.map((mode) => ({
             disabled: false,
-            href: route('users.show', { mode, user: this.props.controller.state.user.id }),
+            href: route("users.show", {
+              mode,
+              user: this.props.controller.state.user.id,
+            }),
             mode,
           }))}
         />
@@ -48,23 +51,31 @@ export default class GameModeSwitcher extends React.Component<Props> {
   }
 
   private renderSetDefault() {
-    if (!this.props.controller.withEdit || this.props.controller.state.user.playmode === this.props.controller.currentMode) {
+    if (
+      !this.props.controller.withEdit ||
+      this.props.controller.state.user.playmode ===
+        this.props.controller.currentMode
+    ) {
       return null;
     }
 
     return (
-      <div className='profile-page-button'>
+      <div className="profile-page-button">
         <button
-          className='profile-page-button__button'
+          className="profile-page-button__button"
           disabled={this.settingDefault}
           onClick={this.setDefault}
-          type='button'
+          type="button"
         >
           <StringWithComponent
             mappings={{
-              mode: <strong>{trans(`beatmaps.mode.${this.props.controller.currentMode}`)}</strong>,
+              mode: (
+                <strong>
+                  {trans(`beatmaps.mode.${this.props.controller.currentMode}`)}
+                </strong>
+              ),
             }}
-            pattern={trans('users.show.edit.default_playmode.set')}
+            pattern={trans("users.show.edit.default_playmode.set")}
           />
         </button>
       </div>
@@ -75,9 +86,13 @@ export default class GameModeSwitcher extends React.Component<Props> {
   private readonly setDefault = () => {
     this.settingDefault = true;
 
-    this.props.controller.apiSetDefaultGameMode()
-      .always(action(() => {
-        this.settingDefault = false;
-      })).fail(onErrorWithCallback(this.setDefault));
+    this.props.controller
+      .apiSetDefaultGameMode()
+      .always(
+        action(() => {
+          this.settingDefault = false;
+        }),
+      )
+      .fail(onErrorWithCallback(this.setDefault));
   };
 }

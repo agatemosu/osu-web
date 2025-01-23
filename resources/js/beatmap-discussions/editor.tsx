@@ -1,29 +1,45 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { CircularProgress } from 'components/circular-progress';
-import { Spinner } from 'components/spinner';
-import { EmbedElement } from 'editor';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import BeatmapsetDiscussionsStore from 'interfaces/beatmapset-discussions-store';
-import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import isHotkey from 'is-hotkey';
-import { route } from 'laroute';
-import { observer } from 'mobx-react';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { createEditor, Editor as SlateEditor, Element as SlateElement, Node as SlateNode, NodeEntry, Range, Text, Transforms } from 'slate';
-import { withHistory } from 'slate-history';
-import { Editable, ReactEditor, RenderElementProps, RenderLeafProps, Slate, withReact } from 'slate-react';
-import { DOMRange } from 'slate-react/dist/utils/dom';
-import { onError } from 'utils/ajax';
-import { timestampRegex } from 'utils/beatmapset-discussion-helper';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import DiscussionsState from './discussions-state';
-import { DraftsContext } from './drafts-context';
-import EditorDiscussionComponent from './editor-discussion-component';
+import { CircularProgress } from "components/circular-progress";
+import { Spinner } from "components/spinner";
+import { EmbedElement } from "editor";
+import BeatmapExtendedJson from "interfaces/beatmap-extended-json";
+import BeatmapsetDiscussionJson from "interfaces/beatmapset-discussion-json";
+import BeatmapsetDiscussionsStore from "interfaces/beatmapset-discussions-store";
+import BeatmapsetWithDiscussionsJson from "interfaces/beatmapset-with-discussions-json";
+import isHotkey from "is-hotkey";
+import { route } from "laroute";
+import { observer } from "mobx-react";
+import core from "osu-core-singleton";
+import * as React from "react";
+import {
+  createEditor,
+  Editor as SlateEditor,
+  Element as SlateElement,
+  Node as SlateNode,
+  NodeEntry,
+  Range,
+  Text,
+  Transforms,
+} from "slate";
+import { withHistory } from "slate-history";
+import {
+  Editable,
+  ReactEditor,
+  RenderElementProps,
+  RenderLeafProps,
+  Slate,
+  withReact,
+} from "slate-react";
+import { DOMRange } from "slate-react/dist/utils/dom";
+import { onError } from "utils/ajax";
+import { timestampRegex } from "utils/beatmapset-discussion-helper";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
+import DiscussionsState from "./discussions-state";
+import { DraftsContext } from "./drafts-context";
+import EditorDiscussionComponent from "./editor-discussion-component";
 import {
   blockCount,
   insideEmbed,
@@ -32,12 +48,12 @@ import {
   slateDocumentContainsNewProblem,
   slateDocumentIsEmpty,
   toggleFormat,
-} from './editor-helpers';
-import { EditorInsertionMenu } from './editor-insertion-menu';
-import { EditorToolbar } from './editor-toolbar';
-import { parseFromJson } from './review-document';
-import { ReviewEditorConfigContext } from './review-editor-config-context';
-import { SlateContext } from './slate-context';
+} from "./editor-helpers";
+import { EditorInsertionMenu } from "./editor-insertion-menu";
+import { EditorToolbar } from "./editor-toolbar";
+import { parseFromJson } from "./review-document";
+import { ReviewEditorConfigContext } from "./review-editor-config-context";
+import { SlateContext } from "./slate-context";
 
 interface CacheInterface {
   draftEmbeds?: EmbedElement[];
@@ -64,11 +80,14 @@ interface TimestampRange extends Range {
   timestamp: string;
 }
 
-const emptyParagraph = Object.freeze({ children: [{ text: '' }], type: 'paragraph' });
+const emptyParagraph = Object.freeze({
+  children: [{ text: "" }],
+  type: "paragraph",
+});
 const emptyDocTemplate = [emptyParagraph];
 
 function isDraftEmbed(block: SlateElement): block is EmbedElement {
-  return block.type === 'embed' && block.discussionId == null;
+  return block.type === "embed" && block.discussionId == null;
 }
 
 @observer
@@ -78,7 +97,7 @@ export default class Editor extends React.Component<Props, State> {
     editing: false,
   };
 
-  bn = 'beatmap-discussion-editor';
+  bn = "beatmap-discussion-editor";
   cache: CacheInterface = {};
   declare context: React.ContextType<typeof ReviewEditorConfigContext>;
   insertMenuRef: React.RefObject<EditorInsertionMenu>;
@@ -110,7 +129,9 @@ export default class Editor extends React.Component<Props, State> {
 
     // Slate editor typing is weird
     // https://docs.slatejs.org/concepts/12-typescript#defining-editor-element-and-text-types
-    this.slateEditor = this.withNormalization(withReact(withHistory(createEditor())));
+    this.slateEditor = this.withNormalization(
+      withReact(withHistory(createEditor())),
+    );
     this.scrollContainerRef = React.createRef();
     this.toolbarRef = React.createRef();
     this.insertMenuRef = React.createRef();
@@ -125,7 +146,7 @@ export default class Editor extends React.Component<Props, State> {
         try {
           this.initialValue = JSON.parse(saved) as SlateElement[];
         } catch (_error) {
-          console.error('invalid json in localStorage, ignoring');
+          console.error("invalid json in localStorage, ignoring");
           localStorage.removeItem(this.localStorageKey);
         }
       }
@@ -139,22 +160,26 @@ export default class Editor extends React.Component<Props, State> {
   }
 
   blockWrapper = (children: React.ReactNode) => (
-    <div className={`${this.bn}__block`}>
-      {children}
-    </div>
+    <div className={`${this.bn}__block`}>{children}</div>
   );
 
   get canSave() {
-    return !this.state.posting && this.state.blockCount <= this.context.max_blocks;
+    return (
+      !this.state.posting && this.state.blockCount <= this.context.max_blocks
+    );
   }
 
   componentDidMount() {
     if (this.scrollContainerRef.current) {
       if (this.toolbarRef.current) {
-        this.toolbarRef.current.setScrollContainer(this.scrollContainerRef.current);
+        this.toolbarRef.current.setScrollContainer(
+          this.scrollContainerRef.current,
+        );
       }
       if (this.insertMenuRef.current) {
-        this.insertMenuRef.current.setScrollContainer(this.scrollContainerRef.current);
+        this.insertMenuRef.current.setScrollContainer(
+          this.scrollContainerRef.current,
+        );
       }
     }
   }
@@ -182,7 +207,7 @@ export default class Editor extends React.Component<Props, State> {
       return ranges;
     }
 
-    const regex = RegExp(timestampRegex, 'g');
+    const regex = RegExp(timestampRegex, "g");
     let match;
 
     while ((match = regex.exec(node.text)) !== null) {
@@ -200,7 +225,7 @@ export default class Editor extends React.Component<Props, State> {
     // Anything that triggers this needs to be fixed!
     // Slate.value is only used for initial value.
     if (value.length === 0) {
-      console.error('value is empty in Editor.onChange');
+      console.error("value is empty in Editor.onChange");
       value = emptyDocTemplate;
     }
 
@@ -231,18 +256,21 @@ export default class Editor extends React.Component<Props, State> {
 
   onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const nativeEvent = event.nativeEvent;
-    if (isHotkey('mod+b', nativeEvent)) {
+    if (isHotkey("mod+b", nativeEvent)) {
       event.preventDefault();
-      toggleFormat(this.slateEditor, 'bold');
-    } else if (isHotkey('mod+i', nativeEvent)) {
+      toggleFormat(this.slateEditor, "bold");
+    } else if (isHotkey("mod+i", nativeEvent)) {
       event.preventDefault();
-      toggleFormat(this.slateEditor, 'italic');
-    } else if (isHotkey('shift+enter', nativeEvent)) {
+      toggleFormat(this.slateEditor, "italic");
+    } else if (isHotkey("shift+enter", nativeEvent)) {
       if (insideEmbed(this.slateEditor)) {
         event.preventDefault();
-        this.slateEditor.insertText('\n');
+        this.slateEditor.insertText("\n");
       }
-    } else if (isHotkey('delete', nativeEvent) || isHotkey('backspace', nativeEvent)) {
+    } else if (
+      isHotkey("delete", nativeEvent) ||
+      isHotkey("backspace", nativeEvent)
+    ) {
       if (insideEmptyNode(this.slateEditor)) {
         event.preventDefault();
 
@@ -261,10 +289,15 @@ export default class Editor extends React.Component<Props, State> {
 
     if (this.showConfirmationIfRequired()) {
       this.setState({ posting: true }, () => {
-        this.xhr = $.ajax(route('beatmapsets.discussion.review', { beatmapset: this.beatmapset.id }), {
-          data: { document: this.serialize() },
-          method: 'POST',
-        });
+        this.xhr = $.ajax(
+          route("beatmapsets.discussion.review", {
+            beatmapset: this.beatmapset.id,
+          }),
+          {
+            data: { document: this.serialize() },
+            method: "POST",
+          },
+        );
 
         this.xhr
           .done((beatmapset) => {
@@ -282,10 +315,10 @@ export default class Editor extends React.Component<Props, State> {
 
   render(): React.ReactNode {
     this.cache = {};
-    const editorClass = 'beatmap-discussion-editor';
-    const modifiers = this.editMode ? ['edit-mode'] : [];
+    const editorClass = "beatmap-discussion-editor";
+    const modifiers = this.editMode ? ["edit-mode"] : [];
     if (this.state.posting) {
-      modifiers.push('readonly');
+      modifiers.push("readonly");
     }
 
     this.updateDrafts();
@@ -299,14 +332,22 @@ export default class Editor extends React.Component<Props, State> {
               onChange={this.onChange}
               value={this.initialValue}
             >
-              <div ref={this.scrollContainerRef} className={`${editorClass}__input-area`}>
+              <div
+                ref={this.scrollContainerRef}
+                className={`${editorClass}__input-area`}
+              >
                 <EditorToolbar ref={this.toolbarRef} />
-                <EditorInsertionMenu ref={this.insertMenuRef} currentBeatmap={this.props.discussionsState.currentBeatmap} />
+                <EditorInsertionMenu
+                  ref={this.insertMenuRef}
+                  currentBeatmap={this.props.discussionsState.currentBeatmap}
+                />
                 <DraftsContext.Provider value={this.cache.draftEmbeds || []}>
                   <Editable
                     decorate={this.decorateTimestamps}
                     onKeyDown={this.onKeyDown}
-                    placeholder={trans('beatmaps.discussions.message_placeholder.review')}
+                    placeholder={trans(
+                      "beatmaps.discussions.message_placeholder.review",
+                    )}
                     readOnly={this.state.posting}
                     renderElement={this.renderElement}
                     renderLeaf={this.renderLeaf}
@@ -314,36 +355,40 @@ export default class Editor extends React.Component<Props, State> {
                   />
                 </DraftsContext.Provider>
               </div>
-              {this.editMode &&
+              {this.editMode && (
                 <div className={`${editorClass}__inner-block-count`}>
-                  {this.renderBlockCount('lighter')}
+                  {this.renderBlockCount("lighter")}
                 </div>
-              }
-              {!this.editMode &&
+              )}
+              {!this.editMode && (
                 <div className={`${editorClass}__button-bar`}>
                   <button
-                    className='btn-osu-big btn-osu-big--forum-secondary'
+                    className="btn-osu-big btn-osu-big--forum-secondary"
                     disabled={this.state.posting}
                     onClick={this.resetInput}
-                    type='button'
+                    type="button"
                   >
-                    {trans('common.buttons.clear')}
+                    {trans("common.buttons.clear")}
                   </button>
                   <div>
                     <span className={`${editorClass}__block-count`}>
                       {this.renderBlockCount()}
                     </span>
                     <button
-                      className='btn-osu-big btn-osu-big--forum-primary'
+                      className="btn-osu-big btn-osu-big--forum-primary"
                       disabled={!this.canSave}
                       onClick={this.post}
-                      type='submit'
+                      type="submit"
                     >
-                      {this.state.posting ? <Spinner /> : trans('common.buttons.post')}
+                      {this.state.posting ? (
+                        <Spinner />
+                      ) : (
+                        trans("common.buttons.post")
+                      )}
                     </button>
                   </div>
                 </div>
-              }
+              )}
             </Slate>
           </SlateContext.Provider>
         </div>
@@ -357,7 +402,7 @@ export default class Editor extends React.Component<Props, State> {
       max={this.context.max_blocks}
       onlyShowAsWarning
       theme={theme}
-      tooltip={trans('beatmap_discussions.review.block_count', {
+      tooltip={trans("beatmap_discussions.review.block_count", {
         max: this.context.max_blocks,
         used: this.state.blockCount,
       })}
@@ -368,7 +413,7 @@ export default class Editor extends React.Component<Props, State> {
     let el: React.ReactNode;
 
     switch (props.element.type) {
-      case 'embed': {
+      case "embed": {
         const { element, ...otherProps } = props; // spreading ..props doesn't use the narrower type.
         el = (
           <EditorDiscussionComponent
@@ -400,19 +445,24 @@ export default class Editor extends React.Component<Props, State> {
     }
 
     if (props.leaf.timestamp != null) {
-      return <span className='beatmap-discussion-timestamp-decoration' {...props.attributes}>{children}</span>;
+      return (
+        <span
+          className="beatmap-discussion-timestamp-decoration"
+          {...props.attributes}
+        >
+          {children}
+        </span>
+      );
     }
 
-    return (
-      <span {...props.attributes}>{children}</span>
-    );
+    return <span {...props.attributes}>{children}</span>;
   };
 
   resetInput = (event?: React.MouseEvent) => {
     if (event) {
       event.preventDefault();
 
-      if (!confirm(trans('common.confirmation'))) {
+      if (!confirm(trans("common.confirmation"))) {
         return;
       }
     }
@@ -425,29 +475,42 @@ export default class Editor extends React.Component<Props, State> {
   // letters and numbers to be differently.
   scrollSelectionIntoView = (editor: ReactEditor, domRange: DOMRange) => {
     domRange.startContainer.parentElement?.scrollIntoView({
-      block: 'nearest',
-      inline: 'nearest' ,
+      block: "nearest",
+      inline: "nearest",
     });
   };
 
   serialize = () => serializeSlateDocument(this.state.value);
 
   showConfirmationIfRequired = () => {
-    const docContainsProblem = slateDocumentContainsNewProblem(this.state.value);
-    const canDisqualify = core.currentUser != null && (core.currentUser.is_admin || core.currentUser.is_moderator || core.currentUser.is_full_bn);
-    const willDisqualify = this.beatmapset.status === 'qualified' && docContainsProblem;
-    const canReset = core.currentUser != null && (core.currentUser.is_admin || core.currentUser.is_nat || core.currentUser.is_bng);
+    const docContainsProblem = slateDocumentContainsNewProblem(
+      this.state.value,
+    );
+    const canDisqualify =
+      core.currentUser != null &&
+      (core.currentUser.is_admin ||
+        core.currentUser.is_moderator ||
+        core.currentUser.is_full_bn);
+    const willDisqualify =
+      this.beatmapset.status === "qualified" && docContainsProblem;
+    const canReset =
+      core.currentUser != null &&
+      (core.currentUser.is_admin ||
+        core.currentUser.is_nat ||
+        core.currentUser.is_bng);
     const willReset =
-      this.beatmapset.status === 'pending'
-        && this.props.discussionsState.nominationsCount('current') > 0
-        && docContainsProblem;
+      this.beatmapset.status === "pending" &&
+      this.props.discussionsState.nominationsCount("current") > 0 &&
+      docContainsProblem;
 
     if (canDisqualify && willDisqualify) {
-      return confirm(trans('beatmaps.nominations.reset_confirm.disqualify'));
+      return confirm(trans("beatmaps.nominations.reset_confirm.disqualify"));
     }
 
     if (canReset && willReset) {
-      return confirm(trans('beatmaps.nominations.reset_confirm.nomination_reset'));
+      return confirm(
+        trans("beatmaps.nominations.reset_confirm.nomination_reset"),
+      );
     }
 
     return true;
@@ -462,7 +525,7 @@ export default class Editor extends React.Component<Props, State> {
 
     editor.insertData = (data) => {
       if (insideEmbed(this.slateEditor)) {
-        editor.insertText(data.getData('text/plain'));
+        editor.insertText(data.getData("text/plain"));
       } else {
         insertData(data);
       }
@@ -471,7 +534,7 @@ export default class Editor extends React.Component<Props, State> {
     editor.normalizeNode = (entry) => {
       const [node, path] = entry;
 
-      if (SlateElement.isElement(node) && node.type === 'embed') {
+      if (SlateElement.isElement(node) && node.type === "embed") {
         for (const [child, childPath] of SlateNode.children(editor, path)) {
           // ensure embeds only have a single child
           if (SlateElement.isElement(child) && !editor.isInline(child)) {
@@ -482,11 +545,9 @@ export default class Editor extends React.Component<Props, State> {
 
           // clear formatting from content within embeds
           if (Text.isText(child) && (child.bold || child.italic)) {
-            Transforms.unsetNodes(
-              editor,
-              ['bold', 'italic'],
-              { at: childPath },
-            );
+            Transforms.unsetNodes(editor, ["bold", "italic"], {
+              at: childPath,
+            });
 
             return;
           }
@@ -494,7 +555,11 @@ export default class Editor extends React.Component<Props, State> {
           if (node.beatmapId != null) {
             const beatmap = this.beatmaps.get(node.beatmapId);
             if (beatmap == null || beatmap.deleted_at != null) {
-              Transforms.setNodes(editor, { beatmapId: undefined }, { at: path });
+              Transforms.setNodes(
+                editor,
+                { beatmapId: undefined },
+                { at: path },
+              );
             }
           }
         }

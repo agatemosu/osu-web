@@ -1,16 +1,23 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
-import { UserLoginAction } from 'actions/user-login-actions';
-import { dispatchListener } from 'app-dispatcher';
-import DispatchListener from 'dispatch-listener';
-import { action, makeObservable, observable } from 'mobx';
-import Notification from 'models/notification';
-import { NotificationEventDelete, NotificationEventRead } from 'notifications/notification-events';
-import { NotificationIdentity, resolveIdentityType, resolveStackId } from 'notifications/notification-identity';
-import NotificationStackStore from './notification-stack-store';
-import WidgetNotificationStackStore from './widget-notification-stack-store';
+import DispatcherAction from "actions/dispatcher-action";
+import { UserLoginAction } from "actions/user-login-actions";
+import { dispatchListener } from "app-dispatcher";
+import DispatchListener from "dispatch-listener";
+import { action, makeObservable, observable } from "mobx";
+import Notification from "models/notification";
+import {
+  NotificationEventDelete,
+  NotificationEventRead,
+} from "notifications/notification-events";
+import {
+  NotificationIdentity,
+  resolveIdentityType,
+  resolveStackId,
+} from "notifications/notification-identity";
+import NotificationStackStore from "./notification-stack-store";
+import WidgetNotificationStackStore from "./widget-notification-stack-store";
 
 type NotificationEachCallback = (notification: Notification) => void;
 
@@ -63,20 +70,23 @@ export default class NotificationStore implements DispatchListener {
     });
   }
 
-  private eachByEvent(event: NotificationEventDelete | NotificationEventRead, callback: NotificationEachCallback) {
+  private eachByEvent(
+    event: NotificationEventDelete | NotificationEventRead,
+    callback: NotificationEachCallback,
+  ) {
     for (const identity of event.data) {
       const identityType = resolveIdentityType(identity);
 
       switch (identityType) {
-        case 'type':
+        case "type":
           this.eachByType(identity, callback);
           break;
 
-        case 'stack':
+        case "stack":
           this.eachByStack(identity, callback);
           break;
 
-        case 'notification': {
+        case "notification": {
           if (identity.id == null) return;
           const notification = this.get(identity.id);
 
@@ -89,7 +99,10 @@ export default class NotificationStore implements DispatchListener {
     }
   }
 
-  private eachByStack(identity: NotificationIdentity, callback: NotificationEachCallback) {
+  private eachByStack(
+    identity: NotificationIdentity,
+    callback: NotificationEachCallback,
+  ) {
     const stackId = resolveStackId(identity);
 
     this.notifications.forEach((notification) => {
@@ -99,9 +112,15 @@ export default class NotificationStore implements DispatchListener {
     });
   }
 
-  private eachByType(identity: NotificationIdentity, callback: NotificationEachCallback) {
+  private eachByType(
+    identity: NotificationIdentity,
+    callback: NotificationEachCallback,
+  ) {
     this.notifications.forEach((notification) => {
-      if (identity.objectType == null || notification.objectType === identity.objectType) {
+      if (
+        identity.objectType == null ||
+        notification.objectType === identity.objectType
+      ) {
         callback(notification);
       }
     });

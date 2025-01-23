@@ -1,18 +1,18 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import AvailableFilters from 'beatmaps/available-filters';
-import { SearchContent } from 'beatmaps/search-content';
-import BackToTop from 'components/back-to-top';
-import HeaderV4 from 'components/header-v4';
-import { isEqual } from 'lodash';
-import { reaction } from 'mobx';
-import { disposeOnUnmount, observer } from 'mobx-react';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { onError } from 'utils/ajax';
-import { nextVal } from 'utils/seq';
-import { SearchStatus } from './beatmapset-search-controller';
+import AvailableFilters from "beatmaps/available-filters";
+import { SearchContent } from "beatmaps/search-content";
+import BackToTop from "components/back-to-top";
+import HeaderV4 from "components/header-v4";
+import { isEqual } from "lodash";
+import { reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { onError } from "utils/ajax";
+import { nextVal } from "utils/seq";
+import { SearchStatus } from "./beatmapset-search-controller";
 
 const controller = core.beatmapsetSearchController;
 
@@ -30,11 +30,17 @@ export class Main extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
-    disposeOnUnmount(this, reaction(() => controller.searchStatus, this.searchStatusErrorHandler));
+    disposeOnUnmount(
+      this,
+      reaction(() => controller.searchStatus, this.searchStatusErrorHandler),
+    );
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, reaction(() => controller.searchStatus, this.scrollPositionHandler));
+    disposeOnUnmount(
+      this,
+      reaction(() => controller.searchStatus, this.scrollPositionHandler),
+    );
     $(document).on(`turbo:before-visit.${this.eventId}`, () => {
       controller.cancel();
     });
@@ -48,23 +54,26 @@ export class Main extends React.Component<Props> {
   render() {
     return (
       <>
-        <HeaderV4 theme='beatmapsets' />
+        <HeaderV4 theme="beatmapsets" />
         <SearchContent
           availableFilters={this.props.availableFilters}
           backToTopAnchor={this.backToTopAnchor}
         />
-        <div className='floating-toolbar'>
+        <div className="floating-toolbar">
           <BackToTop ref={this.backToTop} anchor={this.backToTopAnchor} />
         </div>
       </>
     );
   }
 
-  private readonly scrollPositionHandler = (value: SearchStatus, oldValue: SearchStatus) => {
+  private readonly scrollPositionHandler = (
+    value: SearchStatus,
+    oldValue: SearchStatus,
+  ) => {
     if (value.restore) return;
     if (isEqual(oldValue, value)) return;
 
-    if (value.state === 'completed' && value.from === 0) {
+    if (value.state === "completed" && value.from === 0) {
       if (this.backToTopAnchor.current) {
         const cutoff = this.backToTopAnchor.current.getBoundingClientRect().top;
         if (cutoff < 0) {
@@ -73,7 +82,7 @@ export class Main extends React.Component<Props> {
       }
     }
 
-    if (value.state === 'searching' && this.backToTop.current) {
+    if (value.state === "searching" && this.backToTop.current) {
       this.backToTop.current.reset();
     }
   };

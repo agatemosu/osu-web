@@ -1,17 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { Spinner } from 'components/spinner';
-import ChannelJson from 'interfaces/chat/channel-json';
-import { route } from 'laroute';
-import { computed, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
+import { Spinner } from "components/spinner";
+import ChannelJson from "interfaces/chat/channel-json";
+import { route } from "laroute";
+import { computed, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
 
-type JoinedStatus = 'joined' | 'joining' | null;
+type JoinedStatus = "joined" | "joining" | null;
 type Props = Record<string, never>;
 
 interface ChannelProps {
@@ -32,17 +32,19 @@ function Channel({ channel, onClick, status }: ChannelProps) {
   );
 
   let statusElement: React.ReactNode | undefined;
-  if (status === 'joined') {
-    statusElement = <i className='fas fa-check' />;
-  } else if (status === 'joining') {
+  if (status === "joined") {
+    statusElement = <i className="fas fa-check" />;
+  } else if (status === "joining") {
     statusElement = <Spinner />;
   }
 
   return (
     // anchor instead of button due to Firefox having an issue with button padding in subgrid.
     <a
-      className={classWithModifiers('chat-join-channel__channel', { joined: status === 'joined' })}
-      href={route('chat.index', { channel_id: channel.channel_id })}
+      className={classWithModifiers("chat-join-channel__channel", {
+        joined: status === "joined",
+      })}
+      href={route("chat.index", { channel_id: channel.channel_id })}
       onAuxClick={handleClick}
       onClick={handleClick}
     >
@@ -57,7 +59,11 @@ function Channel({ channel, onClick, status }: ChannelProps) {
 export default class JoinChannels extends React.Component<Props> {
   @computed
   get channels() {
-    return this.publicChannels.channels?.slice().sort((x, y) => x.name.localeCompare(y.name)) ?? [];
+    return (
+      this.publicChannels.channels
+        ?.slice()
+        .sort((x, y) => x.name.localeCompare(y.name)) ?? []
+    );
   }
 
   get publicChannels() {
@@ -70,11 +76,17 @@ export default class JoinChannels extends React.Component<Props> {
 
   @computed
   get joinedPublicChannelIds() {
-    return new Set(core.dataStore.channelStore.groupedChannels.PUBLIC.map((channel) => channel.channelId));
+    return new Set(
+      core.dataStore.channelStore.groupedChannels.PUBLIC.map(
+        (channel) => channel.channelId,
+      ),
+    );
   }
 
   private get buttonModifiers() {
-    return classWithModifiers('btn-osu-big', 'rounded-thin', { disabled: this.isLoading });
+    return classWithModifiers("btn-osu-big", "rounded-thin", {
+      disabled: this.isLoading,
+    });
   }
 
   constructor(props: Props) {
@@ -85,13 +97,13 @@ export default class JoinChannels extends React.Component<Props> {
 
   render() {
     return (
-      <div className='chat-join-channel'>
+      <div className="chat-join-channel">
         {this.isLoading ? (
-          <div className='chat-join-channel__loading'>
+          <div className="chat-join-channel__loading">
             {this.renderLoading()}
           </div>
         ) : (
-          <div className='chat-join-channel__channels'>
+          <div className="chat-join-channel__channels">
             {this.channels.map(this.renderChannel)}
           </div>
         )}
@@ -110,9 +122,11 @@ export default class JoinChannels extends React.Component<Props> {
   private readonly renderChannel = (channel: ChannelJson) => {
     let status: JoinedStatus = null;
     if (this.joinedPublicChannelIds.has(channel.channel_id)) {
-      status = 'joined';
-    } else if (core.dataStore.chatState.joiningChannelId === channel.channel_id) {
-      status = 'joining';
+      status = "joined";
+    } else if (
+      core.dataStore.chatState.joiningChannelId === channel.channel_id
+    ) {
+      status = "joining";
     }
 
     return (
@@ -129,9 +143,13 @@ export default class JoinChannels extends React.Component<Props> {
     if (this.publicChannels.error) {
       return (
         <>
-          <p>{trans('errors.load_failed')}</p>
-          <button className={this.buttonModifiers} onClick={this.handleRefreshClick} type='button'>
-            {trans('common.buttons.refresh')}
+          <p>{trans("errors.load_failed")}</p>
+          <button
+            className={this.buttonModifiers}
+            onClick={this.handleRefreshClick}
+            type="button"
+          >
+            {trans("common.buttons.refresh")}
           </button>
         </>
       );
@@ -140,7 +158,7 @@ export default class JoinChannels extends React.Component<Props> {
     return (
       <>
         <Spinner />
-        <p>{trans('chat.join_channels.loading')}</p>
+        <p>{trans("chat.join_channels.loading")}</p>
       </>
     );
   }

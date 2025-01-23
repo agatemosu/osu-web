@@ -1,17 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserAvatar from 'components/user-avatar';
-import UserGroupBadge from 'components/user-group-badge';
-import UserLink from 'components/user-link';
-import UserGroupJson from 'interfaces/user-group-json';
-import UserJson from 'interfaces/user-json';
-import { route } from 'laroute';
-import * as React from 'react';
-import { groupColour } from 'utils/css';
-import { trans } from 'utils/lang';
+import UserAvatar from "components/user-avatar";
+import UserGroupBadge from "components/user-group-badge";
+import UserLink from "components/user-link";
+import UserGroupJson from "interfaces/user-group-json";
+import UserJson from "interfaces/user-json";
+import { route } from "laroute";
+import * as React from "react";
+import { groupColour } from "utils/css";
+import { trans } from "utils/lang";
 
-const bn = 'beatmap-discussion-user-card';
+const bn = "beatmap-discussion-user-card";
 
 interface Props {
   group?: UserGroupJson | null;
@@ -30,14 +30,11 @@ export class UserCard extends React.PureComponent<Props> {
         <div className={`${bn}__avatar`}>
           {this.props.user.is_deleted ? (
             <span className={`${bn}__user-link`}>
-              <UserAvatar modifiers='full-rounded' user={this.props.user} />
+              <UserAvatar modifiers="full-rounded" user={this.props.user} />
             </span>
           ) : (
-            <UserLink
-              className={`${bn}__user-link`}
-              user={this.props.user}
-            >
-              <UserAvatar modifiers='full-rounded' user={this.props.user} />
+            <UserLink className={`${bn}__user-link`} user={this.props.user}>
+              <UserAvatar modifiers="full-rounded" user={this.props.user} />
             </UserLink>
           )}
         </div>
@@ -48,22 +45,22 @@ export class UserCard extends React.PureComponent<Props> {
               <span className={`${bn}__user-link`}>
                 {this.renderUsername()}
               </span>
-
             ) : (
-              <UserLink
-                className={`${bn}__user-link`}
-                user={this.props.user}
-              >
+              <UserLink className={`${bn}__user-link`} user={this.props.user}>
                 {this.renderUsername()}
               </UserLink>
             )}
             {!this.props.user.is_bot && !this.props.user.is_deleted && (
               <a
                 className={`${bn}__user-modding-history-link`}
-                href={route('users.modding.index', { user: this.props.user.id })}
-                title={trans('beatmap_discussion_posts.item.modding_history_link')}
+                href={route("users.modding.index", {
+                  user: this.props.user.id,
+                })}
+                title={trans(
+                  "beatmap_discussion_posts.item.modding_history_link",
+                )}
               >
-                <i className='fas fa-align-left' />
+                <i className="fas fa-align-left" />
               </a>
             )}
           </div>
@@ -80,9 +77,7 @@ export class UserCard extends React.PureComponent<Props> {
 
   private renderUsername() {
     return (
-      <span className='u-ellipsis-overflow'>
-        {this.props.user.username}
-      </span>
+      <span className="u-ellipsis-overflow">{this.props.user.username}</span>
     );
   }
 }

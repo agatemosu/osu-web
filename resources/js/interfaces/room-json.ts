@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserJson from 'interfaces/user-json';
-import PlaylistItemJson from './playlist-item-json';
+import UserJson from "interfaces/user-json";
+import PlaylistItemJson from "./playlist-item-json";
 
-export type RoomCategory = 'normal' | 'spotlight';
+export type RoomCategory = "normal" | "spotlight";
 
-export type RoomType = 'playlists' | 'head_to_head' | 'team_versus';
+export type RoomType = "playlists" | "head_to_head" | "team_versus";
 
 interface RoomJsonAvailableIncludes {
   current_playlist_item: PlaylistItemJson | null;
@@ -36,7 +36,7 @@ interface RoomJsonDefaultAttributes {
   max_attempts: number | null;
   name: string;
   participant_count: number;
-  queue_mode: 'all_players' | 'all_players_round_robin' | 'host_only';
+  queue_mode: "all_players" | "all_players_round_robin" | "host_only";
   starts_at: string;
   type: RoomType;
   user_id: number;

@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as clipboard from 'clipboard-polyfill';
-import * as React from 'react';
-import { trans } from 'utils/lang';
+import * as clipboard from "clipboard-polyfill";
+import * as React from "react";
+import { trans } from "utils/lang";
 
 interface Props {
   label?: string;
@@ -12,7 +12,7 @@ interface Props {
   valueAsUrl: boolean;
 }
 
-const bn = 'click-to-copy';
+const bn = "click-to-copy";
 
 export default class ClickToCopy extends React.Component<Props> {
   static defaultProps = {
@@ -23,13 +23,13 @@ export default class ClickToCopy extends React.Component<Props> {
   private readonly linkRef = React.createRef<HTMLAnchorElement>();
   private timer?: number;
   private readonly titles = {
-    default: trans('common.buttons.click_to_copy'),
-    onClick: trans('common.buttons.click_to_copy_copied'),
+    default: trans("common.buttons.click_to_copy"),
+    onClick: trans("common.buttons.click_to_copy_copied"),
   } as const;
 
   private get api() {
     if (this.linkRef.current != null) {
-      return $(this.linkRef.current).qtip('api');
+      return $(this.linkRef.current).qtip("api");
     }
   }
 
@@ -46,10 +46,10 @@ export default class ClickToCopy extends React.Component<Props> {
       <a
         ref={this.linkRef}
         className={bn}
-        data-tooltip-hide-events='mouseleave'
+        data-tooltip-hide-events="mouseleave"
         data-tooltip-pin-position
-        data-tooltip-position='bottom center'
-        href={this.props.valueAsUrl ? this.props.value : '#'}
+        data-tooltip-position="bottom center"
+        href={this.props.valueAsUrl ? this.props.value : "#"}
         onClick={this.onClick}
         onMouseLeave={this.onMouseLeave}
         title={this.titles.default}
@@ -71,7 +71,7 @@ export default class ClickToCopy extends React.Component<Props> {
     if (api == null) return;
 
     // change tooltip text to provide feedback
-    api.set('content.text', this.titles.onClick);
+    api.set("content.text", this.titles.onClick);
 
     // set timer to reset tooltip text
     window.clearTimeout(this.timer);
@@ -91,7 +91,7 @@ export default class ClickToCopy extends React.Component<Props> {
     api.hide();
     // add delay for reverting title content otherwise it'll flash when fading out.
     this.timer = window.setTimeout(() => {
-      api.set('content.text', this.titles.default);
+      api.set("content.text", this.titles.default);
     }, 100);
   };
 }

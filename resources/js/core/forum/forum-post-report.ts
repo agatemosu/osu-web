@@ -1,17 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { showReportForm } from 'components/report-form';
+import { showReportForm } from "components/report-form";
 
 export default class ForumPostReport {
   constructor() {
-    $(document).on('click', '.js-forum-post-report', this.onClickReportButton);
+    $(document).on("click", ".js-forum-post-report", this.onClickReportButton);
   }
 
   private readonly onClickReportButton = (e: JQuery.ClickEvent<Document>) => {
     if (e.button !== 0) return;
 
-    const post = e.currentTarget.closest('.js-forum-post');
+    const post = e.currentTarget.closest(".js-forum-post");
 
     if (post == null) return;
 
@@ -24,7 +24,7 @@ export default class ForumPostReport {
 
     showReportForm({
       reportableId: postId,
-      reportableType: 'forum_post',
+      reportableType: "forum_post",
       username,
     });
   };

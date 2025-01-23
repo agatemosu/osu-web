@@ -1,21 +1,21 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CurrentUserJson from 'interfaces/current-user-json';
+import CurrentUserJson from "interfaces/current-user-json";
 
-import 'setup-turbo';
+import "setup-turbo";
 
 // import jquery + plugins
-import 'setup-jquery';
+import "setup-jquery";
 // imported separately as it requires window jquery (setup by the import above)
-import 'jquery-ujs';
+import "jquery-ujs";
 
-import { patchPluralHandler } from 'lang-overrides';
-import Lang from 'lang.js';
-import { configure as mobxConfigure } from 'mobx';
-import * as moment from 'moment';
-import { popup } from 'utils/popup';
-import { reloadPage } from 'utils/turbolinks';
+import { patchPluralHandler } from "lang-overrides";
+import Lang from "lang.js";
+import { configure as mobxConfigure } from "mobx";
+import * as moment from "moment";
+import { popup } from "utils/popup";
+import { reloadPage } from "utils/turbolinks";
 
 interface SharedStyles {
   header: {
@@ -28,7 +28,7 @@ interface SharedStyles {
 // partial qtip2 typings
 interface QTip2 {
   (...args: unknown[]): any;
-  (method: 'api'): QTip2Api | undefined;
+  (method: "api"): QTip2Api | undefined;
 }
 
 interface QTip2Api {
@@ -64,11 +64,13 @@ declare global {
 }
 
 window.LangMessages ??= {};
-window.Lang = patchPluralHandler(new Lang({
-  fallback: window.fallbackLocale,
-  locale: window.currentLocale,
-  messages: window.LangMessages,
-}));
+window.Lang = patchPluralHandler(
+  new Lang({
+    fallback: window.fallbackLocale,
+    locale: window.currentLocale,
+    messages: window.LangMessages,
+  }),
+);
 window.moment = moment;
 window.popup = popup;
 window.reloadPage = reloadPage;

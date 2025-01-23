@@ -1,20 +1,20 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { route } from 'laroute';
-import core from 'osu-core-singleton';
-import { xhrErrorMessage } from 'utils/ajax';
-import { fadeIn, fadeOut, fadeToggle } from 'utils/fade';
-import { createClickCallback } from 'utils/html';
-import { trans } from 'utils/lang';
-import { reloadPage } from 'utils/turbolinks';
+import { route } from "laroute";
+import core from "osu-core-singleton";
+import { xhrErrorMessage } from "utils/ajax";
+import { fadeIn, fadeOut, fadeToggle } from "utils/fade";
+import { createClickCallback } from "utils/html";
+import { trans } from "utils/lang";
+import { reloadPage } from "utils/turbolinks";
 
 interface ReissueCodeJson {
   message: string;
 }
 
 interface UserVerificationJson {
-  authentication: 'verify';
+  authentication: "verify";
   box: string;
 }
 
@@ -24,15 +24,19 @@ interface UserVerificationXhr extends JQuery.jqXHR {
 }
 
 function isUserVerificationJson(arg: unknown): arg is UserVerificationJson {
-  return typeof arg === 'object'
-    && arg != null
-    && 'authentication' in arg
-    && arg.authentication === 'verify'
-    && 'box' in arg
-    && typeof arg.box === 'string';
+  return (
+    typeof arg === "object" &&
+    arg != null &&
+    "authentication" in arg &&
+    arg.authentication === "verify" &&
+    "box" in arg &&
+    typeof arg.box === "string"
+  );
 }
 
-export function isUserVerificationXhr(arg: JQuery.jqXHR<unknown>): arg is UserVerificationXhr {
+export function isUserVerificationXhr(
+  arg: JQuery.jqXHR<unknown>,
+): arg is UserVerificationXhr {
   return arg.status === 401 && isUserVerificationJson(arg.responseJSON);
 }
 
@@ -48,36 +52,46 @@ export default class UserVerification {
   private request?: JQuery.jqXHR;
 
   private get inputBox() {
-    return document.querySelector<HTMLInputElement>('.js-user-verification--input');
+    return document.querySelector<HTMLInputElement>(
+      ".js-user-verification--input",
+    );
   }
 
   private get message() {
-    return document.querySelector<HTMLElement>('.js-user-verification--message');
+    return document.querySelector<HTMLElement>(
+      ".js-user-verification--message",
+    );
   }
 
   private get messageSpinner() {
-    return document.querySelector<HTMLElement>('.js-user-verification--message-spinner');
+    return document.querySelector<HTMLElement>(
+      ".js-user-verification--message-spinner",
+    );
   }
 
   private get messageText() {
-    return document.querySelector<HTMLElement>('.js-user-verification--message-text');
+    return document.querySelector<HTMLElement>(
+      ".js-user-verification--message-text",
+    );
   }
 
   private get reference() {
-    return document.querySelector<HTMLElement>('.js-user-verification--reference');
+    return document.querySelector<HTMLElement>(
+      ".js-user-verification--reference",
+    );
   }
 
   constructor() {
     $(document)
-      .on('ajax:error', this.onError)
-      .on('turbo:load', this.setModal)
-      .on('turbo:load', this.showOnLoad)
-      .on('turbo:visit', this.setDelayShow)
-      .on('input', '.js-user-verification--input', this.autoSubmit)
-      .on('click', '.js-user-verification--reissue', this.reissue);
-    $.subscribe('user-verification:success', this.success);
+      .on("ajax:error", this.onError)
+      .on("turbo:load", this.setModal)
+      .on("turbo:load", this.showOnLoad)
+      .on("turbo:visit", this.setDelayShow)
+      .on("input", ".js-user-verification--input", this.autoSubmit)
+      .on("click", ".js-user-verification--reissue", this.reissue);
+    $.subscribe("user-verification:success", this.success);
 
-    $(window).on('resize scroll', this.reposition);
+    $(window).on("resize scroll", this.reposition);
   }
 
   showOnError = (xhr: JQuery.jqXHR, callback?: () => void) => {
@@ -89,7 +103,7 @@ export default class UserVerification {
   };
 
   private $modal() {
-    return $('.js-user-verification');
+    return $(".js-user-verification");
   }
 
   private readonly autoSubmit = () => {
@@ -97,9 +111,9 @@ export default class UserVerification {
 
     if (target == null) return;
 
-    const inputKey = target.value.replace(/\s/g, '');
+    const inputKey = target.value.replace(/\s/g, "");
     const lastKey = target.dataset.lastKey;
-    const keyLength = parseInt(target.dataset.verificationKeyLength ?? '', 10);
+    const keyLength = parseInt(target.dataset.verificationKeyLength ?? "", 10);
 
     if (inputKey.length === 0) this.setMessage();
 
@@ -108,10 +122,11 @@ export default class UserVerification {
 
     target.dataset.lastKey = inputKey;
 
-    this.prepareForRequest('verifying');
+    this.prepareForRequest("verifying");
 
-    this.request = $
-      .post(route('account.verify'), { verification_key: inputKey })
+    this.request = $.post(route("account.verify"), {
+      verification_key: inputKey,
+    })
       .done(this.success)
       .fail(this.error);
   };
@@ -120,25 +135,29 @@ export default class UserVerification {
     this.setMessage(xhrErrorMessage(xhr));
   };
 
-  private readonly float = (float: boolean, modal: HTMLElement, referenceBottom?: number) => {
+  private readonly float = (
+    float: boolean,
+    modal: HTMLElement,
+    referenceBottom?: number,
+  ) => {
     if (float) {
-      modal.classList.add('js-user-verification--center');
-      modal.style.paddingTop = '';
+      modal.classList.add("js-user-verification--center");
+      modal.style.paddingTop = "";
     } else {
-      modal.classList.remove('js-user-verification--center');
+      modal.classList.remove("js-user-verification--center");
       modal.style.paddingTop = `${referenceBottom ?? 0}px`;
     }
   };
 
-  private readonly isActive = () => this.modal?.classList.contains('js-user-verification--active');
+  private readonly isActive = () =>
+    this.modal?.classList.contains("js-user-verification--active");
 
   private isVerificationPage() {
-    return document.querySelector('.js-user-verification--on-load') != null;
+    return document.querySelector(".js-user-verification--on-load") != null;
   }
 
-  private readonly onError = (e: { target: unknown }, xhr: JQuery.jqXHR) => (
-    this.showOnError(xhr, createClickCallback(e.target))
-  );
+  private readonly onError = (e: { target: unknown }, xhr: JQuery.jqXHR) =>
+    this.showOnError(xhr, createClickCallback(e.target));
 
   private readonly prepareForRequest = (type: string) => {
     this.request?.abort();
@@ -148,10 +167,9 @@ export default class UserVerification {
   private readonly reissue = (e: JQuery.Event) => {
     e.preventDefault();
 
-    this.prepareForRequest('issuing');
+    this.prepareForRequest("issuing");
 
-    this.request = $
-      .post(route('account.reissue-code'))
+    this.request = $.post(route("account.reissue-code"))
       .done((data: ReissueCodeJson) => {
         this.setMessage(data.message);
       })
@@ -164,7 +182,8 @@ export default class UserVerification {
     if (core.windowSize.isMobile) {
       this.float(true, this.modal);
     } else {
-      const referenceBottom = this.reference?.getBoundingClientRect().bottom ?? 0;
+      const referenceBottom =
+        this.reference?.getBoundingClientRect().bottom ?? 0;
 
       this.float(referenceBottom < 0, this.modal, referenceBottom);
     }
@@ -194,7 +213,7 @@ export default class UserVerification {
   };
 
   private readonly setModal = () => {
-    const modal = document.querySelector('.js-user-verification');
+    const modal = document.querySelector(".js-user-verification");
 
     this.modal = modal instanceof HTMLElement ? modal : undefined;
   };
@@ -208,16 +227,16 @@ export default class UserVerification {
     this.callback = callback;
 
     if (html != null) {
-      $('.js-user-verification--box').html(html);
+      $(".js-user-verification--box").html(html);
     }
 
     this.$modal()
       .modal({
-        backdrop: 'static',
+        backdrop: "static",
         keyboard: false,
         show: true,
       })
-      .addClass('js-user-verification--active');
+      .addClass("js-user-verification--active");
 
     this.reposition();
   };
@@ -242,14 +261,14 @@ export default class UserVerification {
 
     if (inputBox == null) return;
 
-    this.$modal().modal('hide');
-    this.modal.classList.remove('js-user-verification--active');
+    this.$modal().modal("hide");
+    this.modal.classList.remove("js-user-verification--active");
 
     const callback = this.callback;
     this.callback = undefined;
     this.setMessage();
-    inputBox.value = '';
-    inputBox.dataset.lastKey = '';
+    inputBox.value = "";
+    inputBox.dataset.lastKey = "";
 
     if (this.isVerificationPage()) {
       return reloadPage();

@@ -2,9 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 /* eslint-disable max-classes-per-file */
-import DispatcherAction from 'actions/dispatcher-action';
-import DispatchListener from 'dispatch-listener';
-import Dispatcher from 'dispatcher';
+import DispatcherAction from "actions/dispatcher-action";
+import DispatchListener from "dispatch-listener";
+import Dispatcher from "dispatcher";
 
 class ClassA implements DispatchListener {
   count = 0;
@@ -27,22 +27,22 @@ class ClassAC extends ClassA {
 
 class DummyAction extends DispatcherAction {}
 
-describe('Dispatcher', () => {
+describe("Dispatcher", () => {
   let subject: Dispatcher;
 
   beforeEach(() => {
     subject = new Dispatcher();
   });
 
-  describe('.register', () => {
-    it('should register the same instance only once', () => {
+  describe(".register", () => {
+    it("should register the same instance only once", () => {
       const obj = new ClassA();
       subject.register(obj);
       subject.register(obj);
       expect(subject.size).toBe(1);
     });
 
-    it('should register different instances', () => {
+    it("should register different instances", () => {
       const obj1 = new ClassA();
       const obj2 = new ClassA();
       subject.register(obj1);
@@ -50,7 +50,7 @@ describe('Dispatcher', () => {
       expect(subject.size).toBe(2);
     });
 
-    it('should register different class instances', () => {
+    it("should register different class instances", () => {
       const obj1 = new ClassA();
       const obj2 = new ClassB();
       subject.register(obj1);
@@ -58,7 +58,7 @@ describe('Dispatcher', () => {
       expect(subject.size).toBe(2);
     });
 
-    it('should register subclasses separately', () => {
+    it("should register subclasses separately", () => {
       const obj1 = new ClassA();
       const obj2 = new ClassAC();
       subject.register(obj1);
@@ -67,8 +67,8 @@ describe('Dispatcher', () => {
     });
   });
 
-  describe('.dispatch', () => {
-    it('should send the action once', () => {
+  describe(".dispatch", () => {
+    it("should send the action once", () => {
       const obj1 = new ClassA();
       const obj2 = new ClassAC();
       subject.register(obj1);

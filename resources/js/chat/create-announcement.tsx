@@ -1,17 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BigButton from 'components/big-button';
-import InputContainer from 'components/input-container';
-import UserCardBrick from 'components/user-card-brick';
-import UsernameInput from 'components/username-input';
-import UserJson from 'interfaces/user-json';
-import { action, computed, makeObservable, runInAction } from 'mobx';
-import { observer } from 'mobx-react';
-import { isInputKey } from 'models/chat/create-announcement';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { trans } from 'utils/lang';
+import BigButton from "components/big-button";
+import InputContainer from "components/input-container";
+import UserCardBrick from "components/user-card-brick";
+import UsernameInput from "components/username-input";
+import UserJson from "interfaces/user-json";
+import { action, computed, makeObservable, runInAction } from "mobx";
+import { observer } from "mobx-react";
+import { isInputKey } from "models/chat/create-announcement";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { trans } from "utils/lang";
 
 type Props = Record<string, never>;
 
@@ -21,7 +21,11 @@ export default class CreateAnnouncement extends React.Component<Props> {
 
   @computed
   private get canSend() {
-    return core.dataStore.chatState.isReady && !core.dataStore.chatState.isAddingChannel && this.model.isValid;
+    return (
+      core.dataStore.chatState.isReady &&
+      !core.dataStore.chatState.isAddingChannel &&
+      this.model.isValid
+    );
   }
 
   @computed
@@ -38,53 +42,57 @@ export default class CreateAnnouncement extends React.Component<Props> {
       this.model.initialize();
     });
 
-    this.usernameInputInitialProps = runInAction(() => this.model.propsForUsernameInput);
+    this.usernameInputInitialProps = runInAction(
+      () => this.model.propsForUsernameInput,
+    );
   }
 
   render() {
     if (!core.dataStore.chatState.canChatAnnounce) return null;
 
     return (
-      <div className='chat-form'>
-        <div className='chat-form__fields'>
-          <div className='chat-form__title'>{trans('chat.form.title.announcement')}</div>
+      <div className="chat-form">
+        <div className="chat-form__fields">
+          <div className="chat-form__title">
+            {trans("chat.form.title.announcement")}
+          </div>
           <InputContainer
-            labelKey='chat.form.labels.name'
-            {...this.model.inputContainerPropsFor('name')}
+            labelKey="chat.form.labels.name"
+            {...this.model.inputContainerPropsFor("name")}
           >
             <input
-              className='input-text'
+              className="input-text"
               defaultValue={this.model.inputs.name}
-              name='name'
+              name="name"
               onBlur={this.handleBlur}
               onChange={this.handleInput}
             />
           </InputContainer>
           <InputContainer
-            labelKey='chat.form.labels.description'
-            {...this.model.inputContainerPropsFor('description')}
+            labelKey="chat.form.labels.description"
+            {...this.model.inputContainerPropsFor("description")}
           >
             <input
-              className='input-text'
+              className="input-text"
               defaultValue={this.model.inputs.description}
-              name='description'
+              name="description"
               onBlur={this.handleBlur}
               onChange={this.handleInput}
             />
           </InputContainer>
           <InputContainer
-            for='chat-form-users'
-            labelKey='chat.form.labels.users'
-            {...this.model.inputContainerPropsFor('users')}
+            for="chat-form-users"
+            labelKey="chat.form.labels.users"
+            {...this.model.inputContainerPropsFor("users")}
           >
-            <div className='input-text'>
-              <div className='chat-form-users'>
+            <div className="input-text">
+              <div className="chat-form-users">
                 <UserCardBrick user={core.currentUserOrFail} />
                 <UsernameInput
                   excludeBots
-                  id='chat-form-users'
+                  id="chat-form-users"
                   ignoreCurrentUser
-                  name='users'
+                  name="users"
                   onBlur={this.handleBlur}
                   onValidUsersChanged={this.handleValidUsersChanged}
                   onValueChanged={this.handleUsernameInputValueChanged}
@@ -94,28 +102,32 @@ export default class CreateAnnouncement extends React.Component<Props> {
             </div>
           </InputContainer>
           <InputContainer
-            labelKey='chat.form.labels.message'
-            modifiers='fill'
-            {...this.model.inputContainerPropsFor('message')}
+            labelKey="chat.form.labels.message"
+            modifiers="fill"
+            {...this.model.inputContainerPropsFor("message")}
           >
             <textarea
-              autoComplete='off'
-              className='input-text'
+              autoComplete="off"
+              className="input-text"
               defaultValue={this.model.inputs.message}
-              name='message'
+              name="message"
               onBlur={this.handleBlur}
               onChange={this.handleInput}
-              placeholder={trans('chat.input.placeholder')}
+              placeholder={trans("chat.input.placeholder")}
             />
           </InputContainer>
-          <div className='chat-form__button-bar'>
+          <div className="chat-form__button-bar">
             <BigButton
               disabled={!this.canSend}
-              icon='fas fa-bullhorn'
+              icon="fas fa-bullhorn"
               isBusy={core.dataStore.chatState.isAddingChannel}
-              modifiers='chat-send'
+              modifiers="chat-send"
               props={{ onClick: this.handleButtonClick }}
-              text={trans(core.dataStore.chatState.isReady ? 'chat.input.create' : 'chat.input.disconnected')}
+              text={trans(
+                core.dataStore.chatState.isReady
+                  ? "chat.input.create"
+                  : "chat.input.disconnected",
+              )}
             />
           </div>
         </div>
@@ -124,7 +136,11 @@ export default class CreateAnnouncement extends React.Component<Props> {
   }
 
   @action
-  private readonly handleBlur = (e: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLTextAreaElement>) => {
+  private readonly handleBlur = (
+    e:
+      | React.FocusEvent<HTMLInputElement>
+      | React.FocusEvent<HTMLTextAreaElement>,
+  ) => {
     const elem = e.target;
 
     if (isInputKey(elem.name)) {
@@ -138,7 +154,11 @@ export default class CreateAnnouncement extends React.Component<Props> {
   };
 
   @action
-  private readonly handleInput = (e: React.ChangeEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>) => {
+  private readonly handleInput = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.FormEvent<HTMLTextAreaElement>,
+  ) => {
     const elem = e.currentTarget;
 
     if (isInputKey(elem.name)) {

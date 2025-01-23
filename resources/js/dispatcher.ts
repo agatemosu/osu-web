@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
-import DispatchListener from './dispatch-listener';
+import DispatcherAction from "actions/dispatcher-action";
+import DispatchListener from "./dispatch-listener";
 
 export default class Dispatcher {
   private readonly listeners = new Set<DispatchListener>();

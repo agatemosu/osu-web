@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as React from 'react';
-import Portal from './portal';
+import * as React from "react";
+import Portal from "./portal";
 
-const bn = 'notification-banner-v2';
+const bn = "notification-banner-v2";
 
 interface Props {
   message: React.ReactNode;
@@ -18,9 +18,11 @@ export default class NotificationBanner extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
 
-    const portalRoot = (window.newBody ?? document.body).querySelector('.js-notification-banners');
+    const portalRoot = (window.newBody ?? document.body).querySelector(
+      ".js-notification-banners",
+    );
     if (portalRoot == null) {
-      throw new Error('Notification banner container is missing');
+      throw new Error("Notification banner container is missing");
     }
     this.portalRoot = portalRoot;
   }
@@ -51,6 +53,6 @@ export default class NotificationBanner extends React.PureComponent<Props> {
   }
 
   private notifySyncHeight(this: void) {
-    $.publish('sync-height:force');
+    $.publish("sync-height:force");
   }
 }

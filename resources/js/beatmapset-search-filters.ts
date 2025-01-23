@@ -1,33 +1,45 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { invert } from 'lodash';
-import { action, computed, intercept, makeObservable, observable } from 'mobx';
-import core from 'osu-core-singleton';
-import { presence, present } from 'utils/string';
-import { updateQueryString } from 'utils/url';
+import { invert } from "lodash";
+import { action, computed, intercept, makeObservable, observable } from "mobx";
+import core from "osu-core-singleton";
+import { presence, present } from "utils/string";
+import { updateQueryString } from "utils/url";
 
 export const charToKey: Record<string, FilterKey> = {
-  c: 'general',
-  e: 'extra',
-  g: 'genre',
-  l: 'language',
-  m: 'mode',
-  nsfw: 'nsfw',
-  played: 'played',
-  q: 'query',
-  r: 'rank',
-  s: 'status',
-  sort: 'sort',
+  c: "general",
+  e: "extra",
+  g: "genre",
+  l: "language",
+  m: "mode",
+  nsfw: "nsfw",
+  played: "played",
+  q: "query",
+  r: "rank",
+  s: "status",
+  sort: "sort",
 };
 
 export const keyToChar = invert(charToKey);
-export const keyNames = ['extra', 'general', 'genre', 'language', 'mode', 'nsfw', 'played', 'query', 'rank', 'sort', 'status'] as const;
+export const keyNames = [
+  "extra",
+  "general",
+  "genre",
+  "language",
+  "mode",
+  "nsfw",
+  "played",
+  "query",
+  "rank",
+  "sort",
+  "status",
+] as const;
 export type FilterKey = (typeof keyNames)[number];
 type FilterValueType = string | null;
 
-const changesResetSorts: FilterKey[] = ['query', 'status'];
-const filtersRequireSupporter: FilterKey[] = ['played', 'rank'];
+const changesResetSorts: FilterKey[] = ["query", "status"];
+const filtersRequireSupporter: FilterKey[] = ["played", "rank"];
 
 export function filtersFromUrl(url: string) {
   const params = new URL(url).searchParams;
@@ -61,7 +73,7 @@ export class BeatmapsetSearchFilters {
   @computed
   get displaySort() {
     // FIXME: should not return null.
-    return this.selectedValue('sort');
+    return this.selectedValue("sort");
   }
 
   @computed
@@ -71,7 +83,8 @@ export class BeatmapsetSearchFilters {
     for (const key of keyNames) {
       const value = this[key];
 
-      charParams[keyToChar[key]] = value === this.getDefault(key) ? null : value;
+      charParams[keyToChar[key]] =
+        value === this.getDefault(key) ? null : value;
     }
 
     return charParams;
@@ -79,13 +92,15 @@ export class BeatmapsetSearchFilters {
 
   @computed
   get searchSort() {
-    const [field, order] = (this.displaySort ?? '').split('_');
+    const [field, order] = (this.displaySort ?? "").split("_");
     return { field, order };
   }
 
   @computed
   get supporterRequired() {
-    return keyNames.filter((key) => this[key] != null && filtersRequireSupporter.includes(key));
+    return keyNames.filter(
+      (key) => this[key] != null && filtersRequireSupporter.includes(key),
+    );
   }
 
   constructor(url: string) {
@@ -97,7 +112,7 @@ export class BeatmapsetSearchFilters {
 
     makeObservable(this);
 
-    intercept(this, 'query', (change) => {
+    intercept(this, "query", (change) => {
       change.newValue = presence((change.newValue as FilterValueType)?.trim());
 
       return change;
@@ -106,19 +121,21 @@ export class BeatmapsetSearchFilters {
 
   getDefault(key: FilterKey) {
     switch (key) {
-      case 'nsfw':
-        return String(core.userPreferences.get('beatmapset_show_nsfw'));
-      case 'played':
-        return 'any';
-      case 'status':
-        return 'leaderboard';
-      case 'sort':
+      case "nsfw":
+        return String(core.userPreferences.get("beatmapset_show_nsfw"));
+      case "played":
+        return "any";
+      case "status":
+        return "leaderboard";
+      case "sort":
         if (present(this.query)) {
-          return 'relevance_desc';
-        } else if (['pending', 'wip', 'graveyard', 'mine'].includes(this.status ?? '')) {
-          return 'updated_desc';
+          return "relevance_desc";
+        } else if (
+          ["pending", "wip", "graveyard", "mine"].includes(this.status ?? "")
+        ) {
+          return "updated_desc";
         } else {
-          return 'ranked_desc';
+          return "ranked_desc";
         }
     }
 
@@ -127,7 +144,10 @@ export class BeatmapsetSearchFilters {
 
   href(key: FilterKey, value: string | null) {
     const actualValue = value === this.getDefault(key) ? null : value;
-    return updateQueryString(null, { ...this.queryParams, [keyToChar[key]]: actualValue });
+    return updateQueryString(null, {
+      ...this.queryParams,
+      [keyToChar[key]]: actualValue,
+    });
   }
 
   selectedValue(key: FilterKey) {
@@ -135,7 +155,7 @@ export class BeatmapsetSearchFilters {
   }
 
   toKeyString() {
-    return keyNames.map((key) => `${key}=${this.selectedValue(key)}`).join('&');
+    return keyNames.map((key) => `${key}=${this.selectedValue(key)}`).join("&");
   }
 
   @action

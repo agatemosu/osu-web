@@ -6,14 +6,16 @@ interface ProfileBannerJsonBase {
   tournament_id: number;
 }
 
-type ProfileBannerJson = ProfileBannerJsonBase & (
-  {
-    image: string;
-    'image@2x': string;
-  } | {
-    image: null;
-    'image@2x': null;
-  }
-);
+type ProfileBannerJson = ProfileBannerJsonBase &
+  (
+    | {
+        image: string;
+        "image@2x": string;
+      }
+    | {
+        image: null;
+        "image@2x": null;
+      }
+  );
 
 export default ProfileBannerJson;

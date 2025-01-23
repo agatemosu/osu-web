@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as React from 'react';
-import { blackoutToggle } from 'utils/blackout';
-import Portal from './portal';
+import * as React from "react";
+import { blackoutToggle } from "utils/blackout";
+import Portal from "./portal";
 
-export const isModalOpen = () => modals.size !==  0;
+export const isModalOpen = () => modals.size !== 0;
 
 interface Props {
   onClose?: () => void;
@@ -13,22 +13,24 @@ interface Props {
 
 const modals = new Set<Modal>();
 
-export default class Modal extends React.PureComponent<React.PropsWithChildren<Props>> {
+export default class Modal extends React.PureComponent<
+  React.PropsWithChildren<Props>
+> {
   private clickEndTarget: undefined | EventTarget;
   private clickStartTarget: undefined | EventTarget;
   private readonly ref = React.createRef<HTMLDivElement>();
 
   componentDidMount() {
-    document.addEventListener('keydown', this.handleEsc);
-    $(document).on('turbo:before-cache', this.handleBeforeCache);
+    document.addEventListener("keydown", this.handleEsc);
+    $(document).on("turbo:before-cache", this.handleBeforeCache);
 
     this.open();
   }
 
   componentWillUnmount() {
     this.close();
-    document.removeEventListener('keydown', this.handleEsc);
-    $(document).off('turbo:before-cache', this.handleBeforeCache);
+    document.removeEventListener("keydown", this.handleEsc);
+    $(document).off("turbo:before-cache", this.handleBeforeCache);
   }
 
   render() {
@@ -36,7 +38,7 @@ export default class Modal extends React.PureComponent<React.PropsWithChildren<P
       <Portal>
         <div
           ref={this.ref}
-          className='js-react-modal'
+          className="js-react-modal"
           onClick={this.hideModal}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
@@ -58,7 +60,7 @@ export default class Modal extends React.PureComponent<React.PropsWithChildren<P
   };
 
   private readonly handleEsc = (e: KeyboardEvent) => {
-    if (this.props.onClose != null && e.key === 'Escape') {
+    if (this.props.onClose != null && e.key === "Escape") {
       this.props.onClose();
     }
   };
@@ -78,10 +80,11 @@ export default class Modal extends React.PureComponent<React.PropsWithChildren<P
    * likewise, starting on an inner element end ending on the outer element will still use the outer element as the event target.
    */
   private readonly hideModal = (e: React.MouseEvent) => {
-    if (this.props.onClose != null
-      && e.button === 0
-      && e.target === this.ref.current
-      && this.clickEndTarget === this.clickStartTarget
+    if (
+      this.props.onClose != null &&
+      e.button === 0 &&
+      e.target === this.ref.current &&
+      this.clickEndTarget === this.clickStartTarget
     ) {
       this.props.onClose();
     }

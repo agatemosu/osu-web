@@ -5,7 +5,7 @@ export function toggleCart(flag: boolean) {
   const body = window.newBody;
   if (body == null) return;
 
-  const button = body.querySelector<HTMLButtonElement>('.js-store-add-to-cart');
+  const button = body.querySelector<HTMLButtonElement>(".js-store-add-to-cart");
   if (button != null) {
     button.disabled = !flag;
   }

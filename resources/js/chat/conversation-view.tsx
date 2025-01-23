@@ -1,24 +1,24 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import ShowMoreLink from 'components/show-more-link';
-import { Spinner } from 'components/spinner';
-import StringWithComponent from 'components/string-with-component';
-import UserAvatar from 'components/user-avatar';
-import UserCardBrick from 'components/user-card-brick';
-import UserLink from 'components/user-link';
-import { each, isEmpty, last, throttle } from 'lodash';
-import { action, computed, makeObservable, reaction } from 'mobx';
-import { disposeOnUnmount, observer } from 'mobx-react';
-import Message from 'models/chat/message';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import { present } from 'utils/string';
-import InputBox from './input-box';
-import { MessageDivider } from './message-divider';
-import MessageGroup from './message-group';
+import ShowMoreLink from "components/show-more-link";
+import { Spinner } from "components/spinner";
+import StringWithComponent from "components/string-with-component";
+import UserAvatar from "components/user-avatar";
+import UserCardBrick from "components/user-card-brick";
+import UserLink from "components/user-link";
+import { each, isEmpty, last, throttle } from "lodash";
+import { action, computed, makeObservable, reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import Message from "models/chat/message";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
+import { present } from "utils/string";
+import InputBox from "./input-box";
+import { MessageDivider } from "./message-divider";
+import MessageGroup from "./message-group";
 
 type Props = Record<string, never>;
 
@@ -49,43 +49,71 @@ export default class ConversationView extends React.Component<Props> {
 
     each(channel.messages, (message: Message, key: number) => {
       // check if the last read indicator needs to be shown
-      if (!unreadMarkerShown
-        && typeof message.messageId === 'number'
-        && message.messageId > (channel.lastReadId ?? -1)
-        && message.sender.id !== core.currentUser?.id
+      if (
+        !unreadMarkerShown &&
+        typeof message.messageId === "number" &&
+        message.messageId > (channel.lastReadId ?? -1) &&
+        message.sender.id !== core.currentUser?.id
       ) {
         unreadMarkerShown = true;
         // TODO: handle the case where unread messages are in the backlog
 
         if (!isEmpty(currentGroup)) {
-          conversationStack.push(<MessageGroup key={currentGroup[0].uuid} messages={currentGroup} />);
+          conversationStack.push(
+            <MessageGroup key={currentGroup[0].uuid} messages={currentGroup} />,
+          );
           currentGroup = [];
         }
-        conversationStack.push(<MessageDivider key={`read-${message.timestamp}`} ref={this.unreadMarkerRef} timestamp={message.timestamp} type='UNREAD_MARKER' />);
+        conversationStack.push(
+          <MessageDivider
+            key={`read-${message.timestamp}`}
+            ref={this.unreadMarkerRef}
+            timestamp={message.timestamp}
+            type="UNREAD_MARKER"
+          />,
+        );
       }
 
       // check whether the day-change header needs to be shown
-      if (isEmpty(conversationStack) || new Date(message.timestamp).toLocaleDateString() !== currentDay) {
+      if (
+        isEmpty(conversationStack) ||
+        new Date(message.timestamp).toLocaleDateString() !== currentDay
+      ) {
         if (!isEmpty(currentGroup)) {
-          conversationStack.push(<MessageGroup key={currentGroup[0].uuid} messages={currentGroup} />);
+          conversationStack.push(
+            <MessageGroup key={currentGroup[0].uuid} messages={currentGroup} />,
+          );
           currentGroup = [];
         }
-        conversationStack.push(<MessageDivider key={`day-${message.timestamp}`} timestamp={message.timestamp} type='DAY_MARKER' />);
+        conversationStack.push(
+          <MessageDivider
+            key={`day-${message.timestamp}`}
+            timestamp={message.timestamp}
+            type="DAY_MARKER"
+          />,
+        );
         currentDay = new Date(message.timestamp).toLocaleDateString();
       }
 
       // add message to current message grouping if the sender is the same, otherwise create a new message grouping
       const lastCurrentGroup = last(currentGroup);
-      if (lastCurrentGroup == null || lastCurrentGroup.sender.id === message.sender.id) {
+      if (
+        lastCurrentGroup == null ||
+        lastCurrentGroup.sender.id === message.sender.id
+      ) {
         currentGroup.push(message);
       } else {
-        conversationStack.push(<MessageGroup key={currentGroup[0].uuid} messages={currentGroup} />);
+        conversationStack.push(
+          <MessageGroup key={currentGroup[0].uuid} messages={currentGroup} />,
+        );
         currentGroup = [];
         currentGroup.push(message);
       }
 
       if (key === channel.messages.length - 1) {
-        conversationStack.push(<MessageGroup key={currentGroup[0].uuid} messages={currentGroup} />);
+        conversationStack.push(
+          <MessageGroup key={currentGroup[0].uuid} messages={currentGroup} />,
+        );
       }
     });
 
@@ -104,22 +132,28 @@ export default class ConversationView extends React.Component<Props> {
 
     disposeOnUnmount(
       this,
-      reaction(() => core.windowFocusObserver.hasFocus, (value) => {
-        // mark as read when regaining focus and at the bottom to the channel.
-        if (value && this.currentChannel?.uiState.autoScroll) {
-          this.currentChannel.moveMarkAsReadMarker();
-          this.currentChannel.throttledSendMarkAsRead();
-        }
-      }),
+      reaction(
+        () => core.windowFocusObserver.hasFocus,
+        (value) => {
+          // mark as read when regaining focus and at the bottom to the channel.
+          if (value && this.currentChannel?.uiState.autoScroll) {
+            this.currentChannel.moveMarkAsReadMarker();
+            this.currentChannel.throttledSendMarkAsRead();
+          }
+        },
+      ),
     );
 
     disposeOnUnmount(
       this,
-      reaction(() => core.dataStore.chatState.selectedChannel, (newValue, oldValue) => {
-        if (newValue !== oldValue) {
-          this.didSwitchChannel = true;
-        }
-      }),
+      reaction(
+        () => core.dataStore.chatState.selectedChannel,
+        (newValue, oldValue) => {
+          if (newValue !== oldValue) {
+            this.didSwitchChannel = true;
+          }
+        },
+      ),
     );
   }
 
@@ -127,14 +161,22 @@ export default class ConversationView extends React.Component<Props> {
     this.componentDidUpdate();
 
     const throttledHandleOnScroll = throttle(this.handleOnScroll, 1000);
-    $(window).on('scroll', throttledHandleOnScroll);
-    this.disposers.add(() => $(window).off('scroll', throttledHandleOnScroll));
+    $(window).on("scroll", throttledHandleOnScroll);
+    this.disposers.add(() => $(window).off("scroll", throttledHandleOnScroll));
   }
 
   @action
-  componentDidUpdate(prevProps?: Readonly<Props>, prevState?: Readonly<Record<string, never>>, snapshot?: Snapshot) {
+  componentDidUpdate(
+    prevProps?: Readonly<Props>,
+    prevState?: Readonly<Record<string, never>>,
+    snapshot?: Snapshot,
+  ) {
     const chatView = this.chatViewRef.current;
-    if (!chatView || !this.currentChannel || this.currentChannel.loadingMessages) {
+    if (
+      !chatView ||
+      !this.currentChannel ||
+      this.currentChannel.loadingMessages
+    ) {
       return;
     }
 
@@ -143,26 +185,33 @@ export default class ConversationView extends React.Component<Props> {
     if (this.didSwitchChannel) {
       // This can happen after a turbolinks navigation,
       // so we have to wait for the elements to be on the current document before scrolling.
-      this.disposers.add(core.reactTurbolinks.runAfterPageLoad(action(() => {
-        if (this.unreadMarkerRef.current) {
-          this.scrollToUnread();
-        } else {
-          if (uiState.autoScroll) {
-            this.scrollToBottom();
-          } else {
-            chatView.scrollTo(0, uiState.scrollY);
-          }
-        }
+      this.disposers.add(
+        core.reactTurbolinks.runAfterPageLoad(
+          action(() => {
+            if (this.unreadMarkerRef.current) {
+              this.scrollToUnread();
+            } else {
+              if (uiState.autoScroll) {
+                this.scrollToBottom();
+              } else {
+                chatView.scrollTo(0, uiState.scrollY);
+              }
+            }
 
-        this.didSwitchChannel = false;
-      })));
+            this.didSwitchChannel = false;
+          }),
+        ),
+      );
     } else {
       snapshot = snapshot ?? blankSnapshot();
       const prepending = this.firstMessage !== this.currentChannel.firstMessage;
 
       if (prepending) {
         const newHeight = chatView.scrollHeight;
-        chatView.scrollTo(chatView.scrollLeft, snapshot.chatTop + (newHeight - snapshot.chatHeight));
+        chatView.scrollTo(
+          chatView.scrollLeft,
+          snapshot.chatTop + (newHeight - snapshot.chatHeight),
+        );
       } else {
         if (uiState.autoScroll) {
           this.scrollToBottom();
@@ -192,23 +241,30 @@ export default class ConversationView extends React.Component<Props> {
     const channel = this.currentChannel;
 
     if (channel == null || !channel.isDisplayable) {
-      return <div className='chat-conversation' />;
+      return <div className="chat-conversation" />;
     }
 
-    const renderInput = channel.canMessage || channel.type !== 'ANNOUNCE';
-    const className = classWithModifiers('chat-conversation', channel.type, { 'no-input': !renderInput });
-    const pmTargetJson = channel.pmTarget == null
-      ? null
-      : {
-        avatar_url: channel.icon,
-        id: channel.pmTarget,
-        username: channel.name,
-      };
+    const renderInput = channel.canMessage || channel.type !== "ANNOUNCE";
+    const className = classWithModifiers("chat-conversation", channel.type, {
+      "no-input": !renderInput,
+    });
+    const pmTargetJson =
+      channel.pmTarget == null
+        ? null
+        : {
+            avatar_url: channel.icon,
+            id: channel.pmTarget,
+            username: channel.name,
+          };
 
     return (
       <>
-        <div ref={this.chatViewRef} className={className} onScroll={this.handleOnScroll}>
-          <div className='chat-conversation__new-chat-avatar'>
+        <div
+          ref={this.chatViewRef}
+          className={className}
+          onScroll={this.handleOnScroll}
+        >
+          <div className="chat-conversation__new-chat-avatar">
             {pmTargetJson == null ? (
               <UserAvatar user={{ avatar_url: channel.icon }} />
             ) : (
@@ -218,38 +274,36 @@ export default class ConversationView extends React.Component<Props> {
             )}
           </div>
           {this.renderUsers()}
-          <div className='chat-conversation__chat-label'>
+          <div className="chat-conversation__chat-label">
             {pmTargetJson == null ? (
-              trans('chat.talking_in', { channel: channel.name })
+              trans("chat.talking_in", { channel: channel.name })
             ) : (
               <StringWithComponent
                 mappings={{ name: <UserLink user={pmTargetJson} /> }}
                 // TODO: rework this once the user class situation is resolved
-                pattern={trans('chat.talking_with')}
+                pattern={trans("chat.talking_with")}
               />
             )}
           </div>
-          {present(channel.description) &&
-            <div className='chat-conversation__chat-label'>
+          {present(channel.description) && (
+            <div className="chat-conversation__chat-label">
               {channel.description}
             </div>
-          }
+          )}
           <ShowMoreLink
             callback={this.loadEarlierMessages}
-            direction='up'
+            direction="up"
             hasMore={channel.hasEarlierMessages}
             loading={channel.loadingEarlierMessages}
-            modifiers='chat-conversation-earlier-messages'
+            modifiers="chat-conversation-earlier-messages"
           />
-          {channel.loadingMessages &&
-            <div className='chat-conversation__day-divider'>
+          {channel.loadingMessages && (
+            <div className="chat-conversation__day-divider">
               <Spinner />
             </div>
-          }
+          )}
           {this.conversationStack}
-          {!channel.canMessage && renderInput &&
-            this.renderCannotSendMessage()
-          }
+          {!channel.canMessage && renderInput && this.renderCannotSendMessage()}
         </div>
         {renderInput && <InputBox />}
       </>
@@ -257,7 +311,7 @@ export default class ConversationView extends React.Component<Props> {
   }
 
   renderUsers() {
-    if (this.currentChannel?.type !== 'ANNOUNCE') return null;
+    if (this.currentChannel?.type !== "ANNOUNCE") return null;
 
     const users = this.currentChannel.users;
 
@@ -266,20 +320,23 @@ export default class ConversationView extends React.Component<Props> {
     }
 
     return (
-      <div className='chat-conversation__users-container'>
-        <div className={classWithModifiers('chat-conversation__users', { loading: users == null })}>
+      <div className="chat-conversation__users-container">
+        <div
+          className={classWithModifiers("chat-conversation__users", {
+            loading: users == null,
+          })}
+        >
           {users == null ? (
             <>
-              <Spinner modifiers='self-center' /><span>{trans('chat.loading_users')}</span>
+              <Spinner modifiers="self-center" />
+              <span>{trans("chat.loading_users")}</span>
             </>
           ) : (
-            users.map((user) => (
-              <UserCardBrick key={user.id} user={user} />
-            ))
+            users.map((user) => <UserCardBrick key={user.id} user={user} />)
           )}
         </div>
         {users != null && this.currentChannel.usersCursor != null && (
-          <div className='chat-conversation__more-users'>
+          <div className="chat-conversation__more-users">
             <ShowMoreLink
               callback={this.currentChannel.loadUsers}
               hasMore
@@ -296,17 +353,23 @@ export default class ConversationView extends React.Component<Props> {
     const chatView = this.chatViewRef.current;
     if (chatView == null || this.currentChannel == null) return;
 
-    this.currentChannel.uiState.autoScroll = chatView.scrollTop + chatView.clientHeight >= chatView.scrollHeight;
+    this.currentChannel.uiState.autoScroll =
+      chatView.scrollTop + chatView.clientHeight >= chatView.scrollHeight;
     this.currentChannel.uiState.scrollY = chatView.scrollTop;
     // keep marker at the end when autoScrolling but only if window has focus.
-    if (this.currentChannel.uiState.autoScroll && core.windowFocusObserver.hasFocus) {
+    if (
+      this.currentChannel.uiState.autoScroll &&
+      core.windowFocusObserver.hasFocus
+    ) {
       this.currentChannel.moveMarkAsReadMarker();
     }
   };
 
   private readonly loadEarlierMessages = () => {
     if (this.currentChannel == null) return;
-    core.dataStore.channelStore.loadChannelEarlierMessages(this.currentChannel.channelId);
+    core.dataStore.channelStore.loadChannelEarlierMessages(
+      this.currentChannel.channelId,
+    );
   };
 
   private renderCannotSendMessage() {
@@ -315,14 +378,15 @@ export default class ConversationView extends React.Component<Props> {
       return;
     }
 
-    const message = this.currentChannel.type === 'PM' ? trans('chat.cannot_send.user') : trans('chat.cannot_send.channel');
+    const message =
+      this.currentChannel.type === "PM"
+        ? trans("chat.cannot_send.user")
+        : trans("chat.cannot_send.channel");
 
     return (
       <div>
-        <div className='chat-conversation__cannot-message'>
-          {message}
-          {' '}
-          {this.currentChannel.canMessageError}
+        <div className="chat-conversation__cannot-message">
+          {message} {this.currentChannel.canMessageError}
         </div>
       </div>
     );

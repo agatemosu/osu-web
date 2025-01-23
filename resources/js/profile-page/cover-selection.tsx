@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserCoverPresetJson from 'interfaces/user-cover-preset-json';
-import { action, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { urlPresence } from 'utils/css';
-import { trans } from 'utils/lang';
-import Controller from './controller';
+import UserCoverPresetJson from "interfaces/user-cover-preset-json";
+import { action, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { urlPresence } from "utils/css";
+import { trans } from "utils/lang";
+import Controller from "./controller";
 
-const bn = 'profile-cover-selection';
+const bn = "profile-cover-selection";
 
 interface Props {
   controller: Controller;
@@ -39,8 +39,8 @@ export default class CoverSelection extends React.PureComponent<Props> {
         }}
       >
         {this.isSelected && (
-          <span className='profile-cover-selection__selected'>
-            <span className='far fa-check-circle' />
+          <span className="profile-cover-selection__selected">
+            <span className="far fa-check-circle" />
           </span>
         )}
       </button>
@@ -51,7 +51,10 @@ export default class CoverSelection extends React.PureComponent<Props> {
   private readonly onClick = () => {
     if (this.props.preset.url == null || this.isSelected) return;
 
-    if (this.props.controller.holdoverCoverPreset != null && !confirm(trans('users.show.edit.cover.holdover_remove_confirm'))) {
+    if (
+      this.props.controller.holdoverCoverPreset != null &&
+      !confirm(trans("users.show.edit.cover.holdover_remove_confirm"))
+    ) {
       return;
     }
 

@@ -1,13 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Ruleset from 'interfaces/ruleset';
-import SoloScoreJson, { SoloScoreStatisticsAttribute } from 'interfaces/solo-score-json';
-import { route } from 'laroute';
-import core from 'osu-core-singleton';
-import { rulesetName } from './beatmap-helper';
-import { trans } from './lang';
-import { legacyAccuracyAndRank } from './legacy-score-helper';
+import Ruleset from "interfaces/ruleset";
+import SoloScoreJson, {
+  SoloScoreStatisticsAttribute,
+} from "interfaces/solo-score-json";
+import { route } from "laroute";
+import core from "osu-core-singleton";
+import { rulesetName } from "./beatmap-helper";
+import { trans } from "./lang";
+import { legacyAccuracyAndRank } from "./legacy-score-helper";
 
 export function accuracy(score: SoloScoreJson) {
   return shouldReturnLegacyValue(score)
@@ -16,22 +18,28 @@ export function accuracy(score: SoloScoreJson) {
 }
 
 export function canBeReported(score: SoloScoreJson) {
-  return (score.best_id != null || score.type === 'solo_score')
-    && core.currentUser != null
-    && score.user_id !== core.currentUser.id;
+  return (
+    (score.best_id != null || score.type === "solo_score") &&
+    core.currentUser != null &&
+    score.user_id !== core.currentUser.id
+  );
 }
 
 // Removes CL mod on legacy score if user has lazer mode disabled
 export function filterMods(score: SoloScoreJson) {
   return shouldReturnLegacyValue(score)
-    ? score.mods.filter((mod) => mod.acronym !== 'CL')
+    ? score.mods.filter((mod) => mod.acronym !== "CL")
     : score.mods;
-
 }
 
 // TODO: move to application state repository thingy later
 export function hasMenu(score: SoloScoreJson) {
-  return canBeReported(score) || hasReplay(score) || hasShow(score) || core.scorePins.canBePinned(score);
+  return (
+    canBeReported(score) ||
+    hasReplay(score) ||
+    hasShow(score) ||
+    core.scorePins.canBePinned(score)
+  );
 }
 
 export function hasReplay(score: SoloScoreJson) {
@@ -39,7 +47,7 @@ export function hasReplay(score: SoloScoreJson) {
 }
 
 export function hasShow(score: SoloScoreJson) {
-  return score.best_id != null || score.type === 'solo_score';
+  return score.best_id != null || score.type === "solo_score";
 }
 
 export function isPerfectCombo(score: SoloScoreJson) {
@@ -60,42 +68,48 @@ interface AttributeDisplayTotal {
   total: number;
 }
 
-const labelMiss = trans('beatmapsets.show.scoreboard.headers.miss');
+const labelMiss = trans("beatmapsets.show.scoreboard.headers.miss");
 
 export const modeAttributesMap: Record<Ruleset, AttributeDisplayMapping[]> = {
   fruits: [
-    { attributes: ['great'], key: 'great', label: 'fruits' },
-    { attributes: ['large_tick_hit'], key: 'ticks', label: 'ticks' },
-    { attributes: ['small_tick_miss'], key: 'drp_miss', label: 'drp miss' },
+    { attributes: ["great"], key: "great", label: "fruits" },
+    { attributes: ["large_tick_hit"], key: "ticks", label: "ticks" },
+    { attributes: ["small_tick_miss"], key: "drp_miss", label: "drp miss" },
     // legacy/stable scores merge miss and large_tick_miss into one number
-    { attributes: ['miss', 'large_tick_miss'], key: 'miss', label: labelMiss },
+    { attributes: ["miss", "large_tick_miss"], key: "miss", label: labelMiss },
   ],
   mania: [
-    { attributes: ['perfect'], key: 'perfect', label: 'max' },
-    { attributes: ['great'], key: 'great', label: '300' },
-    { attributes: ['good'], key: 'good', label: '200' },
-    { attributes: ['ok'], key: 'ok', label: '100' },
-    { attributes: ['meh'], key: 'meh', label: '50' },
-    { attributes: ['miss'], key: 'miss', label: labelMiss },
+    { attributes: ["perfect"], key: "perfect", label: "max" },
+    { attributes: ["great"], key: "great", label: "300" },
+    { attributes: ["good"], key: "good", label: "200" },
+    { attributes: ["ok"], key: "ok", label: "100" },
+    { attributes: ["meh"], key: "meh", label: "50" },
+    { attributes: ["miss"], key: "miss", label: labelMiss },
   ],
   osu: [
-    { attributes: ['great'], key: 'great', label: '300' },
-    { attributes: ['ok'], key: 'ok', label: '100' },
-    { attributes: ['meh'], key: 'meh', label: '50' },
-    { attributes: ['miss'], key: 'miss', label: labelMiss },
+    { attributes: ["great"], key: "great", label: "300" },
+    { attributes: ["ok"], key: "ok", label: "100" },
+    { attributes: ["meh"], key: "meh", label: "50" },
+    { attributes: ["miss"], key: "miss", label: labelMiss },
   ],
   taiko: [
-    { attributes: ['great'], key: 'great', label: 'great' },
-    { attributes: ['ok'], key: 'ok', label: 'good' },
-    { attributes: ['miss'], key: 'miss', label: labelMiss },
+    { attributes: ["great"], key: "great", label: "great" },
+    { attributes: ["ok"], key: "ok", label: "good" },
+    { attributes: ["miss"], key: "miss", label: labelMiss },
   ],
 };
 
-export function attributeDisplayTotals(ruleset: Ruleset, score: SoloScoreJson): AttributeDisplayTotal[] {
+export function attributeDisplayTotals(
+  ruleset: Ruleset,
+  score: SoloScoreJson,
+): AttributeDisplayTotal[] {
   return modeAttributesMap[ruleset].map((mapping) => ({
     key: mapping.key,
     label: mapping.label,
-    total: mapping.attributes.reduce((sum, attribute) => sum + (score.statistics[attribute] ?? 0), 0),
+    total: mapping.attributes.reduce(
+      (sum, attribute) => sum + (score.statistics[attribute] ?? 0),
+      0,
+    ),
   }));
 }
 
@@ -114,22 +128,22 @@ export function rankCutoffs(score: SoloScoreJson): number[] {
 
   if (shouldReturnLegacyValue(score)) {
     switch (ruleset) {
-      case 'fruits':
+      case "fruits":
         absoluteCutoffs = [0, 0.8501, 0.9001, 0.9401, 0.9801, 0.99, 1];
         break;
 
-      case 'mania':
+      case "mania":
         absoluteCutoffs = [0, 0.7, 0.8, 0.9, 0.95, 0.99, 1];
         break;
 
-      case 'osu':
+      case "osu":
         // S: (0.9 * 300 + 0.1 * 100) / 300 = 0.933
         // A: (0.8 * 300 + 0.2 * 100) / 300 = 0.867
         // B: (0.7 * 300 + 0.3 * 100) / 300 = 0.8
         absoluteCutoffs = [0, 0.6, 0.8, 0.867, 0.933, 0.99, 1];
         break;
 
-      case 'taiko':
+      case "taiko":
         // S: (0.9 * 300 + 0.1 * 50) / 300 = 0.917
         // A: (0.8 * 300 + 0.2 * 50) / 300 = 0.833
         // B: (0.7 * 300 + 0.3 * 50) / 300 = 0.75
@@ -138,14 +152,14 @@ export function rankCutoffs(score: SoloScoreJson): number[] {
     }
   } else {
     switch (ruleset) {
-      case 'fruits':
+      case "fruits":
         // cross-reference: https://github.com/ppy/osu/blob/b658d9a681a04101900d5ce6c5b84d56320e08e7/osu.Game.Rulesets.Catch/Scoring/CatchScoreProcessor.cs#L108-L135
         absoluteCutoffs = [0, 0.85, 0.9, 0.94, 0.98, 0.99, 1];
         break;
 
-      case 'mania':
-      case 'osu':
-      case 'taiko':
+      case "mania":
+      case "osu":
+      case "taiko":
         // cross-reference: https://github.com/ppy/osu/blob/b658d9a681a04101900d5ce6c5b84d56320e08e7/osu.Game/Rulesets/Scoring/ScoreProcessor.cs#L541-L572
         absoluteCutoffs = [0, 0.7, 0.8, 0.9, 0.95, 0.99, 1];
         break;
@@ -166,37 +180,40 @@ function differenceBetweenConsecutiveElements(arr: number[]): number[] {
 }
 
 export function scoreDownloadUrl(score: SoloScoreJson) {
-  if (score.type === 'solo_score') {
-    return route('scores.download', { score: score.id });
+  if (score.type === "solo_score") {
+    return route("scores.download", { score: score.id });
   }
 
   if (score.best_id != null) {
-    return route('scores.download-legacy', {
+    return route("scores.download-legacy", {
       rulesetOrScore: rulesetName(score.ruleset_id),
       score: score.best_id,
     });
   }
 
-  throw new Error('score json doesn\'t have download url');
+  throw new Error("score json doesn't have download url");
 }
 
 export function scoreUrl(score: SoloScoreJson) {
-  if (score.type === 'solo_score') {
-    return route('scores.show', { rulesetOrScore: score.id });
+  if (score.type === "solo_score") {
+    return route("scores.show", { rulesetOrScore: score.id });
   }
 
   if (score.best_id != null) {
-    return route('scores.show', {
+    return route("scores.show", {
       rulesetOrScore: rulesetName(score.ruleset_id),
       score: score.best_id,
     });
   }
 
-  throw new Error('score json doesn\'t have url');
+  throw new Error("score json doesn't have url");
 }
 
 function shouldReturnLegacyValue(score: SoloScoreJson) {
-  return score.legacy_score_id !== null && core.userPreferences.get('legacy_score_only');
+  return (
+    score.legacy_score_id !== null &&
+    core.userPreferences.get("legacy_score_only")
+  );
 }
 
 export function totalScore(score: SoloScoreJson) {
@@ -204,7 +221,10 @@ export function totalScore(score: SoloScoreJson) {
     return score.legacy_total_score;
   }
 
-  if (score.type === 'solo_score' && core.userPreferences.get('scoring_mode') === 'classic') {
+  if (
+    score.type === "solo_score" &&
+    core.userPreferences.get("scoring_mode") === "classic"
+  ) {
     return score.classic_total_score;
   }
 

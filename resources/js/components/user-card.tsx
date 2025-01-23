@@ -1,32 +1,32 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BlockButton from 'components/block-button';
-import FriendButton from 'components/friend-button';
-import Reportable from 'interfaces/reportable';
-import UserJson from 'interfaces/user-json';
-import { route } from 'laroute';
-import * as _ from 'lodash';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { classWithModifiers, Modifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import { present } from 'utils/string';
-import { giftSupporterTagUrl } from 'utils/url';
-import FlagCountry from './flag-country';
-import FlagTeam from './flag-team';
-import FollowUserMappingButton from './follow-user-mapping-button';
-import { PopupMenuPersistent } from './popup-menu-persistent';
-import { ReportReportable } from './report-reportable';
-import { Spinner } from './spinner';
-import StringWithComponent from './string-with-component';
-import SupporterIcon from './supporter-icon';
-import TimeWithTooltip from './time-with-tooltip';
-import UserCardBrick from './user-card-brick';
-import UserGroupBadges from './user-group-badges';
+import BlockButton from "components/block-button";
+import FriendButton from "components/friend-button";
+import Reportable from "interfaces/reportable";
+import UserJson from "interfaces/user-json";
+import { route } from "laroute";
+import * as _ from "lodash";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { classWithModifiers, Modifiers } from "utils/css";
+import { trans } from "utils/lang";
+import { present } from "utils/string";
+import { giftSupporterTagUrl } from "utils/url";
+import FlagCountry from "./flag-country";
+import FlagTeam from "./flag-team";
+import FollowUserMappingButton from "./follow-user-mapping-button";
+import { PopupMenuPersistent } from "./popup-menu-persistent";
+import { ReportReportable } from "./report-reportable";
+import { Spinner } from "./spinner";
+import StringWithComponent from "./string-with-component";
+import SupporterIcon from "./supporter-icon";
+import TimeWithTooltip from "./time-with-tooltip";
+import UserCardBrick from "./user-card-brick";
+import UserGroupBadges from "./user-group-badges";
 
-export type ViewMode = 'brick' | 'card' | 'list';
-export const viewModes: ViewMode[] = ['card', 'list', 'brick'];
+export type ViewMode = "brick" | "card" | "list";
+export const viewModes: ViewMode[] = ["card", "list", "brick"];
 
 interface Props {
   activated: boolean;
@@ -44,24 +44,24 @@ interface State {
 export class UserCard extends React.PureComponent<Props, State> {
   static defaultProps = {
     activated: false,
-    mode: 'card',
+    mode: "card",
   };
 
   static userLoading: UserJson = {
-    avatar_url: '',
-    country_code: '',
+    avatar_url: "",
+    country_code: "",
     cover: { custom_url: null, id: null, url: null },
-    default_group: '',
+    default_group: "",
     id: 0,
     is_active: false,
     is_bot: false,
     is_deleted: false,
     is_online: false,
     is_supporter: false,
-    last_visit: '',
+    last_visit: "",
     pm_friends_only: true,
-    profile_colour: '',
-    username: trans('users.card.loading'),
+    profile_colour: "",
+    username: trans("users.card.loading"),
   };
 
   state: Readonly<State> = {
@@ -72,8 +72,11 @@ export class UserCard extends React.PureComponent<Props, State> {
   private url?: string;
 
   private get canMessage() {
-    return !this.isSelf
-      && _.find(core.currentUser?.blocks ?? [], { target_id: this.user.id }) == null;
+    return (
+      !this.isSelf &&
+      _.find(core.currentUser?.blocks ?? [], { target_id: this.user.id }) ==
+        null
+    );
   }
 
   private get isOnline() {
@@ -109,7 +112,7 @@ export class UserCard extends React.PureComponent<Props, State> {
   };
 
   render() {
-    if (this.props.mode === 'brick') {
+    if (this.props.mode === "brick") {
       if (this.props.user == null) {
         return null;
       }
@@ -118,29 +121,35 @@ export class UserCard extends React.PureComponent<Props, State> {
     }
 
     const blockClass = classWithModifiers(
-      'user-card',
+      "user-card",
       this.props.modifiers,
       this.props.mode,
       // Setting the active modifiers from the parent causes unwanted renders unless deep comparison is used.
-      this.props.activated ? 'active' : 'highlightable',
+      this.props.activated ? "active" : "highlightable",
     );
 
-    this.url = this.isUserVisible ? route('users.show', { user: this.user.id }) : undefined;
+    this.url = this.isUserVisible
+      ? route("users.show", { user: this.user.id })
+      : undefined;
 
     return (
       <div className={blockClass}>
         {this.renderBackground()}
 
-        <div className='user-card__card'>
-          <div className='user-card__content user-card__content--details'>
-            <div className='user-card__user'>
-              {this.renderAvatar()}
-            </div>
-            <div className='user-card__details'>
+        <div className="user-card__card">
+          <div className="user-card__content user-card__content--details">
+            <div className="user-card__user">{this.renderAvatar()}</div>
+            <div className="user-card__details">
               {this.renderIcons()}
-              <div className='user-card__username-row'>
+              <div className="user-card__username-row">
                 {this.renderUsername()}
-                <div className='user-card__group-badges'><UserGroupBadges groups={this.user.groups} short wrapper='user-card__group-badge' /></div>
+                <div className="user-card__group-badges">
+                  <UserGroupBadges
+                    groups={this.user.groups}
+                    short
+                    wrapper="user-card__group-badge"
+                  />
+                </div>
               </div>
               {this.renderListModeIcons()}
             </div>
@@ -156,13 +165,15 @@ export class UserCard extends React.PureComponent<Props, State> {
     const hasAvatar = present(this.user.avatar_url) && !this.isUserNotFound;
 
     return (
-      <div className='user-card__avatar-space'>
-        <div className={classWithModifiers('user-card__avatar-spinner', modifiers)}>
+      <div className="user-card__avatar-space">
+        <div
+          className={classWithModifiers("user-card__avatar-spinner", modifiers)}
+        >
           {hasAvatar && <Spinner modifiers={modifiers} />}
         </div>
         {this.isUserLoaded && hasAvatar && (
           <img
-            className={classWithModifiers('user-card__avatar', modifiers)}
+            className={classWithModifiers("user-card__avatar", modifiers)}
             onError={this.onAvatarLoad} // remove spinner if error
             onLoad={this.onAvatarLoad}
             src={this.user.avatar_url}
@@ -177,19 +188,23 @@ export class UserCard extends React.PureComponent<Props, State> {
     let backgroundLink: React.ReactNode;
 
     const overlayCssClass = classWithModifiers(
-      'user-card__background-overlay',
-      this.isOnline ? ['online'] : [],
+      "user-card__background-overlay",
+      this.isOnline ? ["online"] : [],
     );
 
     if (this.user.cover?.url != null) {
-      let backgroundCssClass = 'user-card__background';
+      let backgroundCssClass = "user-card__background";
       if (!this.state.backgroundLoaded) {
-        backgroundCssClass += ' user-card__background--loading';
+        backgroundCssClass += " user-card__background--loading";
       }
 
       background = (
         <>
-          <img className={backgroundCssClass} onLoad={this.onBackgroundLoad} src={this.user.cover.url} />
+          <img
+            className={backgroundCssClass}
+            onLoad={this.onBackgroundLoad}
+            src={this.user.cover.url}
+          />
           <div className={overlayCssClass} />
         </>
       );
@@ -199,10 +214,7 @@ export class UserCard extends React.PureComponent<Props, State> {
 
     if (this.isUserVisible) {
       backgroundLink = (
-        <a
-          className='user-card__background-container'
-          href={this.url}
-        >
+        <a className="user-card__background-container" href={this.url}>
           {background}
         </a>
       );
@@ -219,36 +231,43 @@ export class UserCard extends React.PureComponent<Props, State> {
     }
 
     return (
-      <div className='user-card__icons user-card__icons--card'>
+      <div className="user-card__icons user-card__icons--card">
         <a
-          className='user-card__icon user-card__icon--flag'
-          href={route('rankings', { country: this.user.country_code, mode: 'osu', type: 'performance' })}
+          className="user-card__icon user-card__icon--flag"
+          href={route("rankings", {
+            country: this.user.country_code,
+            mode: "osu",
+            type: "performance",
+          })}
         >
           <FlagCountry country={this.user.country} />
         </a>
 
         {this.user.team != null && (
           <a
-            className='user-card__icon user-card__icon--flag'
-            href={route('teams.show', { team: this.user.team.id })}
+            className="user-card__icon user-card__icon--flag"
+            href={route("teams.show", { team: this.user.team.id })}
           >
             <FlagTeam team={this.user.team} />
           </a>
         )}
 
-        {this.props.mode === 'card' && (
+        {this.props.mode === "card" && (
           <>
             {this.user.is_supporter && (
-              <a className='user-card__icon' href={route('support-the-game')}>
-                <SupporterIcon modifiers='user-card' />
+              <a className="user-card__icon" href={route("support-the-game")}>
+                <SupporterIcon modifiers="user-card" />
               </a>
             )}
-            <div className='user-card__icon'>
-              <FriendButton modifiers='user-card' userId={this.user.id} />
+            <div className="user-card__icon">
+              <FriendButton modifiers="user-card" userId={this.user.id} />
             </div>
             {!this.user.is_bot && (
-              <div className='user-card__icon'>
-                <FollowUserMappingButton modifiers={['user-card']} userId={this.user.id} />
+              <div className="user-card__icon">
+                <FollowUserMappingButton
+                  modifiers={["user-card"]}
+                  userId={this.user.id}
+                />
               </div>
             )}
           </>
@@ -258,25 +277,31 @@ export class UserCard extends React.PureComponent<Props, State> {
   }
 
   renderListModeIcons() {
-    if (this.props.mode !== 'list' || !this.isUserVisible) {
+    if (this.props.mode !== "list" || !this.isUserVisible) {
       return null;
     }
 
     return (
-      <div className='user-card__icons'>
+      <div className="user-card__icons">
         {this.user.is_supporter && (
-          <a className='user-card__icon' href={route('support-the-game')}>
-            <SupporterIcon level={this.user.support_level} modifiers='user-list' />
+          <a className="user-card__icon" href={route("support-the-game")}>
+            <SupporterIcon
+              level={this.user.support_level}
+              modifiers="user-list"
+            />
           </a>
         )}
 
-        <div className='user-card__icon'>
-          <FriendButton modifiers='user-list' userId={this.user.id} />
+        <div className="user-card__icon">
+          <FriendButton modifiers="user-list" userId={this.user.id} />
         </div>
 
         {!this.user.is_bot && (
-          <div className='user-card__icon'>
-            <FollowUserMappingButton modifiers={['user-list']} userId={this.user.id} />
+          <div className="user-card__icon">
+            <FollowUserMappingButton
+              modifiers={["user-list"]}
+              userId={this.user.id}
+            />
           </div>
         )}
       </div>
@@ -289,42 +314,47 @@ export class UserCard extends React.PureComponent<Props, State> {
     }
 
     const items = (dismiss: () => void) => (
-      <div className='simple-menu'>
+      <div className="simple-menu">
         {this.canMessage && (
           <a
-            className='simple-menu__item js-login-required--click'
-            href={route('messages.users.show', { user: this.user.id })}
+            className="simple-menu__item js-login-required--click"
+            href={route("messages.users.show", { user: this.user.id })}
             onClick={dismiss}
           >
-            <span className='fas fa-envelope' />
-            {` ${trans('users.card.send_message')}`}
+            <span className="fas fa-envelope" />
+            {` ${trans("users.card.send_message")}`}
           </a>
         )}
 
         <a
-          className='simple-menu__item'
+          className="simple-menu__item"
           href={giftSupporterTagUrl(this.user)}
           onClick={dismiss}
         >
-          <span className='fas fa-gift' />
-          {` ${trans('users.card.gift_supporter')}`}
+          <span className="fas fa-gift" />
+          {` ${trans("users.card.gift_supporter")}`}
         </a>
 
-        <BlockButton modifiers='inline' onClick={dismiss} userId={this.user.id} wrapperClass='simple-menu__item' />
+        <BlockButton
+          modifiers="inline"
+          onClick={dismiss}
+          userId={this.user.id}
+          wrapperClass="simple-menu__item"
+        />
 
         <ReportReportable
-          className='simple-menu__item'
+          className="simple-menu__item"
           icon
           onFormOpen={dismiss}
           reportableId={this.props.reportable?.id ?? this.user.id.toString()}
-          reportableType={this.props.reportable?.type ?? 'user'}
+          reportableType={this.props.reportable?.type ?? "user"}
           user={this.user}
         />
       </div>
     );
 
     return (
-      <div className='user-card__icon user-card__icon--menu'>
+      <div className="user-card__icon user-card__icon--menu">
         <PopupMenuPersistent>{items}</PopupMenuPersistent>
       </div>
     );
@@ -335,29 +365,36 @@ export class UserCard extends React.PureComponent<Props, State> {
       return null;
     }
 
-    const status = this.isOnline ? trans('users.status.online') : trans('users.status.offline');
+    const status = this.isOnline
+      ? trans("users.status.online")
+      : trans("users.status.offline");
 
     return (
-      <div className='user-card__content user-card__content--status'>
-        <div className='user-card__status'>
+      <div className="user-card__content user-card__content--status">
+        <div className="user-card__status">
           {this.renderStatusIcon()}
-          <div className='user-card__status-messages'>
-            <span className='user-card__status-message user-card__status-message--sub u-ellipsis-overflow'>
+          <div className="user-card__status-messages">
+            <span className="user-card__status-message user-card__status-message--sub u-ellipsis-overflow">
               {!this.isOnline && this.user.last_visit != null && (
                 <StringWithComponent
                   mappings={{
-                    date: <TimeWithTooltip dateTime={this.user.last_visit} relative />,
+                    date: (
+                      <TimeWithTooltip
+                        dateTime={this.user.last_visit}
+                        relative
+                      />
+                    ),
                   }}
-                  pattern={trans('users.show.lastvisit')}
+                  pattern={trans("users.show.lastvisit")}
                 />
               )}
             </span>
-            <span className='user-card__status-message u-ellipsis-overflow'>
+            <span className="user-card__status-message u-ellipsis-overflow">
               {status}
             </span>
           </div>
         </div>
-        <div className='user-card__icons user-card__icons--menu'>
+        <div className="user-card__icons user-card__icons--menu">
           {this.renderMenuButton()}
         </div>
       </div>
@@ -370,19 +407,28 @@ export class UserCard extends React.PureComponent<Props, State> {
     }
 
     return (
-      <div className='user-card__status-icon-container'>
-        <div className={`user-card__status-icon user-card__status-icon--${this.isOnline ? 'online' : 'offline'}`} />
+      <div className="user-card__status-icon-container">
+        <div
+          className={`user-card__status-icon user-card__status-icon--${this.isOnline ? "online" : "offline"}`}
+        />
       </div>
     );
   }
 
   private renderUsername() {
-    const displayName = this.user.is_deleted ? trans('users.deleted') : this.user.username;
+    const displayName = this.user.is_deleted
+      ? trans("users.deleted")
+      : this.user.username;
 
     return this.url == null ? (
-      <div className='user-card__username u-ellipsis-pre-overflow'>{displayName}</div>
+      <div className="user-card__username u-ellipsis-pre-overflow">
+        {displayName}
+      </div>
     ) : (
-      <a className='user-card__username u-ellipsis-pre-overflow' href={this.url}>
+      <a
+        className="user-card__username u-ellipsis-pre-overflow"
+        href={this.url}
+      >
         {displayName}
       </a>
     );

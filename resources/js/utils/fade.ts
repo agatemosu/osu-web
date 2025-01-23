@@ -4,21 +4,21 @@
 type MaybeHTMLElement = HTMLElement | undefined | null;
 
 function isVisible(el: MaybeHTMLElement) {
-  return el?.getAttribute('data-visibility') !== 'hidden';
+  return el?.getAttribute("data-visibility") !== "hidden";
 }
 
 export function fadeIn(el: MaybeHTMLElement) {
-  el?.setAttribute('data-visibility', 'visible');
+  el?.setAttribute("data-visibility", "visible");
 }
 
 export function fadeOut(el: MaybeHTMLElement) {
-  el?.setAttribute('data-visibility', 'hidden');
+  el?.setAttribute("data-visibility", "hidden");
 }
 
 export function fadeToggle(el: MaybeHTMLElement, makeVisible?: boolean) {
   if (el == null) return;
 
-  const fn = makeVisible ?? !isVisible(el) ? fadeIn : fadeOut;
+  const fn = (makeVisible ?? !isVisible(el)) ? fadeIn : fadeOut;
 
   fn(el);
 }

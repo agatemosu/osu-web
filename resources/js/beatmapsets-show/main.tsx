@@ -1,23 +1,30 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Comments from 'components/comments';
-import HeaderV4 from 'components/header-v4';
-import NotificationBanner from 'components/notification-banner';
-import PlaymodeTabs from 'components/playmode-tabs';
-import Ruleset, { rulesets } from 'interfaces/ruleset';
-import { action, autorun, computed, IReactionDisposer, makeObservable, observable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { generate, setHash } from 'utils/beatmapset-page-hash';
-import { trans } from 'utils/lang';
-import Controller from './controller';
-import Header from './header';
-import headerLinks from './header-links';
-import Hype from './hype';
-import Info from './info';
-import NsfwWarning from './nsfw-warning';
-import ScoreboardMain from './scoreboard/main';
+import Comments from "components/comments";
+import HeaderV4 from "components/header-v4";
+import NotificationBanner from "components/notification-banner";
+import PlaymodeTabs from "components/playmode-tabs";
+import Ruleset, { rulesets } from "interfaces/ruleset";
+import {
+  action,
+  autorun,
+  computed,
+  IReactionDisposer,
+  makeObservable,
+  observable,
+} from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { generate, setHash } from "utils/beatmapset-page-hash";
+import { trans } from "utils/lang";
+import Controller from "./controller";
+import Header from "./header";
+import headerLinks from "./header-links";
+import Hype from "./hype";
+import Info from "./info";
+import NsfwWarning from "./nsfw-warning";
+import ScoreboardMain from "./scoreboard/main";
 
 interface Props {
   container: HTMLElement;
@@ -48,7 +55,7 @@ export default class Main extends React.Component<Props> {
       <PlaymodeTabs
         currentMode={this.controller.currentBeatmap.mode}
         entries={entries}
-        modifiers='beatmapset'
+        modifiers="beatmapset"
         onClick={this.onClickPlaymode}
       />
     );
@@ -64,7 +71,7 @@ export default class Main extends React.Component<Props> {
 
   componentDidMount() {
     this.setHashDisposer = autorun(this.setHash);
-    $(document).one('turbo:before-cache', () => this.setHashDisposer?.());
+    $(document).one("turbo:before-cache", () => this.setHashDisposer?.());
   }
 
   componentWillUnmount() {
@@ -74,13 +81,14 @@ export default class Main extends React.Component<Props> {
 
   render() {
     return (
-      <div className='osu-layout osu-layout--full'>
+      <div className="osu-layout osu-layout--full">
         {this.renderDeletedNotification()}
         {this.renderPageHeader()}
-        {this.controller.state.showingNsfwWarning
-          ? <NsfwWarning onClose={this.onCloseNsfwWarning} />
-          : this.renderPage()
-        }
+        {this.controller.state.showingNsfwWarning ? (
+          <NsfwWarning onClose={this.onCloseNsfwWarning} />
+        ) : (
+          this.renderPage()
+        )}
       </div>
     );
   }
@@ -104,9 +112,9 @@ export default class Main extends React.Component<Props> {
 
     return (
       <NotificationBanner
-        message={trans('beatmapsets.show.deleted_banner.message')}
-        title={trans('beatmapsets.show.deleted_banner.title')}
-        type='info'
+        message={trans("beatmapsets.show.deleted_banner.message")}
+        title={trans("beatmapsets.show.deleted_banner.title")}
+        type="info"
       />
     );
   }
@@ -114,34 +122,34 @@ export default class Main extends React.Component<Props> {
   private renderPage() {
     return (
       <>
-        <div className='osu-page osu-page--generic-compact'>
+        <div className="osu-page osu-page--generic-compact">
           <Header controller={this.controller} />
           <Info controller={this.controller} />
 
-          <div className='user-profile-pages user-profile-pages--no-tabs'>
-            {this.controller.beatmapset.can_be_hyped &&
-              <div className='page-extra page-extra--compact'>
+          <div className="user-profile-pages user-profile-pages--no-tabs">
+            {this.controller.beatmapset.can_be_hyped && (
+              <div className="page-extra page-extra--compact">
                 <Hype beatmapset={this.controller.beatmapset} />
               </div>
-            }
+            )}
 
-            {this.controller.currentBeatmap.is_scoreable &&
-              <div className='page-extra'>
+            {this.controller.currentBeatmap.is_scoreable && (
+              <div className="page-extra">
                 <ScoreboardMain
                   beatmap={this.controller.currentBeatmap}
                   container={this.props.container}
                 />
               </div>
-            }
+            )}
 
-            <div className='page-extra page-extra--compact'>
+            <div className="page-extra page-extra--compact">
               <Comments
                 baseCommentableMeta={{
                   id: this.controller.beatmapset.id,
-                  type: 'beatmapset',
+                  type: "beatmapset",
                 }}
-                controllerStateSelector='#json-comments'
-                modifiers='page-extra'
+                controllerStateSelector="#json-comments"
+                modifiers="page-extra"
               />
             </div>
           </div>
@@ -153,9 +161,9 @@ export default class Main extends React.Component<Props> {
   private renderPageHeader() {
     return (
       <HeaderV4
-        links={headerLinks('show', this.controller.beatmapset)}
+        links={headerLinks("show", this.controller.beatmapset)}
         linksAppend={this.headerLinksAppend}
-        theme='beatmapset'
+        theme="beatmapset"
       />
     );
   }

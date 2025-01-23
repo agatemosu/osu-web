@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BbcodeEditor from 'components/bbcode-editor';
-import { OnChangeProps } from 'components/bbcode-editor';
-import { action, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { onErrorWithCallback } from 'utils/ajax';
-import { trans } from 'utils/lang';
-import { showLoadingOverlay, hideLoadingOverlay } from 'utils/loading-overlay';
-import Controller from './controller';
+import BbcodeEditor from "components/bbcode-editor";
+import { OnChangeProps } from "components/bbcode-editor";
+import { action, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { onErrorWithCallback } from "utils/ajax";
+import { trans } from "utils/lang";
+import { showLoadingOverlay, hideLoadingOverlay } from "utils/loading-overlay";
+import Controller from "./controller";
 
 interface Props {
   controller: Controller;
@@ -26,9 +26,9 @@ export default class UserPageEditor extends React.Component<Props> {
   render() {
     return (
       <BbcodeEditor
-        modifiers='profile-page'
+        modifiers="profile-page"
         onChange={this.onChange}
-        placeholder={trans('users.show.page.placeholder')}
+        placeholder={trans("users.show.page.placeholder")}
         rawValue={this.props.controller.state.user.page.raw}
       />
     );
@@ -41,10 +41,10 @@ export default class UserPageEditor extends React.Component<Props> {
 
   private readonly onChange = ({ type, value }: OnChangeProps) => {
     switch (type) {
-      case 'cancel':
+      case "cancel":
         this.cancel();
         break;
-      case 'save':
+      case "save":
         this.save({ value });
         break;
     }
@@ -57,10 +57,14 @@ export default class UserPageEditor extends React.Component<Props> {
 
     showLoadingOverlay();
 
-    this.props.controller.apiSetUserPage(value ?? '')
-      .done(action(() => {
-        this.props.controller.state.editingUserPage = false;
-      })).fail(onErrorWithCallback(() => this.save({ value })))
+    this.props.controller
+      .apiSetUserPage(value ?? "")
+      .done(
+        action(() => {
+          this.props.controller.state.editingUserPage = false;
+        }),
+      )
+      .fail(onErrorWithCallback(() => this.save({ value })))
       .always(hideLoadingOverlay);
   };
 }

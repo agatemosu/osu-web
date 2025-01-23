@@ -1,12 +1,12 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { route } from 'laroute';
-import { trans, transChoice } from 'utils/lang';
-import { popup } from 'utils/popup';
-import { reloadPage } from 'utils/turbolinks';
+import { route } from "laroute";
+import { trans, transChoice } from "utils/lang";
+import { popup } from "utils/popup";
+import { reloadPage } from "utils/turbolinks";
 
-const checkboxSelector = '.js-user-cover-preset-batch-enable--checkbox';
+const checkboxSelector = ".js-user-cover-preset-batch-enable--checkbox";
 
 export default class UserCoverPresetBatchActivate {
   private lastSelected: HTMLInputElement | null = null;
@@ -14,8 +14,8 @@ export default class UserCoverPresetBatchActivate {
 
   constructor() {
     $(document)
-      .on('click', '.js-user-cover-preset-batch-enable', this.handleEvent)
-      .on('turbo:before-cache', this.cleanup);
+      .on("click", ".js-user-cover-preset-batch-enable", this.handleEvent)
+      .on("turbo:before-cache", this.cleanup);
   }
 
   private applySelected(active: boolean) {
@@ -25,25 +25,37 @@ export default class UserCoverPresetBatchActivate {
     const count = ids.length;
 
     if (count === 0) {
-      popup('no covers selected');
+      popup("no covers selected");
       return;
     }
 
-    if (!confirm(trans('user_cover_presets.index.batch_confirm._', {
-      action: trans(`user_cover_presets.index.batch_confirm.${active ? 'enable' : 'disable'}`),
-      items: transChoice('user_cover_presets.index.batch_confirm.items', count),
-    }))) {
+    if (
+      !confirm(
+        trans("user_cover_presets.index.batch_confirm._", {
+          action: trans(
+            `user_cover_presets.index.batch_confirm.${active ? "enable" : "disable"}`,
+          ),
+          items: transChoice(
+            "user_cover_presets.index.batch_confirm.items",
+            count,
+          ),
+        }),
+      )
+    ) {
       return;
     }
 
-    this.xhr = $.post(route('user-cover-presets.batch-activate'), { active, ids });
+    this.xhr = $.post(route("user-cover-presets.batch-activate"), {
+      active,
+      ids,
+    });
     this.xhr
       .done(() => {
         reloadPage();
       })
       .fail((xhr, status) => {
-        if (status !== 'abort') {
-          popup('Update failed', 'danger');
+        if (status !== "abort") {
+          popup("Update failed", "danger");
         }
       });
   }
@@ -58,14 +70,20 @@ export default class UserCoverPresetBatchActivate {
     this.xhr = null;
   };
 
-  private readonly handleEvent = (e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>) => {
+  private readonly handleEvent = (
+    e: JQuery.ClickEvent<Document, unknown, HTMLElement, HTMLElement>,
+  ) => {
     const target = e.currentTarget;
 
     switch (target.dataset.action) {
-      case 'disable-selected': return this.applySelected(false);
-      case 'enable-selected': return this.applySelected(true);
-      case 'select': return this.select(target, e);
-      case 'select-all': return this.toggleAll(target as HTMLInputElement);
+      case "disable-selected":
+        return this.applySelected(false);
+      case "enable-selected":
+        return this.applySelected(true);
+      case "select":
+        return this.select(target, e);
+      case "select-all":
+        return this.toggleAll(target as HTMLInputElement);
     }
   };
 
@@ -98,9 +116,11 @@ export default class UserCoverPresetBatchActivate {
   };
 
   private selectAllCheckbox() {
-    const ret = document.querySelector('.js-user-cover-preset-batch-enable--select-all');
+    const ret = document.querySelector(
+      ".js-user-cover-preset-batch-enable--select-all",
+    );
     if (!(ret instanceof HTMLInputElement)) {
-      throw new Error('select all checkbox element is not HTMLInputElement');
+      throw new Error("select all checkbox element is not HTMLInputElement");
     }
 
     return ret;
@@ -112,10 +132,10 @@ export default class UserCoverPresetBatchActivate {
     for (const el of this.checkboxes()) {
       if (state == null) {
         selectAllCheckbox.checked = state = el.checked;
-        selectAllCheckbox.dataset.indeterminate = 'false';
+        selectAllCheckbox.dataset.indeterminate = "false";
       } else {
         if (state !== el.checked) {
-          selectAllCheckbox.dataset.indeterminate = 'true';
+          selectAllCheckbox.dataset.indeterminate = "true";
           break;
         }
       }
@@ -127,6 +147,6 @@ export default class UserCoverPresetBatchActivate {
     for (const el of this.checkboxes()) {
       el.checked = checked;
     }
-    target.dataset.indeterminate = 'false';
+    target.dataset.indeterminate = "false";
   };
 }

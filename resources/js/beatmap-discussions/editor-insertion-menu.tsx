@@ -1,16 +1,23 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { discussionTypeIcons } from 'beatmap-discussions/discussion-type';
-import Portal from 'components/portal';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import { throttle } from 'lodash';
-import * as React from 'react';
-import { Editor as SlateEditor, Element as SlateElement, Node as SlateNode, Point, Text as SlateText, Transforms } from 'slate';
-import { ReactEditor } from 'slate-react';
-import { trans } from 'utils/lang';
-import { nextVal } from 'utils/seq';
-import { SlateContext } from './slate-context';
+import { discussionTypeIcons } from "beatmap-discussions/discussion-type";
+import Portal from "components/portal";
+import BeatmapExtendedJson from "interfaces/beatmap-extended-json";
+import { throttle } from "lodash";
+import * as React from "react";
+import {
+  Editor as SlateEditor,
+  Element as SlateElement,
+  Node as SlateNode,
+  Point,
+  Text as SlateText,
+  Transforms,
+} from "slate";
+import { ReactEditor } from "slate-react";
+import { trans } from "utils/lang";
+import { nextVal } from "utils/seq";
+import { SlateContext } from "./slate-context";
 
 interface Props {
   currentBeatmap: BeatmapExtendedJson | null;
@@ -19,12 +26,13 @@ interface Props {
 export class EditorInsertionMenu extends React.Component<Props> {
   static readonly contextType = SlateContext;
   declare context: React.ContextType<typeof SlateContext>;
-  private readonly bn = 'beatmap-discussion-editor-insertion-menu';
+  private readonly bn = "beatmap-discussion-editor-insertion-menu";
   private readonly eventId = `editor-insertion-menu-${nextVal()}`;
   private hideInsertMenuTimer?: number;
   private hoveredBlock: HTMLElement | undefined;
-  private insertPosition: 'above' | 'below' | undefined;
-  private readonly insertRef: React.RefObject<HTMLDivElement> = React.createRef();
+  private insertPosition: "above" | "below" | undefined;
+  private readonly insertRef: React.RefObject<HTMLDivElement> =
+    React.createRef();
   private mouseOver = false;
   private scrollContainer: HTMLElement | undefined;
   private readonly throttledContainerMouseExit;
@@ -48,8 +56,14 @@ export class EditorInsertionMenu extends React.Component<Props> {
 
   componentDidMount() {
     if (this.insertRef.current) {
-      $(this.insertRef.current).on(`mouseenter.${this.eventId}`, this.throttledMenuMouseEnter);
-      $(this.insertRef.current).on(`mouseleave.${this.eventId}`, this.throttledMenuMouseExit);
+      $(this.insertRef.current).on(
+        `mouseenter.${this.eventId}`,
+        this.throttledMenuMouseEnter,
+      );
+      $(this.insertRef.current).on(
+        `mouseleave.${this.eventId}`,
+        this.throttledMenuMouseExit,
+      );
     }
     $(window).on(`scroll.${this.eventId}`, this.throttledScroll);
   }
@@ -72,17 +86,14 @@ export class EditorInsertionMenu extends React.Component<Props> {
   render() {
     return (
       <Portal>
-        <div
-          ref={this.insertRef}
-          className={`${this.bn}`}
-        >
+        <div ref={this.insertRef} className={`${this.bn}`}>
           <div className={`${this.bn}__body`}>
-            <i className='fas fa-plus' />
+            <i className="fas fa-plus" />
             <div className={`${this.bn}__buttons`}>
-              {this.insertButton('suggestion')}
-              {this.insertButton('problem')}
-              {this.insertButton('praise')}
-              {this.insertButton('paragraph')}
+              {this.insertButton("suggestion")}
+              {this.insertButton("problem")}
+              {this.insertButton("praise")}
+              {this.insertButton("paragraph")}
             </div>
           </div>
         </div>
@@ -95,8 +106,14 @@ export class EditorInsertionMenu extends React.Component<Props> {
       $(this.scrollContainer).off(`.${this.eventId}`);
     }
     this.scrollContainer = container;
-    $(this.scrollContainer).on(`mousemove.${this.eventId}`, this.throttledContainerMouseMove);
-    $(this.scrollContainer).on(`mouseleave.${this.eventId}`, this.throttledContainerMouseExit);
+    $(this.scrollContainer).on(
+      `mousemove.${this.eventId}`,
+      this.throttledContainerMouseMove,
+    );
+    $(this.scrollContainer).on(
+      `mouseleave.${this.eventId}`,
+      this.throttledContainerMouseExit,
+    );
     $(this.scrollContainer).on(`scroll.${this.eventId}`, this.throttledScroll);
   }
 
@@ -114,7 +131,11 @@ export class EditorInsertionMenu extends React.Component<Props> {
       if (y < child.getBoundingClientRect().top) {
         if (blockOffset > 0) {
           const prevBlock = children[blockOffset - 1];
-          if (y < prevBlock.getBoundingClientRect().top + (prevBlock.getBoundingClientRect().height / 2)) {
+          if (
+            y <
+            prevBlock.getBoundingClientRect().top +
+              prevBlock.getBoundingClientRect().height / 2
+          ) {
             blockOffset--;
           }
         }
@@ -130,10 +151,10 @@ export class EditorInsertionMenu extends React.Component<Props> {
     const blockBounds = this.hoveredBlock.getBoundingClientRect();
 
     // If we're past the half-way point of the block's height then put the menu below the block, otherwise put it above
-    if (y > blockBounds.top + (blockBounds.height / 2)) {
-      this.insertPosition = 'below';
+    if (y > blockBounds.top + blockBounds.height / 2) {
+      this.insertPosition = "below";
     } else {
-      this.insertPosition = 'above';
+      this.insertPosition = "above";
     }
 
     this.updatePosition();
@@ -151,7 +172,7 @@ export class EditorInsertionMenu extends React.Component<Props> {
       return;
     }
 
-    this.insertRef.current.style.display = 'none';
+    this.insertRef.current.style.display = "none";
   };
 
   private readonly insertBlock = (event: React.MouseEvent<HTMLElement>) => {
@@ -162,20 +183,20 @@ export class EditorInsertionMenu extends React.Component<Props> {
 
     let insertNode: SlateNode | undefined;
     switch (type) {
-      case 'suggestion':
-      case 'problem':
-      case 'praise':
+      case "suggestion":
+      case "problem":
+      case "praise":
         insertNode = {
           beatmapId,
-          children: [{ text: '' }],
+          children: [{ text: "" }],
           discussionType: type,
-          type: 'embed',
+          type: "embed",
         };
         break;
-      case 'paragraph':
+      case "paragraph":
         insertNode = {
-          children: [{ text: '' }],
-          type: 'paragraph',
+          children: [{ text: "" }],
+          type: "paragraph",
         };
         break;
     }
@@ -187,13 +208,14 @@ export class EditorInsertionMenu extends React.Component<Props> {
     let node = ReactEditor.toSlateNode(ed, slateNodeElement);
     let insertAt: Point;
     if (
-      (SlateText.isText(node) && node.text === '') ||
+      (SlateText.isText(node) && node.text === "") ||
       (SlateElement.isElement(node) && SlateEditor.isEmpty(ed, node))
     ) {
       // TODO: This horrible mess is a workaround for Slate incorrectly inserting nodes at the wrong place when
       //  inserting relative to empty blocks/paragraphs.
-      if (this.insertPosition === 'above') {
-        const previousSlateElement = this.hoveredBlock?.previousSibling?.lastChild;
+      if (this.insertPosition === "above") {
+        const previousSlateElement =
+          this.hoveredBlock?.previousSibling?.lastChild;
         if (previousSlateElement != null) {
           node = ReactEditor.toSlateNode(ed, previousSlateElement);
           insertAt = SlateEditor.end(ed, ReactEditor.findPath(ed, node));
@@ -213,25 +235,26 @@ export class EditorInsertionMenu extends React.Component<Props> {
       }
     } else {
       const path = ReactEditor.findPath(ed, node);
-      insertAt = this.insertPosition === 'above' ?
-        SlateEditor.start(ed, path) :
-        SlateEditor.end(ed, path);
+      insertAt =
+        this.insertPosition === "above"
+          ? SlateEditor.start(ed, path)
+          : SlateEditor.end(ed, path);
     }
 
     Transforms.insertNodes(ed, insertNode, { at: insertAt });
   };
 
   private readonly insertButton = (type: string) => {
-    let icon = 'fas fa-question';
+    let icon = "fas fa-question";
 
     switch (type) {
-      case 'praise':
-      case 'problem':
-      case 'suggestion':
+      case "praise":
+      case "problem":
+      case "suggestion":
         icon = discussionTypeIcons[type];
         break;
-      case 'paragraph':
-        icon = 'fas fa-indent';
+      case "paragraph":
+        icon = "fas fa-indent";
         break;
     }
 
@@ -241,7 +264,7 @@ export class EditorInsertionMenu extends React.Component<Props> {
         data-discussion-type={type}
         onClick={this.insertBlock}
         title={trans(`beatmaps.discussions.review.insert-block.${type}`)}
-        type='button'
+        type="button"
       >
         <i className={icon} />
       </button>
@@ -259,7 +282,7 @@ export class EditorInsertionMenu extends React.Component<Props> {
 
   private showMenu() {
     if (this.insertRef.current) {
-      this.insertRef.current.style.display = 'flex';
+      this.insertRef.current.style.display = "flex";
     }
   }
 
@@ -270,7 +293,11 @@ export class EditorInsertionMenu extends React.Component<Props> {
   }
 
   private updatePosition() {
-    if (!this.scrollContainer || !this.hoveredBlock || !this.insertRef.current) {
+    if (
+      !this.scrollContainer ||
+      !this.hoveredBlock ||
+      !this.insertRef.current
+    ) {
       return;
     }
 
@@ -280,11 +307,10 @@ export class EditorInsertionMenu extends React.Component<Props> {
     this.insertRef.current.style.left = `${containerBounds.left + 15}px`;
     this.insertRef.current.style.width = `${containerBounds.width - 30}px`;
 
-    if (this.insertPosition === 'above') {
+    if (this.insertPosition === "above") {
       this.insertRef.current.style.top = `${blockBounds.top - 10}px`;
-    } else if (this.insertPosition === 'below') {
+    } else if (this.insertPosition === "below") {
       this.insertRef.current.style.top = `${blockBounds.top + blockBounds.height - 10}px`;
     }
   }
-
 }

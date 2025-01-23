@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { clamp } from 'lodash';
+import { clamp } from "lodash";
 
 interface Params {
   bar: HTMLElement;
@@ -12,12 +12,14 @@ interface Params {
 
 type Callback = (slider: Slider) => void;
 
-const getX = (e: JQuery.MouseMoveEvent | JQuery.TouchMoveEvent | JQuery.TouchStartEvent) => e.clientX ?? e.touches[0].clientX;
+const getX = (
+  e: JQuery.MouseMoveEvent | JQuery.TouchMoveEvent | JQuery.TouchStartEvent,
+) => e.clientX ?? e.touches[0].clientX;
 
 let current: Slider | null = null;
 
 export default class Slider {
-  static readonly startEvents = 'mousedown touchstart';
+  static readonly startEvents = "mousedown touchstart";
   private active = true;
 
   private readonly bar: HTMLElement;
@@ -29,13 +31,13 @@ export default class Slider {
     this.endCallback = params.endCallback;
     this.moveCallback = params.moveCallback;
     this.bar = params.bar;
-    this.bar.dataset.audioDragging = '1';
+    this.bar.dataset.audioDragging = "1";
 
     this.move(getX(params.initialEvent));
-    $(document).on('mousemove touchmove', this.onMove);
-    $(document).on('mouseup touchend', this.end);
-    $(window).on('blur', this.end);
-    $(document).on('turbo:before-cache', this.end);
+    $(document).on("mousemove touchmove", this.onMove);
+    $(document).on("mouseup touchend", this.end);
+    $(window).on("blur", this.end);
+    $(document).on("turbo:before-cache", this.end);
   }
 
   static start(params: Params) {
@@ -55,17 +57,17 @@ export default class Slider {
   end = () => {
     this.active = false;
 
-    $(document).off('mousemove touchmove', this.onMove);
-    $(document).off('mouseup touchend', this.end);
-    $(window).off('blur', this.end);
-    $(document).off('turbo:before-cache', this.end);
+    $(document).off("mousemove touchmove", this.onMove);
+    $(document).off("mouseup touchend", this.end);
+    $(window).off("blur", this.end);
+    $(document).off("turbo:before-cache", this.end);
 
     if (this.endCallback != null) {
       this.endCallback(this);
     }
 
-    this.bar.style.removeProperty('--bar');
-    this.bar.dataset.audioDragging = '0';
+    this.bar.style.removeProperty("--bar");
+    this.bar.dataset.audioDragging = "0";
 
     current = null;
   };
@@ -85,10 +87,12 @@ export default class Slider {
       this.moveCallback(this);
     }
 
-    this.bar.style.setProperty('--bar', this.percentage.toString());
+    this.bar.style.setProperty("--bar", this.percentage.toString());
   };
 
-  private readonly onMove = (e: JQuery.MouseMoveEvent | JQuery.TouchMoveEvent) => {
+  private readonly onMove = (
+    e: JQuery.MouseMoveEvent | JQuery.TouchMoveEvent,
+  ) => {
     const x = getX(e);
 
     requestAnimationFrame(() => {

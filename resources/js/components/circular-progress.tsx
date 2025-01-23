@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { present } from 'utils/string';
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { present } from "utils/string";
 
 interface Props {
   current: number;
@@ -18,10 +18,10 @@ export class CircularProgress extends React.PureComponent<Props, any> {
   static defaultProps = {
     ignoreProgress: false,
     onlyShowAsWarning: false,
-    theme: '',
+    theme: "",
   };
 
-  bn = 'circular-progress';
+  bn = "circular-progress";
 
   render() {
     const bn = this.bn;
@@ -44,9 +44,13 @@ export class CircularProgress extends React.PureComponent<Props, any> {
           warn: percentage >= warnThreshold && percentage < 1,
           [this.props.theme]: present(this.props.theme),
         })}
-        title={this.props.tooltip ?? `${this.props.current} / ${this.props.max}`}
+        title={
+          this.props.tooltip ?? `${this.props.current} / ${this.props.max}`
+        }
       >
-        <div className={`${bn}__label`}>{this.props.max - this.props.current}</div>
+        <div className={`${bn}__label`}>
+          {this.props.max - this.props.current}
+        </div>
         <div className={`${bn}__slice`}>
           <div className={`${bn}__circle`} style={transform} />
           <div className={`${bn}__circle ${bn}__circle--fill`} />

@@ -1,19 +1,19 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CurrentUserJson from 'interfaces/current-user-json';
-import { defaultUserPreferencesJson } from 'interfaces/user-preferences-json';
+import CurrentUserJson from "interfaces/current-user-json";
+import { defaultUserPreferencesJson } from "interfaces/user-preferences-json";
 
 const testCurrentUserJson: CurrentUserJson = {
-  avatar_url: '',
+  avatar_url: "",
   blocks: [],
   country: {
-    code: 'AU',
-    name: 'Australia',
+    code: "AU",
+    name: "Australia",
   },
-  country_code: 'AU',
+  country_code: "AU",
   cover: { custom_url: null, id: null, url: null },
-  default_group: '',
+  default_group: "",
   discord: null,
   follow_user_mapping: [],
   friends: [],
@@ -35,7 +35,7 @@ const testCurrentUserJson: CurrentUserJson = {
   is_restricted: false,
   is_silenced: false,
   is_supporter: true,
-  join_date: '2020-01-01T12:34:56+00:00',
+  join_date: "2020-01-01T12:34:56+00:00",
   kudosu: {
     available: 0,
     total: 0,
@@ -45,7 +45,7 @@ const testCurrentUserJson: CurrentUserJson = {
   max_blocks: 1,
   max_friends: 1,
   occupation: null,
-  playmode: 'osu',
+  playmode: "osu",
   playstyle: [],
   pm_friends_only: false,
   post_count: 0,
@@ -57,7 +57,7 @@ const testCurrentUserJson: CurrentUserJson = {
   twitter: null,
   unread_pm_count: 0,
   user_preferences: defaultUserPreferencesJson(),
-  username: 'foo',
+  username: "foo",
   website: null,
 };
 

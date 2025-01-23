@@ -1,27 +1,35 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import FlagCountry from 'components/flag-country';
-import FlagTeam from 'components/flag-team';
-import Mod from 'components/mod';
-import { PlayDetailMenu } from 'components/play-detail-menu';
-import ScoreValue from 'components/score-value';
-import ScoreboardTime from 'components/scoreboard-time';
-import UserLink from 'components/user-link';
-import BeatmapJson from 'interfaces/beatmap-json';
-import { SoloScoreJsonForBeatmap } from 'interfaces/solo-score-json';
-import { route } from 'laroute';
-import { computed, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import PpValue from 'scores/pp-value';
-import { classWithModifiers, Modifiers } from 'utils/css';
-import { formatNumber } from 'utils/html';
-import { trans } from 'utils/lang';
-import { accuracy, filterMods, hasMenu, isPerfectCombo, attributeDisplayTotals, rank, scoreUrl } from 'utils/score-helper';
+import FlagCountry from "components/flag-country";
+import FlagTeam from "components/flag-team";
+import Mod from "components/mod";
+import { PlayDetailMenu } from "components/play-detail-menu";
+import ScoreValue from "components/score-value";
+import ScoreboardTime from "components/scoreboard-time";
+import UserLink from "components/user-link";
+import BeatmapJson from "interfaces/beatmap-json";
+import { SoloScoreJsonForBeatmap } from "interfaces/solo-score-json";
+import { route } from "laroute";
+import { computed, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import core from "osu-core-singleton";
+import * as React from "react";
+import PpValue from "scores/pp-value";
+import { classWithModifiers, Modifiers } from "utils/css";
+import { formatNumber } from "utils/html";
+import { trans } from "utils/lang";
+import {
+  accuracy,
+  filterMods,
+  hasMenu,
+  isPerfectCombo,
+  attributeDisplayTotals,
+  rank,
+  scoreUrl,
+} from "utils/score-helper";
 
-const bn = 'beatmap-scoreboard-table';
+const bn = "beatmap-scoreboard-table";
 
 interface TdLinkProps {
   children?: React.ReactNode;
@@ -33,7 +41,10 @@ function TdLink(linkProps: TdLinkProps) {
   return (
     <td className={`${bn}__cell`}>
       <a
-        className={classWithModifiers(`${bn}__cell-content`, linkProps.modifiers)}
+        className={classWithModifiers(
+          `${bn}__cell-content`,
+          linkProps.modifiers,
+        )}
         href={linkProps.href}
       >
         {linkProps.children}
@@ -67,60 +78,71 @@ export default class ScoreboardTableRow extends React.Component<Props> {
   render() {
     const score = this.props.score;
     const scoreAccuracy = accuracy(score);
-    const blockClass = classWithModifiers(`${bn}__body-row`,
-      this.props.activated ? 'menu-active' : 'highlightable',
+    const blockClass = classWithModifiers(
+      `${bn}__body-row`,
+      this.props.activated ? "menu-active" : "highlightable",
       {
         first: this.props.index === 0,
-        friend: this.props.highlightFriends && core.currentUserModel.isFriendWith(score.user.id),
+        friend:
+          this.props.highlightFriends &&
+          core.currentUserModel.isFriendWith(score.user.id),
         self: score.user.id === core.currentUser?.id,
       },
     );
 
     return (
       <tr className={blockClass}>
-        <TdLink href={this.scoreUrl} modifiers='rank'>
+        <TdLink href={this.scoreUrl} modifiers="rank">
           {`#${this.props.index + 1}`}
         </TdLink>
 
-        <TdLink href={this.scoreUrl} modifiers='grade'>
-          <div className={classWithModifiers('score-rank', ['tiny', rank(score)])} />
+        <TdLink href={this.scoreUrl} modifiers="grade">
+          <div
+            className={classWithModifiers("score-rank", ["tiny", rank(score)])}
+          />
         </TdLink>
 
-        <TdLink href={this.scoreUrl} modifiers='score'>
+        <TdLink href={this.scoreUrl} modifiers="score">
           <ScoreValue score={score} />
         </TdLink>
 
-        <TdLink href={this.scoreUrl} modifiers={{ perfect: scoreAccuracy === 1 }}>
+        <TdLink
+          href={this.scoreUrl}
+          modifiers={{ perfect: scoreAccuracy === 1 }}
+        >
           {`${formatNumber(scoreAccuracy * 100, 2)}%`}
         </TdLink>
 
         <td className={`${bn}__cell`}>
-          {score.user.country_code != null &&
+          {score.user.country_code != null && (
             <a
               className={`${bn}__cell-content`}
-              href={route('rankings', {
+              href={route("rankings", {
                 country: score.user.country_code,
                 mode: this.props.beatmap.mode,
-                type: 'performance',
+                type: "performance",
               })}
             >
-              <FlagCountry country={score.user.country} modifiers='flat' />
+              <FlagCountry country={score.user.country} modifiers="flat" />
             </a>
-          }
+          )}
         </td>
 
         {score.user.is_deleted ? (
-          <TdLink href={this.scoreUrl}>
-            {trans('users.deleted')}
-          </TdLink>
+          <TdLink href={this.scoreUrl}>{trans("users.deleted")}</TdLink>
         ) : (
           <td className={`${bn}__cell u-relative`}>
-            <span className={`${classWithModifiers(`${bn}__cell-content`, 'user-link')}`}>
-              {score.user.team != null &&
-                <a className='u-contents' href={route('teams.show', { id: score.user.team.id })}>
+            <span
+              className={`${classWithModifiers(`${bn}__cell-content`, "user-link")}`}
+            >
+              {score.user.team != null && (
+                <a
+                  className="u-contents"
+                  href={route("teams.show", { id: score.user.team.id })}
+                >
                   <FlagTeam team={score.user.team} />
                 </a>
-              }
+              )}
               <UserLink
                 className={`${bn}__user-link`}
                 mode={this.props.beatmap.mode}
@@ -131,7 +153,10 @@ export default class ScoreboardTableRow extends React.Component<Props> {
           </td>
         )}
 
-        <TdLink href={this.scoreUrl} modifiers={{ perfect: isPerfectCombo(score) }}>
+        <TdLink
+          href={this.scoreUrl}
+          modifiers={{ perfect: isPerfectCombo(score) }}
+        >
           {`${formatNumber(score.max_combo)}x`}
         </TdLink>
 
@@ -145,19 +170,21 @@ export default class ScoreboardTableRow extends React.Component<Props> {
           </TdLink>
         ))}
 
-        {this.props.showPp &&
+        {this.props.showPp && (
           <TdLink href={this.scoreUrl}>
             <PpValue score={score} />
           </TdLink>
-        }
+        )}
 
-        <TdLink href={this.scoreUrl} modifiers='time'>
+        <TdLink href={this.scoreUrl} modifiers="time">
           <ScoreboardTime dateTime={score.ended_at} />
         </TdLink>
 
-        <TdLink href={this.scoreUrl} modifiers='mods'>
+        <TdLink href={this.scoreUrl} modifiers="mods">
           <div className={`${bn}__mods`}>
-            {filterMods(score).map((mod) => <Mod key={mod.acronym} mod={mod} />)}
+            {filterMods(score).map((mod) => (
+              <Mod key={mod.acronym} mod={mod} />
+            ))}
           </div>
         </TdLink>
 

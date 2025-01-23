@@ -1,21 +1,23 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserJson from 'interfaces/user-json';
+import UserJson from "interfaces/user-json";
 
-export type CommentableMetaJson = {
-  current_user_attributes: {
-    can_new_comment_reason: string | null;
-  };
-  id: number;
-  owner_id: number | null;
-  owner_title: string | null;
-  title: string;
-  type: string;
-  url: string;
-} | {
-  title: string;
-};
+export type CommentableMetaJson =
+  | {
+      current_user_attributes: {
+        can_new_comment_reason: string | null;
+      };
+      id: number;
+      owner_id: number | null;
+      owner_title: string | null;
+      title: string;
+      type: string;
+      url: string;
+    }
+  | {
+      title: string;
+    };
 
 export default interface CommentJson {
   commentable_id: number;

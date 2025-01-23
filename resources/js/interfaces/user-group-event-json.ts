@@ -1,16 +1,18 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Ruleset from './ruleset';
+import Ruleset from "./ruleset";
 
 interface UserGroupEventBase {
-  actor?: {
-    id: number;
-    name: string;
-  } | {
-    id: null;
-    name: null;
-  };
+  actor?:
+    | {
+        id: number;
+        name: string;
+      }
+    | {
+        id: null;
+        name: null;
+      };
   created_at: string;
   group_id: number;
   group_name: string;
@@ -19,34 +21,34 @@ interface UserGroupEventBase {
 }
 
 interface GroupAddOrRemoveEvent extends UserGroupEventBase {
-  type: 'group_add' | 'group_remove';
+  type: "group_add" | "group_remove";
   user_id: null;
   user_name: null;
 }
 
 interface GroupRenameEvent extends UserGroupEventBase {
   previous_group_name: string;
-  type: 'group_rename';
+  type: "group_rename";
   user_id: null;
   user_name: null;
 }
 
 interface UserAddEvent extends UserGroupEventBase {
   playmodes: Ruleset[] | null;
-  type: 'user_add';
+  type: "user_add";
   user_id: number;
   user_name: string;
 }
 
 interface UserAddOrRemovePlaymodesEvent extends UserGroupEventBase {
   playmodes: Ruleset[];
-  type: 'user_add_playmodes' | 'user_remove_playmodes';
+  type: "user_add_playmodes" | "user_remove_playmodes";
   user_id: number;
   user_name: string;
 }
 
 interface UserRemoveOrSetDefaultEvent extends UserGroupEventBase {
-  type: 'user_remove' | 'user_set_default';
+  type: "user_remove" | "user_set_default";
   user_id: number;
   user_name: string;
 }

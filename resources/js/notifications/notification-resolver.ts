@@ -1,27 +1,45 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { dispatch } from 'app-dispatcher';
-import { NotificationBundleJson } from 'interfaces/notification-json';
-import { route } from 'laroute';
-import { debounce } from 'lodash';
-import { action, makeObservable } from 'mobx';
-import Notification from 'models/notification';
-import NotificationDeletable from 'notifications/notification-deletable';
-import { NotificationIdentity, resolveIdentityType, toJson, toString } from 'notifications/notification-identity';
-import NotificationReadable from 'notifications/notification-readable';
-import { NotificationContextData } from 'notifications-context';
-import { onError } from 'utils/ajax';
-import { NotificationCursor } from './notification-cursor';
-import { NotificationEventDelete, NotificationEventMoreLoaded, NotificationEventRead } from './notification-events';
+import { dispatch } from "app-dispatcher";
+import { NotificationBundleJson } from "interfaces/notification-json";
+import { route } from "laroute";
+import { debounce } from "lodash";
+import { action, makeObservable } from "mobx";
+import Notification from "models/notification";
+import NotificationDeletable from "notifications/notification-deletable";
+import {
+  NotificationIdentity,
+  resolveIdentityType,
+  toJson,
+  toString,
+} from "notifications/notification-identity";
+import NotificationReadable from "notifications/notification-readable";
+import { NotificationContextData } from "notifications-context";
+import { onError } from "utils/ajax";
+import { NotificationCursor } from "./notification-cursor";
+import {
+  NotificationEventDelete,
+  NotificationEventMoreLoaded,
+  NotificationEventRead,
+} from "./notification-events";
 
 // I don't know what to name this
 export class NotificationResolver {
-  private readonly debouncedDeleteByIds = debounce(() => this.deleteByIds(), 500);
-  private readonly debouncedSendQueuedMarkedAsRead = debounce(() => this.sendQueuedMarkedAsRead(), 500);
+  private readonly debouncedDeleteByIds = debounce(
+    () => this.deleteByIds(),
+    500,
+  );
+  private readonly debouncedSendQueuedMarkedAsRead = debounce(
+    () => this.sendQueuedMarkedAsRead(),
+    500,
+  );
   private readonly deleteByIdsQueue = new Map<number, Notification>();
   private readonly queuedMarkedAsRead = new Map<number, Notification>();
-  private readonly queuedMarkedAsReadIdentities = new Map<string, NotificationReadable>();
+  private readonly queuedMarkedAsReadIdentities = new Map<
+    string,
+    NotificationReadable
+  >();
 
   constructor() {
     makeObservable(this);
@@ -42,28 +60,35 @@ export class NotificationResolver {
 
     const xhr = $.ajax({
       data: { identities: [toJson(deletable.identity)] },
-      dataType: 'json',
-      method: 'DELETE',
-      url: route('notifications.index'),
+      dataType: "json",
+      method: "DELETE",
+      url: route("notifications.index"),
     }) as JQuery.jqXHR<void>;
 
-    xhr.done(action(() => {
-      dispatch(new NotificationEventDelete([deletable.identity], 0));
-    }))
+    xhr
+      .done(
+        action(() => {
+          dispatch(new NotificationEventDelete([deletable.identity], 0));
+        }),
+      )
       .fail(onError)
-      .always(action(() => deletable.isDeleting = false));
+      .always(action(() => (deletable.isDeleting = false)));
   }
 
   @action
-  loadMore(identity: NotificationIdentity, context: NotificationContextData, cursor?: NotificationCursor) {
+  loadMore(
+    identity: NotificationIdentity,
+    context: NotificationContextData,
+    cursor?: NotificationCursor,
+  ) {
     const urlParams = toJson(identity);
     delete urlParams.id; // ziggy doesn't set the query string if id property exists.
 
-    const url = route('notifications.index', urlParams);
+    const url = route("notifications.index", urlParams);
 
     const params = {
       data: { cursor, unread: context.isWidget },
-      dataType: 'json',
+      dataType: "json",
       url,
     };
 
@@ -78,13 +103,15 @@ export class NotificationResolver {
 
     const identity = readable.identity;
 
-    if (resolveIdentityType(identity) === 'stack') {
+    if (resolveIdentityType(identity) === "stack") {
       // stacks can't be queued because we need the read counts in the broadcasted websocket event to be separate.
       this.sendMarkAsReadRequest({ identities: [toJson(readable.identity)] })
-        .then(action(() => {
-          dispatch(new NotificationEventRead([identity], 0));
-        }))
-        .always(action(() => readable.isMarkingAsRead = false));
+        .then(
+          action(() => {
+            dispatch(new NotificationEventRead([identity], 0));
+          }),
+        )
+        .always(action(() => (readable.isMarkingAsRead = false)));
 
       return;
     }
@@ -105,27 +132,37 @@ export class NotificationResolver {
     if (this.deleteByIdsQueue.size === 0) return;
 
     const notifications = [...this.deleteByIdsQueue.values()];
-    const identities = notifications.map((notification) => notification.identity);
+    const identities = notifications.map(
+      (notification) => notification.identity,
+    );
     this.deleteByIdsQueue.clear();
 
     $.ajax({
       data: { notifications: identities.map(toJson) },
-      dataType: 'json',
-      method: 'DELETE',
-      url: route('notifications.index'),
+      dataType: "json",
+      method: "DELETE",
+      url: route("notifications.index"),
     })
-      .then(action(() => {
-        dispatch(new NotificationEventDelete(identities, 0));
-      }))
-      .always(action(() => notifications.forEach((notification) => notification.isDeleting = false)));
+      .then(
+        action(() => {
+          dispatch(new NotificationEventDelete(identities, 0));
+        }),
+      )
+      .always(
+        action(() =>
+          notifications.forEach(
+            (notification) => (notification.isDeleting = false),
+          ),
+        ),
+      );
   }
 
   private sendMarkAsReadRequest(data: any) {
     const xhr = $.ajax({
       data,
-      dataType: 'json',
-      method: 'POST',
-      url: route('notifications.mark-read'),
+      dataType: "json",
+      method: "POST",
+      url: route("notifications.mark-read"),
     }) as JQuery.jqXHR<void>;
 
     xhr.fail(onError);
@@ -137,26 +174,46 @@ export class NotificationResolver {
     // TODO: combine both sets?
     if (this.queuedMarkedAsRead.size > 0) {
       const queuedItems = [...this.queuedMarkedAsRead.values()];
-      const identities = queuedItems.map((notification) => notification.identity);
+      const identities = queuedItems.map(
+        (notification) => notification.identity,
+      );
       this.queuedMarkedAsRead.clear();
 
       this.sendMarkAsReadRequest({ notifications: identities.map(toJson) })
-        .then(action(() => {
-          dispatch(new NotificationEventRead(identities, 0));
-        }))
-        .always(action(() => queuedItems.forEach((notification) => notification.isMarkingAsRead = false)));
+        .then(
+          action(() => {
+            dispatch(new NotificationEventRead(identities, 0));
+          }),
+        )
+        .always(
+          action(() =>
+            queuedItems.forEach(
+              (notification) => (notification.isMarkingAsRead = false),
+            ),
+          ),
+        );
     }
 
     if (this.queuedMarkedAsReadIdentities.size > 0) {
       const notifications = [...this.queuedMarkedAsReadIdentities.values()];
-      const identities = notifications.map((notification) => notification.identity);
+      const identities = notifications.map(
+        (notification) => notification.identity,
+      );
       this.queuedMarkedAsReadIdentities.clear();
 
       this.sendMarkAsReadRequest({ identities: identities.map(toJson) })
-        .then(action(() => {
-          dispatch(new NotificationEventRead(identities, 0));
-        }))
-        .always(action(() => notifications.forEach((notification) => notification.isMarkingAsRead = false)));
+        .then(
+          action(() => {
+            dispatch(new NotificationEventRead(identities, 0));
+          }),
+        )
+        .always(
+          action(() =>
+            notifications.forEach(
+              (notification) => (notification.isMarkingAsRead = false),
+            ),
+          ),
+        );
     }
   }
 }

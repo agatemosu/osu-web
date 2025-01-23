@@ -1,20 +1,20 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import ShowMoreLink from 'components/show-more-link';
-import { observer } from 'mobx-react';
-import Notification from 'models/notification';
-import NotificationStack from 'models/notification-stack';
-import { categoryToIcons } from 'notification-maps/icons';
-import { formatMessageGroup } from 'notification-maps/message';
-import { urlGroup } from 'notification-maps/url';
-import NotificationDeleteButton from 'notifications/notification-delete-button';
-import NotificationReadButton from 'notifications/notification-read-button';
-import { NotificationContext } from 'notifications-context';
-import * as React from 'react';
-import { trans, transChoice } from 'utils/lang';
-import Item from './item';
-import ItemCompact from './item-compact';
+import ShowMoreLink from "components/show-more-link";
+import { observer } from "mobx-react";
+import Notification from "models/notification";
+import NotificationStack from "models/notification-stack";
+import { categoryToIcons } from "notification-maps/icons";
+import { formatMessageGroup } from "notification-maps/message";
+import { urlGroup } from "notification-maps/url";
+import NotificationDeleteButton from "notifications/notification-delete-button";
+import NotificationReadButton from "notifications/notification-read-button";
+import { NotificationContext } from "notifications-context";
+import * as React from "react";
+import { trans, transChoice } from "utils/lang";
+import Item from "./item";
+import ItemCompact from "./item-compact";
 
 interface Props {
   stack: NotificationStack;
@@ -39,7 +39,7 @@ export default class ItemGroup extends React.Component<Props, State> {
     }
 
     return (
-      <div className='notification-popup-item-group'>
+      <div className="notification-popup-item-group">
         <Item
           canMarkAsRead={this.props.stack.canMarkAsRead}
           delete={this.handleDelete}
@@ -50,7 +50,7 @@ export default class ItemGroup extends React.Component<Props, State> {
           item={item}
           markRead={this.handleMarkAsRead}
           message={formatMessageGroup(item)}
-          modifiers={['group']}
+          modifiers={["group"]}
           url={urlGroup(item)}
           withCategory
           withCoverImage
@@ -78,20 +78,24 @@ export default class ItemGroup extends React.Component<Props, State> {
 
   private renderExpandButton() {
     const count = this.props.stack.total;
-    const transKey = this.context.isWidget ? 'common.count.update' : 'common.count.notifications';
+    const transKey = this.context.isWidget
+      ? "common.count.update"
+      : "common.count.notifications";
 
     return (
       <button
-        className='show-more-link show-more-link--notification-group u-hover'
+        className="show-more-link show-more-link--notification-group u-hover"
         onClick={this.toggleExpand}
-        type='button'
+        type="button"
       >
-        <span className='show-more-link__label'>
-          <span className='show-more-link__label-text'>
+        <span className="show-more-link__label">
+          <span className="show-more-link__label-text">
             {transChoice(transKey, count)}
           </span>
-          <span className='show-more-link__label-icon'>
-            <span className={`fas fa-angle-${this.state.expanded ? 'up' : 'down'}`} />
+          <span className="show-more-link__label-icon">
+            <span
+              className={`fas fa-angle-${this.state.expanded ? "up" : "down"}`}
+            />
           </span>
         </span>
       </button>
@@ -99,7 +103,7 @@ export default class ItemGroup extends React.Component<Props, State> {
   }
 
   private readonly renderItem = (item: Notification) => (
-    <div key={item.id} className='notification-popup-item-group__item'>
+    <div key={item.id} className="notification-popup-item-group__item">
       <ItemCompact item={item} stack={this.props.stack} />
     </div>
   );
@@ -110,13 +114,13 @@ export default class ItemGroup extends React.Component<Props, State> {
     }
 
     return (
-      <div className='notification-popup-item-group__items'>
+      <div className="notification-popup-item-group__items">
         {this.props.stack.orderedNotifications.map(this.renderItem)}
-        <div className='notification-popup-item-group__show-more'>
-          <div className='notification-popup-item-group__expand'>
+        <div className="notification-popup-item-group__show-more">
+          <div className="notification-popup-item-group__expand">
             {this.renderShowMore()}
           </div>
-          <div className='notification-popup-item-group__collapse'>
+          <div className="notification-popup-item-group__collapse">
             {this.renderShowLess()}
             {this.props.stack.canMarkAsRead && (
               <NotificationReadButton
@@ -140,10 +144,10 @@ export default class ItemGroup extends React.Component<Props, State> {
     return (
       <ShowMoreLink
         callback={this.handleShowLess}
-        direction='up'
+        direction="up"
         hasMore
-        label={trans('common.buttons.show_less')}
-        modifiers={['notification-group']}
+        label={trans("common.buttons.show_less")}
+        modifiers={["notification-group"]}
       />
     );
   }
@@ -159,7 +163,7 @@ export default class ItemGroup extends React.Component<Props, State> {
         callback={this.handleShowMore}
         hasMore={stack.cursor != null}
         loading={stack.isLoading}
-        modifiers={['notification-group']}
+        modifiers={["notification-group"]}
       />
     );
   }

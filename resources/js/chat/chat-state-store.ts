@@ -1,31 +1,39 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { ChatNewConversationAdded } from 'actions/chat-new-conversation-added';
-import DispatcherAction from 'actions/dispatcher-action';
-import FriendUpdated from 'actions/friend-updated';
-import SocketMessageSendAction from 'actions/socket-message-send-action';
-import SocketStateChangedAction from 'actions/socket-state-changed-action';
-import { dispatch, dispatchListener } from 'app-dispatcher';
-import DispatchListener from 'dispatch-listener';
-import { supportedChannelTypes } from 'interfaces/chat/channel-json';
-import { clamp, maxBy } from 'lodash';
-import { action, autorun, computed, makeObservable, observable, observe, runInAction } from 'mobx';
-import Channel from 'models/chat/channel';
-import CreateAnnouncement from 'models/chat/create-announcement';
-import core from 'osu-core-singleton';
-import ChannelStore from 'stores/channel-store';
-import { isJqXHR, onError } from 'utils/ajax';
-import { hideLoadingOverlay } from 'utils/loading-overlay';
-import { updateHistory } from 'utils/turbolinks';
-import { updateQueryString } from 'utils/url';
-import ChannelId, { AddChannelType } from './channel-id';
-import ChannelJoinEvent from './channel-join-event';
-import ChannelPartEvent from './channel-part-event';
-import { createAnnouncement, getUpdates, joinChannel } from './chat-api';
-import MainView from './main-view';
-import PingService from './ping-service';
-import PublicChannels from './public-channels';
+import { ChatNewConversationAdded } from "actions/chat-new-conversation-added";
+import DispatcherAction from "actions/dispatcher-action";
+import FriendUpdated from "actions/friend-updated";
+import SocketMessageSendAction from "actions/socket-message-send-action";
+import SocketStateChangedAction from "actions/socket-state-changed-action";
+import { dispatch, dispatchListener } from "app-dispatcher";
+import DispatchListener from "dispatch-listener";
+import { supportedChannelTypes } from "interfaces/chat/channel-json";
+import { clamp, maxBy } from "lodash";
+import {
+  action,
+  autorun,
+  computed,
+  makeObservable,
+  observable,
+  observe,
+  runInAction,
+} from "mobx";
+import Channel from "models/chat/channel";
+import CreateAnnouncement from "models/chat/create-announcement";
+import core from "osu-core-singleton";
+import ChannelStore from "stores/channel-store";
+import { isJqXHR, onError } from "utils/ajax";
+import { hideLoadingOverlay } from "utils/loading-overlay";
+import { updateHistory } from "utils/turbolinks";
+import { updateQueryString } from "utils/url";
+import ChannelId, { AddChannelType } from "./channel-id";
+import ChannelJoinEvent from "./channel-join-event";
+import ChannelPartEvent from "./channel-part-event";
+import { createAnnouncement, getUpdates, joinChannel } from "./chat-api";
+import MainView from "./main-view";
+import PingService from "./ping-service";
+import PublicChannels from "./public-channels";
 
 @dispatchListener
 export default class ChatStateStore implements DispatchListener {
@@ -53,30 +61,38 @@ export default class ChatStateStore implements DispatchListener {
   }
 
   get joiningChannelId() {
-    return typeof this.waitAddChannelId === 'number'
+    return typeof this.waitAddChannelId === "number"
       ? this.waitAddChannelId
       : null;
   }
 
   @computed
   get joinedPublicChannelIds() {
-    return new Set(this.channelStore.groupedChannels.PUBLIC.map((channel) => channel.channelId));
+    return new Set(
+      this.channelStore.groupedChannels.PUBLIC.map(
+        (channel) => channel.channelId,
+      ),
+    );
   }
 
   get selectedChannel() {
-    return typeof this.selected === 'number' ? this.channelStore.get(this.selected) : null;
+    return typeof this.selected === "number"
+      ? this.channelStore.get(this.selected)
+      : null;
   }
 
   // In most cases we want the Channel or create/add channel type, not the channel id itself.
   get selectedChannelOrType() {
-    return typeof this.selected === 'number'
+    return typeof this.selected === "number"
       ? this.channelStore.get(this.selected)
       : this.selected;
   }
 
   @computed
   private get channelList(): Channel[] {
-    return supportedChannelTypes.flatMap((type) => this.channelStore.groupedChannels[type]);
+    return supportedChannelTypes.flatMap(
+      (type) => this.channelStore.groupedChannels[type],
+    );
   }
 
   constructor(protected channelStore: ChannelStore) {
@@ -84,11 +100,11 @@ export default class ChatStateStore implements DispatchListener {
 
     makeObservable(this);
 
-    document.addEventListener('turbo:before-cache', this.handleBeforeCache);
+    document.addEventListener("turbo:before-cache", this.handleBeforeCache);
 
     observe(channelStore.channels, (changes) => {
       // refocus channels if any gets removed
-      if (changes.type === 'delete') {
+      if (changes.type === "delete") {
         this.refocusSelectedChannel();
       }
     });
@@ -96,10 +112,10 @@ export default class ChatStateStore implements DispatchListener {
     autorun(() => {
       if (this.isReady && this.isChatMounted) {
         this.pingService.start();
-        dispatch(new SocketMessageSendAction({ event: 'chat.start' }));
+        dispatch(new SocketMessageSendAction({ event: "chat.start" }));
       } else {
         this.pingService.stop();
-        dispatch(new SocketMessageSendAction({ event: 'chat.end' }));
+        dispatch(new SocketMessageSendAction({ event: "chat.end" }));
       }
     });
 
@@ -120,7 +136,11 @@ export default class ChatStateStore implements DispatchListener {
     });
 
     autorun(() => {
-      if (this.selected === 'join' && this.publicChannels.channels == null && !this.publicChannels.error) {
+      if (
+        this.selected === "join" &&
+        this.publicChannels.channels == null &&
+        !this.publicChannels.error
+      ) {
         this.publicChannels.load();
       }
     });
@@ -174,7 +194,10 @@ export default class ChatStateStore implements DispatchListener {
   }
 
   @action
-  selectChannel(channelId: ChannelId, mode: 'push' | 'replace' | null = 'push') {
+  selectChannel(
+    channelId: ChannelId,
+    mode: "push" | "replace" | null = "push",
+  ) {
     this.waitAddChannelId = null; // reset any waiting for channel.
     // Mark the channel being switched away from as read.
     // Marking as read is done here to avoid constantly sending mark-as-read requests
@@ -182,7 +205,7 @@ export default class ChatStateStore implements DispatchListener {
     this.selectedChannel?.throttledSendMarkAsRead();
     this.selected = channelId;
 
-    if (typeof channelId === 'string') {
+    if (typeof channelId === "string") {
       this.updateUrl(channelId, mode);
       return;
     }
@@ -205,10 +228,13 @@ export default class ChatStateStore implements DispatchListener {
 
     this.selectChannel(this.channelList[0].channelId, null);
     // Remove channel_id from location on selectFirst();
-    updateHistory(updateQueryString(null, {
-      channel_id: null,
-      sendto: null,
-    }), 'replace');
+    updateHistory(
+      updateQueryString(null, {
+        channel_id: null,
+        sendto: null,
+      }),
+      "replace",
+    );
   }
 
   @action
@@ -236,14 +262,17 @@ export default class ChatStateStore implements DispatchListener {
     const json = event.json;
     this.channelStore.update(json);
 
-    if (typeof this.waitAddChannelId === 'string' && this.waitAddChannelId === json.uuid
-      || typeof this.waitAddChannelId === 'number' && this.waitAddChannelId === json.channel_id
+    if (
+      (typeof this.waitAddChannelId === "string" &&
+        this.waitAddChannelId === json.uuid) ||
+      (typeof this.waitAddChannelId === "number" &&
+        this.waitAddChannelId === json.channel_id)
     ) {
       // hide overlay before changing channel if we're waiting for a change to remove it from history navigation.
       hideLoadingOverlay();
       this.selectChannel(json.channel_id);
       this.waitAddChannelId = null;
-      if (json.type === 'ANNOUNCE') {
+      if (json.type === "ANNOUNCE") {
         this.createAnnouncement.clear();
       }
     }
@@ -266,7 +295,9 @@ export default class ChatStateStore implements DispatchListener {
     if (!this.isChatMounted) return;
 
     // FIXME: friend list update isn't propagated to other tabs without a full refresh, yet.
-    const channel = this.channelStore.groupedChannels.PM.find((value) => value.pmTarget === event.userId);
+    const channel = this.channelStore.groupedChannels.PM.find(
+      (value) => value.pmTarget === event.userId,
+    );
     channel?.loadMetadata();
   }
 
@@ -274,7 +305,9 @@ export default class ChatStateStore implements DispatchListener {
   private handleSocketStateChanged(event: SocketStateChangedAction) {
     this.isConnected = event.connected;
     if (!event.connected) {
-      this.channelStore.channels.forEach((channel) => channel.needsRefresh = true);
+      this.channelStore.channels.forEach(
+        (channel) => (channel.needsRefresh = true),
+      );
       this.isReady = false;
     }
   }
@@ -284,7 +317,7 @@ export default class ChatStateStore implements DispatchListener {
    * Keeps the current channel in focus, unless deleted, then focus on next channel.
    */
   private refocusSelectedChannel() {
-    if (typeof this.selectedChannelOrType === 'string') return;
+    if (typeof this.selectedChannelOrType === "string") return;
 
     if (this.selectedChannelOrType != null) {
       this.selectChannel(this.selectedChannelOrType.channelId);
@@ -295,10 +328,13 @@ export default class ChatStateStore implements DispatchListener {
 
   @action
   private async updateChannelList() {
-    const json = await getUpdates(this.channelStore.lastReceivedMessageId, this.lastHistoryId);
+    const json = await getUpdates(
+      this.channelStore.lastReceivedMessageId,
+      this.lastHistoryId,
+    );
 
     runInAction(() => {
-      const newHistoryId = maxBy(json.silences, 'id')?.id;
+      const newHistoryId = maxBy(json.silences, "id")?.id;
 
       if (newHistoryId != null) {
         this.lastHistoryId = newHistoryId;
@@ -308,13 +344,19 @@ export default class ChatStateStore implements DispatchListener {
     });
   }
 
-  private updateUrl(channel: Channel | AddChannelType, mode: 'push' | 'replace' | null) {
+  private updateUrl(
+    channel: Channel | AddChannelType,
+    mode: "push" | "replace" | null,
+  ) {
     if (mode == null) return;
 
-    let hash = '';
-    const params: Record<'channel_id' | 'sendto', string | null | undefined> = { channel_id: null, sendto: null };
+    let hash = "";
+    const params: Record<"channel_id" | "sendto", string | null | undefined> = {
+      channel_id: null,
+      sendto: null,
+    };
 
-    if (typeof channel === 'string') {
+    if (typeof channel === "string") {
       hash = channel;
     } else {
       if (channel.newPmChannel) {

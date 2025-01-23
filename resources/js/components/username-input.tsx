@@ -1,18 +1,18 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import UserJson from 'interfaces/user-json';
-import { debounce } from 'lodash';
-import { action, makeObservable, observable, runInAction } from 'mobx';
-import { observer } from 'mobx-react';
-import core from 'osu-core-singleton';
-import * as React from 'react';
-import { isJqXHR, onError } from 'utils/ajax';
-import { classWithModifiers, Modifiers } from 'utils/css';
-import { presence } from 'utils/string';
-import { apiLookupUsers } from 'utils/user';
-import { Spinner } from './spinner';
-import UserCardBrick from './user-card-brick';
+import UserJson from "interfaces/user-json";
+import { debounce } from "lodash";
+import { action, makeObservable, observable, runInAction } from "mobx";
+import { observer } from "mobx-react";
+import core from "osu-core-singleton";
+import * as React from "react";
+import { isJqXHR, onError } from "utils/ajax";
+import { classWithModifiers, Modifiers } from "utils/css";
+import { presence } from "utils/string";
+import { apiLookupUsers } from "utils/user";
+import { Spinner } from "./spinner";
+import UserCardBrick from "./user-card-brick";
 
 interface Props {
   excludeBots?: boolean;
@@ -26,20 +26,24 @@ interface Props {
   onEnterPressed?: () => void;
   onValidUsersChanged?: (value: Map<number, UserJson>) => void;
   onValueChanged?: (value: string) => void;
-  renderUser?: (user: UserJson, onRemoveClick: (user: UserJson) => void) => void;
+  renderUser?: (
+    user: UserJson,
+    onRemoveClick: (user: UserJson) => void,
+  ) => void;
 }
 
 const BusySpinner = ({ busy }: { busy: boolean }) => (
-  <div className='username-input__spinner'>
-    {busy && <Spinner />}
-  </div>
+  <div className="username-input__spinner">{busy && <Spinner />}</div>
 );
 
 @observer
 export default class UsernameInput extends React.PureComponent<Props> {
   @observable private busy = false;
-  private readonly debouncedLookupUsers = debounce(() => this.lookupUsers(), 1000);
-  @observable private input: string = '';
+  private readonly debouncedLookupUsers = debounce(
+    () => this.lookupUsers(),
+    1000,
+  );
+  @observable private input: string = "";
   @observable private readonly validUsers = new Map<number, UserJson>();
   private xhr?: ReturnType<typeof apiLookupUsers>;
 
@@ -69,9 +73,11 @@ export default class UsernameInput extends React.PureComponent<Props> {
 
   render() {
     return (
-      <div className={classWithModifiers('username-input', this.props.modifiers)}>
+      <div
+        className={classWithModifiers("username-input", this.props.modifiers)}
+      >
         <input
-          className='username-input__input'
+          className="username-input__input"
           id={this.props.id}
           name={this.props.name}
           onBlur={this.handleBlur}
@@ -92,7 +98,7 @@ export default class UsernameInput extends React.PureComponent<Props> {
    */
   @action
   private extractValidUsers(users: UserJson[]) {
-    const userIds = this.input.split(',');
+    const userIds = this.input.split(",");
 
     for (const user of users) {
       this.validUsers.set(user.id, user);
@@ -108,7 +114,7 @@ export default class UsernameInput extends React.PureComponent<Props> {
       }
     }
 
-    this.input = invalidUsers.join(',');
+    this.input = invalidUsers.join(",");
 
     if (this.props.ignoreCurrentUser ?? false) {
       this.validUsers.delete(core.currentUserOrFail.id);
@@ -130,14 +136,22 @@ export default class UsernameInput extends React.PureComponent<Props> {
   };
 
   @action
-  private readonly handleUsersInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  private readonly handleUsersInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     this.updateUsers(e.currentTarget.value, false);
   };
 
   @action
-  private readonly handleUsersInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  private readonly handleUsersInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
     const elem = e.currentTarget;
-    if (e.key === 'Backspace' && elem.selectionStart === 0 && elem.selectionEnd === 0) {
+    if (
+      e.key === "Backspace" &&
+      elem.selectionStart === 0 &&
+      elem.selectionEnd === 0
+    ) {
       const last = [...this.validUsers.keys()].pop();
       if (last != null) {
         this.validUsers.delete(last);
@@ -146,12 +160,16 @@ export default class UsernameInput extends React.PureComponent<Props> {
     }
   };
 
-  private readonly handleUsersInputKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') this.props.onEnterPressed?.();
+  private readonly handleUsersInputKeyUp = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === "Enter") this.props.onEnterPressed?.();
   };
 
   @action
-  private readonly handleUsersInputPaste = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  private readonly handleUsersInputPaste = (
+    e: React.SyntheticEvent<HTMLInputElement>,
+  ) => {
     this.updateUsers(e.currentTarget.value, true);
   };
 
@@ -160,7 +178,10 @@ export default class UsernameInput extends React.PureComponent<Props> {
     this.xhr?.abort();
     this.debouncedLookupUsers.cancel();
 
-    const userIds = this.input.split(',').map((s) => presence(s.trim())).filter(Boolean);
+    const userIds = this.input
+      .split(",")
+      .map((s) => presence(s.trim()))
+      .filter(Boolean);
     if (userIds.length === 0) {
       this.busy = false;
       return;
@@ -174,16 +195,21 @@ export default class UsernameInput extends React.PureComponent<Props> {
       if (!isJqXHR(error)) throw error;
       onError(error);
     } finally {
-      runInAction(() => this.busy = false);
+      runInAction(() => (this.busy = false));
     }
   }
 
-
   private renderValidUsers() {
     return [...this.validUsers.values()].map((user) =>
-      this.props.renderUser == null
-        ? <UserCardBrick key={user.id} onRemoveClick={this.handleRemoveUser} user={user} />
-        : this.props.renderUser(user, this.handleRemoveUser),
+      this.props.renderUser == null ? (
+        <UserCardBrick
+          key={user.id}
+          onRemoveClick={this.handleRemoveUser}
+          user={user}
+        />
+      ) : (
+        this.props.renderUser(user, this.handleRemoveUser)
+      ),
     );
   }
 
@@ -214,12 +240,15 @@ export default class UsernameInput extends React.PureComponent<Props> {
   private validUsersContain(userIdOrUsername?: string | null) {
     if (userIdOrUsername == null) return false;
 
-    return this.validUsers.has(Number(userIdOrUsername))
+    return (
+      this.validUsers.has(Number(userIdOrUsername)) ||
       // maybe it's a username
-      || [...this.validUsers.values()].some((user) => {
+      [...this.validUsers.values()].some((user) => {
         const validUsernameLowercase = user.username.toLowerCase();
-        return [validUsernameLowercase, `@${validUsernameLowercase}`].includes(userIdOrUsername.toLowerCase());
-      });
+        return [validUsernameLowercase, `@${validUsernameLowercase}`].includes(
+          userIdOrUsername.toLowerCase(),
+        );
+      })
+    );
   }
 }
-

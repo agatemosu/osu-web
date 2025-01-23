@@ -3,13 +3,17 @@
 
 export default class SyncHeight {
   private readonly observer;
-  private readonly references = document.getElementsByClassName('js-sync-height--reference');
-  private readonly targets = document.getElementsByClassName('js-sync-height--target');
+  private readonly references = document.getElementsByClassName(
+    "js-sync-height--reference",
+  );
+  private readonly targets = document.getElementsByClassName(
+    "js-sync-height--target",
+  );
 
   constructor() {
-    $(document).on('turbo:load', this.sync);
-    $.subscribe('sync-height:force', this.sync);
-    $(window).on('resize', this.sync);
+    $(document).on("turbo:load", this.sync);
+    $.subscribe("sync-height:force", this.sync);
+    $(window).on("resize", this.sync);
 
     this.observer = new MutationObserver(this.onResize);
     this.observer.observe(document, {

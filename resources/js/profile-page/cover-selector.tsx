@@ -1,18 +1,18 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { action, observable, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import { nextVal } from 'utils/seq';
-import Controller from './controller';
-import CoverSelection from './cover-selection';
-import CoverUploader from './cover-uploader';
+import { action, observable, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
+import { nextVal } from "utils/seq";
+import Controller from "./controller";
+import CoverSelection from "./cover-selection";
+import CoverUploader from "./cover-uploader";
 
-type DropOverlayState = 'hover' | undefined;
-type DropOverlayVisibility = 'hidden' | undefined;
+type DropOverlayState = "hover" | undefined;
+type DropOverlayVisibility = "hidden" | undefined;
 
 interface Props {
   controller: Controller;
@@ -21,7 +21,7 @@ interface Props {
 @observer
 export default class CoverSelector extends React.Component<Props> {
   @observable private dropOverlayState: DropOverlayState;
-  @observable private dropOverlayVisibility: DropOverlayVisibility = 'hidden';
+  @observable private dropOverlayVisibility: DropOverlayVisibility = "hidden";
   private readonly dropzoneRef = React.createRef<HTMLDivElement>();
   private readonly eventId = `users-show-cover-selector-${nextVal()}`;
   private readonly uploaderRef = React.createRef<CoverUploader>();
@@ -48,26 +48,26 @@ export default class CoverSelector extends React.Component<Props> {
     const holdoverCoverPreset = this.props.controller.holdoverCoverPreset;
 
     return (
-      <div ref={this.dropzoneRef} className='profile-cover-change-popup'>
-        <h2 className='title title--profile-edit-popup'>
-          {trans('users.show.edit.cover.title')}
+      <div ref={this.dropzoneRef} className="profile-cover-change-popup">
+        <h2 className="title title--profile-edit-popup">
+          {trans("users.show.edit.cover.title")}
         </h2>
-        <div className='profile-cover-change-popup__defaults'>
-          {this.props.controller.userCoverPresets.map((preset) =>
-            (<CoverSelection
+        <div className="profile-cover-change-popup__defaults">
+          {this.props.controller.userCoverPresets.map((preset) => (
+            <CoverSelection
               key={preset.id}
               controller={this.props.controller}
               preset={preset}
-            />),
-          )}
-          {holdoverCoverPreset != null &&
+            />
+          ))}
+          {holdoverCoverPreset != null && (
             <CoverSelection
               controller={this.props.controller}
               preset={holdoverCoverPreset}
             />
-          }
-          <p className='profile-cover-change-popup__selections-info'>
-            {trans('users.show.edit.cover.defaults_info')}
+          )}
+          <p className="profile-cover-change-popup__selections-info">
+            {trans("users.show.edit.cover.defaults_info")}
           </p>
         </div>
         <CoverUploader
@@ -75,28 +75,31 @@ export default class CoverSelector extends React.Component<Props> {
           controller={this.props.controller}
           dropzoneRef={this.dropzoneRef}
         />
-        {this.props.controller.canUploadCover &&
+        {this.props.controller.canUploadCover && (
           <div
-            className={classWithModifiers('profile-cover-change-popup__drop-overlay', this.dropOverlayState)}
+            className={classWithModifiers(
+              "profile-cover-change-popup__drop-overlay",
+              this.dropOverlayState,
+            )}
             data-visibility={this.dropOverlayVisibility}
             onDragEnter={this.dropOverlayEnter}
             onDragLeave={this.dropOverlayLeave}
           >
-            {trans('users.show.edit.cover.upload.dropzone')}
+            {trans("users.show.edit.cover.upload.dropzone")}
           </div>
-        }
+        )}
       </div>
     );
   }
 
   @action
   private readonly dropOverlayEnd = () => {
-    this.dropOverlayVisibility = 'hidden';
+    this.dropOverlayVisibility = "hidden";
   };
 
   @action
   private readonly dropOverlayEnter = () => {
-    this.dropOverlayState = 'hover';
+    this.dropOverlayState = "hover";
   };
 
   @action

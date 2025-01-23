@@ -1,55 +1,66 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BigButton from 'components/big-button';
-import InputContainer from 'components/input-container';
-import { isEqual } from 'lodash';
-import { action, computed, makeObservable, observable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
-import { jsonClone } from 'utils/json';
-import { trans } from 'utils/lang';
-import { presence, present } from 'utils/string';
-import makeLink from './make-link';
+import BigButton from "components/big-button";
+import InputContainer from "components/input-container";
+import { isEqual } from "lodash";
+import { action, computed, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { classWithModifiers } from "utils/css";
+import { jsonClone } from "utils/json";
+import { trans } from "utils/lang";
+import { presence, present } from "utils/string";
+import makeLink from "./make-link";
 
 type Nullable<T> = T | null | undefined;
 
-type EsRangeField = 'gt' | 'gte' | 'lt' | 'lte';
+type EsRangeField = "gt" | "gte" | "lt" | "lte";
 
 type EsRange<T> = Partial<Record<EsRangeField, Nullable<T>>>;
 
 export const artistTrackSortFields = [
-  'album',
-  'artist',
-  'bpm',
-  'genre',
-  'length',
-  'relevance',
-  'title',
-  'update',
+  "album",
+  "artist",
+  "bpm",
+  "genre",
+  "length",
+  "relevance",
+  "title",
+  "update",
 ] as const;
-export type ArtistTrackSortField = typeof artistTrackSortFields[number];
+export type ArtistTrackSortField = (typeof artistTrackSortFields)[number];
 
-export const artistTrackSortOrders = ['asc', 'desc'] as const;
-export type ArtistTrackSortOrder = typeof artistTrackSortOrders[number];
+export const artistTrackSortOrders = ["asc", "desc"] as const;
+export type ArtistTrackSortOrder = (typeof artistTrackSortOrders)[number];
 
 export type ArtistTrackSort = `${ArtistTrackSortField}_${ArtistTrackSortOrder}`;
 
-export const artistTrackSearchRelevanceParams = ['album', 'artist', 'query'] as const;
-type ArtistTrackSearchRelevanceParam = typeof artistTrackSearchRelevanceParams[number];
+export const artistTrackSearchRelevanceParams = [
+  "album",
+  "artist",
+  "query",
+] as const;
+type ArtistTrackSearchRelevanceParam =
+  (typeof artistTrackSearchRelevanceParams)[number];
 
-type ArtistTrackSearchNumberRangeParam = 'bpm' | 'length';
+type ArtistTrackSearchNumberRangeParam = "bpm" | "length";
 
 export type ArtistTrackSearch = {
   exclusive_only: boolean;
   genre?: Nullable<string>;
   is_default_sort: boolean;
   sort: ArtistTrackSort;
-} & Partial<Record<ArtistTrackSearchRelevanceParam, Nullable<string>>> & Partial<Record<ArtistTrackSearchNumberRangeParam, Nullable<EsRange<number | string>>>>;
+} & Partial<Record<ArtistTrackSearchRelevanceParam, Nullable<string>>> &
+  Partial<
+    Record<
+      ArtistTrackSearchNumberRangeParam,
+      Nullable<EsRange<number | string>>
+    >
+  >;
 
-const lengthRegexp = '^\\d+(\\.\\d*)?(ms|s|m|h)?$';
-const numericRegexp = '^\\d*$';
+const lengthRegexp = "^\\d+(\\.\\d*)?(ms|s|m|h)?$";
+const numericRegexp = "^\\d*$";
 
 interface Props {
   availableGenres: string[];
@@ -93,105 +104,130 @@ export default class SearchForm extends React.Component<Props> {
 
   render() {
     return (
-      <form className='artist-track-search-form' onSubmit={this.handleSubmit}>
-        <input className='u-invisible' type='submit' />
-        <div className='artist-track-search-form__content'>
-          <div className='input-container input-container--search-box'>
+      <form className="artist-track-search-form" onSubmit={this.handleSubmit}>
+        <input className="u-invisible" type="submit" />
+        <div className="artist-track-search-form__content">
+          <div className="input-container input-container--search-box">
             <input
-              className='input-text'
-              name='query'
+              className="input-text"
+              name="query"
               onChange={this.handleChangeString}
-              placeholder={trans('beatmaps.listing.search.prompt')}
-              value={this.params.query ?? ''}
+              placeholder={trans("beatmaps.listing.search.prompt")}
+              value={this.params.query ?? ""}
             />
           </div>
 
-          <h3 className='title title--artist-track-search-advanced'>
-            {trans('artist.tracks.index.form.advanced')}
+          <h3 className="title title--artist-track-search-advanced">
+            {trans("artist.tracks.index.form.advanced")}
           </h3>
 
-          <div className='artist-track-search-form__advanced'>
-            <InputContainer labelKey='artist.tracks.index.form.artist' modifiers='2'>
+          <div className="artist-track-search-form__advanced">
+            <InputContainer
+              labelKey="artist.tracks.index.form.artist"
+              modifiers="2"
+            >
               <input
-                className='input-text'
-                name='artist'
+                className="input-text"
+                name="artist"
                 onChange={this.handleChangeString}
-                value={this.params.artist ?? ''}
+                value={this.params.artist ?? ""}
               />
             </InputContainer>
-            <InputContainer labelKey='artist.tracks.index.form.album' modifiers='2'>
+            <InputContainer
+              labelKey="artist.tracks.index.form.album"
+              modifiers="2"
+            >
               <input
-                className='input-text'
-                name='album'
+                className="input-text"
+                name="album"
                 onChange={this.handleChangeString}
-                value={this.params.album ?? ''}
+                value={this.params.album ?? ""}
               />
             </InputContainer>
 
-            <InputContainer labelKey='artist.tracks.index.form.bpm_gte'>
+            <InputContainer labelKey="artist.tracks.index.form.bpm_gte">
               <input
-                className='input-text'
-                data-param='bpm'
-                data-range='gte'
-                inputMode='numeric'
+                className="input-text"
+                data-param="bpm"
+                data-range="gte"
+                inputMode="numeric"
                 onChange={this.handleChangeRangeNatural}
                 pattern={numericRegexp}
-                value={this.params.bpm?.gte ?? ''}
+                value={this.params.bpm?.gte ?? ""}
               />
             </InputContainer>
 
-            <InputContainer labelKey='artist.tracks.index.form.bpm_lte'>
+            <InputContainer labelKey="artist.tracks.index.form.bpm_lte">
               <input
-                className='input-text'
-                data-param='bpm'
-                data-range='lte'
-                inputMode='numeric'
+                className="input-text"
+                data-param="bpm"
+                data-range="lte"
+                inputMode="numeric"
                 onChange={this.handleChangeRangeNatural}
                 pattern={numericRegexp}
-                value={this.params.bpm?.lte ?? ''}
+                value={this.params.bpm?.lte ?? ""}
               />
             </InputContainer>
 
-            <InputContainer labelKey='artist.tracks.index.form.length_gte'>
+            <InputContainer labelKey="artist.tracks.index.form.length_gte">
               <input
-                className='input-text'
-                data-param='length'
-                data-range='gte'
+                className="input-text"
+                data-param="length"
+                data-range="gte"
                 onChange={this.handleChangeRangeNatural}
                 pattern={lengthRegexp}
-                value={this.params.length?.gte ?? ''}
+                value={this.params.length?.gte ?? ""}
               />
             </InputContainer>
 
-            <InputContainer labelKey='artist.tracks.index.form.length_lte'>
+            <InputContainer labelKey="artist.tracks.index.form.length_lte">
               <input
-                className='input-text'
-                data-param='length'
-                data-range='lte'
+                className="input-text"
+                data-param="length"
+                data-range="lte"
                 onChange={this.handleChangeRangeNatural}
                 pattern={lengthRegexp}
-                value={this.params.length?.lte ?? ''}
+                value={this.params.length?.lte ?? ""}
               />
             </InputContainer>
 
-            <InputContainer labelKey='artist.tracks.index.form.genre' modifiers={['4', 'genre']}>
-              <div className='input-text'>
-                <div className='artist-track-search-form-switches'>
-                  {this.renderGenreLink(trans('artist.tracks.index.form.genre_all'), null)}
-                  {this.props.availableGenres.map((genre) => this.renderGenreLink(genre, genre))}
+            <InputContainer
+              labelKey="artist.tracks.index.form.genre"
+              modifiers={["4", "genre"]}
+            >
+              <div className="input-text">
+                <div className="artist-track-search-form-switches">
+                  {this.renderGenreLink(
+                    trans("artist.tracks.index.form.genre_all"),
+                    null,
+                  )}
+                  {this.props.availableGenres.map((genre) =>
+                    this.renderGenreLink(genre, genre),
+                  )}
                 </div>
               </div>
             </InputContainer>
 
-            <InputContainer labelKey='artist.tracks.index.form.exclusive_only' modifiers={['4', 'genre']}>
-              <div className='input-text'>
-                <div className='artist-track-search-form-switches'>
-                  {([['all', false], ['exclusive_only', true]] as const).map(([label, value]) => (
+            <InputContainer
+              labelKey="artist.tracks.index.form.exclusive_only"
+              modifiers={["4", "genre"]}
+            >
+              <div className="input-text">
+                <div className="artist-track-search-form-switches">
+                  {(
+                    [
+                      ["all", false],
+                      ["exclusive_only", true],
+                    ] as const
+                  ).map(([label, value]) => (
                     <a
                       key={label}
-                      className={classWithModifiers('artist-track-search-form-switches__link', {
-                        active: this.params.exclusive_only === value,
-                      })}
+                      className={classWithModifiers(
+                        "artist-track-search-form-switches__link",
+                        {
+                          active: this.params.exclusive_only === value,
+                        },
+                      )}
                       data-value={value}
                       href={makeLink({ ...this.params, exclusive_only: value })}
                       onClick={this.handleExclusiveOnlyLinkClick}
@@ -204,21 +240,21 @@ export default class SearchForm extends React.Component<Props> {
             </InputContainer>
           </div>
         </div>
-        <div className='artist-track-search-form__content artist-track-search-form__content--buttons'>
+        <div className="artist-track-search-form__content artist-track-search-form__content--buttons">
           <BigButton
             disabled={this.isEmptySearch}
             href={makeLink(this.emptySearch)}
-            modifiers={['artist-track-search', 'rounded-thin']}
+            modifiers={["artist-track-search", "rounded-thin"]}
             props={{ onClick: this.handleReset }}
-            text={trans('common.buttons.reset')}
+            text={trans("common.buttons.reset")}
           />
 
           <BigButton
             disabled={!this.newSearch}
             href={this.url}
-            modifiers={['artist-track-search', 'rounded-thin-wide']}
+            modifiers={["artist-track-search", "rounded-thin-wide"]}
             props={{ onClick: this.handleSubmit }}
-            text={trans('common.buttons.search')}
+            text={trans("common.buttons.search")}
           />
         </div>
       </form>
@@ -226,23 +262,29 @@ export default class SearchForm extends React.Component<Props> {
   }
 
   @action
-  private readonly handleChangeRangeNatural = (e: React.ChangeEvent<HTMLInputElement>) => {
+  private readonly handleChangeRangeNatural = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const input = e.target;
 
     if (!(input instanceof HTMLInputElement)) {
-      throw new Error('incorrect input field type');
+      throw new Error("incorrect input field type");
     }
 
     const param = input.dataset.param as ArtistTrackSearchNumberRangeParam;
     const range = input.dataset.range as EsRangeField;
 
     if (param == null || range == null) {
-      throw new Error('missing input field dataset');
+      throw new Error("missing input field dataset");
     }
 
     const value = presence(input.value);
 
-    if (value != null && input.pattern != null && (RegExp(input.pattern).exec(value)) == null) {
+    if (
+      value != null &&
+      input.pattern != null &&
+      RegExp(input.pattern).exec(value) == null
+    ) {
       return;
     }
 
@@ -261,7 +303,9 @@ export default class SearchForm extends React.Component<Props> {
   };
 
   @action
-  private readonly handleChangeString = (e: React.ChangeEvent<HTMLInputElement>) => {
+  private readonly handleChangeString = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const param = e.target.name as ArtistTrackSearchRelevanceParam;
     const value = e.target.value;
 
@@ -273,14 +317,18 @@ export default class SearchForm extends React.Component<Props> {
   };
 
   @action
-  private readonly handleExclusiveOnlyLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  private readonly handleExclusiveOnlyLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+  ) => {
     e.preventDefault();
-    this.params.exclusive_only = e.currentTarget.dataset.value === '1';
+    this.params.exclusive_only = e.currentTarget.dataset.value === "1";
     this.props.onNewSearch(e.currentTarget.href);
   };
 
   @action
-  private readonly handleGenreLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  private readonly handleGenreLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+  ) => {
     e.preventDefault();
     this.params.genre = presence(e.currentTarget.dataset.value);
     this.props.onNewSearch(e.currentTarget.href);
@@ -314,10 +362,13 @@ export default class SearchForm extends React.Component<Props> {
     return (
       <a
         key={name}
-        className={classWithModifiers('artist-track-search-form-switches__link', {
-          active: presence(this.params.genre) === value,
-        })}
-        data-value={value ?? ''}
+        className={classWithModifiers(
+          "artist-track-search-form-switches__link",
+          {
+            active: presence(this.params.genre) === value,
+          },
+        )}
+        data-value={value ?? ""}
         href={makeLink({ ...this.params, genre: value })}
         onClick={this.handleGenreLinkClick}
       >

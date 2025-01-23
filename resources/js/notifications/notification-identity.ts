@@ -1,7 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-export type NotificationIdentityType = 'notification' | 'type' | 'stack';
+export type NotificationIdentityType = "notification" | "type" | "stack";
 
 export interface NotificationIdentity {
   category?: string;
@@ -21,17 +21,19 @@ export function resolveStackId(identity: NotificationIdentity) {
   return `${identity.objectType}-${identity.objectId}-${identity.category}`;
 }
 
-export function resolveIdentityType(identity: NotificationIdentity): NotificationIdentityType | undefined {
+export function resolveIdentityType(
+  identity: NotificationIdentity,
+): NotificationIdentityType | undefined {
   if (identity.objectId != null) {
     if (identity.category != null) {
       if (identity.id != null) {
-        return 'notification';
+        return "notification";
       }
-      return 'stack';
+      return "stack";
     }
   }
 
-  return 'type';
+  return "type";
 }
 
 export function fromJson(json: NotificationIdentityJson): NotificationIdentity {

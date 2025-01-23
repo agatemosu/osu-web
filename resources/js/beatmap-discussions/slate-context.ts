@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import * as React from 'react';
-import { Editor } from 'slate';
+import * as React from "react";
+import { Editor } from "slate";
 
 // null! is a workaround to remove the optional/nullable type for the context.
 // SlateContext should always be assigned a ReactEditor value before being used.

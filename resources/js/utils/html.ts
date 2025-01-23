@@ -1,11 +1,11 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { padStart } from 'lodash';
-import { CSSProperties } from 'react';
-import { urlPresence } from './css';
+import { padStart } from "lodash";
+import { CSSProperties } from "react";
+import { urlPresence } from "./css";
 
-const byteSuffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+const byteSuffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 const kilo = 1000;
 
 export function bottomPage() {
@@ -37,13 +37,13 @@ export function cssVar2x(url?: string | null) {
   if (url == null) return;
 
   return {
-    '--bg': urlPresence(url),
-    '--bg-2x': urlPresence(make2x(url)),
+    "--bg": urlPresence(url),
+    "--bg-2x": urlPresence(make2x(url)),
   } as CSSProperties;
 }
 
 function padTimeComponent(time: number) {
-  return padStart(time.toString(), 2, '0');
+  return padStart(time.toString(), 2, "0");
 }
 
 export function formatBytes(bytes: number, decimals = 2) {
@@ -69,7 +69,12 @@ export function formatDuration(valueSecond: number) {
 
 const defaultNumberFormatter = new Intl.NumberFormat(window.currentLocale);
 
-export function formatNumber(num: number, precision?: number, options?: Intl.NumberFormatOptions, locale?: string) {
+export function formatNumber(
+  num: number,
+  precision?: number,
+  options?: Intl.NumberFormatOptions,
+  locale?: string,
+) {
   if (precision == null && options == null && locale == null) {
     return defaultNumberFormatter.format(num);
   }
@@ -87,14 +92,15 @@ export function formatNumber(num: number, precision?: number, options?: Intl.Num
 const defaultSuffixedNumberOptions = {
   maximumFractionDigits: 1,
   minimumFractionDigits: 0,
-  notation: 'compact',
+  notation: "compact",
 } as const;
-const defaultSuffixedNumberFormatter = new Intl.NumberFormat(window.currentLocale, defaultSuffixedNumberOptions);
+const defaultSuffixedNumberFormatter = new Intl.NumberFormat(
+  window.currentLocale,
+  defaultSuffixedNumberOptions,
+);
 
 export function formatNumberSuffixed(num?: number) {
-  return num == null
-    ? undefined
-    : defaultSuffixedNumberFormatter.format(num);
+  return num == null ? undefined : defaultSuffixedNumberFormatter.format(num);
 }
 
 export function htmlElementOrNull(thing: unknown) {
@@ -112,7 +118,7 @@ export function isClickable(maybeEl: unknown): boolean {
     return false;
   }
 
-  if (isInputElement(el) || ['A', 'BUTTON'].includes(el.tagName)) {
+  if (isInputElement(el) || ["A", "BUTTON"].includes(el.tagName)) {
     return true;
   }
 
@@ -125,17 +131,21 @@ export function isClickable(maybeEl: unknown): boolean {
 }
 
 export function isInputElement(el: HTMLElement) {
-  return ['INPUT', 'OPTION', 'SELECT', 'TEXTAREA'].includes(el.tagName) || el.isContentEditable;
+  return (
+    ["INPUT", "OPTION", "SELECT", "TEXTAREA"].includes(el.tagName) ||
+    el.isContentEditable
+  );
 }
 
-export const transparentGif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+export const transparentGif =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
 export function make2x(url?: string) {
   if (url == null) return;
 
-  return url.replace(/(\.[^.]+)$/, '@2x$1');
+  return url.replace(/(\.[^.]+)$/, "@2x$1");
 }
 
 export function stripTags(str: string) {
-  return str.replace(/<[^>]*>/g, '');
+  return str.replace(/<[^>]*>/g, "");
 }

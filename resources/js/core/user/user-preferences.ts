@@ -1,13 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import CurrentUserJson from 'interfaces/current-user-json';
-import UserPreferencesJson, { defaultUserPreferencesJson } from 'interfaces/user-preferences-json';
-import { route } from 'laroute';
-import { action, makeObservable, observable } from 'mobx';
-import { onErrorWithCallback } from 'utils/ajax';
+import CurrentUserJson from "interfaces/current-user-json";
+import UserPreferencesJson, {
+  defaultUserPreferencesJson,
+} from "interfaces/user-preferences-json";
+import { route } from "laroute";
+import { action, makeObservable, observable } from "mobx";
+import { onErrorWithCallback } from "utils/ajax";
 
-const localStorageKey = 'userPreferences';
+const localStorageKey = "userPreferences";
 
 export default class UserPreferences {
   @observable private current: UserPreferencesJson;
@@ -19,7 +21,7 @@ export default class UserPreferences {
 
     makeObservable(this);
 
-    window.addEventListener('storage', this.updateFromStorage);
+    window.addEventListener("storage", this.updateFromStorage);
   }
 
   get<T extends keyof UserPreferencesJson>(key: T) {
@@ -27,7 +29,10 @@ export default class UserPreferences {
   }
 
   @action
-  set<T extends keyof UserPreferencesJson>(key: T, value: UserPreferencesJson[T]) {
+  set<T extends keyof UserPreferencesJson>(
+    key: T,
+    value: UserPreferencesJson[T],
+  ) {
     if (this.current[key] === value) return;
 
     this.current[key] = value;
@@ -37,17 +42,18 @@ export default class UserPreferences {
 
     this.updatingOptions = true;
 
-    return $.ajax(route('account.options'), {
+    return $.ajax(route("account.options"), {
       data: { user_profile_customization: { [key]: value } },
-      dataType: 'JSON',
-      method: 'PUT',
-    }).done((user: CurrentUserJson) => {
-      $.publish('user:update', user);
-    }).fail(
-      onErrorWithCallback(),
-    ).always(() => {
-      this.updatingOptions = false;
-    });
+      dataType: "JSON",
+      method: "PUT",
+    })
+      .done((user: CurrentUserJson) => {
+        $.publish("user:update", user);
+      })
+      .fail(onErrorWithCallback())
+      .always(() => {
+        this.updatingOptions = false;
+      });
   }
 
   @action
@@ -66,7 +72,7 @@ export default class UserPreferences {
       if (data != null) {
         const preferences = JSON.parse(data) as unknown;
 
-        if (preferences != null && typeof preferences === 'object') {
+        if (preferences != null && typeof preferences === "object") {
           return preferences as Partial<UserPreferencesJson>;
         }
       }

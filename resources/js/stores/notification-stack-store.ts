@@ -1,20 +1,36 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import DispatcherAction from 'actions/dispatcher-action';
-import { UserLoginAction } from 'actions/user-login-actions';
-import { dispatchListener } from 'app-dispatcher';
-import DispatchListener from 'dispatch-listener';
-import NotificationJson, { NotificationBundleJson, NotificationStackJson, NotificationTypeJson } from 'interfaces/notification-json';
-import { action, computed, makeObservable, observable } from 'mobx';
-import Notification from 'models/notification';
-import NotificationStack, { idFromJson } from 'models/notification-stack';
-import NotificationType, { Name as NotificationTypeName  } from 'models/notification-type';
-import { categoryFromName } from 'notification-maps/category';
-import { NotificationEventDelete, NotificationEventMoreLoaded, NotificationEventNew, NotificationEventRead } from 'notifications/notification-events';
-import { fromJson, NotificationIdentity, resolveIdentityType, resolveStackId } from 'notifications/notification-identity';
-import { NotificationResolver } from 'notifications/notification-resolver';
-import NotificationStore from './notification-store';
+import DispatcherAction from "actions/dispatcher-action";
+import { UserLoginAction } from "actions/user-login-actions";
+import { dispatchListener } from "app-dispatcher";
+import DispatchListener from "dispatch-listener";
+import NotificationJson, {
+  NotificationBundleJson,
+  NotificationStackJson,
+  NotificationTypeJson,
+} from "interfaces/notification-json";
+import { action, computed, makeObservable, observable } from "mobx";
+import Notification from "models/notification";
+import NotificationStack, { idFromJson } from "models/notification-stack";
+import NotificationType, {
+  Name as NotificationTypeName,
+} from "models/notification-type";
+import { categoryFromName } from "notification-maps/category";
+import {
+  NotificationEventDelete,
+  NotificationEventMoreLoaded,
+  NotificationEventNew,
+  NotificationEventRead,
+} from "notifications/notification-events";
+import {
+  fromJson,
+  NotificationIdentity,
+  resolveIdentityType,
+  resolveStackId,
+} from "notifications/notification-identity";
+import { NotificationResolver } from "notifications/notification-resolver";
+import NotificationStore from "./notification-store";
 
 @dispatchListener
 export default class NotificationStackStore implements DispatchListener {
@@ -66,7 +82,9 @@ export default class NotificationStackStore implements DispatchListener {
   }
 
   getStack(identity: NotificationIdentity) {
-    return this.types.get(identity.objectType)?.stacks.get(resolveStackId(identity));
+    return this.types
+      .get(identity.objectType)
+      ?.stacks.get(resolveStackId(identity));
   }
 
   @action
@@ -115,7 +133,12 @@ export default class NotificationStackStore implements DispatchListener {
     let stack = this.getStack(identity);
 
     if (stack == null) {
-      stack = new NotificationStack(json.object_id, json.object_type, categoryFromName(json.name), this.resolver);
+      stack = new NotificationStack(
+        json.object_id,
+        json.object_type,
+        categoryFromName(json.name),
+        this.resolver,
+      );
     }
 
     if (!stack.notifications.has(notification.id)) {
@@ -138,7 +161,9 @@ export default class NotificationStackStore implements DispatchListener {
   }
 
   orderedStacksOfType(name: NotificationTypeName) {
-    return this.stacksOfType(name).sort((x, y) => y.displayOrder - x.displayOrder);
+    return this.stacksOfType(name).sort(
+      (x, y) => y.displayOrder - x.displayOrder,
+    );
   }
 
   @action
@@ -147,16 +172,16 @@ export default class NotificationStackStore implements DispatchListener {
       const identityType = resolveIdentityType(identity);
 
       switch (identityType) {
-        case 'type':
+        case "type":
           this.removeByType(identity);
           break;
 
-        case 'stack':
+        case "stack":
           // FIXME: can't apply event read count to all now.
           this.removeByStack(identity, event.readCount);
           break;
 
-        case 'notification':
+        case "notification":
           this.removeByNotification(identity);
           break;
       }
@@ -181,7 +206,8 @@ export default class NotificationStackStore implements DispatchListener {
     for (const [, stack] of type.stacks) {
       // don't include stacks that are past the cursor for the type
       // this is to prevent gaps in loaded stacks when switching filters
-      if (type?.cursor !== undefined && stack.displayOrder >= cursorId) stacks.push(stack);
+      if (type?.cursor !== undefined && stack.displayOrder >= cursorId)
+        stacks.push(stack);
     }
 
     return stacks;
@@ -191,7 +217,9 @@ export default class NotificationStackStore implements DispatchListener {
   updateWithBundle(bundle: NotificationBundleJson) {
     bundle.types?.forEach((json) => this.updateWithTypeJson(json));
     bundle.stacks?.forEach((json) => this.updateWithStackJson(json));
-    bundle.notifications?.forEach((json) => this.updateWithNotificationJson(json));
+    bundle.notifications?.forEach((json) =>
+      this.updateWithNotificationJson(json),
+    );
   }
 
   private readonly removeByNotification = (identity: NotificationIdentity) => {

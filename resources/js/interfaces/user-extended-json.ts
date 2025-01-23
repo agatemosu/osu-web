@@ -1,34 +1,34 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import Ruleset from 'interfaces/ruleset';
-import UserJson from 'interfaces/user-json';
+import Ruleset from "interfaces/ruleset";
+import UserJson from "interfaces/user-json";
 
 export const profileExtraPages = [
-  'beatmaps',
-  'historical',
-  'kudosu',
-  'me',
-  'medals',
-  'recent_activity',
-  'top_ranks',
-  'account_standing',
+  "beatmaps",
+  "historical",
+  "kudosu",
+  "me",
+  "medals",
+  "recent_activity",
+  "top_ranks",
+  "account_standing",
 ] as const;
 
-export type ProfileExtraPage = typeof profileExtraPages[number];
+export type ProfileExtraPage = (typeof profileExtraPages)[number];
 
 type UserExtendedDefaultIncludes =
-  'country'
-  | 'cover'
-  | 'is_admin'
-  | 'is_bng'
-  | 'is_full_bn'
-  | 'is_gmt'
-  | 'is_limited_bn'
-  | 'is_moderator'
-  | 'is_nat'
-  | 'is_restricted'
-  | 'is_silenced';
+  | "country"
+  | "cover"
+  | "is_admin"
+  | "is_bng"
+  | "is_full_bn"
+  | "is_gmt"
+  | "is_limited_bn"
+  | "is_moderator"
+  | "is_nat"
+  | "is_restricted"
+  | "is_silenced";
 
 interface UserExtendedAdditionalAttributes {
   discord: string | null;
@@ -54,6 +54,8 @@ interface UserExtendedAdditionalAttributes {
   website: string | null;
 }
 
-type UserExtendedJson = UserJson & Required<Pick<UserJson, UserExtendedDefaultIncludes>> & UserExtendedAdditionalAttributes;
+type UserExtendedJson = UserJson &
+  Required<Pick<UserJson, UserExtendedDefaultIncludes>> &
+  UserExtendedAdditionalAttributes;
 
 export default UserExtendedJson;

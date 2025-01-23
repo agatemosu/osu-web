@@ -1,14 +1,14 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { action, observable, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { trans } from 'utils/lang';
-import { isModalShowing } from 'utils/modal-helper';
-import { nextVal } from 'utils/seq';
-import Controller from './controller';
-import ProfileEditPopup from './profile-edit-popup';
+import { action, observable, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { trans } from "utils/lang";
+import { isModalShowing } from "utils/modal-helper";
+import { nextVal } from "utils/seq";
+import Controller from "./controller";
+import ProfileEditPopup from "./profile-edit-popup";
 
 interface Props {
   controller: Controller;
@@ -48,18 +48,18 @@ export default class ProfileEditButton extends React.Component<Props> {
     if (!this.props.controller.withEdit) return null;
 
     return (
-      <div ref={this.container} className='profile-page-cover-editor-button'>
+      <div ref={this.container} className="profile-page-cover-editor-button">
         <button
-          className='btn-circle btn-circle--page-toggle'
+          className="btn-circle btn-circle--page-toggle"
           onClick={this.onClickPopupToggle}
-          title={trans('users.show.edit.cover.button')}
+          title={trans("users.show.edit.cover.button")}
         >
-          <span className='fas fa-pencil-alt' />
+          <span className="fas fa-pencil-alt" />
         </button>
 
-        {this.popupOpen &&
+        {this.popupOpen && (
           <ProfileEditPopup controller={this.props.controller} />
-        }
+        )}
       </div>
     );
   }

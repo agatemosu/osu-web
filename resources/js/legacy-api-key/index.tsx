@@ -1,15 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BigButton from 'components/big-button';
-import Modal from 'components/modal';
-import { action, makeObservable } from 'mobx';
-import { observer } from 'mobx-react';
-import * as React from 'react';
-import { trans } from 'utils/lang';
-import Controller from './controller';
-import Details from './details';
-import Form from './form';
+import BigButton from "components/big-button";
+import Modal from "components/modal";
+import { action, makeObservable } from "mobx";
+import { observer } from "mobx-react";
+import * as React from "react";
+import { trans } from "utils/lang";
+import Controller from "./controller";
+import Details from "./details";
+import Form from "./form";
 
 interface Props {
   container: HTMLElement;
@@ -33,7 +33,9 @@ export default class LegacyApiKey extends React.Component<Props> {
   }
 
   render() {
-    return this.controller.key == null ? this.renderEmpty() : this.renderDetails();
+    return this.controller.key == null
+      ? this.renderEmpty()
+      : this.renderDetails();
   }
 
   private readonly onModalClose = () => {
@@ -52,16 +54,14 @@ export default class LegacyApiKey extends React.Component<Props> {
   private renderEmpty() {
     return (
       <>
-        <p>
-          {trans('legacy_api_key.none')}
-        </p>
+        <p>{trans("legacy_api_key.none")}</p>
         <div>
           <BigButton
-            icon='fas fa-plus'
+            icon="fas fa-plus"
             props={{
               onClick: this.onNewKeyClick,
             }}
-            text={trans('legacy_api_key.new')}
+            text={trans("legacy_api_key.new")}
           />
         </div>
         {this.renderForm()}

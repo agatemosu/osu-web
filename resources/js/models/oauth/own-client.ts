@@ -1,10 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { OwnClientJson } from 'interfaces/own-client-json';
-import { route } from 'laroute';
-import { action, computed, makeObservable, observable } from 'mobx';
-import { Client } from 'models/oauth/client';
+import { OwnClientJson } from "interfaces/own-client-json";
+import { route } from "laroute";
+import { action, computed, makeObservable, observable } from "mobx";
+import { Client } from "models/oauth/client";
 
 export class OwnClient extends Client {
   @observable isResetting = false;
@@ -15,7 +15,7 @@ export class OwnClient extends Client {
 
   @computed
   get redirect() {
-    return this.redirectOrig.replace(/,/g, '\r\n');
+    return this.redirectOrig.replace(/,/g, "\r\n");
   }
 
   constructor(client: OwnClientJson) {
@@ -32,15 +32,21 @@ export class OwnClient extends Client {
     this.isRevoking = true;
 
     const xhr = $.ajax({
-      method: 'DELETE',
-      url: route('oauth.clients.destroy', { client: this.id }),
+      method: "DELETE",
+      url: route("oauth.clients.destroy", { client: this.id }),
     }) as JQuery.jqXHR<void>;
 
-    xhr.done(action(() => {
-      this.revoked = true;
-    })).always(action(() => {
-      this.isRevoking = false;
-    }));
+    xhr
+      .done(
+        action(() => {
+          this.revoked = true;
+        }),
+      )
+      .always(
+        action(() => {
+          this.isRevoking = false;
+        }),
+      );
 
     return xhr;
   }
@@ -50,15 +56,19 @@ export class OwnClient extends Client {
     this.isResetting = true;
 
     const xhr = $.ajax({
-      method: 'POST',
-      url: route('oauth.clients.reset-secret', { client: this.id }),
+      method: "POST",
+      url: route("oauth.clients.reset-secret", { client: this.id }),
     }) as JQuery.jqXHR<OwnClientJson>;
 
-    xhr.done((data) => {
-      this.updateFromJson(data);
-    }).always(action(() => {
-      this.isResetting = false;
-    }));
+    xhr
+      .done((data) => {
+        this.updateFromJson(data);
+      })
+      .always(
+        action(() => {
+          this.isResetting = false;
+        }),
+      );
 
     return xhr;
   }
@@ -81,15 +91,19 @@ export class OwnClient extends Client {
 
     const xhr = $.ajax({
       data: { redirect },
-      method: 'PUT',
-      url: route('oauth.clients.update', { client: this.id }),
+      method: "PUT",
+      url: route("oauth.clients.update", { client: this.id }),
     }) as JQuery.jqXHR<OwnClientJson>;
 
-    xhr.done((data) => {
-      this.updateFromJson(data);
-    }).always(action(() => {
-      this.isUpdating = false;
-    }));
+    xhr
+      .done((data) => {
+        this.updateFromJson(data);
+      })
+      .always(
+        action(() => {
+          this.isUpdating = false;
+        }),
+      );
 
     return xhr;
   }

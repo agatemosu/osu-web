@@ -1,16 +1,16 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { currentUrl } from 'utils/turbolinks';
+import { currentUrl } from "utils/turbolinks";
 
 export function getInputFromElement(element: unknown) {
   if (!(element instanceof HTMLElement)) return;
 
-  const post = element.closest('.js-forum-post') ?? element.closest('form');
+  const post = element.closest(".js-forum-post") ?? element.closest("form");
 
   if (!(post instanceof HTMLElement)) return;
 
-  const input = post.querySelector('[name=body]');
+  const input = post.querySelector("[name=body]");
 
   if (input instanceof HTMLTextAreaElement) {
     return input;
@@ -20,11 +20,11 @@ export function getInputFromElement(element: unknown) {
 export default class ForumPostInput {
   constructor() {
     $(document)
-      .on('input change', '.js-forum-post-input', this.onInput)
-      .on('turbo:load', this.handlePageLoad)
-      .on('ajax:success', '.js-forum-post-input--form', this.handlePostSaved);
-    $.subscribe('forum-post-input:restore', this.handleRestore);
-    $.subscribe('forum-post-input:clear', this.handleClear);
+      .on("input change", ".js-forum-post-input", this.onInput)
+      .on("turbo:load", this.handlePageLoad)
+      .on("ajax:success", ".js-forum-post-input--form", this.handlePostSaved);
+    $.subscribe("forum-post-input:restore", this.handleRestore);
+    $.subscribe("forum-post-input:clear", this.handleClear);
   }
 
   private clearInput(input: HTMLTextAreaElement | undefined) {
@@ -45,7 +45,7 @@ export default class ForumPostInput {
   };
 
   private readonly handlePageLoad = () => {
-    for (const element of document.querySelectorAll('.js-forum-post-input')) {
+    for (const element of document.querySelectorAll(".js-forum-post-input")) {
       this.handleRestore(null, element);
     }
   };
@@ -67,7 +67,7 @@ export default class ForumPostInput {
     }
 
     // try migrating from old storage system for reply boxes
-    if (key.startsWith('forum-post-input:topic:')) {
+    if (key.startsWith("forum-post-input:topic:")) {
       const legacyKey = `forum-topic-reply--${currentUrl().pathname}--text`;
 
       const fromLegacyStorage = localStorage.getItem(legacyKey);
@@ -89,7 +89,7 @@ export default class ForumPostInput {
 
     const value = input.value;
 
-    if (value === '') {
+    if (value === "") {
       localStorage.removeItem(key);
     } else {
       localStorage.setItem(key, input.value);
@@ -97,7 +97,7 @@ export default class ForumPostInput {
   };
 
   private prefixKey(inputId: string | undefined) {
-    if (inputId != null && inputId !== '') {
+    if (inputId != null && inputId !== "") {
       return `forum-post-input:${inputId}`;
     }
   }

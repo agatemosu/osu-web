@@ -4,11 +4,12 @@
 export default class AnimateNav {
   constructor() {
     $(document)
-      .on('turbo:before-cache', () => {
-        document.body.classList.remove('js-animate-nav');
-      }).on('turbo:load', () => {
+      .on("turbo:before-cache", () => {
+        document.body.classList.remove("js-animate-nav");
+      })
+      .on("turbo:load", () => {
         window.setTimeout(() => {
-          document.body.classList.add('js-animate-nav');
+          document.body.classList.add("js-animate-nav");
         }, 0);
       });
   }

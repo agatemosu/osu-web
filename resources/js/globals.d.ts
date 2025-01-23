@@ -1,8 +1,8 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-declare module 'mod-names.json' {
-  import ModJson from 'interfaces/mod-json';
+declare module "mod-names.json" {
+  import ModJson from "interfaces/mod-json";
 
   const modNames: Partial<Record<string, ModJson>>;
 
@@ -11,7 +11,7 @@ declare module 'mod-names.json' {
 
 // Scoping to prevent global type import pollution.
 // There interfaces are only used in this file.
-declare module 'legacy-modules' {
+declare module "legacy-modules" {
   interface TooltipDefault {
     remove: (el: HTMLElement) => void;
   }
@@ -40,7 +40,7 @@ declare const docsUrl: string;
 // #endregion
 
 // our helpers
-declare const tooltipDefault: import('legacy-modules').TooltipDefault;
+declare const tooltipDefault: import("legacy-modules").TooltipDefault;
 
 // external (to typescript) classes
 declare const fallbackLocale: string;

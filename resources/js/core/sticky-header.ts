@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import core from 'osu-core-singleton';
-import { fadeToggle } from 'utils/fade';
-import { htmlElementOrNull } from 'utils/html';
+import core from "osu-core-singleton";
+import { fadeToggle } from "utils/fade";
+import { htmlElementOrNull } from "utils/html";
 
 /**
  * Attachment that shows up below the omni-header.
@@ -13,38 +13,37 @@ import { htmlElementOrNull } from 'utils/html';
  */
 export default class StickyHeader {
   get breadcrumbsElement() {
-    return window.newBody?.querySelector('.js-sticky-header-breadcrumbs');
+    return window.newBody?.querySelector(".js-sticky-header-breadcrumbs");
   }
 
   get contentElement() {
-    return window.newBody?.querySelector('.js-sticky-header-content');
+    return window.newBody?.querySelector(".js-sticky-header-content");
   }
 
   get headerHeight() {
     const styles = window._styles.header;
 
-    return core.windowSize.isMobile
-      ? styles.heightMobile
-      : styles.heightSticky;
+    return core.windowSize.isMobile ? styles.heightMobile : styles.heightSticky;
   }
 
   private get header() {
-    return document.querySelector('.js-pinned-header');
+    return document.querySelector(".js-pinned-header");
   }
 
   private get marker() {
-    return document.querySelector('.js-sticky-header');
+    return document.querySelector(".js-sticky-header");
   }
 
   private get pinnedSticky() {
-    return document.querySelector('.js-pinned-header-sticky');
+    return document.querySelector(".js-pinned-header-sticky");
   }
 
   private get scrollOffsetValue() {
     // just assume scroll will always try to go to a position that causes sticky to show.
     // TODO: don't assume.
     const pinnedSticky = this.pinnedSticky;
-    const stickyHeight = pinnedSticky == null ? 0 : pinnedSticky.getBoundingClientRect().height;
+    const stickyHeight =
+      pinnedSticky == null ? 0 : pinnedSticky.getBoundingClientRect().height;
 
     return this.headerHeight + stickyHeight;
   }
@@ -56,15 +55,16 @@ export default class StickyHeader {
     if (marker == null || pinnedSticky == null) return;
 
     const markerTop = marker.getBoundingClientRect().top;
-    const headerBottom = this.headerHeight + pinnedSticky.getBoundingClientRect().height;
+    const headerBottom =
+      this.headerHeight + pinnedSticky.getBoundingClientRect().height;
 
     return markerTop < headerBottom;
   }
 
   constructor() {
-    $(window).on('scroll', this.onScroll);
-    $(document).on('turbo:load', this.onScroll);
-    $(window).on('resize', this.stickOrUnstick);
+    $(window).on("scroll", this.onScroll);
+    $(document).on("turbo:load", this.onScroll);
+    $(window).on("resize", this.stickOrUnstick);
   }
 
   scrollOffset(orig: number) {
@@ -80,16 +80,16 @@ export default class StickyHeader {
     if (this.header == null) return;
 
     if (this.shouldPin()) {
-      document.body.classList.add('js-header-is-pinned');
+      document.body.classList.add("js-header-is-pinned");
     } else {
-      document.body.classList.remove('js-header-is-pinned');
+      document.body.classList.remove("js-header-is-pinned");
     }
   }
 
   private setVisible(visible: boolean) {
     fadeToggle(htmlElementOrNull(this.pinnedSticky), visible);
 
-    $(document).trigger('sticky-header:sticking', [visible]);
+    $(document).trigger("sticky-header:sticking", [visible]);
   }
 
   private shouldPin(offset?: number | null) {

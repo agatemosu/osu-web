@@ -1,9 +1,9 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { route } from 'laroute';
-import { debounce } from 'lodash';
-import { action, computed, makeObservable, observable } from 'mobx';
+import { route } from "laroute";
+import { debounce } from "lodash";
+import { action, computed, makeObservable, observable } from "mobx";
 
 interface SuggestionJson {
   highlight: string;
@@ -16,8 +16,11 @@ export class WikiSearchController {
   @observable shouldShowSuggestions = false;
   @observable suggestions: SuggestionJson[] = [];
 
-  private readonly debouncedFetchSuggestions = debounce(() => this.fetchSuggestions(), 200);
-  @observable private query = '';
+  private readonly debouncedFetchSuggestions = debounce(
+    () => this.fetchSuggestions(),
+    200,
+  );
+  @observable private query = "";
   private xhr?: JQueryXHR;
 
   @computed get isSuggestionsVisible() {
@@ -50,10 +53,12 @@ export class WikiSearchController {
       return;
     }
 
-    Turbo.visit(route('search', {
-      mode: 'wiki_page',
-      query,
-    }));
+    Turbo.visit(
+      route("search", {
+        mode: "wiki_page",
+        query,
+      }),
+    );
   }
 
   @action
@@ -103,12 +108,15 @@ export class WikiSearchController {
 
   @action
   private fetchSuggestions() {
-    this.xhr = $.getJSON(route('wiki-suggestions'), { query: this.query.trim() })
-      .done(action((response: SuggestionJson[]) => {
+    this.xhr = $.getJSON(route("wiki-suggestions"), {
+      query: this.query.trim(),
+    }).done(
+      action((response: SuggestionJson[]) => {
         if (response != null) {
           this.suggestions = observable(response);
           this.shouldShowSuggestions = true;
         }
-      }));
+      }),
+    );
   }
 }

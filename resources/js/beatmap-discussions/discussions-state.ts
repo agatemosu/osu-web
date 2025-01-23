@@ -1,27 +1,32 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import BeatmapJson from 'interfaces/beatmap-json';
-import BeatmapsetDiscussionJson from 'interfaces/beatmapset-discussion-json';
-import { BeatmapsetStatus } from 'interfaces/beatmapset-json';
-import BeatmapsetWithDiscussionsJson from 'interfaces/beatmapset-with-discussions-json';
-import Ruleset from 'interfaces/ruleset';
-import UserJson from 'interfaces/user-json';
-import WithBeatmapOwners from 'interfaces/with-beatmap-owners';
-import { intersectionWith, maxBy, sum } from 'lodash';
-import { action, computed, makeObservable, observable } from 'mobx';
-import { deletedUserJson } from 'models/user';
-import core from 'osu-core-singleton';
-import BeatmapsetDiscussionsShowStore from 'stores/beatmapset-discussions-show-store';
-import { findDefault, group, sortWithMode } from 'utils/beatmap-helper';
-import { canModeratePosts, makeUrl, parseUrl, stateFromDiscussion } from 'utils/beatmapset-discussion-helper';
-import { parseJsonNullable, storeJson } from 'utils/json';
-import { Filter, filters } from './current-discussions';
-import DiscussionMode, { discussionModes } from './discussion-mode';
-import DiscussionPage, { isDiscussionPage } from './discussion-page';
+import BeatmapJson from "interfaces/beatmap-json";
+import BeatmapsetDiscussionJson from "interfaces/beatmapset-discussion-json";
+import { BeatmapsetStatus } from "interfaces/beatmapset-json";
+import BeatmapsetWithDiscussionsJson from "interfaces/beatmapset-with-discussions-json";
+import Ruleset from "interfaces/ruleset";
+import UserJson from "interfaces/user-json";
+import WithBeatmapOwners from "interfaces/with-beatmap-owners";
+import { intersectionWith, maxBy, sum } from "lodash";
+import { action, computed, makeObservable, observable } from "mobx";
+import { deletedUserJson } from "models/user";
+import core from "osu-core-singleton";
+import BeatmapsetDiscussionsShowStore from "stores/beatmapset-discussions-show-store";
+import { findDefault, group, sortWithMode } from "utils/beatmap-helper";
+import {
+  canModeratePosts,
+  makeUrl,
+  parseUrl,
+  stateFromDiscussion,
+} from "utils/beatmapset-discussion-helper";
+import { parseJsonNullable, storeJson } from "utils/json";
+import { Filter, filters } from "./current-discussions";
+import DiscussionMode, { discussionModes } from "./discussion-mode";
+import DiscussionPage, { isDiscussionPage } from "./discussion-page";
 
-const defaultFilterPraise = new Set<BeatmapsetStatus>(['approved', 'ranked']);
-const jsonId = 'json-discussions-state';
+const defaultFilterPraise = new Set<BeatmapsetStatus>(["approved", "ranked"]);
+const jsonId = "json-discussions-state";
 
 function deletedUser(userId: number) {
   const user: UserJson = structuredClone(deletedUserJson) as UserJson; // structuredClone copies the Readonly type but is actually mutable.
@@ -38,11 +43,11 @@ export interface UpdateOptions {
 
 function reviver(key: string, value: unknown) {
   if (Array.isArray(value)) {
-    if (key === 'discussionCollapsed') {
+    if (key === "discussionCollapsed") {
       return new Map(value);
     }
 
-    if (key === 'readPostIds') {
+    if (key === "readPostIds") {
       return new Set(value);
     }
   }
@@ -57,8 +62,8 @@ function isFilter(value: unknown): value is Filter {
 export default class DiscussionsState {
   @observable currentBeatmapId: number;
   @observable currentDiscussionId?: number;
-  @observable currentFilter: Filter = 'total';
-  @observable currentPage: DiscussionPage = 'general';
+  @observable currentFilter: Filter = "total";
+  @observable currentPage: DiscussionPage = "general";
   @observable currentPostId?: number;
   @observable discussionCollapsed = new Map<number, boolean>();
   @observable discussionDefaultCollapsed = false;
@@ -70,8 +75,8 @@ export default class DiscussionsState {
   @observable selectedUserId: number | null = null;
   @observable showDeleted = true; // this toggle only affects All and deleted discussion filters, other filters don't show deleted
 
-  private previousFilter: Filter = 'total';
-  private previousPage: DiscussionPage = 'general';
+  private previousFilter: Filter = "total";
+  private previousPage: DiscussionPage = "general";
 
   get beatmapset() {
     return this.store.beatmapset;
@@ -81,7 +86,7 @@ export default class DiscussionsState {
   get currentBeatmap() {
     const beatmap = this.store.beatmaps.get(this.currentBeatmapId);
     if (beatmap == null) {
-      throw new Error('missing beatmap');
+      throw new Error("missing beatmap");
     }
 
     return beatmap;
@@ -116,12 +121,12 @@ export default class DiscussionsState {
         groups.mine.push(discussion);
       }
 
-      if (discussion.message_type === 'hype') {
+      if (discussion.message_type === "hype") {
         groups.hype.push(discussion);
         groups.praises.push(discussion);
-      } else if (discussion.message_type === 'mapper_note') {
+      } else if (discussion.message_type === "mapper_note") {
         groups.mapperNotes.push(discussion);
-      } else if (discussion.message_type === 'praise') {
+      } else if (discussion.message_type === "praise") {
         groups.praises.push(discussion);
       }
 
@@ -132,8 +137,13 @@ export default class DiscussionsState {
           groups.pending.push(discussion);
           // only reviews with unresolved discussions get added.
           if (discussion.parent_id != null) {
-            const parentDiscussion = this.store.discussions.get(discussion.parent_id);
-            if (parentDiscussion != null && parentDiscussion.message_type === 'review') {
+            const parentDiscussion = this.store.discussions.get(
+              discussion.parent_id,
+            );
+            if (
+              parentDiscussion != null &&
+              parentDiscussion.message_type === "review"
+            ) {
               reviewsWithPending.add(parentDiscussion);
             }
           }
@@ -161,7 +171,7 @@ export default class DiscussionsState {
     };
 
     for (const discussion of discussions) {
-      if (discussion.message_type === 'review') {
+      if (discussion.message_type === "review") {
         value.reviews.push(discussion);
       } else if (discussion.beatmap_id == null) {
         value.generalAll.push(discussion);
@@ -183,7 +193,11 @@ export default class DiscussionsState {
       ? this.discussionsArray
       : this.nonDeletedDiscussions;
 
-    return discussions.filter((discussion) => (discussion.beatmap_id == null || discussion.beatmap_id === this.currentBeatmapId));
+    return discussions.filter(
+      (discussion) =>
+        discussion.beatmap_id == null ||
+        discussion.beatmap_id === this.currentBeatmapId,
+    );
   }
 
   @computed
@@ -205,7 +219,9 @@ export default class DiscussionsState {
     };
 
     for (const mode of discussionModes) {
-      value[mode] = this.discussionsByMode[mode].filter((discussion) => discussion.user_id === this.selectedUserId);
+      value[mode] = this.discussionsByMode[mode].filter(
+        (discussion) => discussion.user_id === this.selectedUserId,
+      );
     }
 
     return value;
@@ -237,16 +253,23 @@ export default class DiscussionsState {
   @computed
   get hasCurrentUserHyped() {
     const currentUser = core.currentUser;
-    return currentUser != null
-      && this.discussionsByFilter.hype.some((discussion) => (
-        discussion.beatmap_id == null && discussion.user_id === currentUser.id
-      ));
+    return (
+      currentUser != null &&
+      this.discussionsByFilter.hype.some(
+        (discussion) =>
+          discussion.beatmap_id == null &&
+          discussion.user_id === currentUser.id,
+      )
+    );
   }
 
   @computed
   get lastUpdateDate() {
-    const maxDiscussions = maxBy(this.beatmapset.discussions, 'updated_at')?.updated_at;
-    const maxEvents = maxBy(this.beatmapset.events, 'created_at')?.created_at;
+    const maxDiscussions = maxBy(
+      this.beatmapset.discussions,
+      "updated_at",
+    )?.updated_at;
+    const maxEvents = maxBy(this.beatmapset.events, "created_at")?.created_at;
 
     const lastUpdateMs = Math.max(
       Date.parse(this.beatmapset.last_updated),
@@ -266,7 +289,10 @@ export default class DiscussionsState {
     // This is based on the assumption that the non-main ruleset only needs 1 nomination.
     // See NominateBeatmapset::requiredNominationsConfig
     // TODO: swith to Set.intersection in the future; it is currently too new.
-    const intersection = intersectionWith(this.selectedNominatedRulesets, this.beatmapset.eligible_main_rulesets);
+    const intersection = intersectionWith(
+      this.selectedNominatedRulesets,
+      this.beatmapset.eligible_main_rulesets,
+    );
 
     return intersection.length === 1 ? intersection[0] : null;
   }
@@ -281,11 +307,11 @@ export default class DiscussionsState {
     const nominators: UserJson[] = [];
     for (let i = this.beatmapset.events.length - 1; i >= 0; i--) {
       const event = this.beatmapset.events[i];
-      if (event.type === 'disqualify' || event.type === 'nomination_reset') {
+      if (event.type === "disqualify" || event.type === "nomination_reset") {
         break;
       }
 
-      if (event.type === 'nominate' && event.user_id != null) {
+      if (event.type === "nominate" && event.user_id != null) {
         const user = this.store.users.get(event.user_id);
         if (user != null) {
           nominators.unshift(user);
@@ -298,7 +324,9 @@ export default class DiscussionsState {
 
   @computed
   get nonDeletedDiscussions() {
-    return this.discussionsArray.filter((discussion) => discussion.deleted_at == null);
+    return this.discussionsArray.filter(
+      (discussion) => discussion.deleted_at == null,
+    );
   }
 
   @computed
@@ -306,8 +334,10 @@ export default class DiscussionsState {
     // TODO: use findLast in es2023
     for (let i = this.beatmapset.events.length - 1; i >= 0; i--) {
       const event = this.beatmapset.events[i];
-      if (event.type === 'disqualify') {
-        return typeof event.comment === 'string' ? [] : event.comment.nominator_ids ?? [];
+      if (event.type === "disqualify") {
+        return typeof event.comment === "string"
+          ? []
+          : (event.comment.nominator_ids ?? []);
       }
     }
 
@@ -326,23 +356,24 @@ export default class DiscussionsState {
 
   @computed
   get totalHypeCount() {
-    return this.nonDeletedDiscussions
-      .reduce((total, discussion) => +(discussion.message_type === 'hype') + total, 0);
+    return this.nonDeletedDiscussions.reduce(
+      (total, discussion) => +(discussion.message_type === "hype") + total,
+      0,
+    );
   }
 
   @computed
   get unresolvedDiscussionTotalCount() {
-    return this.nonDeletedDiscussions
-      .reduce((total, discussion) => {
-        if (discussion.can_be_resolved && !discussion.resolved) {
-          if (discussion.beatmap_id == null) return total + 1;
+    return this.nonDeletedDiscussions.reduce((total, discussion) => {
+      if (discussion.can_be_resolved && !discussion.resolved) {
+        if (discussion.beatmap_id == null) return total + 1;
 
-          const beatmap = this.store.beatmaps.get(discussion.beatmap_id);
-          if (beatmap != null && beatmap.deleted_at == null) return total + 1;
-        }
+        const beatmap = this.store.beatmaps.get(discussion.beatmap_id);
+        if (beatmap != null && beatmap.deleted_at == null) return total + 1;
+      }
 
-        return total;
-      }, 0);
+      return total;
+    }, 0);
   }
 
   @computed
@@ -355,8 +386,13 @@ export default class DiscussionsState {
     });
 
     for (const discussion of this.nonDeletedDiscussions) {
-      if (discussion.beatmap_id != null && discussion.can_be_resolved && !discussion.resolved) {
-        byBeatmap[discussion.beatmap_id] = (byBeatmap[discussion.beatmap_id] ?? 0) + 1;
+      if (
+        discussion.beatmap_id != null &&
+        discussion.can_be_resolved &&
+        !discussion.resolved
+      ) {
+        byBeatmap[discussion.beatmap_id] =
+          (byBeatmap[discussion.beatmap_id] ?? 0) + 1;
 
         const mode = this.store.beatmaps.get(discussion.beatmap_id)?.mode;
         if (mode != null) {
@@ -399,13 +435,15 @@ export default class DiscussionsState {
       }
     }
 
-    this.currentBeatmapId = (findDefault({ group: this.groupedBeatmaps }) ?? this.firstBeatmap).id;
+    this.currentBeatmapId = (
+      findDefault({ group: this.groupedBeatmaps }) ?? this.firstBeatmap
+    ).id;
 
     // Current url takes priority over saved state.
     const query = parseUrl(
       null,
       store.beatmapset.discussions,
-      defaultFilterPraise.has(store.beatmapset.status) ? 'praises' : 'total',
+      defaultFilterPraise.has(store.beatmapset.status) ? "praises" : "total",
     );
 
     if (query != null) {
@@ -428,18 +466,23 @@ export default class DiscussionsState {
   }
 
   beatmapOwners(beatmap: WithBeatmapOwners<BeatmapJson>) {
-    return beatmap.owners.map((user) => this.store.users.get(user.id) ?? deletedUser(user.id));
+    return beatmap.owners.map(
+      (user) => this.store.users.get(user.id) ?? deletedUser(user.id),
+    );
   }
 
   @action
   changeDiscussionPage(page?: string) {
     if (!isDiscussionPage(page)) return;
 
-    if (page === 'events') {
+    if (page === "events") {
       // record page and filter when switching to events
       this.previousPage = this.currentPage;
       this.previousFilter = this.currentFilter;
-    } else if (this.currentPage === 'events' && this.currentFilter !== this.previousFilter) {
+    } else if (
+      this.currentPage === "events" &&
+      this.currentFilter !== this.previousFilter
+    ) {
       // restore previous filter when switching away from events
       this.currentFilter = this.previousFilter;
     }
@@ -455,7 +498,7 @@ export default class DiscussionsState {
     if (!isFilter(filter)) return;
 
     // restore previous page when selecting a filter.
-    if (this.currentPage === 'events') {
+    if (this.currentPage === "events") {
       this.currentPage = this.previousPage;
     }
 
@@ -482,18 +525,18 @@ export default class DiscussionsState {
 
     if (discussion == null) return;
 
-    const {
-      beatmapId,
-      mode,
-    } = stateFromDiscussion(discussion);
+    const { beatmapId, mode } = stateFromDiscussion(discussion);
 
     // unset type filter if discussion would have been filtered out.
     if (!this.discussionsByMode[mode].some((d) => d.id === discussion.id)) {
-      this.currentFilter = 'total';
+      this.currentFilter = "total";
     }
 
     // unset user filter if new discussion would have been filtered out.
-    if (this.selectedUserId != null && this.selectedUserId !== discussion.user_id) {
+    if (
+      this.selectedUserId != null &&
+      this.selectedUserId !== discussion.user_id
+    ) {
       this.selectedUserId = null;
     }
 
@@ -517,18 +560,21 @@ export default class DiscussionsState {
     }
   }
 
-  nominationsCount(type: 'current' | 'required') {
+  nominationsCount(type: "current" | "required") {
     const nominations = this.beatmapset.nominations;
     if (nominations.legacy_mode) {
       return nominations[type];
     }
 
-    if (type === 'current') {
+    if (type === "current") {
       return sum(Object.values(nominations[type]));
     }
 
-    return nominations.required_meta.main_ruleset
-      + nominations.required_meta.non_main_ruleset * (this.rulesetsWithoutDeletedBeatmaps.length - 1);
+    return (
+      nominations.required_meta.main_ruleset +
+      nominations.required_meta.non_main_ruleset *
+        (this.rulesetsWithoutDeletedBeatmaps.length - 1)
+    );
   }
 
   saveState() {

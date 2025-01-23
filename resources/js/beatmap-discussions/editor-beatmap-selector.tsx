@@ -1,17 +1,17 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-import { BeatmapIcon } from 'components/beatmap-icon';
-import BeatmapListItem from 'components/beatmap-list-item';
-import { EmbedElement } from 'editor';
-import BeatmapExtendedJson from 'interfaces/beatmap-extended-json';
-import * as React from 'react';
-import { Transforms } from 'slate';
-import { ReactEditor } from 'slate-react';
-import { classWithModifiers } from 'utils/css';
-import { trans } from 'utils/lang';
-import IconDropdownMenu, { MenuItem } from './icon-dropdown-menu';
-import { SlateContext } from './slate-context';
+import { BeatmapIcon } from "components/beatmap-icon";
+import BeatmapListItem from "components/beatmap-list-item";
+import { EmbedElement } from "editor";
+import BeatmapExtendedJson from "interfaces/beatmap-extended-json";
+import * as React from "react";
+import { Transforms } from "slate";
+import { ReactEditor } from "slate-react";
+import { classWithModifiers } from "utils/css";
+import { trans } from "utils/lang";
+import IconDropdownMenu, { MenuItem } from "./icon-dropdown-menu";
+import { SlateContext } from "./slate-context";
 
 interface Props {
   beatmaps: BeatmapExtendedJson[];
@@ -25,17 +25,19 @@ export default class EditorBeatmapSelector extends React.Component<Props> {
 
   render(): React.ReactNode {
     const menuOptions: MenuItem[] = [];
-    const listItemModifier = 'full-width';
+    const listItemModifier = "full-width";
     menuOptions.push({
-      icon: <i className='fas fa-fw fa-star-of-life' />,
-      id: 'all',
+      icon: <i className="fas fa-fw fa-star-of-life" />,
+      id: "all",
       label: (
-        <div className={classWithModifiers('beatmap-list-item', listItemModifier)}>
-          <div className='beatmap-list-item__col beatmap-list-item__col--icon'>
-            <i className='fas fa-xs fa-star-of-life' />
+        <div
+          className={classWithModifiers("beatmap-list-item", listItemModifier)}
+        >
+          <div className="beatmap-list-item__col beatmap-list-item__col--icon">
+            <i className="fas fa-xs fa-star-of-life" />
           </div>
-          <div className='beatmap-list-item__col beatmap-list-item__col--main'>
-            {trans('beatmaps.discussions.mode.scopes.generalAll')}
+          <div className="beatmap-list-item__col beatmap-list-item__col--main">
+            {trans("beatmaps.discussions.mode.scopes.generalAll")}
           </div>
         </div>
       ),
@@ -50,7 +52,13 @@ export default class EditorBeatmapSelector extends React.Component<Props> {
       menuOptions.push({
         icon: <BeatmapIcon beatmap={beatmap} />,
         id: beatmap.id.toString(),
-        label: <BeatmapListItem beatmap={beatmap} modifiers={listItemModifier} showOwners={false} />,
+        label: (
+          <BeatmapListItem
+            beatmap={beatmap}
+            modifiers={listItemModifier}
+            showOwners={false}
+          />
+        ),
         renderIcon: false,
       });
     });
@@ -66,7 +74,7 @@ export default class EditorBeatmapSelector extends React.Component<Props> {
   }
 
   select = (id: string) => {
-    const beatmapId = id !== 'all' ? parseInt(id, 10) : undefined;
+    const beatmapId = id !== "all" ? parseInt(id, 10) : undefined;
 
     const path = ReactEditor.findPath(this.context, this.props.element);
     Transforms.setNodes(this.context, { beatmapId }, { at: path });

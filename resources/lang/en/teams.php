@@ -4,8 +4,13 @@
 // See the LICENCE file in the repository root for full licence text.
 
 return [
+    'destroy' => [
+        'ok' => 'Team removed',
+    ],
+
     'edit' => [
         'saved' => 'Settings saved successfully',
+        'title' => 'Team Settings',
 
         'description' => [
             'label' => 'Description',
@@ -37,9 +42,36 @@ return [
         ],
     ],
 
+    'members' => [
+        'destroy' => [
+            'success' => 'Team member removed',
+        ],
+
+        'index' => [
+            'title' => 'Manage Members',
+
+            'table' => [
+                'status' => 'Status',
+                'joined_at' => 'Join Date',
+                'remove' => 'Remove',
+                'title' => 'Current Members',
+            ],
+
+            'status' => [
+                'status_0' => 'Inactive',
+                'status_1' => 'Active',
+            ],
+        ],
+    ],
+
+    'part' => [
+        'ok' => 'Left the team ;_;',
+    ],
+
     'show' => [
         'bar' => [
-            'settings' => 'Settings',
+            'destroy' => 'Disband Team',
+            'part' => 'Leave Team',
         ],
 
         'info' => [

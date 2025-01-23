@@ -149,10 +149,13 @@
                             <span class="input-container__label">
                                 {{ osu_trans('teams.edit.description.label') }}
                             </span>
-                            <textarea
-                                name="team[description]"
-                                class="input-text js-post-preview--auto"
-                            >{{ $team->description }}</textarea>
+                            <div class="input-text input-text--bbcode">
+                                <textarea
+                                    name="team[description]"
+                                    class="input-text__bbcode-textarea js-post-preview--auto js-bbcode-body"
+                                >{{ $team->description }}</textarea>
+                                @include('forum._post_toolbar')
+                            </div>
                         </label>
 
                         <div class="team-settings__description-preview u-fancy-scrollbar">
@@ -170,14 +173,22 @@
                         <div class="team-settings__item team-settings__item--buttons">
                             <div>
                                 <a
+                                    class="btn-osu-big btn-osu-big--danger btn-osu-big--rounded-thin"
+                                    data-turbo-confirm="{{ osu_trans('common.confirmation') }}"
+                                    data-turbo-method="DELETE"
+                                    href="{{ route('teams.destroy', $team) }}"
+                                >
+                                    {{ osu_trans('teams.show.bar.destroy') }}
+                                </a>
+                            </div>
+
+                            <div class="team-settings__buttons">
+                                <a
                                     class="btn-osu-big btn-osu-big--rounded-thin"
                                     href="{{ route('teams.show', ['team' => $team]) }}"
                                 >
                                     {{ osu_trans('common.buttons.cancel') }}
                                 </a>
-                            </div>
-
-                            <div>
                                 <button class="btn-osu-big btn-osu-big--rounded-thin">
                                     {{ osu_trans('common.buttons.save') }}
                                 </button>

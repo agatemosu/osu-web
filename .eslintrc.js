@@ -178,7 +178,6 @@ module.exports = {
   rules: {
     'arrow-body-style': 'error',
     complexity: 'off',
-    curly: ['error', 'multi-line'],
     'dot-notation': 'error',
     eqeqeq: ['error', 'smart'],
     'guard-for-in': 'error',

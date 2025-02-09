@@ -9,7 +9,7 @@ import { transChoice } from 'utils/lang';
 import { changelogBuild } from 'utils/url';
 
 interface Props {
-  currentStreamId: number;
+  currentStreamId?: number;
   updateStreams: UpdateStream[];
 }
 
@@ -17,7 +17,7 @@ export class ChangelogHeaderStreams extends React.PureComponent<Props> {
   render = () => (
     <div
       className={classWithModifiers('update-streams-v2', [
-        this.props.currentStreamId ? 'with-active' : undefined,
+        this.props.currentStreamId != null ? 'with-active' : undefined,
       ])}
     >
       <div className='update-streams-v2__container'>

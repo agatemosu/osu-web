@@ -5,15 +5,15 @@ import type ChangelogBuild from 'interfaces/changelog-build';
 import _ from 'lodash';
 import moment from 'moment';
 import * as React from 'react';
-import { classWithModifiers } from 'utils/css';
+import { classWithModifiers, type Modifiers } from 'utils/css';
 import { changelogBuild } from 'utils/url';
 import { ChangelogEntry } from './changelog-entry';
 
 interface Props {
   build: ChangelogBuild;
-  modifiers: string;
-  showDate: string;
-  showVideo: string;
+  modifiers?: Modifiers;
+  showDate?: boolean;
+  showVideo?: boolean;
 }
 
 export class Build extends React.PureComponent<Props> {

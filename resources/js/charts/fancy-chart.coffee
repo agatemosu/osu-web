@@ -1,14 +1,13 @@
 # Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 # See the LICENCE file in the repository root for full licence text.
 
-import { fadeIn, fadeOut } from 'utils/fade'
 import { parseJsonNullable } from 'utils/json'
 
 export default class FancyChart
-  constructor: (area, @options = {}) ->
-    @options.scales ?= {}
-    @options.scales.x ?= d3.scaleLinear()
-    @options.scales.y ?= d3.scaleLinear()
+  constructor: (area) ->
+    @scales =
+      x: d3.scaleLinear()
+      y: d3.scaleLinear()
 
     @margins =
       top: 25
@@ -38,17 +37,6 @@ export default class FancyChart
       .attr 'r', 2
       .attr 'opacity', 0
 
-    @svgHoverArea = @svg.append 'rect'
-      .classed 'fancy-graph__hover-area', true
-      .on 'mouseout', @hoverEnd
-      .on 'mousemove', @hoverRefresh
-      .on 'drag', @hoverRefresh
-
-    @svgHoverMark = @svgWrapper.append 'circle'
-      .classed 'fancy-graph__circle', true
-      .attr 'data-visibility', 'hidden'
-      .attr 'r', 2
-
     data = parseJsonNullable area.dataset.src
     @loadData data
 
@@ -73,32 +61,26 @@ export default class FancyChart
     @height = areaDims.height - (@margins.top + @margins.bottom)
 
 
-  setHoverAreaSize: =>
-    @svgHoverArea
-      .attr 'width', @width + (@margins.left + @margins.right)
-      .attr 'height', @height + (@margins.top + @margins.bottom)
-
-
   setScalesRange: =>
-    @options.scales.x
+    @scales.x
       .range [0, @width]
-      .domain @options.domains?.x ? d3.extent(@data, (d) => d.x)
+      .domain d3.extent(@data, (d) => d.x)
 
-    @options.scales.y
+    @scales.y
       .range [@height, 0]
-      .domain @options.domains?.y ? d3.extent(@data, (d) => d.y)
+      .domain d3.extent(@data, (d) => d.y)
 
 
   setLineSize: =>
     @line
-      .x (d) => @options.scales.x d.x
-      .y (d) => @options.scales.y d.y
+      .x (d) => @scales.x d.x
+      .y (d) => @scales.y d.y
 
     lastPoint = _.last(@data)
 
     if lastPoint?
       @svgEndCircle
-        .attr 'transform', "translate(#{@options.scales.x(lastPoint.x)}, #{@options.scales.y(lastPoint.y)})"
+        .attr 'transform', "translate(#{@scales.x(lastPoint.x)}, #{@scales.y(lastPoint.y)})"
 
 
   setSvgSize: =>
@@ -157,47 +139,8 @@ export default class FancyChart
     @setSvgSize()
     @setWrapperSize()
     @setLineSize()
-    @setHoverAreaSize()
 
 
   resize: =>
     @recalc()
     @drawLine()
-
-
-  hoverEnd: =>
-    fadeOut @svgHoverMark.node()
-    $.publish "fancy-chart:hover-#{@options.hoverId}:end"
-
-
-  hoverRefresh: (event) =>
-    return if !@options.hoverId?
-    return if !@data[0]?
-
-    x = @options.scales.x.invert(d3.pointer(event)[0] - @margins.left)
-    i = @lookupIndexFromX x
-
-    return unless i?
-
-    fadeIn @svgHoverMark.node()
-    Timeout.clear @_hoverTimeout
-    @_hoverTimeout = Timeout.set 3000, @hoverEnd
-
-    d =
-      if i == 0
-        @data[0]
-      else if i >= @data.length
-        _.last @data
-      else if (x - @data[i - 1].x) <= (@data[i].x - x)
-        @data[i - 1]
-      else
-        @data[i]
-    coords = ['x', 'y'].map (axis) => @options.scales[axis] d[axis]
-
-    @svgHoverMark.attr 'transform', "translate(#{coords.join(', ')})"
-
-    $.publish "fancy-chart:hover-#{@options.hoverId}:refresh", data: d
-
-
-  lookupIndexFromX: (x) =>
-    d3.bisector((d) -> d.x).left @data, x

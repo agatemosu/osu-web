@@ -1760,7 +1760,7 @@ function priv_check_user($user, $ability, $object = null)
     return app()->make('OsuAuthorize')->doCheckUser($user, $ability, $object);
 }
 
-// Used to generate x,y pairs for fancy-chart.coffee
+// Used to generate x,y pairs for fancy-chart.ts
 function array_to_graph_json(array $array, string $fieldName): array
 {
     $ret = [];

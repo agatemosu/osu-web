@@ -5,11 +5,14 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import { parseJsonNullable } from 'utils/json';
 
-type Data = { x: number; y: number }[];
+interface Data {
+  x: number;
+  y: number;
+}
 
 export default class FancyChart {
   private readonly area;
-  private data!: Data;
+  private data!: Data[];
   private height!: number;
   private readonly line;
   private readonly margins;
@@ -46,7 +49,7 @@ export default class FancyChart {
       .classed('fancy-graph__line', true)
       .attr('opacity', 0);
 
-    this.line = d3.line().curve(d3.curveMonotoneX);
+    this.line = d3.line<Data>().curve(d3.curveMonotoneX);
 
     this.svgEndCircle = this.svgWrapper
       .append('circle')
@@ -54,7 +57,7 @@ export default class FancyChart {
       .attr('r', 2)
       .attr('opacity', 0);
 
-    const data = parseJsonNullable<Data>(area.dataset.src!);
+    const data = parseJsonNullable<Data[]>(area.dataset.src!);
     this.loadData(data);
   }
 
@@ -72,7 +75,7 @@ export default class FancyChart {
     this.svgLine.attr('opacity', 0);
   }
 
-  private loadData(data?: Data) {
+  private loadData(data?: Data[]) {
     if (_.isEqual(data, this.data)) {
       return;
     }

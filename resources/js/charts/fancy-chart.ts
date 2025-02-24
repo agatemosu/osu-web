@@ -1,9 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
@@ -15,6 +9,8 @@ type Data = { x: number; y: number }[];
 
 export default class FancyChart {
   private readonly area;
+  private data!: Data;
+  private height!: number;
   private readonly line;
   private readonly margins;
   private readonly scales;
@@ -22,10 +18,7 @@ export default class FancyChart {
   private readonly svgEndCircle;
   private readonly svgLine;
   private readonly svgWrapper;
-
-  private height;
-  private width;
-  private data: Data;
+  private width!: number;
 
   constructor(area: HTMLElement) {
     this.scales = {
@@ -61,7 +54,7 @@ export default class FancyChart {
       .attr('r', 2)
       .attr('opacity', 0);
 
-    const data = parseJsonNullable<Data>(area.dataset.src);
+    const data = parseJsonNullable<Data>(area.dataset.src!);
     this.loadData(data);
   }
 
@@ -76,7 +69,7 @@ export default class FancyChart {
 
   private hide() {
     this.svgEndCircle.attr('opacity', 0);
-    return this.svgLine.attr('opacity', 0);
+    this.svgLine.attr('opacity', 0);
   }
 
   private loadData(data?: Data) {
@@ -87,7 +80,7 @@ export default class FancyChart {
     this.data = data ?? [];
     this.svgLine.datum(this.data);
 
-    return this.reveal();
+    this.reveal();
   }
 
   private recalc() {
@@ -102,14 +95,15 @@ export default class FancyChart {
 
   private reveal() {
     if (this.data[0] == null) {
-      return this.hide();
+      this.hide();
+      return;
     }
 
     this.recalc();
 
     this.svgLine.attr('d', this.line);
 
-    const totalLength = this.svgLine.node().getTotalLength();
+    const totalLength = this.svgLine.node()!.getTotalLength();
 
     this.svgEndCircle.attr('opacity', 0);
 
@@ -123,7 +117,7 @@ export default class FancyChart {
       .attr('stroke-dashoffset', 0)
       .attr('opacity', 1);
 
-    return this.svgEndCircle
+    this.svgEndCircle
       .transition()
       .delay(1300)
       .duration(300)
@@ -132,10 +126,9 @@ export default class FancyChart {
   }
 
   private setDimensions() {
-    const areaDims = this.area.node().getBoundingClientRect();
+    const areaDims = this.area.node()!.getBoundingClientRect();
     this.width = areaDims.width - (this.margins.left + this.margins.right);
-    return (this.height =
-      areaDims.height - (this.margins.top + this.margins.bottom));
+    this.height = areaDims.height - (this.margins.top + this.margins.bottom);
   }
 
   private setLineSize() {
@@ -144,7 +137,7 @@ export default class FancyChart {
     const lastPoint = _.last(this.data);
 
     if (lastPoint != null) {
-      return this.svgEndCircle.attr(
+      this.svgEndCircle.attr(
         'transform',
         `translate(${this.scales.x(lastPoint.x)}, ${this.scales.y(lastPoint.y)})`,
       );
@@ -156,19 +149,19 @@ export default class FancyChart {
       .range([0, this.width])
       .domain(d3.extent(this.data, (d) => d.x));
 
-    return this.scales.y
+    this.scales.y
       .range([this.height, 0])
       .domain(d3.extent(this.data, (d) => d.y));
   }
 
   private setSvgSize() {
-    return this.svg
+    this.svg
       .attr('width', this.width + (this.margins.left + this.margins.right))
       .attr('height', this.height + (this.margins.top + this.margins.bottom));
   }
 
   private setWrapperSize() {
-    return this.svgWrapper.attr(
+    this.svgWrapper.attr(
       'transform',
       `translate(${this.margins.left}, ${this.margins.top})`,
     );

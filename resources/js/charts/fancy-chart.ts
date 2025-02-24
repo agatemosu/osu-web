@@ -111,7 +111,8 @@ export default class FancyChart {
 
     this.svgLine.attr('d', this.line);
 
-    const totalLength = this.svgLine.node()!.getTotalLength();
+    const totalLength = this.svgLine.node()?.getTotalLength();
+    if (totalLength == null) return;
 
     this.svgEndCircle.attr('opacity', 0);
 
@@ -134,7 +135,9 @@ export default class FancyChart {
   }
 
   private setDimensions() {
-    const areaDims = this.area.node()!.getBoundingClientRect();
+    const areaDims = this.area.node()?.getBoundingClientRect();
+    if (!areaDims) return;
+
     this.width = areaDims.width - (this.margins.left + this.margins.right);
     this.height = areaDims.height - (this.margins.top + this.margins.bottom);
   }

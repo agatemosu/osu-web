@@ -88,7 +88,7 @@ export default class CreateAnnouncement {
         this.inputs.message = json.message;
         this.inputs.name = json.name;
         this.inputs.users = [...json.validUsers, json.users].join(',');
-      } catch (_error) {
+      } catch {
         console.error('invalid json in localStorage');
         localStorage.removeItem(localStorageKey);
       }

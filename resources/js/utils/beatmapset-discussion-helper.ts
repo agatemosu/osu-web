@@ -350,7 +350,7 @@ export function propsFromHref(href = '') {
     // Either accept that as fact of life or a better regexp is needed which is
     // probably rather difficult especially if we're going to support parsing IDN.
     targetUrl = new URL(href);
-  } catch (_error) {
+  } catch {
     // ignore error
   }
 

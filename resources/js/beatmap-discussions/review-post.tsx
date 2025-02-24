@@ -34,7 +34,7 @@ export class ReviewPost extends React.Component<Props> {
             break;
         }
       });
-    } catch (_error) {
+    } catch {
       docBlocks.push(<div key={null}>[error parsing review]</div>);
     }
 

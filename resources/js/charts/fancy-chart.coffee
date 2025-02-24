@@ -37,8 +37,7 @@ export default class FancyChart
       .attr 'r', 2
       .attr 'opacity', 0
 
-    data = parseJsonNullable area.dataset.src
-    @loadData data
+    @loadData area.dataset.src
 
 
   hide: =>
@@ -46,10 +45,8 @@ export default class FancyChart
     @svgLine.attr 'opacity', 0
 
 
-  loadData: (data) =>
-    return if _.isEqual data, @data
-
-    @data = data ? []
+  loadData: (src) =>
+    @data = parseJsonNullable(src) ? []
     @svgLine.datum @data
 
     @reveal()

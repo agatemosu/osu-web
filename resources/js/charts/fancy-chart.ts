@@ -57,7 +57,11 @@ export default class FancyChart {
       .attr('r', 2)
       .attr('opacity', 0);
 
-    this.loadData(area.dataset.src!);
+    if (area.dataset.src == null) {
+      throw new Error('missing data-src attribute');
+    }
+
+    this.loadData(area.dataset.src);
   }
 
   resize() {

@@ -5,15 +5,15 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import { parseJsonNullable } from 'utils/json';
 
-interface Data {
+interface Datum {
   x: number;
   y: number;
 }
 
 export default class FancyChart {
   private readonly area;
-  private data!: Data[];
-  private height!: number;
+  private data: Datum[] = [];
+  private height = 0;
   private readonly line;
   private readonly margins;
   private readonly scales;
@@ -21,7 +21,7 @@ export default class FancyChart {
   private readonly svgEndCircle;
   private readonly svgLine;
   private readonly svgWrapper;
-  private width!: number;
+  private width = 0;
 
   constructor(area: HTMLElement) {
     this.scales = {
@@ -49,7 +49,7 @@ export default class FancyChart {
       .classed('fancy-graph__line', true)
       .attr('opacity', 0);
 
-    this.line = d3.line<Data>().curve(d3.curveMonotoneX);
+    this.line = d3.line<Datum>().curve(d3.curveMonotoneX);
 
     this.svgEndCircle = this.svgWrapper
       .append('circle')
@@ -57,8 +57,7 @@ export default class FancyChart {
       .attr('r', 2)
       .attr('opacity', 0);
 
-    const data = parseJsonNullable<Data[]>(area.dataset.src!);
-    this.loadData(data);
+    this.loadData(area.dataset.src!);
   }
 
   resize() {
@@ -75,7 +74,9 @@ export default class FancyChart {
     this.svgLine.attr('opacity', 0);
   }
 
-  private loadData(data?: Data[]) {
+  private loadData(src: string) {
+    const data = parseJsonNullable<Datum[]>(src);
+
     if (_.isEqual(data, this.data)) {
       return;
     }
@@ -148,13 +149,11 @@ export default class FancyChart {
   }
 
   private setScalesRange() {
-    this.scales.x
-      .range([0, this.width])
-      .domain(d3.extent(this.data, (d) => d.x));
+    const extentX = d3.extent(this.data, (d) => d.x);
+    const extentY = d3.extent(this.data, (d) => d.y);
 
-    this.scales.y
-      .range([this.height, 0])
-      .domain(d3.extent(this.data, (d) => d.y));
+    this.scales.x.range([0, this.width]).domain([extentX[0] ?? 0, extentX[1] ?? 0]);
+    this.scales.y.range([this.height, 0]).domain([extentY[0] ?? 0, extentY[1] ?? 0]);
   }
 
   private setSvgSize() {

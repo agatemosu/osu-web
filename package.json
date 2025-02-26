@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "yarn run development",
     "development": "cross-env NODE_ENV=development webpack",

@@ -1,11 +1,10 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-'use strict';
+import fs from 'node:fs';
+import path from 'node:path';
 
-const fs = require('fs');
-
-const root = `${__dirname}/../../..`;
+const root = path.resolve(import.meta.dirname, '../../..');
 
 // Reference: https://github.com/ppy/osu/blob/91bc23e39eb1048d7b75acf669bd46e9ef9a4f9e/osu.Game/Rulesets/Mods/ModType.cs
 const typeOrder = {};
@@ -29,7 +28,7 @@ function modSorter(a, b) {
   return a.Acronym.localeCompare(b.Acronym);
 }
 
-function modNamesGenerator() {
+export default function modNamesGenerator() {
   const modsByRuleset = JSON.parse(fs.readFileSync(`${root}/database/mods.json`));
 
   const modNames = {};
@@ -70,5 +69,3 @@ function modNamesGenerator() {
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(`${outDir}/mod-names.json`, JSON.stringify(modNames));
 }
-
-module.exports = modNamesGenerator;

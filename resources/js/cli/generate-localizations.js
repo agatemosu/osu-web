@@ -1,16 +1,15 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the GNU Affero General Public License v3.0.
 // See the LICENCE file in the repository root for full licence text.
 
-'use strict';
-
 /* eslint no-console: "off" */
-const { spawnSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
+
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { glob } from 'glob';
 
 // project root directory
-const rootPath = path.resolve(__dirname, '../../..');
+const rootPath = path.resolve(import.meta.dirname, '../../..');
 const buildPath = path.resolve(rootPath, 'resources/builds');
 const localesPath = path.resolve(buildPath, 'locales');
 const messagesPath = path.resolve(buildPath, 'messages.json');
@@ -57,7 +56,7 @@ function writeTranslations(languages) {
   console.log(' ...all done');
 }
 
-function generateLocalizations() {
+export default function generateLocalizations() {
   // Remove previous existing files and ensure directory exists.
   glob.sync(path.resolve(localesPath, '*.js')).forEach(fs.unlinkSync);
   fs.mkdirSync(localesPath, { recursive: true });
@@ -69,5 +68,3 @@ function generateLocalizations() {
   fs.unlinkSync(messagesPath);
   console.log(`Removed: ${messagesPath}`);
 }
-
-module.exports = generateLocalizations;

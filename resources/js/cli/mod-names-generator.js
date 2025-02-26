@@ -29,7 +29,8 @@ function modSorter(a, b) {
 }
 
 export default function modNamesGenerator() {
-  const modsByRuleset = JSON.parse(fs.readFileSync(`${root}/database/mods.json`));
+  const modsJSON = fs.readFileSync(path.resolve(root, '/database/mods.json'));
+  const modsByRuleset = JSON.parse(modsJSON);
 
   const modNames = {};
   for (const mods of modsByRuleset) {
@@ -65,7 +66,7 @@ export default function modNamesGenerator() {
     type: 'Conversion', // not really relevant
   };
 
-  const outDir = `${root}/resources/builds`;
+  const outDir = path.resolve(root, '/resources/builds');
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(`${outDir}/mod-names.json`, JSON.stringify(modNames));
 }

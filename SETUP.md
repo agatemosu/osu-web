@@ -232,7 +232,7 @@ Note that seeding sample data (the step above this) is required for user registr
 
 ```bash
 # build assets (should be done automatically if using docker)
-yarn run development
+yarn run dev
 ```
 
 Note that if you use the bundled docker compose setup, yarn/webpack will be already run in watch mode.

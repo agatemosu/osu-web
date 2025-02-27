@@ -66,7 +66,7 @@ if [ -z "${OSU_SKIP_ASSET_BUILD:-}" ]; then
   else
     yarn
   fi
-  yarn run production
+  yarn run build
 else
   echo "OSU_SKIP_ASSET_BUILD set, skipping javascript asset build."
 fi

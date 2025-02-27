@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./resources/js",
+    "baseUrl": "./resources",
     "experimentalDecorators": true,
     "jsx": "react",
     "lib": ["dom", "dom.iterable", "es2020"],
@@ -9,6 +9,9 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noUnusedLocals": true,
+    "paths": {
+      "*": ["js/*", "builds/*"]
+    },
     "resolveJsonModule": true,
     "sourceMap": true,
     "strictBindCallApply": true,

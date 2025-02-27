@@ -61,7 +61,7 @@ _test_browser() {
 
 _watch() {
     yarn --network-timeout 100000
-    exec yarn watch
+    exec yarn dev
 }
 
 case "$command" in

@@ -11,24 +11,24 @@ RUN echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesou
 
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    build-essential \
-    git \
-    nodejs \
-    php8.3 \
-    php8.3-common \
-    php8.3-curl \
-    php8.3-ds \
-    php8.3-gd \
-    php8.3-intl \
-    php8.3-mbstring \
-    php8.3-mysql \
-    php8.3-redis \
-    php8.3-sqlite3 \
-    php8.3-swoole \
-    php8.3-tokenizer \
-    php8.3-xml \
-    php8.3-zip \
-    zip
+  build-essential \
+  git \
+  nodejs \
+  php8.3 \
+  php8.3-common \
+  php8.3-curl \
+  php8.3-ds \
+  php8.3-gd \
+  php8.3-intl \
+  php8.3-mbstring \
+  php8.3-mysql \
+  php8.3-redis \
+  php8.3-sqlite3 \
+  php8.3-swoole \
+  php8.3-tokenizer \
+  php8.3-xml \
+  php8.3-zip \
+  zip
 
 RUN npm install -g yarn
 
@@ -53,26 +53,26 @@ RUN echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packa
 
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    jhead \
-    nginx \
-    php8.3 \
-    php8.3-common \
-    php8.3-curl \
-    php8.3-ds \
-    php8.3-gd \
-    php8.3-intl \
-    php8.3-mbstring \
-    php8.3-mysql \
-    php8.3-redis \
-    php8.3-sqlite3 \
-    php8.3-swoole \
-    php8.3-tokenizer \
-    php8.3-xml \
-    php8.3-zip
+  jhead \
+  nginx \
+  php8.3 \
+  php8.3-common \
+  php8.3-curl \
+  php8.3-ds \
+  php8.3-gd \
+  php8.3-intl \
+  php8.3-mbstring \
+  php8.3-mysql \
+  php8.3-redis \
+  php8.3-sqlite3 \
+  php8.3-swoole \
+  php8.3-tokenizer \
+  php8.3-xml \
+  php8.3-zip
 
 RUN rm -f /var/log/nginx/access.log /var/log/nginx/error.log && \
-    ln -s /dev/stdout /var/log/nginx/access.log && \
-    ln -s /dev/stderr /var/log/nginx/error.log
+  ln -s /dev/stdout /var/log/nginx/access.log && \
+  ln -s /dev/stderr /var/log/nginx/error.log
 
 
 FROM buildenv as build
@@ -82,7 +82,7 @@ RUN mkdir -p bootstrap/cache storage/logs storage/framework/cache storage/framew
 
 ARG APP_URL
 ARG DOCS_URL
-RUN yarn production
+RUN yarn build
 
 RUN php artisan ip2asn:update
 RUN php artisan scribe:generate

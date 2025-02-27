@@ -1,7 +1,6 @@
 # Local configuration.
 /.env*
 !/.env*.example
-/.webpack-build-notifier-config.js
 
 # ignore _ide_helper.php
 _ide_helper.php
@@ -27,6 +26,7 @@ desktop.ini
 /.scribe
 /public/assets
 /public/docs
+/public/hot
 /public/uploads
 /public/uploads-avatar
 /public/uploads-replay
@@ -88,3 +88,4 @@ composer-installer
 
 /database/ip2asn/*.idx
 /database/ip2asn/*.tsv
+

@@ -48,7 +48,6 @@
     "glob": "^10.3.4",
     "highlight.js": "^11.7.0",
     "imagemin": "^6.0.0",
-    "imports-loader": "^4.0.1",
     "inter-ui": "^3.9.0",
     "is-hotkey": "^0.1.6",
     "jets": "^0.15.0",

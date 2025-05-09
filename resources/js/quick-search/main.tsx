@@ -182,6 +182,11 @@ interface Props {
     return (
       <div className='quick-search-result'>
         <div className='quick-search-result__item'>
+          {this.renderTitle('beatmapset')}
+          {this.renderBeatmapsets()}
+        </div>
+
+        <div className='quick-search-result__item'>
           {this.renderTitle('user')}
           {this.renderUsers()}
         </div>
@@ -189,11 +194,6 @@ interface Props {
         <div className='quick-search-result__item'>
           {this.renderTitle('team')}
           {this.renderTeams()}
-        </div>
-
-        <div className='quick-search-result__item'>
-          {this.renderTitle('beatmapset')}
-          {this.renderBeatmapsets()}
         </div>
 
         <div className='quick-search-result__item'>

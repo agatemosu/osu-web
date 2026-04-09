@@ -4,6 +4,7 @@
 import CountryJson from 'interfaces/country-json';
 import * as React from 'react';
 import { classWithModifiers, Modifiers } from 'utils/css';
+import { countryName } from 'utils/intl';
 
 interface Props {
   country?: CountryJson | null;
@@ -30,7 +31,7 @@ export default function FlagCountry({ country, modifiers }: Props) {
       style={{
         backgroundImage: `url('${flagUrl(country.code)}')`,
       }}
-      title={country.name}
+      title={countryName(country.code)}
     />
   );
 }

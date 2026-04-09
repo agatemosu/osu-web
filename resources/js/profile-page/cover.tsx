@@ -15,6 +15,7 @@ import { observer } from 'mobx-react';
 import core from 'osu-core-singleton';
 import * as React from 'react';
 import { classWithModifiers, Modifiers, urlPresence } from 'utils/css';
+import { countryName } from 'utils/intl';
 import { trans } from 'utils/lang';
 import SeasonStats from './season-stats';
 
@@ -84,13 +85,13 @@ export default class Cover extends React.Component<Props> {
             {this.renderTitle()}
 
             <div className='profile-info__flags'>
-              {this.props.user.country?.code != null &&
+              {this.props.user.country != null &&
                 <a
                   className='profile-info__flag'
                   href={route('rankings', { country: this.props.user.country.code, mode: this.props.currentMode, type: 'performance' })}
                 >
                   <FlagCountry country={this.props.user.country} />
-                  <span className='profile-info__flag-text'>{this.props.user.country.name}</span>
+                  <span className='profile-info__flag-text'>{countryName(this.props.user.country.code)}</span>
                 </a>
               }
               {this.props.user.team != null &&
